@@ -92,6 +92,26 @@ class BuildLogicTest {
     }
 
     @Test
+    fun forgeManifestSpellsAnOptionalDependencyForgesWayAndNamesNoMixins() {
+        assertEquals("""
+            |
+            |[[dependencies.thirstwastaken2]]
+            |modId = "supplementaries"
+            |mandatory = false
+            |versionRange = "[0,)"
+            |ordering = "NONE"
+            |side = "BOTH"
+            |
+            |[[dependencies.thirstwastaken2]]
+            |modId = "moonlight"
+            |mandatory = false
+            |versionRange = "[0,)"
+            |ordering = "NONE"
+            |side = "BOTH"
+            |""".trimMargin(), integration("supplementaries").forgeManifest("thirstwastaken2"))
+    }
+
+    @Test
     fun fabricManifestKeepsCreateFlyAtIndexOneAndAppendsTheRest() {
         val json = mutableMapOf<String, Any?>(
             "mixins" to mutableListOf<Any?>("thirstwastaken2.mixins.json", "thirstwastaken2.client.mixins.json"),

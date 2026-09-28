@@ -6,9 +6,10 @@ season: a temperate biome drains faster in summer and slower in winter, and a tr
 season counts as dry. Why each choice was made, and what was found in game, is in
 [docs/dev/integration/SERENE-SEASONS-INTEGRATION.md](../../../docs/dev/integration/SERENE-SEASONS-INTEGRATION.md).
 
-This directory is **compiled by every node, on both loaders**: Serene Seasons ships them all, and each
-table of `stonecutter.properties.toml` sets `deps.serene_seasons`. So nothing in it may name either
-loader's API (`checkLoaderSeam`), and it has no mixins.
+This directory is **compiled by every node, on every loader**: Serene Seasons ships them all, Forge 47
+on 1.20.1 included, and each table of `stonecutter.properties.toml` sets `deps.serene_seasons`. So nothing
+in it may name a loader's API (`checkLoaderSeam`), and it has no mixins. Its 1.20.1 builds (9.1) have
+the same API as the later ones; only the dimension check differs, as before 26.2.
 
 ```
 java/com/thirstwastaken2/sereneseasons/
@@ -20,14 +21,14 @@ java/com/thirstwastaken2/sereneseasons/
 
 ## How it stays optional
 
-1. **Build.** Only when `deps.serene_seasons` is set, both loader scripts add this directory and an
-   optional `sereneseasons` dependency to the built `neoforge.mods.toml`, and the Fabric one a
+1. **Build.** Only when `deps.serene_seasons` is set, the loader scripts add this directory and an
+   optional `sereneseasons` dependency to the built `neoforge.mods.toml` or Forge's `mods.toml`, and the Fabric one a
    `thirstwastaken2:integration` entrypoint to `fabric.mod.json`, as
    [its row in the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt) says.
-2. **Entrypoint.** Being on both loaders, it can carry neither `@Mod` nor `ModInitializer`. It is a
+2. **Entrypoint.** Being on every loader, it can carry neither `@Mod` nor `ModInitializer`. It is a
    plain `Runnable` marked `@IntegrationEntrypoint` (core `platform/`): Fabric runs it through the
-   `thirstwastaken2:integration` entrypoint after `ThirstWasTaken2.initialize`, NeoForge finds it in the
-   mod's scan data by the annotation and runs it in the same place. `checkOptionalSeam` treats the
+   `thirstwastaken2:integration` entrypoint after `ThirstWasTaken2.initialize`, NeoForge and Forge find it
+   in the mod's scan data by the annotation and run it in the same place. `checkOptionalSeam` treats the
    annotation as a root.
 3. **Runtime gate.** The entrypoint calls `SereneSeasonsClimate.install()` only after
    `SereneSeasonsPresence.isPresent()`.
@@ -79,3 +80,6 @@ passed with the same numbers on both: plains 0.913 in mid spring, 1.045 in mid s
 winter (0.929 in every season without it, by the formula); snowy plains 0.659 in mid summer; a jungle 0.814 in its dry season and
 0.746 in its wet one; a desert 1.2 in the dry season and 0.971 in the wet one. `boot.jsonl` with
 `-PwithoutOptional=all` came up on `26.3.x-neoforge`.
+Run again on 2026-09-28 on `1.20.1` and `1.20.1-forge` (Serene Seasons 9.1.0.3): the same numbers, every
+check passed on both. A production Forge 47.4.10 server with the shipped jar, Serene Seasons and GlitchCore
+logged "Serene Seasons found, thirst follows the season".

@@ -80,15 +80,23 @@ sourceSets.main {
 }
 
 /*
- * No integration row lists Forge yet; each one gains it in phase 3 of docs/dev/VERSION-1.20.1.md. Forge
- * 1.20.1 does not read [[mixins]] from mods.toml, so a row with a mixin config needs this script to add it
- * to `mixin.config` as well as to the manifest; until that is written, a row that asks for Forge fails
- * here rather than building a jar whose mixins silently never apply.
+ * The optional integrations this node builds, from the same table build.neoforge.gradle.kts reads: each
+ * row's source directories, its optional dependencies appended to the built mods.toml, and its mixin
+ * config, which Forge 47 reads from the jar manifest rather than mods.toml (see `mixin` below). Forge 47
+ * has one fluid API, so a row split by fluid API generation takes its `fluidhandler` half.
  */
 val nodeIntegrations = integrationsFor(Loader.FORGE) { findProperty(it) != null }
-if (nodeIntegrations.isNotEmpty()) {
-    throw GradleException("$name: build.forge.gradle.kts does not wire integrations yet, but " +
-        "${nodeIntegrations.map { it.dir }} list Forge. See phase 3 of docs/dev/VERSION-1.20.1.md.")
+
+sourceSets.main {
+    nodeIntegrations.forEach { integration ->
+        integration.mainRoots(transferApi = false).forEach { root ->
+            java.srcDir("$root/java")
+            resources.srcDir("$root/resources")
+        }
+        integration.clientJava?.let { dir ->
+            java.srcDir(files(clientSources.resolve(dir)).builtBy("stonecutterGenerateClient"))
+        }
+    }
 }
 
 /*
@@ -267,6 +275,7 @@ mixin {
     add(sourceSets.main.get(), refmap)
     config("$modId.mixins.json")
     config("$modId.client.mixins.json")
+    nodeIntegrations.mapNotNull { it.mixinConfig }.forEach { config(it) }
 }
 
 dependencies {
@@ -287,6 +296,25 @@ dependencies {
     findProperty("deps.cloth_config")?.let {
         runClientMod(listOf("cloth-config", "cloth_config"), "maven.modrinth:cloth-config:$it")
     }
+    findProperty("deps.serene_seasons")?.let { sereneSeasons ->
+        val glitchCore = property("deps.glitchcore").toString()
+        // Read through its API alone, but its Forge jar is in SRG names, so it is remapped like the other
+        // mods. GlitchCore is compiled against too: the dimension check reads Serene Seasons' config,
+        // whose class extends GlitchCore's. Forge ships the Night Config under that.
+        modCompileOnly("maven.modrinth:serene-seasons:$sereneSeasons") { isTransitive = false }
+        modCompileOnly("maven.modrinth:glitchcore:$glitchCore") { isTransitive = false }
+        // Off in runClient, for the reason build.gradle.kts gives. Uncomment the two lines below only to
+        // work on the Serene Seasons integration.
+        val names = listOf("serene-seasons", "sereneseasons")
+        // runClientMod(names, "maven.modrinth:serene-seasons:$sereneSeasons") { isTransitive = false }
+        // runClientMod(names + listOf("glitchcore"), "maven.modrinth:glitchcore:$glitchCore") { isTransitive = false }
+        // Keeps `-PwithoutOptional=serene-seasons` in the agent scripts a known name while the lines above are off.
+        optionalRunMods.include(names + listOf("glitchcore"))
+    }
+    // Test the drinks and meals Farmer's Delight adds, and the Cooking Pot recipes. Reached by id only.
+    findProperty("deps.farmersdelight")?.let {
+        runClientMod(listOf("farmers-delight", "farmersdelight"), "maven.modrinth:farmers-delight:$it")
+    }
 
     project.extra["thirst.optionalRunMods"] = optionalRunMods.offered
 }
@@ -298,6 +326,7 @@ dependencies {
  * | Fabric                                                   | Forge 47                                          |
  * |----------------------------------------------------------|---------------------------------------------------|
  * | `fabric:type` `fabric:nbt`, `base`, `nbt`, `strict: false` | `type` `forge:partial_nbt`, `item`, `nbt`       |
+ * | `fabric:type` `fabric:any`, `ingredients`                | the ingredients as a plain array, Forge's compound |
  * | `fabric:load_conditions`, `fabric:all_mods_loaded`       | `conditions`, one `forge:mod_loaded` per mod      |
  * | `condition` `thirstwastaken2:item_enabled`, `item`       | `type` `thirstwastaken2:item_enabled`, `item`     |
  *
@@ -321,6 +350,11 @@ fun forgeJson(node: Any?, file: String): Any? = when (node) {
                 throw GradleException("$file: no Forge translation for the fabric:nbt base $base")
             }
             mapOf("type" to "forge:partial_nbt", "item" to base["item"], "nbt" to node["nbt"])
+        }
+        "fabric:any" -> {
+            val unknown = node.keys - setOf("fabric:type", "ingredients")
+            if (unknown.isNotEmpty()) throw GradleException("$file: no Forge translation for $unknown in fabric:any")
+            forgeJson(node["ingredients"], file)
         }
         else -> throw GradleException("$file: no Forge translation for the Fabric ingredient type $type")
     }
@@ -359,6 +393,17 @@ tasks.processResources {
         filter { line -> forgeMixinConfig(line, withRefmap = true) }
     }
     exclude("**/.cache/**")
+
+    // An integration's mods are optional dependencies in the built manifest, only on a node that builds
+    // it, as on NeoForge. One input per integration, so a change of its version reruns this.
+    integrations.filter { Loader.FORGE in it.loaders }.forEach { integration ->
+        inputs.property(integration.dir, findProperty(integration.depsKey)?.toString() ?: "")
+    }
+    if (nodeIntegrations.isNotEmpty()) {
+        val manifest = destinationDir.resolve("META-INF/mods.toml")
+        val appended = nodeIntegrations.joinToString("") { it.forgeManifest(modId) }
+        doLast { manifest.appendText(appended) }
+    }
 
     val output = destinationDir
     doLast {

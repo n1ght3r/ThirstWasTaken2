@@ -4,7 +4,7 @@ package com.thirstwastaken2.buildlogic
 enum class Loader(val id: String) {
     FABRIC("fabric"),
     NEOFORGE("neoforge"),
-    /** MinecraftForge. No node builds for it yet; see docs/dev/VERSION-1.20.1.md. */
+    /** MinecraftForge 47, the `1.20.1-forge` node; see docs/dev/VERSION-1.20.1.md. */
     FORGE("forge"),
     ;
 
@@ -53,7 +53,7 @@ data class Integration(
     val fabricMixinIndex: Int? = null,
     /** Entrypoints added to `fabric.mod.json`, appended to a key that already has some. */
     val fabricEntrypoints: Map<String, List<String>> = emptyMap(),
-    /** Mod ids named as optional dependencies in `neoforge.mods.toml`. */
+    /** Mod ids named as optional dependencies in `neoforge.mods.toml`, and in Forge's `mods.toml`. */
     val neoForgeDependencies: List<String> = emptyList(),
 ) {
     /** Whether more than one loader compiles the integration, so that none of its code may name one. */
@@ -80,6 +80,17 @@ data class Integration(
         if (mixinConfig != null) append("\n[[mixins]]\nconfig = \"$mixinConfig\"\n")
         neoForgeDependencies.forEach { dependency ->
             append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\ntype = \"optional\"\nordering = \"NONE\"\nside = \"BOTH\"\n")
+        }
+    }
+
+    /**
+     * What is appended to Forge 47's `mods.toml`: one optional dependency per mod, in its spelling
+     * (`mandatory` and `versionRange` rather than `type`). Forge 47 reads no mixin configs from that file;
+     * build.forge.gradle.kts names them in the jar manifest.
+     */
+    fun forgeManifest(modId: String): String = buildString {
+        neoForgeDependencies.forEach { dependency ->
+            append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\nmandatory = false\nversionRange = \"[0,)\"\nordering = \"NONE\"\nside = \"BOTH\"\n")
         }
     }
 
@@ -225,12 +236,12 @@ val integrations: List<Integration> = listOf(
     ),
     // Both loaders and every node: Serene Seasons ships them all. No mixins; the calendar is read
     // through its API when the drain recomputes, and the entrypoint hands the drain a SeasonalClimate.
-    // Fabric finds the entrypoint through `thirstwastaken2:integration`, NeoForge by its annotation.
+    // Fabric finds the entrypoint through `thirstwastaken2:integration`, NeoForge and Forge by its annotation.
     // See src/main/sereneseasons/AGENTS.md.
     Integration(
         dir = "sereneseasons",
         depsKey = "deps.serene_seasons",
-        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE, Loader.FORGE),
         fabricEntrypoints = mapOf(
             "thirstwastaken2:integration" to listOf("com.thirstwastaken2.sereneseasons.SereneSeasonsEntrypoint"),
         ),

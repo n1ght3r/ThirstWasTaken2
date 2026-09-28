@@ -3,6 +3,7 @@ package com.thirstwastaken2.datagen.legacy;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.thirstwastaken2.ThirstWasTaken2;
+import com.thirstwastaken2.compat.FarmersDelight;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.ItemEnabledCondition;
@@ -10,6 +11,7 @@ import com.thirstwastaken2.platform.Vanilla;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
+import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -47,7 +49,7 @@ import java.util.function.Consumer;
  * <p>So a stack's water is a tag here, {@code thirstwastaken2: {purity, salty, servings}} as
  * {@code ItemWaterData} keeps it, matched by Fabric's partial {@code fabric:nbt} ingredient. A recipe
  * that hands out water is one of {@code NbtRecipes}' types, whose result carries that tag. The Cooking
- * Pot recipes are left out: Farmer's Delight is not built against on 1.20.1 yet.
+ * Pot recipes are Farmer's Delight's own type, whose result is read with its tag on both loaders.
  */
 public final class LegacyRecipeProvider extends FabricRecipeProvider {
     /** The grade boiling cannot improve on, so the grade with no recipe of its own. */
@@ -177,6 +179,45 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
 
         Container.ALL.forEach(container -> purifyRecipes(output, container));
         flaskPurifyRecipes(output);
+        Container.ALL.stream().filter(container -> container.potion() || container.bowl())
+                .forEach(container -> cookingPotRecipe(output, container));
+    }
+
+    /**
+     * Boiling water in the Farmer's Delight Cooking Pot, as {@code FarmersDelightRecipeProvider} writes it
+     * on later versions: any fresh grade comes out purified, and the files load only alongside Farmer's
+     * Delight. No container is named; a 1.20.1 potion has no crafting remainder, so the pot serves the
+     * bottle straight into its output slot, as it does the bowl.
+     */
+    private void cookingPotRecipe(Consumer<FinishedRecipe> output, Container container) {
+        Identifier name = id("cooking_pot_purify_water_" + container.name());
+        JsonArray grades = new JsonArray();
+        for (int purity = 0; purity < PURIFIED; purity++) {
+            CompoundTag in = container.bowl() ? water(null, purity, false) : potion(container, water(null, purity, false));
+            grades.add(nbtIngredient(container.item(), in));
+        }
+        JsonObject anyGrade = new JsonObject();
+        anyGrade.addProperty("fabric:type", "fabric:any");
+        anyGrade.add("ingredients", grades);
+        JsonArray ingredients = new JsonArray();
+        ingredients.add(anyGrade);
+
+        JsonObject json = new JsonObject();
+        json.addProperty("recipe_book_tab", "drinks");
+        json.add("ingredients", ingredients);
+        json.add("result", result(container.item(),
+                container.bowl() ? bowlTag(PURIFIED) : potion(container, water(null, PURIFIED, false))));
+        json.addProperty("experience", PURIFY_EXPERIENCE);
+        json.addProperty("cookingtime", 200);
+
+        Map<String, ItemLike> unlocks = new LinkedHashMap<>();
+        unlocks.put("has_water", container.item());
+        List<ConditionJsonProvider> conditions = new ArrayList<>();
+        conditions.add(DefaultResourceConditions.allModsLoaded(FarmersDelight.MOD_ID));
+        if (container.bowl()) conditions.add(new ItemEnabledCondition(Vanilla.itemId(container.item())));
+        withConditions(output, conditions.toArray(new ConditionJsonProvider[0])).accept(new Written(name,
+                Identifier.fromNamespaceAndPath(FarmersDelight.MOD_ID, "cooking"), json,
+                unlock(name, List.of(name), unlocks), name.withPrefix("recipes/misc/")));
     }
 
     private void purifyRecipes(Consumer<FinishedRecipe> output, Container container) {

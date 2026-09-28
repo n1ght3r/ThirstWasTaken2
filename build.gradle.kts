@@ -442,10 +442,17 @@ dependencies {
     runClientMod(listOf("modmenu"), "maven.modrinth:modmenu:${property("deps.modmenu")}")
     // Test the water purity line Jade shows when looking at water or a cauldron.
     runClientMod(listOf("jade"), "maven.modrinth:jade:${property("deps.jade")}")
-    // Test the drinks and meals Farmer's Delight adds, and the c:drinks tag it fills. Not yet on 1.20.1.
+    // Test the drinks and meals Farmer's Delight adds, and the c:drinks tag it fills.
     findProperty("deps.farmersdelight")?.let { farmersDelight ->
-        runClientMod(listOf("farmers-delight-refabricated", "farmersdelight"),
-            "maven.modrinth:farmers-delight-refabricated:$farmersDelight")
+        val names = listOf("farmers-delight-refabricated", "farmersdelight")
+        runClientMod(names, "maven.modrinth:farmers-delight-refabricated:$farmersDelight")
+        // The 1.20.1 build nests Fabric ASM, which adds its Cooking Pot recipe book to a vanilla enum, and
+        // the Porting Lib modules it runs on. Loom leaves nested mods packed, and without them it fails to
+        // start. Later builds need none of theirs in development. Unpacked when the classpath is resolved:
+        // the Loom that builds 1.20.1 refuses a dependency resolved while the project is still configuring.
+        if (sc.current.parsed < "1.20.5") {
+            runClientMod(names, files(provider { nestedMods("farmers-delight-refabricated", farmersDelight.toString()) }))
+        }
     }
 
     if (createFlyClasses != null) {
@@ -511,7 +518,8 @@ dependencies {
         // GlitchCore's, which extends Night Config's.
         "modCompileOnly"("maven.modrinth:serene-seasons:$sereneSeasons") { isTransitive = false }
         "modCompileOnly"("maven.modrinth:glitchcore:$glitchCore") { isTransitive = false }
-        compileOnly(files(nestedMods("serene-seasons", sereneSeasons)))
+        // Unpacked when the classpath is resolved; see Farmer's Delight above.
+        compileOnly(files(provider { nestedMods("serene-seasons", sereneSeasons.toString()) }))
         // Off in runClient: it recolours grass and leaves by the season and snows on plains in winter,
         // which gets into every other test and screenshot. Uncomment the three lines below only to work
         // on the Serene Seasons integration. The gametests and runServer run without it, which is what
@@ -519,7 +527,7 @@ dependencies {
         // since Loom leaves nested mods packed; GlitchCore nests the same one.
         val names = listOf("serene-seasons", "sereneseasons")
         // runClientMod(names, "maven.modrinth:serene-seasons:$sereneSeasons")
-        // runClientMod(names, files(nestedMods("serene-seasons", sereneSeasons)))
+        // runClientMod(names, files(provider { nestedMods("serene-seasons", sereneSeasons.toString()) }))
         // runClientMod(names + listOf("glitchcore"), "maven.modrinth:glitchcore:$glitchCore")
         // Keeps `-PwithoutOptional=serene-seasons` in the agent scripts a known name while the lines above are off.
         optionalRunMods.include(names + listOf("glitchcore"))

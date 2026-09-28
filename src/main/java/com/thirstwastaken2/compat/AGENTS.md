@@ -48,14 +48,23 @@ Three pieces, none of which loads a Farmer's Delight class:
   `setExhaustion(0)` on 1.21.1 and with negative `causeFoodExhaustion` calls from 1.21.11, which
   `PlayerMixin` mirrors, so relying on its side would drain thirst on one version and not the other.
 
-Fabric uses Farmer's Delight Refabricated, NeoForge vectorwing's original; both register the same ids,
-recipe type and effect, so nothing here differs per loader. Only `1.21.1-neoforge` sets
-`deps.farmersdelight` among the NeoForge nodes.
+Fabric uses Farmer's Delight Refabricated, NeoForge and Forge vectorwing's original; all register the
+same ids, recipe type and effect, so nothing here differs per loader. Only `1.21.1-neoforge` sets
+`deps.farmersdelight` among the NeoForge nodes; both 1.20.1 nodes set it.
+
+**On 1.20.1** the Cooking Pot recipes come from `LegacyRecipeProvider` instead, the same names and
+unlocks with the water as NBT: `fabric:any` over three `fabric:nbt` ingredients, which the Forge node
+translates to a plain array of `forge:partial_nbt` (Forge's compound ingredient). Both 1.20.1 pots read
+the result through `CraftingHelper.getItemStack(json, true)`, so its `nbt` survives. A 1.20.1 potion has
+no crafting remainder, so the pot serves the bottle straight into its output slot. Refabricated's
+1.20.1 build nests Fabric ASM and Porting Lib, which `build.gradle.kts` unpacks for the dev client.
 
 The gametests run without Farmer's Delight, so the Cooking Pot and Nourishment are checked in a real
 client: `./gradlew ":26.2.x:runClient"` has it on the classpath, and
 [tools/agent/integrations/farmers-delight.jsonl](../../../../../../tools/agent/integrations/farmers-delight.jsonl) checks drinking, the
-Cooking Pot and Nourishment unattended on `1.21.1-neoforge`.
+Cooking Pot and Nourishment unattended on `1.21.1-neoforge`;
+[tools/agent/integrations/farmers-delight-1.20.1.jsonl](../../../../../../tools/agent/integrations/farmers-delight-1.20.1.jsonl) is the
+same on both 1.20.1 nodes, in NBT.
 
 ## Create Fly
 
