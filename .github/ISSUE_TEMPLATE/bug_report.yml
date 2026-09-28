@@ -3,27 +3,6 @@ description: Report broken or incorrect behaviour in ThirstWasTaken2.
 title: "[Bug] "
 labels: ["bug"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for taking the time to file a report.
-
-        The mod ships a separate jar for each supported Minecraft version, so the most useful thing
-        you can tell us is the exact version pair you are running. Both numbers are in the jar file
-        name, for example `ThirstWasTaken2-1.0.8+26.3.jar`.
-
-  - type: checkboxes
-    id: preliminary
-    attributes:
-      label: Before you file
-      options:
-        - label: I searched the existing issues and this is not a duplicate.
-          required: true
-        - label: I am running the jar built for my exact Minecraft version, not one built for another.
-          required: true
-        - label: I am on the latest release of the mod, or I have explained below why I cannot be.
-          required: true
-
   - type: dropdown
     id: minecraft
     attributes:
@@ -41,56 +20,30 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: mod-loader
+    attributes:
+      label: Mod loader
+      options:
+        - Fabric
+        - NeoForge
+    validations:
+      required: true
+
   - type: input
     id: mod-version
     attributes:
       label: ThirstWasTaken2 version
-      description: The full version, including the part after the plus sign.
-      placeholder: 1.0.8+26.3
-    validations:
-      required: true
-
-  - type: input
-    id: loader
-    attributes:
-      label: Fabric Loader version
-      placeholder: 0.19.5
-    validations:
-      required: true
-
-  - type: input
-    id: fabric-api
-    attributes:
-      label: Fabric API version
-      placeholder: 0.161.0+26.3
-    validations:
-      required: true
-
-  - type: dropdown
-    id: environment
-    attributes:
-      label: Where the problem occurs
-      options:
-        - Singleplayer
-        - Client connected to a server
-        - Dedicated server
-        - Both client and server
-        - Not sure
+      description: It is in the jar file name, including the part after the plus sign.
+      placeholder: 1.4.1+26.3
     validations:
       required: true
 
   - type: textarea
     id: summary
     attributes:
-      label: What happens
-      description: Describe the behaviour you actually see.
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected
-    attributes:
-      label: What you expected instead
+      label: What happened
+      description: What you saw, and what you expected instead.
     validations:
       required: true
 
@@ -98,26 +51,9 @@ body:
     id: steps
     attributes:
       label: Steps to reproduce
-      description: >-
-        Please be specific about items, blocks and surroundings. Water purity is sampled from the
-        environment, so filling a bottle in a river next to farmland is deliberately not the same as
-        filling one from a mountain spring.
       placeholder: |
         1. Create a new world in survival mode.
         2. ...
-        3. ...
-    validations:
-      required: true
-
-  - type: dropdown
-    id: reproducible
-    attributes:
-      label: How often it happens
-      options:
-        - Every time
-        - Often but not always
-        - Happened once
-        - Not sure yet
     validations:
       required: true
 
@@ -125,30 +61,12 @@ body:
     id: other-mods
     attributes:
       label: Other mods installed
-      description: >-
-        List them with versions, or write None. If you can, please check whether the problem still
-        happens with only ThirstWasTaken2 and Fabric API installed, and say what you found.
-    validations:
-      required: true
+      description: A list, or None. Does it still happen with only ThirstWasTaken2 installed?
 
   - type: textarea
     id: logs
     attributes:
       label: Log or crash report
       description: >-
-        Paste the relevant part of logs/latest.log, or attach the file by dragging it into this
-        field. For a crash, the report in crash-reports/ is the most useful thing to attach.
-      render: text
-
-  - type: textarea
-    id: config
-    attributes:
-      label: Configuration
-      description: Only if you changed it. Paste the contents of config/thirstwastaken2.json.
-      render: json
-
-  - type: textarea
-    id: extra
-    attributes:
-      label: Anything else
-      description: Screenshots, video, or context that does not fit above.
+        Attach logs/latest.log, or the report in crash-reports/ for a crash, by dragging it into this
+        field.

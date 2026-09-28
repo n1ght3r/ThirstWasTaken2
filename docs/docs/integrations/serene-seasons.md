@@ -1,5 +1,7 @@
 # Serene Seasons
 
+![Serene Seasons](https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png)
+
 With Serene Seasons installed, thirst follows the season: summer makes players thirstier, winter less so.
 
 ::: tip Supported versions

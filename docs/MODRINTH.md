@@ -124,8 +124,8 @@
   <tr>
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></b><br>
-      <i>Fabric: <a href="https://modrinth.com/mod/create-fly">Create Fly</a> on 26.1.2 and 26.2 (no 26.3 build)<br>
-      NeoForge: <a href="https://modrinth.com/mod/create">Create</a> on 1.21.1</i><br><br>
+      <i>26.1.2 and 26.2 Fabric: <a href="https://modrinth.com/mod/create-fly">Create Fly</a><br>
+      1.21.1 NeoForge: <a href="https://modrinth.com/mod/create">Create</a></i><br><br>
       Adds a Sand Filter to purify dirty water by one grade. Water also keeps its purity grade through pipes, pumps, tanks, drains, and spouts.
     </td>
     <td width="45%">
@@ -135,7 +135,7 @@
   <tr>
     <td width="55%">
       <b><a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks</a></b><br>
-      <i>NeoForge on 1.21.1, 1.21.11, 26.1.2 and 26.2 (no 26.3 build)</i><br><br>
+      <i>NeoForge, every version but 26.3</i><br><br>
       Adds the Drinking Upgrade, which drinks from your backpack when you get thirsty, the cleanest water first. Water keeps its purity grade in the Tank and Pump Upgrades. Also works with <a href="https://modrinth.com/mod/sophisticated-storage">Sophisticated Storage</a>.
     </td>
     <td width="45%">
@@ -145,7 +145,7 @@
   <tr>
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a></b><br>
-      <i>Fabric and NeoForge: <a href="https://modrinth.com/mod/supplementaries">Supplementaries</a> on 1.21.1</i><br><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
       Water keeps its purity grade in Jars, Goblets and Faucets, and sea water stays sea water. A Jar or a Goblet of water can be drunk straight from the block. Faucets fill and empty hanging pots and grade the water they draw from a lake.
     </td>
     <td width="45%">
@@ -155,8 +155,8 @@
   <tr>
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></b><br>
-      <i>NeoForge: <a href="https://modrinth.com/mod/kaleidoscope-cookery">Kaleidoscope Cookery</a> on 1.21.1<br>
-      Fabric: <a href="https://modrinth.com/mod/kaleidoscope-cookery-refabricated">Kaleidoscope Cookery Refabricated</a>, every version</i><br><br>
+      <i>Fabric: <a href="https://modrinth.com/mod/kaleidoscope-cookery-refabricated">Kaleidoscope Cookery Refabricated</a><br>
+      1.21.1 NeoForge: <a href="https://modrinth.com/mod/kaleidoscope-cookery">Kaleidoscope Cookery</a></i><br><br>
       Teas, milk tea and soups restore thirst. Water keeps its purity grade in the Stockpot and the Teapot, and the Teapot brews nothing from sea water.
     </td>
     <td width="45%">
@@ -166,7 +166,7 @@
   <tr>
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a></b><br>
-      <i>NeoForge: <a href="https://modrinth.com/mod/cold-sweat">Cold Sweat</a> on 1.21.1</i><br><br>
+      <i>1.21.1 NeoForge</i><br><br>
       Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.
     </td>
     <td width="45%">
@@ -175,9 +175,9 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></b><br>
+      <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
       <i>Fabric: <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
-      NeoForge: <a href="https://modrinth.com/mod/farmers-delight">Farmer's Delight</a> on 1.21.1</i><br><br>
+      1.21.1 NeoForge: <a href="https://modrinth.com/mod/farmers-delight">Farmer's Delight</a></i><br><br>
       Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
     </td>
     <td width="45%">
@@ -186,8 +186,8 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a></b><br>
-      <i>Fabric and NeoForge: <a href="https://modrinth.com/mod/brewin-and-chewin">Brewin' and Chewin'</a> on 1.21.1</i><br><br>
+      <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin"><img alt="Brewin' and Chewin'" src="https://i.imgur.com/EFkjwBq.png" width="298"></a><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
       Brews and soups restore thirst, less the stronger the drink. Water keeps its purity grade in the Keg, and nothing ferments from sea water.
     </td>
     <td width="45%">
@@ -198,12 +198,32 @@
 
 Also works with:
 
-- **[Cultural Delights](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights)**, NeoForge on 1.21.1: its drinks, cucumbers and salads restore thirst, and the Vat brews nothing from sea water.
-- **[Fruits Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight)**, NeoForge on 1.21.1: its juices, teas, jellos, popsicles and juicy fruits restore thirst, and sea water makes no juice.
-- **[Ocean's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight)**, Fabric and NeoForge on 1.21.1: its Guardian Soup, braised sea pickle and seagrass salad restore thirst.
-- **[Expanded Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight)**, NeoForge on 1.21.1: its juices, goat milk, soups and salads restore thirst, and the Cooking Pot cooks nothing from sea water.
-- **[Rustic Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight)**, Fabric on every version and NeoForge on 1.21.1: its coffees, soups and bell peppers restore thirst.
-- **[Serene Seasons](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons)**, Fabric and NeoForge on every version: thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.
+<table>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights"><img alt="Cultural Delights" src="https://cdn.modrinth.com/data/cached_images/d6a323ce1e69b76f2143b3c0e03bd9ce36fc69e1.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Its drinks, cucumbers and salads restore thirst, and the Vat brews nothing from sea water.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight"><img alt="Fruits Delight" src="https://media.forgecdn.net/attachments/765/821/logo2.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Its juices, teas, jellos, popsicles and juicy fruits restore thirst, and sea water makes no juice.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight"><img alt="Ocean's Delight" src="https://i.imgur.com/OqgniyH.png" width="272"></a><br><i>1.21.1 Fabric and NeoForge</i></td>
+    <td width="55%">Its Guardian Soup, braised sea pickle and seagrass salad restore thirst.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight"><img alt="Expanded Delight" src="https://wsrv.nl/?url=https%3A%2F%2Fmedia.forgecdn.net%2Fattachments%2F1067%2F753%2Fsome-logo.png&amp;n=-1" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Its juices, goat milk, soups and salads restore thirst, and the Cooking Pot cooks nothing from sea water.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight"><img alt="Rustic Delight" src="https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png" width="242"></a><br><i>Fabric and 1.21.1 NeoForge</i></td>
+    <td width="55%">Its coffees, soups and bell peppers restore thirst.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric and NeoForge</i></td>
+    <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
+  </tr>
+</table>
 
 ## Settings Screen
 Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in NeoForge's Mods list.

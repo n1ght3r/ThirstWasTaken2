@@ -1,5 +1,7 @@
 # Farmer's Delight
 
+![Farmer's Delight](https://i.imgur.com/wqSocVR.png)
+
 With Farmer's Delight installed, its drinks and meals restore thirst, the Cooking Pot boils water
 Pure, and Nourishment stops thirst draining. Nothing needs to be set up.
 

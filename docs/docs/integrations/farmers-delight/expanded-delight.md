@@ -1,5 +1,7 @@
 # Expanded Delight
 
+![Expanded Delight](https://wsrv.nl/?url=https%3A%2F%2Fmedia.forgecdn.net%2Fattachments%2F1067%2F753%2Fsome-logo.png&n=-1)
+
 With Expanded Delight installed, its juices, goat milk, soups and salads restore thirst, and the Cooking
 Pot cooks nothing from sea water.
 

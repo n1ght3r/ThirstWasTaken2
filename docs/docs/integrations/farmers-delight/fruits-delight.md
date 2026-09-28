@@ -1,5 +1,7 @@
 # Fruits Delight
 
+![Fruits Delight](https://media.forgecdn.net/attachments/765/821/logo2.png)
+
 With Fruits Delight installed, its juices, teas, jellos, popsicles and juicy fruits restore thirst.
 
 ::: warning Supported versions

@@ -231,6 +231,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |
 | Copper Canteen and Iron Flask: capacity, boiling in hand, the flask's furnace recipes | [docs/dev/mechanics/CANTEEN-AND-FLASK.md](docs/dev/mechanics/CANTEEN-AND-FLASK.md) |
+| Minecraft 1.20.1 on Fabric and Forge: the plan, phase by phase | [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md) |
 | Config for modpack makers: item values in the screen, switching off mod items, exposing numbers | [docs/dev/MODPACK-CONFIG.md](docs/dev/MODPACK-CONFIG.md) |
 | Releasing | [tools/release/publish.py](tools/release/publish.py) and [publish_curseforge.py](tools/release/publish_curseforge.py) docstrings |
 | Documentation site, CHANGELOG, Modrinth and CurseForge pages | [docs/AGENTS.md](docs/AGENTS.md) and the `write-docs` skill |
