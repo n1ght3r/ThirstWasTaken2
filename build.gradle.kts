@@ -131,6 +131,8 @@ loom {
         if (name == "client") {
             providers.gradleProperty("quickplay").orNull?.let { world ->
                 programArguments.addAll("--quickPlaySingleplayer", world)
+                // So client.info can say the world was asked for and never opened.
+                systemProperties.put("thirstwastaken2.agent.quickplay", world)
             }
         }
 
@@ -464,8 +466,9 @@ dependencies {
         "modCompileOnly"("maven.modrinth:brewin-and-chewin:$brewinAndChewin") { isTransitive = false }
         // Test the keg in runClient. The gametests and runServer run without it, which is what proves the
         // mod is unchanged when it is absent. Greenhouse Config, which it requires, comes out of its own
-        // jar, since Loom leaves a dependency's nested mods packed. Farmer's Delight is already above.
-        val names = listOf("brewin-and-chewin", "brewinandchewin")
+        // jar, since Loom leaves a dependency's nested mods packed. Farmer's Delight is already above, and
+        // leaving it out leaves this out.
+        val names = listOf("brewin-and-chewin", "brewinandchewin", "farmers-delight-refabricated", "farmersdelight")
         runClientMod(names, "maven.modrinth:brewin-and-chewin:$brewinAndChewin")
         runClientMod(names, files(nestedMods("brewin-and-chewin", brewinAndChewin)))
     }

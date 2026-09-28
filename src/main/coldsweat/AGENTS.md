@@ -96,8 +96,12 @@ are hand-written.
 ## Hot drinks
 
 Cold Sweat food data, `+10` base temperature for 1200 ticks, on Farmer's Delight's hot cocoa and the
-hot Kaleidoscope Cookery teas. Cold Sweat loads these from any namespace; each file names its mod in
-`required_mods`. Plain water gets none: the waterskin already carries a temperature.
+hot Kaleidoscope Cookery teas. Plain water gets none: the waterskin already carries a temperature.
+
+**Every file needs `neoforge:conditions`** with `mod_loaded` for `cold_sweat` and for each mod whose
+items it names. Cold Sweat loads these from any namespace, but honours `required_mods` before decoding
+only in its own: in ours an item id that does not exist fails the whole registry and no world loads.
+That was 1.3.0 and 1.4.0 without Farmer's Delight.
 
 ## Testing
 

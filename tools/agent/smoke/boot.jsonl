@@ -7,8 +7,8 @@
 // plugin it is given whether or not the mod the plugin is for is installed.
 //
 // It asks for nothing a title screen cannot answer, so it runs as it is, and with -Pquickplay=<world>
-// it also opens that world, loads the chunks round the player and draws the HUD before it stops. Then
-// verify what it recorded:
+// it also opens that world, loads the chunks round the player and draws the HUD before it stops,
+// and fails when the world never opened. Then verify what it recorded:
 //     python tools/agent/drive.py run/<node>/agent/client tools/agent/smoke/boot.jsonl --verify --max-age 10
 // A crash fails the Gradle task: a Fabric client exits on its own, and a driven NeoForge client exits
 // from the loading error screen rather than waiting on it. It also leaves the previous run's queue
@@ -19,4 +19,7 @@
 {"id": "info", "command": "client.info", "expect": {"ok": true}}
 // Long enough for a quickplay world to finish joining and tick with the player in it.
 {"id": "play", "command": "wait", "args": {"ticks": 400}}
-{"id": "still", "command": "client.info", "expect": {"ok": true}}
+// With -Pquickplay the client must be inside that world by now. A world that fails to open, as every
+// world did with Cold Sweat and without Farmer's Delight in 1.4.0, drops back to a menu and leaves the
+// game running, so answering at all proves nothing. Without -Pquickplay this is always false.
+{"id": "still", "command": "client.info", "expect": {"ok": true, "result.quickplayFailed": false}}

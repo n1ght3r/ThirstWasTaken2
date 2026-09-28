@@ -70,6 +70,12 @@ final class ClientProbes {
             result.addProperty("screen", screenName(minecraft));
             result.addProperty("inWorld", minecraft.level != null);
             result.addProperty("singleplayer", minecraft.hasSingleplayerServer());
+            // The world -Pquickplay asked for, and whether the client is still outside it. A world
+            // that fails to load (a broken data pack) drops back to a menu without stopping the game,
+            // so without this a script asking only whether the client answers passes.
+            String quickplay = System.getProperty("thirstwastaken2.agent.quickplay");
+            result.addProperty("quickplay", quickplay);
+            result.addProperty("quickplayFailed", quickplay != null && minecraft.level == null);
             ServerData current = minecraft.getCurrentServer();
             result.addProperty("server", current == null ? null : current.ip);
             LocalPlayer player = minecraft.player;

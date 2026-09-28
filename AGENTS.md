@@ -163,6 +163,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | `src/main/resources` | Hand-written assets and lang, all nodes |
 | `src/main/generated/<mc version>` | Datagen output, never hand-edited |
 | `src/datagen`, `src/gametest`, `src/dev` | Separate mods, never packaged |
+| `src/watchdog` | NeoForge `-Pagent` runs: a JDK-only `-javaagent` that stops the run when FML fails before any mod loads |
 | `tools/agent`, `tools/benchmark`, `tools/release` | Scripts for the agent client (by folder, see [tools/agent/AGENTS.md](tools/agent/AGENTS.md)), benchmark sets, publishing |
 
 ### Optional integrations

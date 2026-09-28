@@ -260,8 +260,16 @@ against the 2.4.3.1 jar before writing any.
 
 **Done**: +10 base temperature for 1200 ticks, the shape of Cold Sweat's Soul Sprout (-20 for 1200),
 on Farmer's Delight's hot cocoa and the seven hot Kaleidoscope Cookery teas (Sakura Fubuki and Mystery
-Tea left out). Cold Sweat's default food list names neither. Each file carries `required_mods`, so it
-loads nothing where its mod is absent. Checked in game: base 0.0 before a cocoa, 10.0 after.
+Tea left out). Cold Sweat's default food list names neither. Checked in game: base 0.0 before a cocoa,
+10.0 after.
+
+Each file is gated by NeoForge's `neoforge:conditions` (`mod_loaded` for Cold Sweat and for the drink's
+mod), not by `required_mods` alone. Cold Sweat reads `required_mods` before decoding only for files in
+its own `cold_sweat` namespace (`MixinRegistration`); in ours, the item ids are decoded first, and one
+that does not exist fails the whole registry. 1.3.0 and 1.4.0 shipped with `required_mods` only, and
+every world failed to load with Cold Sweat and without Farmer's Delight ("Failed to load registries",
+`Could not find item: farmersdelight:hot_cocoa`). Reproduced and checked fixed with
+`-PwithoutOptional=farmersdelight` on 2026-09-28.
 
 ## 8. Decision: thirst and heat
 

@@ -203,6 +203,24 @@ val dev: SourceSet = sourceSets.create("dev") {
 }
 
 /*
+ * A `-javaagent` for `-Pagent` runs, JDK only: it stops the run when FML writes a loading failure's
+ * crash report. A missing dependency fails before any mod mixin applies, so the dev mod's own
+ * LoadingErrorScreenMixin never runs and the error screen would hold the task open. See
+ * src/watchdog/java/com/thirstwastaken2/dev/watchdog/LoadingFailureWatchdog.java.
+ */
+val watchdog: SourceSet = sourceSets.create("watchdog") {
+    java.srcDir("src/watchdog/java")
+}
+val watchdogJar = tasks.register<Jar>("watchdogJar") {
+    archiveBaseName.set("thirstwastaken2-watchdog")
+    destinationDirectory.set(layout.buildDirectory.dir("watchdog"))
+    from(watchdog.output)
+    manifest.attributes("Premain-Class" to "com.thirstwastaken2.dev.watchdog.LoadingFailureWatchdog")
+}
+// The runs name the jar by path, which carries no task dependency.
+if (agentScript != null) tasks.matching { it.name.startsWith("run") }.configureEach { dependsOn(watchdogJar) }
+
+/*
  * The optional mods runClient loads, the same set the Fabric runClient has minus Mod Menu, which is
  * Fabric only. They go on that run alone: on `runtimeOnly` they would load into runServer and
  * runGametest too, and the gametests expect a server without AppleSkin. ModDevGradle's per-run
@@ -264,6 +282,7 @@ neoForge {
             agentScript?.let {
                 systemProperty("thirstwastaken2.agent.script", it)
                 systemProperty("thirstwastaken2.agent.script.exit", "true")
+                jvmArguments.add(watchdogJar.flatMap { jar -> jar.archiveFile }.map { "-javaagent:${it.asFile.absolutePath}" })
             }
 
             // `-Pdriven` says this client is driven by an agent rather than played: it opens
@@ -291,6 +310,8 @@ neoForge {
             // unattended `-Pagent` script starts inside it. The world has to exist in run/<node>/saves.
             providers.gradleProperty("quickplay").orNull?.let { world ->
                 programArguments.addAll("--quickPlaySingleplayer", world)
+                // So client.info can say the world was asked for and never opened.
+                systemProperty("thirstwastaken2.agent.quickplay", world)
             }
         }
         create("server") {
@@ -395,13 +416,13 @@ dependencies {
     // registry id, and src/main/fruitsdelight's mixins name their targets by string. Only here to test
     // them. Its L2 libraries are nested in its jar, which NeoForge loads itself.
     findProperty("deps.fruits_delight")?.let {
-        runClientMod(listOf("fruits-delight", "fruitsdelight"), "maven.modrinth:fruits-delight:$it") { isTransitive = false }
+        runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"), "maven.modrinth:fruits-delight:$it") { isTransitive = false }
     }
 
     // Expanded Delight, on the node that sets it. Nothing compiles against it: its foods are reached by
     // registry id, and src/main/expandeddelight's mixin names its target by string. Only here to test it.
     findProperty("deps.expanded_delight")?.let {
-        runClientMod(listOf("expanded-delight", "expandeddelight"), "maven.modrinth:expanded-delight:$it") { isTransitive = false }
+        runClientMod(listOf("expanded-delight", "expandeddelight", "farmers-delight", "farmersdelight"), "maven.modrinth:expanded-delight:$it") { isTransitive = false }
     }
 
     if (createVersion != null && createLibraries != null) {
@@ -450,8 +471,8 @@ dependencies {
         compileOnly("maven.modrinth:brewin-and-chewin:$brewinAndChewinVersion") { isTransitive = false }
         // Test the keg in runClient. The gametests and runServer run without it, which is what proves the
         // mod is unchanged when it is absent. NeoForge loads the Greenhouse Config nested in its jar;
-        // Farmer's Delight is already above.
-        runClientMod(listOf("brewin-and-chewin", "brewinandchewin"),
+        // Farmer's Delight is already above, and leaving it out leaves this out.
+        runClientMod(listOf("brewin-and-chewin", "brewinandchewin", "farmers-delight", "farmersdelight"),
             "maven.modrinth:brewin-and-chewin:$brewinAndChewinVersion") { isTransitive = false }
     }
 
@@ -469,10 +490,12 @@ dependencies {
     if (culturalDelightsVersion != null) {
         compileOnly("maven.modrinth:cultural-delights:$culturalDelightsVersion") { isTransitive = false }
         // Test the vat in runClient. The gametests and runServer run without it, which is what proves the
-        // mod is unchanged when it is absent. It requires Cook's Collection; Farmer's Delight is above.
-        runClientMod(listOf("cultural-delights", "culturaldelights"),
+        // mod is unchanged when it is absent. It requires Cook's Collection; Farmer's Delight is above, and
+        // leaving it out leaves both out.
+        runClientMod(listOf("cultural-delights", "culturaldelights", "cooks-collection", "cookscollection",
+            "farmers-delight", "farmersdelight"),
             "maven.modrinth:cultural-delights:$culturalDelightsVersion") { isTransitive = false }
-        runClientMod(listOf("cooks-collection", "cookscollection", "cultural-delights", "culturaldelights"),
+        runClientMod(listOf("cooks-collection", "cookscollection", "cultural-delights", "culturaldelights", "farmers-delight", "farmersdelight"),
             "maven.modrinth:cooks-collection:${property("deps.cooks_collection")}") { isTransitive = false }
     }
 
