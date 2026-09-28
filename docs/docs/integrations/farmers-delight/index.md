@@ -8,8 +8,8 @@ With Farmer's Delight installed, its drinks and meals restore thirst, the Cookin
 Pure, and Nourishment stops thirst draining. Nothing needs to be set up.
 
 On Fabric this is [Farmer's Delight Refabricated](https://modrinth.com/mod/farmers-delight-refabricated).
-On NeoForge it is the original [Farmer's Delight](https://modrinth.com/mod/farmers-delight), for
-Minecraft 1.21.1 only.
+On NeoForge and Forge it is the original [Farmer's Delight](https://modrinth.com/mod/farmers-delight),
+for Minecraft 1.21.1 on NeoForge and 1.20.1 on Forge.
 
 ## Drinks and meals
 
@@ -37,7 +37,7 @@ whatever its grade.
 
 - A bowl comes out ready to take.
 - A bottle is served like the pot's own drinks: place a glass bottle in the container slot. On
-  Minecraft 1.21 and 1.21.1 it comes out ready to take.
+  Minecraft 1.20.1 to 1.21.1 it comes out ready to take.
 - Salt water is refused.
 
 ## Nourishment

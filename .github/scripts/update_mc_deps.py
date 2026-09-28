@@ -274,12 +274,13 @@ class Properties:
         A Modrinth version id says nothing to a person, so every id-pinned value carries its number in a
         comment above it, and `replace_in_comment_above` keeps that comment in step with the id. Only a
         comment whose first word starts with a digit counts, so prose above a value is not mistaken for
-        one. A leading `v` is allowed, since Forge Config API Port spells its versions `v21.1.6-1.21.1-Fabric`.
+        one. A leading `v` is allowed, since Forge Config API Port spells its versions `v21.1.6-1.21.1-Fabric`,
+        and a leading `mc<version>-`, since Create's 1.20.1 Forge upload is `mc1.20.1-6.0.8`.
         """
         above = index - 1
         if above < 0:
             return None
-        match = re.match(r"^\s*#\s*(v?\d[^\s,]*)", self.lines[above])
+        match = re.match(r"^\s*#\s*((?:v|mc\d[\d.]*-)?\d[^\s,]*)", self.lines[above])
         return match.group(1) if match else None
 
     def replace_in_comment_above(self, index: int, old: str, new: str) -> None:
@@ -475,7 +476,11 @@ def check_mixinextras(props: Properties, node: str, changes: list[Change]) -> No
 
 def forms(version: str) -> list[str]:
     """A version as the docs may print it: the way Modrinth numbers it, and, for the numbers that carry
-    a loader suffix, without it, since that is the form the pages use."""
+    a loader suffix, without it, since that is the form the pages use. The same for a Minecraft prefix,
+    `mc1.20.1-6.0.8` printed as `6.0.8`."""
+    prefixed = re.match(r"^mc\d[\d.]*-(\d.*)$", version)
+    if prefixed:
+        return [version, prefixed.group(1)]
     for suffix in LOADER_SUFFIXES:
         if version.endswith(suffix):
             return [version, version[: -len(suffix)]]

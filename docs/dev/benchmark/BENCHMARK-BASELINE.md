@@ -2,7 +2,8 @@
 
 What `/thirst benchmark` measured on every node on 2026-09-16, as the mark later runs are read
 against. The two 26.3 nodes came later and have no baseline yet; take one on the machine below before
-reading a 26.3 run against anything. Each figure is the **median of three runs**, with the spread of those runs in brackets:
+reading a 26.3 run against anything. The two 1.20.1 nodes came later too, and have
+[a baseline of their own](#the-1201-nodes), taken on mod 1.4.1. Each figure is the **median of three runs**, with the spread of those runs in brackets:
 `(max - min) / median`. A later run that differs by less than the spread has shown nothing.
 
 Numbers are worth only what the machine they came from is worth, so this file records it. Take a
@@ -106,3 +107,39 @@ difference under about half is not a difference. See
 | `water_quality_read` | 0.07 (14%) | 0.06 (31%) | 0.04 (91%) | 0.05 (30%) | 0.08 (68%) | 0.08 (20%) | 0.05 (29%) | 0.06 (29%) |
 | `waterskin_mix` | 0.29 (44%) | 0.33 (85%) | 0.29 (134%) | 0.47 (65%) | 0.22 (35%) | 0.15 (81%) | 0.19 (185%) | 0.22 (14%) |
 
+## The 1.20.1 nodes
+
+Taken on 2026-09-28 on the same machine, on mod 1.4.1 with Java 17, the same world and profile, into
+`run/benchmark-sets/2026-09-28-1.20.1`. The mod had changed a great deal since 1.0.6, so 1.21.1 was
+measured again the same day; read the 1.20.1 nodes against that column, not against the tables above.
+
+| Figure | 1.20.1 | 1.20.1-forge | 1.21.1 (same day) |
+|---|---|---|---|
+| ms/tick, 200 players | 0.063 (27%) | 0.06 (140%) | 0.075 (16%) |
+| p99 ms, 200 players | 0.246 (60%) | 0.245 (87%) | 0.25 (21%) |
+| B/player/tick, 200 players | 12.7 (20%) | 53.58 (5%) | 105.4 (15%) |
+| first touch B/player | 504.8 (3%) | 351.8 (8%) | 1650 (2%) |
+| steady tick B/player | 6.594 (0%) | 20.06 (0%) | 93.57 (14%) |
+
+Bytes per interaction, where the two differ from each other or from the later nodes:
+
+| Operation | 1.20.1 | 1.20.1-forge |
+|---|---|---|
+| `cauldron_pour` | 778.2 (4%) | 996.9 (9%) |
+| `drink_by_hand` | 2330 (4%) | 2798 (3%) |
+| `drink_water_bottle` | 1178 (3%) | 1250 (8%) |
+| `drink_waterskin` | 897.7 (0%) | 908.5 (4%) |
+| `fill_bottle` | 5344 (29%) | 4776 (17%) |
+| `fill_bowl` | 1601 (4%) | 1768 (2%) |
+| `fill_bucket` | 5300 (3%) | 5370 (1%) |
+| `fill_waterskin` | 864 (15%) | 982.2 (2%) |
+| `full_bar_guard` | 48 (0%) | 64 (0%) |
+| `thirst_tick_idle` | 7 (85%) | 20 (16%) |
+| `tooltip_water_bottle` | 248 (0%) | 248 (0%) |
+| `tooltip_waterskin` | 416 (0%) | 416 (0%) |
+| `waterskin_mix` | 16 (0%) | 16 (100%) |
+
+Filling a bottle or bucket costs the most on 1.20.1, where water is written into the item's tag rather
+than a component. The tooltips are 16 bytes above the later nodes. The idle tick is a few bytes, as on
+the NeoForge nodes. `python tools/benchmark/aggregate.py run/benchmark-sets/2026-09-28-1.20.1 --ops`
+prints the rest.

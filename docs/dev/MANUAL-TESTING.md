@@ -20,8 +20,8 @@ check, and every item below belongs to one of them:
 
 ## How to run a pass
 
-1. `./gradlew ":<node>:runClient"`, where `<node>` is `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11` or
-   `1.21.1`, or one of those with a `-neoforge` suffix. The dev client already has AppleSkin, Cloth
+1. `./gradlew ":<node>:runClient"`, where `<node>` is `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`,
+   `1.21.1` or `1.20.1`, one of the first five with a `-neoforge` suffix, or `1.20.1-forge`. The dev client already has AppleSkin, Cloth
    Config and Jade, and Mod Menu on the Fabric nodes. `26.3.x-neoforge` has no Cloth Config, which has
    no NeoForge build for 26.3, so AppleSkin's own settings screen is missing there.
 2. Create a new **survival** world on **Normal**, cheats on. Keep the world per version; saves do
@@ -294,6 +294,28 @@ different on purpose. Check all of these on every release that ships a 1.21.1 ja
       rename it.
 - [x] The advancement tab background is terracotta, not a missing texture.
 - [x] The jar loads on Minecraft 1.21 as well as 1.21.1.
+
+### 1.20.1 (Fabric and Forge)
+
+Everything in the 1.21.1 section holds here too, including its two known differences, and 1.20.1 has
+more of its own: water on an item is its NBT tag, the purification recipes are the mod's own types,
+and there is no GUI sprite atlas. Run both nodes. The worlds `new_world.py` makes for 1.20.1 do not
+allow cheats, so the agent scripts read block entities through `server.command`.
+
+- [ ] **Sync first,** on both nodes: `gameplay/client-sync.jsonl`, and the two-client check on
+      `runServer`. Fabric 1.20.1 syncs through its own channel, Forge through a `SimpleChannel`.
+- [ ] The thirst bar, its droplets and the quenched outline draw from their texture sheet, with no
+      missing-texture squares, in every state `ui/hud-layout.jsonl` sets up.
+- [ ] A campfire, smoker and furnace each boil a Murky bottle, bucket and bowl two grades, and the
+      recipe book shows the purification recipes on both loaders.
+- [ ] A water bowl, a waterskin and a canteen keep their grade across a save and reload.
+- [ ] Mods → ThirstWasTaken2 → Config opens the settings screen on Forge; Mod Menu does on Fabric.
+- [x] The shipped Forge jar (`reobfJar`) boots on a real Forge 47.4.10 server with no mixin or data
+      error, alone and with Farmer's Delight, Serene Seasons and Create. Checked on 2026-09-28. The
+      client side of the shipped jar is still to be seen in a real Forge install.
+- [x] `integrations/farmers-delight-1.20.1.jsonl` on both nodes, `integrations/serene-seasons.jsonl`
+      on both, and `integrations/create-water-1.20.1.jsonl` on Forge. Checked on 2026-09-28; on Fabric
+      the salty bottle is boiled Pure, a Refabricated limit on every Fabric node.
 
 ### NeoForge (every node)
 

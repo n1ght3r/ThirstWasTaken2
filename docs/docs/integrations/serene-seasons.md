@@ -7,7 +7,7 @@ title: "Serene Seasons"
 With Serene Seasons installed, thirst follows the season: summer makes players thirstier, winter less so.
 
 ::: tip Supported versions
-Works on Fabric and NeoForge, on every Minecraft version this mod supports, with
+Works on Fabric, NeoForge and Forge, on every Minecraft version this mod supports, with
 [Serene Seasons](https://modrinth.com/mod/serene-seasons) and the GlitchCore it needs.
 :::
 

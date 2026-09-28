@@ -6,7 +6,7 @@
 [![curseforge](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/available/curseforge_64h.png)](https://www.curseforge.com/minecraft/mc-mods/thirst-was-taken-2)
 [![ghpages](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/documentation/ghpages_64h.png)](https://n1ght3r.github.io/ThirstWasTaken2/)
 
-A thirst bar, water purity and drinking for **Fabric** and **NeoForge**.
+A thirst bar, water purity and drinking for **Fabric**, **NeoForge** and **Forge**.
 
 </div>
 
@@ -29,7 +29,7 @@ Every mechanic is explained on the [documentation site](https://n1ght3r.github.i
 
 ## Requirements
 
-| Minecraft | Java | Fabric Loader (min.) | Fabric API | NeoForge |
+| Minecraft | Java | Fabric Loader (min.) | Fabric API | NeoForge / Forge |
 | :--- | :---: | :--- | :--- | :--- |
 | 26.3 | 25 | 0.19.5 | 0.161.0+26.3 | 26.3.0.22-beta |
 | 26.2 | 25 | 0.19.5 | 0.161.0+26.2 | 26.2.0.88 |
@@ -37,27 +37,28 @@ Every mechanic is explained on the [documentation site](https://n1ght3r.github.i
 | 1.21.11 | 21 | 0.19.5 | 0.141.6+1.21.11 | 21.11.45 |
 | 1.21.1 | 21 | 0.19.5 | 0.116.17+1.21.1 | 21.1.251 |
 | 1.21 | 21 | 0.19.5 | 0.116.17+1.21.1 | – |
+| 1.20.1 | 17 | 0.19.5 | 0.92.12+1.20.1 | Forge 47.4.10 |
 
-Versions listed are minimums. Install on the server **and** every client; NeoForge jars end in `-neoforge`.
+Versions listed are minimums, except Forge, where any 47 build works. Install on the server **and** every client; NeoForge jars end in `-neoforge`, Forge jars in `-forge`.
 
 ## Compatibility
 All integrations are soft dependencies: nothing is required, and nothing is loaded unless the mod is present.
 
-| Mod | Fabric | NeoForge |
-| :--- | :--- | :--- |
-| [AppleSkin](https://modrinth.com/mod/appleskin), [Jade](https://modrinth.com/mod/jade), [Serene Seasons](https://modrinth.com/mod/serene-seasons) | every version | every version |
-| [Farmer's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/) | every version (Refabricated) | 1.21.1 |
-| [Create](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create) | 26.1.x, 26.2 (Create Fly) | 1.21.1 |
-| [Sophisticated Backpacks / Storage](https://modrinth.com/mod/sophisticated-backpacks) | – | 1.21.1, 1.21.11, 26.1.x, 26.2 |
-| [Kaleidoscope Cookery](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery) | every version (Refabricated) | 1.21.1 |
-| [Rustic Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight) | every version | 1.21.1 |
-| [Supplementaries](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries), [Brewin' and Chewin'](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin), [Ocean's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight) | 1.21.1 | 1.21.1 |
-| [Cold Sweat](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat), [Cultural Delights](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights), [Fruits Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight), [Expanded Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight) | – | 1.21.1 |
+| Mod | Fabric | NeoForge | Forge (1.20.1) |
+| :--- | :--- | :--- | :---: |
+| [AppleSkin](https://modrinth.com/mod/appleskin), [Jade](https://modrinth.com/mod/jade), [Serene Seasons](https://modrinth.com/mod/serene-seasons) | every version | every version | yes |
+| [Farmer's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/) | every version (Refabricated) | 1.21.1 | yes |
+| [Create](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create) | 26.1.x, 26.2 (Create Fly) | 1.21.1 | yes |
+| [Sophisticated Backpacks / Storage](https://modrinth.com/mod/sophisticated-backpacks) | – | 1.21.1, 1.21.11, 26.1.x, 26.2 | – |
+| [Kaleidoscope Cookery](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery) | 1.21.1 and newer (Refabricated) | 1.21.1 | – |
+| [Rustic Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight) | 1.21.1 and newer | 1.21.1 | – |
+| [Supplementaries](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries), [Brewin' and Chewin'](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin), [Ocean's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight) | 1.21.1 | 1.21.1 | – |
+| [Cold Sweat](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat), [Cultural Delights](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights), [Fruits Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight), [Expanded Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight) | – | 1.21.1 | – |
 
 Tested versions of each mod are in the [installation guide](https://n1ght3r.github.io/ThirstWasTaken2/docs/installation#compatible-mods).
 
 ## Configuration
-* **File:** `config/thirstwastaken2.json`, or in game through [Mod Menu](https://modrinth.com/mod/modmenu) (Fabric) or the Mods list (NeoForge).
+* **File:** `config/thirstwastaken2.json`, or in game through [Mod Menu](https://modrinth.com/mod/modmenu) (Fabric) or the Mods list (NeoForge and Forge).
 * **Scope:** Gameplay settings are server-side and synced; HUD settings are per client.
 * **Reference:** Every key is documented in the [configuration page](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration).
 
@@ -106,7 +107,7 @@ cd ThirstWasTaken2
 ./gradlew buildAndCollect
 ```
 
-Jars land in `build/libs/`, one per version and loader. Nodes are `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1`, and the same with `-neoforge`:
+Jars land in `build/libs/`, one per version and loader. Nodes are `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1`, `1.20.1`, the first five again with `-neoforge`, and `1.20.1-forge`:
 
 | Task | Command |
 | :--- | :--- |

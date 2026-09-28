@@ -98,7 +98,7 @@
   <tr>
     <td width="55%">
       <b><a href="https://www.curseforge.com/minecraft/mc-mods/appleskin">AppleSkin</a></b><br>
-      <i>Fabric and NeoForge</i><br><br>
+      <i>Fabric, NeoForge and Forge</i><br><br>
       Displays your Quenched reserve directly on the HUD, with multiple styles available to choose from. Tooltips show exact thirst values for food and drinks.
     </td>
     <td width="45%">
@@ -108,7 +108,7 @@
   <tr>
     <td width="55%">
       <b><a href="https://www.curseforge.com/minecraft/mc-mods/jade">Jade (WAILA)</a></b><br>
-      <i>Fabric and NeoForge</i><br><br>
+      <i>Fabric, NeoForge and Forge</i><br><br>
       Shows the purity grade of water sources, waterlogged blocks, and cauldrons directly under your crosshair.
     </td>
     <td width="45%">
@@ -119,7 +119,7 @@
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></b><br>
       <i>26.1.2 and 26.2 Fabric: <a href="https://modrinth.com/mod/create-fly">Create Fly</a><br>
-      1.21.1 NeoForge: <a href="https://www.curseforge.com/minecraft/mc-mods/create">Create</a></i><br><br>
+      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://www.curseforge.com/minecraft/mc-mods/create">Create</a></i><br><br>
       Adds a Sand Filter to purify dirty water by one grade. Water also keeps its purity grade through pipes, pumps, tanks, drains, and spouts.
     </td>
     <td width="45%">
@@ -167,7 +167,7 @@ Also works with:
     <td width="55%">Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.</td>
   </tr>
   <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric and NeoForge</i></td>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric, NeoForge and Forge</i></td>
     <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
   </tr>
 </table>
@@ -181,7 +181,7 @@ Also works with:
     <td width="55%">
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
       <i>Fabric: <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
-      1.21.1 NeoForge: <a href="https://www.curseforge.com/minecraft/mc-mods/farmers-delight">Farmer's Delight</a></i><br><br>
+      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://www.curseforge.com/minecraft/mc-mods/farmers-delight">Farmer's Delight</a></i><br><br>
       Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
     </td>
     <td width="45%">
@@ -226,7 +226,7 @@ Also works with:
 </div>
 
 ## Settings Screen
-Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://www.curseforge.com/minecraft/mc-mods/modmenu">Mod Menu</a> on Fabric, or the Config button in NeoForge's Mods list.
+Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://www.curseforge.com/minecraft/mc-mods/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 
 <p align="center">
   <img alt="The ThirstWasTaken2 settings screen: a slider and a switch on the Thirst page, the Water tabs, the AppleSkin preview changing outline and its tooltip droplets switched off and on, the item list scrolling to a modded group under its pinned heading, and the Containers page" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">
@@ -242,6 +242,7 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 | 1.21.11 | Latest | Active |
 | 1.21.1 | Latest | Active |
 | 1.21 (Fabric only) | Latest | Active |
+| 1.20.1 (Fabric and Forge) | Latest | Active |
 
 ## For Developers
 
@@ -272,8 +273,8 @@ See the [data pack](https://n1ght3r.github.io/ThirstWasTaken2/docs/developers/da
 
 ## Quick FAQ
 
-**Will it be backported to 1.20.1 or Forge?**  
-No. There are no plans to support 1.20.1 or Forge.
+**Is there a Forge version?**  
+Yes, for Minecraft 1.20.1. The later versions are on Fabric and NeoForge.
 
 **Does it work in Peaceful mode?**  
 Yes. Thirst refills on its own, unless [`thirstDepletionInPeaceful`](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration#thirstdepletioninpeaceful) is on. Pairs well with [Peaceful Hunger](https://modrinth.com/mod/peaceful-hunger).

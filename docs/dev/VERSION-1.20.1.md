@@ -37,8 +37,8 @@ that needs a core-code fork for 1.20.1 retires 1.20.1, not the other way round.
 No new node yet. Each step keeps behaviour the same, so a failing gametest here is a refactor bug, not a
 port bug.
 
-**Status (2026-09-28): built, uncommitted.** Gametests pass on the four check nodes; the full ten-node
-run before merging is still open. Where it landed: `platform/ItemWaterData`, `platform/Clientbound`,
+**Status (2026-09-28): done.** Gametests passed on the four check nodes, and the twelve-node run on
+2026-09-28 (see phase 2) covers it. Where it landed: `platform/ItemWaterData`, `platform/Clientbound`,
 `FabricTransfer` for the fluid variant's grade, `loaderOf`/`minecraftOf` in build-logic and
 `tools/node_names.py`. NeoForge's `WaterFluids` still names `ThirstComponents` on a `FluidStack`: no
 1.20.1 node compiles it, and Forge gets its own in `forge-fluidhandler`.
@@ -199,15 +199,20 @@ dev client.
 
 ## Phase 2: the Forge node `1.20.1-forge`
 
-**Status (2026-09-28): built, uncommitted.** On `1.20.1-forge`: `build`, `runServer` (prints
+**Status (2026-09-28): done.** On `1.20.1-forge`: `build`, `runServer` (prints
 `initialized for Minecraft 1.20.1`, the agent answers `server-probe.jsonl`), `runGametest` (all 197
 pass), `checkForgeResources`, `checkOptionalSeam`, `checkLoaderSeam`, `checkVersionSeam`, `checkLang`,
 `checkDataConditions`, `checkApiSurface` and `checkAgentCore`. `runClient` with `boot.jsonl` stays up with
 AppleSkin, Jade and Cloth Config and with `-PwithoutOptional=all`, and `hud-layout.jsonl` in a world
 puts the thirst row between the food bar and the air bubbles. The nodes the shared edits touch still
-pass their gametests (`1.20.1`, `1.21.1`, `1.21.1-neoforge`, `26.3.x`). Still open: the twelve-node run,
-and a check of the shipped `reobfJar` in a production Forge install, which nothing above runs (every dev
-run uses Mojang's names). Where it landed, and what the plan below did not foresee:
+pass their gametests (`1.20.1`, `1.21.1`, `1.21.1-neoforge`, `26.3.x`). The twelve-node run passed on
+2026-09-28, each CI step on every node: build, every check, `checkDatagen` on Fabric, and every node's
+gametests. The shipped `reobfJar`, which no dev run exercises since they all use Mojang's names, boots
+on a production Forge 47.4.10 server from the official installer, alone and with Farmer's Delight,
+Serene Seasons and Create, with no mixin, refmap or data error. Its client side in a production install
+is left to the release pass in [MANUAL-TESTING.md](MANUAL-TESTING.md). Set and Reset active project
+round-trip on every node, which the round trip fix of the same day made true. Where it landed, and what
+the plan below did not foresee:
 
 - ModDevGradle Legacy is the same `moddev-gradle` artifact at 2.0.147. `mixin { config(...) }` only
   reaches the dev runs, so `tasks.jar` writes `MixinConfigs` itself, and the configs gain `refmap` and
@@ -307,6 +312,25 @@ adds `Loader.FORGE` (or `FABRIC`) to its row, sets its deps key in the `1.20.1` 
 | Serene Seasons | Forge, Fabric to check | Already on every node |
 | Sophisticated, Supplementaries, Cold Sweat, Brewin' and Chewin' | Forge 1.20.1 builds exist | By demand |
 
+**Status (2026-09-28): done for the four the plan does not leave to demand.** AppleSkin, Jade and Mod
+Menu came with phases 1 and 2. Each of the others was checked in a dev client by an agent script, and in
+the production Forge server above:
+
+- **Farmer's Delight** on both nodes (Refabricated 1.20.1-2.5.7, the original 1.20.1-1.3.4). The Cooking
+  Pot recipes are written by `LegacyRecipeProvider`, in NBT; the Forge node turns `fabric:any` into
+  Forge's compound ingredient. `farmers-delight-1.20.1.jsonl` passes on both, except that on Fabric the
+  pot boils a salty bottle Pure: Refabricated matches the pot's ingredients by item id only, on every
+  Fabric node, which is its own task.
+- **Serene Seasons** 9.1.0.3 on both, through its row, which lists Forge now. The Forge script wires
+  a row's directories, mixin config and optional dependencies as NeoForge's does. `serene-seasons.jsonl`
+  reads the same modifiers as on 26.3.x and 1.21.1.
+- **Create** 6.0.8 on Forge, in `src/main/createforge`, a row of its own on the same deps key: every
+  class of the NeoForge filter names NeoForge's fluid and capability API. Forge 47 reads no conditions on
+  a loot table, so the filter drops through an item tag. `create-water-1.20.1.jsonl` passes. Details in
+  [src/main/createforge/AGENTS.md](../../src/main/createforge/AGENTS.md).
+- Serene Seasons on Fabric showed that the Loom which builds 1.20.1 refuses a dependency resolved while
+  the project configures, so `build.gradle.kts` unpacks nested jars lazily.
+
 ## Phase 4: docs and release
 
 - Update `AGENTS.md` (version list, Java rule, node list, integration table), `platform/AGENTS.md`,
@@ -315,6 +339,11 @@ adds `Loader.FORGE` (or `FABRIC`) to its row, sets its deps key in the `1.20.1` 
   [BENCHMARK-BASELINE.md](benchmark/BENCHMARK-BASELINE.md).
 - Update the docs site's install page, the CHANGELOG, and the Modrinth and CurseForge pages
   (the `write-docs` skill).
+
+**Status (2026-09-28): done, but for the release itself.** The CHANGELOG has an unreleased `[1.5.0]`
+entry; `mod.version` is bumped when it is released. `update_mc_deps.py --check` finds every pinned
+version on the pages, Create's `mc1.20.1-` prefixed number included. Both nodes are in MANUAL-TESTING.md
+and have benchmark rows.
 
 ## Risks
 

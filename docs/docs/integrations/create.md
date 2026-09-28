@@ -6,6 +6,7 @@ pipes, pumps, Spouts and drains.
 ::: warning Supported versions
 - Fabric, Minecraft 26.2 and 26.1.2: [Create Fly](https://modrinth.com/mod/create-fly).
 - NeoForge, Minecraft 1.21.1: [Create](https://modrinth.com/mod/create) 6.0.10.
+- Forge, Minecraft 1.20.1: [Create](https://modrinth.com/mod/create) 6.0.8.
 
 Other versions ignore Create.
 :::

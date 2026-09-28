@@ -2,6 +2,26 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [1.5.0] - Unreleased
+
+### Added
+
+- Minecraft 1.20.1, on Fabric and on Forge. Both files have every feature of the later versions. The
+  Forge file runs on any Forge 47 build.
+- Compatibility with Farmer's Delight on Fabric and Forge 1.20.1:
+  - Its drinks and meals restore thirst, the Cooking Pot boils water Pure, and Nourishment stops
+    thirst draining.
+- Compatibility with Serene Seasons on Fabric and Forge 1.20.1:
+  - Thirst follows the season, the same as on the later versions.
+- Compatibility with Create on Forge 1.20.1:
+  - The Sand Filter cleans water pumped through it by one grade.
+  - Water keeps its grade through pipes, pumps, Spouts and Item Drains.
+
+### Notes
+
+- Sea water in a bottle or bucket looks like ordinary water on 1.20.1, as on 1.21.1. Its tooltip
+  still reads Salty.
+
 ## [1.4.1] - 2026-09-28
 
 ### Fixed
