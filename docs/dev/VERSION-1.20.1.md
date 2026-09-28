@@ -318,9 +318,9 @@ the production Forge server above:
 
 - **Farmer's Delight** on both nodes (Refabricated 1.20.1-2.5.7, the original 1.20.1-1.3.4). The Cooking
   Pot recipes are written by `LegacyRecipeProvider`, in NBT; the Forge node turns `fabric:any` into
-  Forge's compound ingredient. `farmers-delight-1.20.1.jsonl` passes on both, except that on Fabric the
-  pot boils a salty bottle Pure: Refabricated matches the pot's ingredients by item id only, on every
-  Fabric node, which is its own task.
+  Forge's compound ingredient. `farmers-delight-1.20.1.jsonl` passes on both. It found that
+  Refabricated's pot matches by item id only and boiled a salty bottle Pure on every Fabric node, which
+  `src/main/farmersdelight` fixes.
 - **Serene Seasons** 9.1.0.3 on both, through its row, which lists Forge now. The Forge script wires
   a row's directories, mixin config and optional dependencies as NeoForge's does. `serene-seasons.jsonl`
   reads the same modifiers as on 26.3.x and 1.21.1.

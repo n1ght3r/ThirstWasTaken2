@@ -35,7 +35,9 @@ limitation an unstamped item tooltip already has on a server with a different co
 
 ## Farmer's Delight
 
-Three pieces, none of which loads a Farmer's Delight class:
+Three pieces, none of which loads a Farmer's Delight class, and on Fabric a fourth that does, in its own
+directory: Refabricated's Cooking Pot never tests a custom ingredient, so without
+[src/main/farmersdelight](../../../../farmersdelight/AGENTS.md) salt water boiled Pure there.
 
 - **Item values** are plain entries in `ThirstConfig`, and `WaterPurity.resolve` still marks its apple
   cider and melon juice as pure containers by id.

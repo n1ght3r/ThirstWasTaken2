@@ -151,6 +151,15 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.createforge.mixins.json",
         neoForgeDependencies = listOf("create"),
     ),
+    // Fabric only: Farmer's Delight Refabricated's Cooking Pot, whose match never tests a custom
+    // ingredient, so salt water boiled Pure. The original on NeoForge and Forge needs nothing. Everything
+    // else of Farmer's Delight is data and registry ids in core. See src/main/farmersdelight/AGENTS.md.
+    Integration(
+        dir = "farmersdelight",
+        depsKey = "deps.farmersdelight",
+        loaders = setOf(Loader.FABRIC),
+        mixinConfig = "thirstwastaken2.farmersdelight.mixins.json",
+    ),
     // NeoForge only; Core's tanks move fluid through the fluid API of their NeoForge generation.
     // See src/main/sophisticated/AGENTS.md.
     Integration(

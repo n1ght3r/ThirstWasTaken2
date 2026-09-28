@@ -17,6 +17,11 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - The Sand Filter cleans water pumped through it by one grade.
   - Water keeps its grade through pipes, pumps, Spouts and Item Drains.
 
+### Fixed
+
+- With Farmer's Delight on Fabric, the Cooking Pot boiled salt water, and any other potion, into Pure
+  water. It now refuses them, as it always did on NeoForge.
+
 ### Notes
 
 - Sea water in a bottle or bucket looks like ordinary water on 1.20.1, as on 1.21.1. Its tooltip

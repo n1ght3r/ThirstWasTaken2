@@ -314,8 +314,7 @@ allow cheats, so the agent scripts read block entities through `server.command`.
       error, alone and with Farmer's Delight, Serene Seasons and Create. Checked on 2026-09-28. The
       client side of the shipped jar is still to be seen in a real Forge install.
 - [x] `integrations/farmers-delight-1.20.1.jsonl` on both nodes, `integrations/serene-seasons.jsonl`
-      on both, and `integrations/create-water-1.20.1.jsonl` on Forge. Checked on 2026-09-28; on Fabric
-      the salty bottle is boiled Pure, a Refabricated limit on every Fabric node.
+      on both, and `integrations/create-water-1.20.1.jsonl` on Forge. Checked on 2026-09-28.
 
 ### NeoForge (every node)
 

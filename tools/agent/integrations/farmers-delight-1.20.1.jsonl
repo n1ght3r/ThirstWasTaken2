@@ -10,8 +10,6 @@
 // Read run/<node>/agent/client/out.jsonl: every "execute if" and "execute unless" line has to say
 // "Test passed", and drunk, plainDrain and nourishedDrain are compared by hand as in farmers-delight.jsonl.
 // Thirst is set with /thirst and read from client.state, since the dev player's name differs by loader.
-// Known on Fabric: saltStays fails. Refabricated matches the pot's ingredients by item id only, on every
-// Fabric node, so the salty bottle is boiled Pure; Forge's original honours the NBT.
 
 {"id": "load", "command": "wait", "args": {"ticks": 400}}
 {"id": "joined", "command": "client.state"}

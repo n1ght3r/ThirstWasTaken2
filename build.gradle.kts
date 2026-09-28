@@ -445,6 +445,8 @@ dependencies {
     // Test the drinks and meals Farmer's Delight adds, and the c:drinks tag it fills.
     findProperty("deps.farmersdelight")?.let { farmersDelight ->
         val names = listOf("farmers-delight-refabricated", "farmersdelight")
+        // The Cooking Pot fix in src/main/farmersdelight mixes into its recipe class.
+        "modCompileOnly"("maven.modrinth:farmers-delight-refabricated:$farmersDelight") { isTransitive = false }
         runClientMod(names, "maven.modrinth:farmers-delight-refabricated:$farmersDelight")
         // The 1.20.1 build nests Fabric ASM, which adds its Cooking Pot recipe book to a vanilla enum, and
         // the Porting Lib modules it runs on. Loom leaves nested mods packed, and without them it fails to
