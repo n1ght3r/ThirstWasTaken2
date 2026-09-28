@@ -210,7 +210,10 @@ looks and sounds.
       a library leaves out the mods that need it too.
       - `sophisticated-core` on the NeoForge nodes up to 26.2
       - `moonlight` (Supplementaries goes with it) on both 1.21.1 nodes
-      - `create` on `1.21.1-neoforge`, and on the Fabric nodes that build Create Fly
+      - `create` on `1.21.1-neoforge` and `1.20.1-forge`, and on the Fabric nodes that build Create Fly
+      - `farmersdelight` on every Fabric node (the Cooking Pot fix mixes into Refabricated) and on
+        `1.20.1-forge`. Run on 2026-09-28 on `1.20.1`, `1.20.1-forge`, `1.21.1` and `26.3.x`, with
+        `create` and `all` on `1.20.1-forge` and `all` on `1.20.1`: every one came up and stayed up
       - `kaleidoscope_cookery` on `1.21.1-neoforge` and every Fabric node
 - [ ] The same with `-PwithoutOptional=all`, on one node per loader.
 - [ ] A world **opens** with an integration's mod and without a mod its data names, for every

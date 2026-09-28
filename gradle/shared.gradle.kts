@@ -295,6 +295,23 @@ tasks.register("checkDataConditions") {
             }
         }
 
+        // Forge 47 reads `conditions` on recipes and advancements only, in 1.20.1's plural folders. Anywhere
+        // else the block is ignored and the file loads regardless: a loot table naming an item only an
+        // integration registers failed to parse on every server without that mod (the Create Sand Filter,
+        // 2026-09-28). So there it gates nothing, and is itself a mistake.
+        val forgeHonours = Regex("/data/[^/]+/(recipes|advancements)/")
+        val ignoredConditions = dataFiles.filter { file ->
+            val json = groovy.json.JsonSlurper().parse(file) as? Map<*, *>
+            json?.get("conditions") != null && !forgeHonours.containsMatchIn(file.invariantSeparatorsPath) &&
+                "/data/" in file.invariantSeparatorsPath &&
+                (json["conditions"] as? List<*>)?.any { (it as? Map<*, *>)?.get("type")?.toString()?.startsWith("forge:") == true } == true
+        }.map { it.relativeTo(rootProject.projectDir).invariantSeparatorsPath }.sorted()
+        check(ignoredConditions.isEmpty()) {
+            "Forge 47 ignores `conditions` outside recipes and advancements, so these files load without the " +
+                "mod they name and fail to parse. Name nothing the mod registers (a loot table can drop " +
+                "through an item tag whose entry is `required: false`):\n" + ignoredConditions.joinToString("\n")
+        }
+
         val problems = dataFiles.sortedBy { it.invariantSeparatorsPath }.mapNotNull { file ->
             val json = groovy.json.JsonSlurper().parse(file) as? Map<*, *> ?: return@mapNotNull null
             val named = mutableSetOf<String>().also { namespaces(json, it) } - own
