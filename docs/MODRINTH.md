@@ -163,6 +163,28 @@
       <img alt="A Teapot on a lit Stove among teacups in a cherry grove, with Jade naming its water Clean" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/kaleidoscope-cookery/kaleidoscope-teapot.png" width="100%">
     </td>
   </tr>
+</table>
+
+Also works with:
+
+<table>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat"><img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="180"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric and NeoForge</i></td>
+    <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
+  </tr>
+</table>
+
+### Delight Ecosystem
+
+<details>
+<summary><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="204" align="absmiddle"> <b>and its addons</b>, click to expand</summary>
+<br>
+
+<table>
   <tr>
     <td width="55%">
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
@@ -186,8 +208,6 @@
   </tr>
 </table>
 
-Also works with:
-
 <table>
   <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights"><img alt="Cultural Delights" src="https://cdn.modrinth.com/data/cached_images/d6a323ce1e69b76f2143b3c0e03bd9ce36fc69e1.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
@@ -209,15 +229,9 @@ Also works with:
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight"><img alt="Rustic Delight" src="https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png" width="242"></a><br><i>Fabric and 1.21.1 NeoForge</i></td>
     <td width="55%">Its coffees, soups and bell peppers restore thirst.</td>
   </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat"><img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="180"></a><br><i>1.21.1 NeoForge</i></td>
-    <td width="55%">Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric and NeoForge</i></td>
-    <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
-  </tr>
 </table>
+
+</details>
 
 ## Settings Screen
 Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in NeoForge's Mods list.

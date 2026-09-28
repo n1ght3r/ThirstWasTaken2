@@ -25,12 +25,15 @@ npm run docs:build    # must pass before you call a docs change done
 `docs/` contains all player and server documentation. Pages describing gameplay belong in
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
-sidebar's Integrations group in `.vitepress/config.mts`, and its row in `MODRINTH.md` and
-`CURSEFORGE.md` goes above the Farmer's Delight group, or inside it for an addon, so the Farmer's
-Delight mods stay together at the bottom of the table. A small integration with nothing of its own to
-picture (Cultural Delights, Fruits Delight, Ocean's Delight, Expanded Delight, Rustic Delight, Serene
-Seasons) gets no row: one line in the list under the
-table, linking its page.
+sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.md` and
+`CURSEFORGE.md`. There, Mod Compatibility has three parts: the main table, a screenshot per mod; the
+"Also works with" table, the mod's banner and versions beside one sentence, for a smaller
+integration (Cold Sweat, Serene Seasons); and the Delight Ecosystem (collapsed:
+a `<details>` on Modrinth, a `<div class="spoiler">` on CurseForge, which strips `<details>`),
+which holds Farmer's Delight and every addon of it, in the same two kinds of table. A banner is linked
+from the mod's own page or an image host, never committed, and scaled to about 74 px high. Versions
+read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
+(a Refabricated port, Create Fly).
 
 ## Style
 
