@@ -36,7 +36,7 @@ public final class Vanilla {
     private static final net.minecraft.network.chat.FontDescription DROPLET_FONT =
             new net.minecraft.network.chat.FontDescription.Resource(ThirstWasTaken2.id("droplets"));
     //?} else
-    /*private static final Identifier DROPLET_FONT = ThirstWasTaken2.id("droplets");*/
+    //private static final Identifier DROPLET_FONT = ThirstWasTaken2.id("droplets");
 
     /** Vanilla's description id for the water cauldron, see {@link #isWaterCauldron}. */
     private static final String WATER_CAULDRON = "block.minecraft.water_cauldron";
@@ -57,7 +57,7 @@ public final class Vanilla {
         //? if >1.21.1 {
         return WATER_CAULDRON.equals(block.getDescriptionId());
         //?} else
-        /*return buildingWaterCauldron;*/
+        //return buildingWaterCauldron;
     }
 
     /** Runs a block construction marked as the water cauldron's, or not. Called by {@code BlocksMixin} on 1.21.1. */
@@ -217,7 +217,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         Item item = factory.apply(properties.setId(key));
         //?} else
-        /*Item item = factory.apply(properties);*/
+        //Item item = factory.apply(properties);
         DefaultData.itemBuilt(properties, item);
         return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
@@ -232,7 +232,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         T block = factory.apply(properties.setId(key));
         //?} else
-        /*T block = factory.apply(properties);*/
+        //T block = factory.apply(properties);
         return Registry.register(BuiltInRegistries.BLOCK, key, block);
     }
 
@@ -245,7 +245,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         return registerItem(name, props -> new BlockItem(block, props), properties.useBlockDescriptionPrefix());
         //?} else
-        /*return registerItem(name, props -> new BlockItem(block, props), properties);*/
+        //return registerItem(name, props -> new BlockItem(block, props), properties);
     }
 
     /**
@@ -259,7 +259,7 @@ public final class Vanilla {
         return Boolean.TRUE.equals(level.environmentAttributes().getValue(
                 net.minecraft.world.attribute.EnvironmentAttributes.WATER_EVAPORATES, pos));
         //?} else
-        /*return level.dimensionType().ultraWarm();*/
+        //return level.dimensionType().ultraWarm();
     }
 
     /**
@@ -271,7 +271,7 @@ public final class Vanilla {
         //? if >=1.21.4 {
         return style.withFont(DROPLET_FONT).withoutShadow();
         //?} else
-        /*return style.withFont(DROPLET_FONT);*/
+        //return style.withFont(DROPLET_FONT);
     }
 
     /** The sound of drinking a potion. A later release turned the constant into a registry holder. */
@@ -279,7 +279,7 @@ public final class Vanilla {
         //? if >1.21.1 {
         return SoundEvents.GENERIC_DRINK.value();
         //?} else
-        /*return SoundEvents.GENERIC_DRINK;*/
+        //return SoundEvents.GENERIC_DRINK;
     }
 
     /** Whether a command source may run operator commands: permission level 2, vanilla's game masters. */
@@ -287,7 +287,7 @@ public final class Vanilla {
         //? if >=1.21.11 {
         return net.minecraft.commands.Commands.LEVEL_GAMEMASTERS.check(source.permissions());
         //?} else
-        /*return source.hasPermission(2);*/
+        //return source.hasPermission(2);
     }
 
     /** Whether a command source may run owner-only commands: permission level 4. */
@@ -295,7 +295,7 @@ public final class Vanilla {
         //? if >=1.21.11 {
         return net.minecraft.commands.Commands.LEVEL_OWNERS.check(source.permissions());
         //?} else
-        /*return source.hasPermission(4);*/
+        //return source.hasPermission(4);
     }
 
     /** The level a server player is in. A release after 1.21.1 narrowed {@code level()} to return it. */
@@ -303,7 +303,7 @@ public final class Vanilla {
         //? if >1.21.1 {
         return player.level();
         //?} else
-        /*return player.serverLevel();*/
+        //return player.serverLevel();
     }
 
     /** Whether the naturalRegeneration game rule is on in the player's level. 1.21.11 made game rules typed values. */
@@ -311,7 +311,7 @@ public final class Vanilla {
         //? if >=1.21.11 {
         return level(player).getGameRules().get(net.minecraft.world.level.gamerules.GameRules.NATURAL_HEALTH_REGENERATION);
         //?} else
-        /*return level(player).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_NATURAL_REGENERATION);*/
+        //return level(player).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_NATURAL_REGENERATION);
     }
 
     /** Damages a player from the server. 1.21.2 split a server-only {@code hurtServer} out of {@code hurt}. */
@@ -319,7 +319,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         player.hurtServer(level(player), source, amount);
         //?} else
-        /*player.hurt(source, amount);*/
+        //player.hurt(source, amount);
     }
 
     /**
@@ -442,7 +442,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         return stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
         //?} else
-        /*return null;*/
+        //return null;
     }
 
     /**
@@ -453,7 +453,7 @@ public final class Vanilla {
         //? if >=1.21.5 {
         return tag.getStringOr(key, fallback);
         //?} else
-        /*return tag.contains(key, net.minecraft.nbt.Tag.TAG_STRING) ? tag.getString(key) : fallback;*/
+        //return tag.contains(key, net.minecraft.nbt.Tag.TAG_STRING) ? tag.getString(key) : fallback;
     }
 
     /** A tag's number as an int, or {@code fallback} when it has none. See {@link #getString}. */
@@ -461,7 +461,7 @@ public final class Vanilla {
         //? if >=1.21.5 {
         return tag.getIntOr(key, fallback);
         //?} else
-        /*return tag.contains(key, net.minecraft.nbt.Tag.TAG_ANY_NUMERIC) ? tag.getInt(key) : fallback;*/
+        //return tag.contains(key, net.minecraft.nbt.Tag.TAG_ANY_NUMERIC) ? tag.getInt(key) : fallback;
     }
 
     /**
@@ -492,7 +492,7 @@ public final class Vanilla {
         //? if >=26.1 {
         player.sendOverlayMessage(message);
         //?} else
-        /*player.displayClientMessage(message, true);*/
+        //player.displayClientMessage(message, true);
     }
 
     /** Whether a stack is used with the drinking animation. 1.21.2 renamed {@code UseAnim} to {@code ItemUseAnimation}. */
@@ -500,7 +500,7 @@ public final class Vanilla {
         //? if >=1.21.2 {
         return stack.getUseAnimation() == net.minecraft.world.item.ItemUseAnimation.DRINK;
         //?} else
-        /*return stack.getUseAnimation() == net.minecraft.world.item.UseAnim.DRINK;*/
+        //return stack.getUseAnimation() == net.minecraft.world.item.UseAnim.DRINK;
     }
 
     /**
@@ -512,7 +512,7 @@ public final class Vanilla {
         //? if >=26.3 {
         player.getInventory().placeItemBackInInventory(stack, net.minecraft.util.Prediction.SERVER_ONLY);
         //?} else
-        /*player.getInventory().placeItemBackInInventory(stack);*/
+        //player.getInventory().placeItemBackInInventory(stack);
     }
 
     /**

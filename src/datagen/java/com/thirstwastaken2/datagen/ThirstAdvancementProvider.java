@@ -66,7 +66,7 @@ public final class ThirstAdvancementProvider implements DataProvider {
             //? if >=26.3 {
             DynamicOps<JsonElement> ops = new ThirstRecipeProvider.RecipeKeys().ops(lookup);
             //?} else
-            /*DynamicOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);*/
+            //DynamicOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);
             List<CompletableFuture<?>> writes = new ArrayList<>();
             generate(ops, advancement -> writes.add(DataProvider.saveStable(cache,
                     Advancement.CODEC.encodeStart(ops, advancement.value()).getOrThrow(),
@@ -185,7 +185,7 @@ public final class ThirstAdvancementProvider implements DataProvider {
         //? if >=26.3 {
         return builder.display(icon, title(name), description(name), type, true, true, false);
         //?} else
-        /*return builder.display(icon, title(name), description(name), null, type, true, true, false);*/
+        //return builder.display(icon, title(name), description(name), null, type, true, true, false);
     }
 
     /**
@@ -205,7 +205,7 @@ public final class ThirstAdvancementProvider implements DataProvider {
         //? if >1.21.1 {
         return Identifier.withDefaultNamespace("block/terracotta");
         //?} else
-        /*return Identifier.withDefaultNamespace("textures/block/terracotta.png");*/
+        //return Identifier.withDefaultNamespace("textures/block/terracotta.png");
     }
 
     private static Component title(String name) {

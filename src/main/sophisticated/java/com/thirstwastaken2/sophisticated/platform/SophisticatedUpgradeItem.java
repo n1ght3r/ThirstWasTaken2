@@ -19,6 +19,6 @@ public abstract class SophisticatedUpgradeItem<T extends IUpgradeWrapper> extend
         //? if >=1.21.2 {
         super(limits, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id)));
         //?} else
-        /*super(limits);*/
+        //super(limits);
     }
 }

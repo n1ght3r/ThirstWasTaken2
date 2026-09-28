@@ -30,7 +30,7 @@ public final class ThirstBiomeTagProvider extends FabricTagsProvider<Biome> {
         //? if >1.21.1 {
         builder(STAGNANT_WATER)
         //?} else
-        /*getOrCreateTagBuilder(STAGNANT_WATER)*/
+        //getOrCreateTagBuilder(STAGNANT_WATER)
                 .add(Biomes.SWAMP)
                 .add(Biomes.MANGROVE_SWAMP);
     }

@@ -16,6 +16,6 @@ public final class ModFiles {
         //? if >=1.21.2 {
         return mod.getFile().getContents().containsFile(path);
         //?} else
-        /*return java.nio.file.Files.exists(mod.getFile().findResource(path));*/
+        //return java.nio.file.Files.exists(mod.getFile().findResource(path));
     }
 }

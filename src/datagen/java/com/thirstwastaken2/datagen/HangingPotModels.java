@@ -48,7 +48,7 @@ final class HangingPotModels {
     //? if >=1.21.9 {
     private static final String CHAIN_TEXTURE = "minecraft:block/iron_chain";
     //?} else
-    /*private static final String CHAIN_TEXTURE = "minecraft:block/chain";*/
+    //private static final String CHAIN_TEXTURE = "minecraft:block/chain";
 
     private HangingPotModels() { }
 
@@ -114,7 +114,7 @@ final class HangingPotModels {
         generators.modelOutput.accept(id, () -> item);
         generators.itemModelOutput.accept(pot, net.minecraft.client.data.models.model.ItemModelUtils.plainModel(id));
         //?} else
-        /*generators.output.accept(id, () -> item);*/
+        //generators.output.accept(id, () -> item);
     }
 
     /**

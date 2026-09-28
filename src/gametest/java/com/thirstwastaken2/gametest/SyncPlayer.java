@@ -136,7 +136,7 @@ final class SyncPlayer extends ServerPlayer {
                 net.minecraft.network.FriendlyByteBuf buffer =
                         new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
                 payload.write(buffer);
-                payloads.add(buffer.readResourceLocation().toString());
+                payloads.add(buffer.readIdentifier().toString());
             }
             *///?}
         }

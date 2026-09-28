@@ -113,10 +113,17 @@ return minecraft.gui.hud.isHidden();
 
 A pure rename needs no branch: add it to `replacements` in `stonecutter.gradle.kts`.
 
-- **Replacements do not chain.** Each applies to the original text. When two differences meet, pick
-  the result in Kotlin first (see `critereon` in `stonecutter.gradle.kts`).
+- **Replacements do not chain.** Each applies to the original text. When two differences meet, give
+  each result a rule of its own (see `critereon` in `stonecutter.gradle.kts`).
+- **Replacements run backwards too**, on every node whose condition is false and on "Reset active
+  project". What a rule writes must be the same on every node it covers and must not occur in the
+  sources for any other reason; the comment above `replacements` in `stonecutter.gradle.kts` says how.
 - **No block comments inside a `//?` block.** The disabled branch is itself one `/* */`. Put Javadoc
   outside or use line comments.
+- **A one-line branch** (`//?} else` with no brace) is disabled as `//line`, not `/*line*/`; that is
+  the form Stonecutter writes back.
+- **Set and Reset active project must round-trip**: after `"Set active project to <node>"` then
+  `"Reset active project"`, `git diff` shows nothing new under `src/`.
 
 Every difference between versions is listed in [docs/dev/VERSION-DIFFERENCES.md](docs/dev/VERSION-DIFFERENCES.md).
 

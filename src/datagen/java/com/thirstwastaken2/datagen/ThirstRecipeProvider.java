@@ -37,7 +37,7 @@ import net.minecraft.world.item.Item;
 //? if >=26.1 {
 import net.minecraft.world.item.ItemStackTemplate;
 //?} else
-/*import net.minecraft.world.item.ItemStack;*/
+//import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -89,7 +89,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     //? if >=1.21.9 {
     private static final Item CHAIN = Items.IRON_CHAIN;
     //?} else
-    /*private static final Item CHAIN = Items.CHAIN;*/
+    //private static final Item CHAIN = Items.CHAIN;
 
     static final float PURIFY_EXPERIENCE = 0.35F;
     private static final int SMELTING_TIME = 200;
@@ -414,7 +414,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     //? if >=26.3 {
                     .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(registered.getOrThrow(representative)))
                     //?} else
-                    /*.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(representative))*/
+                    //.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(representative))
                     .rewards(purifyRewards(names))
                     .requirements(AdvancementRequirements.Strategy.OR);
             items.forEach((name, item) -> builder.addCriterion(name, has(item)));
@@ -474,7 +474,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         //? if >=26.1 {
         static ItemStackTemplate purifyResult(Container container, int purity) {
         //?} else
-        /*static ItemStack purifyResult(Container container, int purity) {*/
+        //static ItemStack purifyResult(Container container, int purity) {
             if (container.bowl()) return bowlResult(purity);
 
             DataComponentPatch.Builder patch = DataComponentPatch.builder();

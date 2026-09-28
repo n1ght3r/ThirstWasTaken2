@@ -25,22 +25,39 @@ stonecutter parameters {
     // Bakes the target Minecraft version into the jar, so the startup log line is never stale.
     swaps["minecraft"] = "\"${node.metadata.version}\";"
 
+    // Every replacement also runs backwards: on each node whose condition is false, and so on the sources
+    // themselves when "Reset active project" brings them back from another node. Two rules keep that a
+    // round trip, which `git diff` after Set and Reset active project shows:
+    //
+    // - What a rule writes is the same on every node it applies to. A value chosen per node, such as
+    //   `critereon` before 1.21.11, is a rule of its own per value, or the backward pass, which knows
+    //   only the node it is going to, looks for the wrong text.
+    // - What a rule writes cannot occur in the sources for any other reason, since the backward pass
+    //   rewrites every occurrence. Where the older spelling is ordinary code, it is written in a form
+    //   nothing else uses (see InteractionResult.CONSUME below).
+    //
+    // All string rules are matched together, leftmost and then longest first, so a rule for
+    // `Identifier.parse(` wins over the one for `Identifier` at the same place.
     replacements {
         // 1.21.11 renamed ResourceLocation to Identifier, ResourceKey#location to #identifier, and
         // moved Util into net.minecraft.util, changing nothing else about any of them.
         string(current.parsed < "1.21.11") {
-            // 1.21 made ResourceLocation's constructors private behind factory methods of the same
-            // meaning. Replacements do not chain, so the pre-1.21 spelling is chosen here rather than
-            // by a rule of its own.
-            val before121 = current.parsed < "1.21"
-            replace("Identifier.fromNamespaceAndPath(",
-                    if (before121) "new ResourceLocation(" else "ResourceLocation.fromNamespaceAndPath(")
-            replace("Identifier.withDefaultNamespace(",
-                    if (before121) "new ResourceLocation(" else "ResourceLocation.withDefaultNamespace(")
-            replace("Identifier.parse(", if (before121) "new ResourceLocation(" else "ResourceLocation.parse(")
             replace("Identifier", "ResourceLocation")
             replace(".identifier()", ".location()")
             replace("net.minecraft.util.Util", "net.minecraft.Util")
+        }
+        // 1.21 made ResourceLocation's constructors private behind factory methods of the same meaning.
+        string(current.parsed >= "1.21" && current.parsed < "1.21.11") {
+            replace("Identifier.fromNamespaceAndPath(", "ResourceLocation.fromNamespaceAndPath(")
+            replace("Identifier.withDefaultNamespace(", "ResourceLocation.withDefaultNamespace(")
+            replace("Identifier.parse(", "ResourceLocation.parse(")
+        }
+        // Before 1.21 all three are constructors, spelled apart so each finds its way back: two
+        // arguments; `minecraft` named outright; and one string, cast to say so.
+        string(current.parsed < "1.21") {
+            replace("Identifier.fromNamespaceAndPath(", "new ResourceLocation(")
+            replace("Identifier.withDefaultNamespace(", "new ResourceLocation(\"minecraft\", ")
+            replace("Identifier.parse(", "new ResourceLocation((String) ")
         }
 
         // 26.1 renamed the HUD draw target while keeping the drawing methods identical but one, so
@@ -59,24 +76,22 @@ stonecutter parameters {
         // `triggers` and `predicates`, keeping every class name. Only the datagen providers name
         // them, and only in imports, so each one is replaced whole rather than by package prefix:
         // `CriteriaTriggers` and `Criterion` did not move into `criterion` with the rest.
-        // The package they came from was spelled `critereon` until 1.21.11. Replacements do not
-        // chain, so the older spelling has to be chosen here rather than by a rule of its own.
-        val criterion = if (current.parsed < "1.21.11") "critereon" else "criterion"
+        // The package they came from was spelled `critereon` until 1.21.11, so the five that moved
+        // have a rule per spelling.
         string(current.parsed < "26.2") {
             replace("net.minecraft.advancements.triggers.CriteriaTriggers",
                     "net.minecraft.advancements.CriteriaTriggers")
-            replace("net.minecraft.advancements.triggers.Criterion",
-                    "net.minecraft.advancements.Criterion")
-            replace("net.minecraft.advancements.triggers.InventoryChangeTrigger",
-                    "net.minecraft.advancements.$criterion.InventoryChangeTrigger")
-            replace("net.minecraft.advancements.triggers.ImpossibleTrigger",
-                    "net.minecraft.advancements.$criterion.ImpossibleTrigger")
-            replace("net.minecraft.advancements.triggers.PlayerTrigger",
-                    "net.minecraft.advancements.$criterion.PlayerTrigger")
-            replace("net.minecraft.advancements.triggers.RecipeCraftedTrigger",
-                    "net.minecraft.advancements.$criterion.RecipeCraftedTrigger")
-            replace("net.minecraft.advancements.triggers.RecipeUnlockedTrigger",
-                    "net.minecraft.advancements.$criterion.RecipeUnlockedTrigger")
+            // With the semicolon, so the older side cannot match CriterionTriggerInstance, which stayed.
+            replace("net.minecraft.advancements.triggers.Criterion;",
+                    "net.minecraft.advancements.Criterion;")
+        }
+        val movedTriggers = listOf("InventoryChangeTrigger", "ImpossibleTrigger", "PlayerTrigger",
+            "RecipeCraftedTrigger", "RecipeUnlockedTrigger")
+        string(current.parsed >= "1.21.11" && current.parsed < "26.2") {
+            movedTriggers.forEach { replace("net.minecraft.advancements.triggers.$it", "net.minecraft.advancements.criterion.$it") }
+        }
+        string(current.parsed < "1.21.11") {
+            movedTriggers.forEach { replace("net.minecraft.advancements.triggers.$it", "net.minecraft.advancements.critereon.$it") }
         }
 
         // 26.3 renamed every PushReaction constant and split LootPoolSingletonContainer into three
@@ -94,8 +109,13 @@ stonecutter parameters {
 
         // 1.21.2 renamed the server-side CONSUME result to SUCCESS_SERVER, both meaning "done, and the
         // client already swung", and Registry#get(ResourceKey) to getValue.
+        //
+        // The older side is written fully qualified. A replacement also runs backwards, on every node its
+        // condition is false for and on "Reset active project", and CONSUME still exists from 1.21.2 with a
+        // meaning of its own (no swing, which WaterskinItem wants on every version). A plain
+        // `InteractionResult.CONSUME` would be turned into SUCCESS_SERVER there; only this spelling is.
         string(current.parsed < "1.21.2") {
-            replace("InteractionResult.SUCCESS_SERVER", "InteractionResult.CONSUME")
+            replace("InteractionResult.SUCCESS_SERVER", "net.minecraft.world.InteractionResult.CONSUME")
             replace("CREATIVE_MODE_TAB.getValue(", "CREATIVE_MODE_TAB.get(")
         }
 

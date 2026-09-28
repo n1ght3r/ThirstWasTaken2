@@ -26,7 +26,7 @@ import net.minecraft.data.recipes.RecipeBuilder;
 //? if >=26.1 {
 import net.minecraft.world.item.ItemStackTemplate;
 //?} else
-/*import net.minecraft.world.item.ItemStack;*/
+//import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
             //? if >=26.3 {
             DynamicOps<JsonElement> ops = new ThirstRecipeProvider.RecipeKeys().ops(lookup);
             //?} else
-            /*DynamicOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);*/
+            //DynamicOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);
             List<CompletableFuture<?>> writes = new ArrayList<>();
             for (Container container : CONTAINERS) {
                 String name = name(container);
@@ -125,7 +125,7 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
                 .addCriterion("has_the_recipe",
                         RecipeUnlockedTrigger.unlocked(ThirstRecipeProvider.recipeHolder(ops, key)))
                 //?} else
-                /*.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(key))*/
+                //.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(key))
                 .addCriterion("has_water", InventoryChangeTrigger.TriggerInstance.hasItems(container.item()))
                 .rewards(AdvancementRewards.Builder.recipe(key))
                 .requirements(AdvancementRequirements.Strategy.OR)
@@ -159,9 +159,9 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
     //? if >=1.21.2 {
     private static final Codec<Ingredient> INGREDIENT_CODEC = Ingredient.CODEC;
     //?} else
-    /*private static final Codec<Ingredient> INGREDIENT_CODEC = Ingredient.CODEC_NONEMPTY;*/
+    //private static final Codec<Ingredient> INGREDIENT_CODEC = Ingredient.CODEC_NONEMPTY;
     //? if >=26.1 {
     private static final Codec<ItemStackTemplate> RESULT_CODEC = ItemStackTemplate.CODEC;
     //?} else
-    /*private static final Codec<ItemStack> RESULT_CODEC = ItemStack.CODEC;*/
+    //private static final Codec<ItemStack> RESULT_CODEC = ItemStack.CODEC;
 }

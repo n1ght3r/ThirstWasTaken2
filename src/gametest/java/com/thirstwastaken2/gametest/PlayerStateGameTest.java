@@ -173,7 +173,7 @@ public final class PlayerStateGameTest {
         //? if >1.21.1 {
         player.startRiding(mount, true, true);
         //?} else
-        /*player.startRiding(mount, true);*/
+        //player.startRiding(mount, true);
         TestFixtures.check(helper, player.isPassenger(), "the player should be riding the mount");
 
         ThirstData before = ThirstManager.get(player);

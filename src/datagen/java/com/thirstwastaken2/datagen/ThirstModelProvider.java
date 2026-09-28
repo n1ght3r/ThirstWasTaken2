@@ -83,7 +83,7 @@ public final class ThirstModelProvider extends FabricModelProvider {
                 new net.minecraft.client.resources.model.sprite.Material(
                         ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL));
         //?} else
-        /*TextureMapping bucket = TextureMapping.layer0(ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL);*/
+        //TextureMapping bucket = TextureMapping.layer0(ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL);
 
         ModelTemplates.FLAT_ITEM.create(
                 ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL, bucket, generators.modelOutput);

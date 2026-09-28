@@ -275,7 +275,7 @@ final class BenchmarkWorld {
         //? if >1.21.1 {
         return level.getMaxY();
         //?} else
-        /*return level.getMaxBuildHeight() - 1;*/
+        //return level.getMaxBuildHeight() - 1;
     }
 
     private String biomeAt(BlockPos pos) {

@@ -39,7 +39,7 @@ public final class ThirstDamageTypeTagProvider extends FabricTagsProvider<Damage
         //? if >1.21.1 {
         builder(tag).addOptional(ThirstDamageTypes.DEHYDRATE);
         //?} else
-        /*getOrCreateTagBuilder(tag).addOptional(ThirstDamageTypes.DEHYDRATE);*/
+        //getOrCreateTagBuilder(tag).addOptional(ThirstDamageTypes.DEHYDRATE);
     }
 
     @Override

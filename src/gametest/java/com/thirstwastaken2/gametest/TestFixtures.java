@@ -41,7 +41,7 @@ final class TestFixtures {
         //? if >=1.21.5 {
         helper.assertTrue(condition, Component.literal(message));
         //?} else
-        /*helper.assertTrue(condition, message);*/
+        //helper.assertTrue(condition, message);
     }
 
     /**

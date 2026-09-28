@@ -27,7 +27,7 @@ abstract class FoodDataMixin {
     //? if >=1.21.2 {
     private static final String HEAL = "Lnet/minecraft/server/level/ServerPlayer;heal(F)V";
     //?} else
-    /*private static final String HEAL = "Lnet/minecraft/world/entity/player/Player;heal(F)V";*/
+    //private static final String HEAL = "Lnet/minecraft/world/entity/player/Player;heal(F)V";
 
     @Shadow public abstract void addExhaustion(float amount);
 
@@ -43,7 +43,7 @@ abstract class FoodDataMixin {
     //? if >=1.21.2 {
     private void thirst$readSaturationScale(ServerPlayer player, CallbackInfo info) {
     //?} else
-    /*private void thirst$readSaturationScale(Player player, CallbackInfo info) {*/
+    //private void thirst$readSaturationScale(Player player, CallbackInfo info) {
         thirst$saturationScale = UpsetStomach.saturationScale(player);
     }
 
@@ -52,7 +52,7 @@ abstract class FoodDataMixin {
     //? if >=1.20.5 {
     @ModifyVariable(method = "add", at = @At("HEAD"), argsOnly = true)
     //?} else
-    /*@ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)*/
+    //@ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)
     private float thirst$scaleSaturation(float saturation) {
         return saturation * thirst$saturationScale;
     }
@@ -61,7 +61,7 @@ abstract class FoodDataMixin {
     //? if >=1.21.2 {
     private void thirst$healWithSaturation(ServerPlayer player, float amount) {
     //?} else
-    /*private void thirst$healWithSaturation(Player player, float amount) {*/
+    //private void thirst$healWithSaturation(Player player, float amount) {
         if (!HealthRegen.blocksSaturationHeal(player)) {
             player.heal(amount);
             return;
@@ -78,7 +78,7 @@ abstract class FoodDataMixin {
     //? if >=1.21.2 {
     private void thirst$healWithHunger(ServerPlayer player, float amount) {
     //?} else
-    /*private void thirst$healWithHunger(Player player, float amount) {*/
+    //private void thirst$healWithHunger(Player player, float amount) {
         if (HealthRegen.blocksHungerHeal(player)) {
             addExhaustion(-HealthRegen.MAX_REFUND);
         } else {
