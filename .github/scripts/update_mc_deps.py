@@ -48,6 +48,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -79,6 +80,9 @@ LOADER_SUFFIXES = ("+fabric", "+neoforge")
 MODRINTH = "https://api.modrinth.com/v2"
 FABRIC_META = "https://meta.fabricmc.net/v2/versions/loader"
 NEOFORGE_METADATA = "https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml"
+# The same list from the repository's own API, a different path on the same host: asked when the
+# metadata file keeps failing, which has happened while the API still answered.
+NEOFORGE_API = "https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge"
 NEOFORGE_ATTEMPTS = 3
 # Modrinth asks every client for a User-Agent that identifies the project.
 USER_AGENT = "n1ght3r/ThirstWasTaken2 dependency updater (github.com/n1ght3r/ThirstWasTaken2)"
@@ -359,20 +363,51 @@ def check_loader(props: Properties, changes: list[Change]) -> None:
                           "https://github.com/FabricMC/fabric-loader/releases", LOADER_MIRRORS))
 
 
-def neoforge_versions() -> list[str]:
+class Unreachable(Exception):
+    """A source that kept failing. The run skips what needed it instead of failing whole."""
+
+
+_neoforge_versions: list[str] | Unreachable | None = None
+
+
+def fetch_neoforge_versions() -> list[str]:
     # maven.neoforged.net now and then answers 404 or times out on a file that is there, so a failure is
-    # retried before the run gives up. Unlike Modrinth, a 404 here never means the answer is "none".
-    request = urllib.request.Request(NEOFORGE_METADATA, headers={"User-Agent": USER_AGENT})
-    for attempt in range(NEOFORGE_ATTEMPTS):
+    # retried, then the API asked, before giving up. Unlike Modrinth, a 404 here never means "none".
+    sources = [
+        (NEOFORGE_METADATA, lambda body: re.findall(r"<version>([^<]+)</version>", body)),
+        (NEOFORGE_API, lambda body: json.loads(body)["versions"]),
+    ]
+    errors = []
+    for url, parse in sources:
+        request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        for attempt in range(NEOFORGE_ATTEMPTS):
+            try:
+                with urllib.request.urlopen(request, timeout=30) as response:
+                    versions = parse(response.read().decode("utf-8"))
+                if versions:
+                    return versions
+                error: object = "no versions listed"
+            except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as caught:
+                error = caught
+            print(f"{url}: {error}, attempt {attempt + 1} of {NEOFORGE_ATTEMPTS}", file=sys.stderr)
+            if attempt < NEOFORGE_ATTEMPTS - 1:
+                time.sleep(10 * (attempt + 1))
+        errors.append(f"{url}: {error}")
+    raise Unreachable("; ".join(errors))
+
+
+def neoforge_versions() -> list[str]:
+    """Fetched once per run, every NeoForge node reads the same list. A failure is remembered too, so
+    the second node does not wait through the retries again."""
+    global _neoforge_versions
+    if _neoforge_versions is None:
         try:
-            with urllib.request.urlopen(request, timeout=30) as response:
-                return re.findall(r"<version>([^<]+)</version>", response.read().decode("utf-8"))
-        except (urllib.error.URLError, TimeoutError) as error:
-            if attempt == NEOFORGE_ATTEMPTS - 1:
-                raise
-            print(f"{NEOFORGE_METADATA}: {error}, retrying", file=sys.stderr)
-            time.sleep(10 * (attempt + 1))
-    raise AssertionError("unreachable")
+            _neoforge_versions = fetch_neoforge_versions()
+        except Unreachable as error:
+            _neoforge_versions = error
+    if isinstance(_neoforge_versions, Unreachable):
+        raise _neoforge_versions
+    return _neoforge_versions
 
 
 def check_neoforge(props: Properties, node: str, changes: list[Change]) -> None:
@@ -579,12 +614,20 @@ def main() -> int:
         for dep in MODRINTH_DEPS:
             check_modrinth(props, node, minecraft, dep, changes, warnings)
         if node_loader(node) == "neoforge":
-            check_neoforge(props, node, changes)
+            try:
+                check_neoforge(props, node, changes)
+            except Unreachable as error:
+                # A NeoForge outage should not hold back the Modrinth bumps found above; the next
+                # daily run checks NeoForge again.
+                warnings.append(f"`{node}` `deps.neoforge` was not checked, maven.neoforged.net did not answer ({error}).")
 
     for change in changes:
         print(f"{change.node or 'all'}: {change.key} {change.old_label} -> {change.new_label}")
     for warning in warnings:
         print(f"warning: {warning}", file=sys.stderr)
+        # Shown on the run's summary page, so a skipped check is seen even when no pull request is opened.
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            print(f"::warning::{warning}")
     if not changes:
         print("Everything is up to date.")
 
