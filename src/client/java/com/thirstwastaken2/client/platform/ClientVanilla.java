@@ -114,7 +114,11 @@ public final class ClientVanilla {
      * 26.1 renamed it.
      */
     public static AbstractWidget button(int width, int height, Component message, Runnable onPress, Painter painter) {
-        return new Button(0, 0, width, height, message, button -> onPress.run(), narration -> narration.get()) {
+        // The lambdas are locals, not constructor arguments: Forge 1.20.1's recompiled Button names every
+        // constructor parameter the same, so javac rejects a lambda inside this anonymous constructor.
+        Button.OnPress press = button -> onPress.run();
+        Button.CreateNarration narration = supplier -> supplier.get();
+        return new Button(0, 0, width, height, message, press, narration) {
             //? if >=26.1 {
             @Override
             protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {

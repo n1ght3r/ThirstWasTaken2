@@ -265,9 +265,9 @@ Also works with:
   </tr>
   <tr>
     <td><a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks / Storage</a></td>
-    <td>no</td>
+    <td>–</td>
     <td>1.21.1, 1.21.11, 26.1.x, 26.2</td>
-    <td>no</td>
+    <td>–</td>
   </tr>
   <tr>
     <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></td>
@@ -279,25 +279,25 @@ Also works with:
     <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
     <td>1.21.1 and newer</td>
     <td>1.21.1</td>
-    <td>no</td>
+    <td>–</td>
   </tr>
   <tr>
     <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
     <td>1.21.1</td>
     <td>1.21.1</td>
-    <td>no</td>
+    <td>–</td>
   </tr>
   <tr>
     <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
-    <td>no</td>
+    <td>–</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
     <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
-    <td>no</td>
+    <td>–</td>
     <td>1.21.1</td>
-    <td>no</td>
+    <td>–</td>
   </tr>
 </table>
 
