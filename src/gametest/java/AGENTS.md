@@ -44,6 +44,10 @@ underscore rather than a hyphen because NeoForge mod ids cannot contain one.
 - Drive interactions through `player.gameMode.useItem(...)` rather than calling `ItemStack.use`
   directly. Only the game-mode path applies the result back to the player, which is what the fill
   hooks depend on.
+- **Water in the world comes from `TestFixtures.water`,** which makes its patch plains with `/fillbiome`
+  first. Where a test lands depends on the seed and on how many tests run before it, so an unpinned
+  fixture can stand in an ocean and get salt water: 1.20.1 on Forge failed four drinking and
+  filling tests that way once tests were added. A test that needs another biome sets it the same way.
 - Use survival mode for anything that fills a container. `ItemUtils.createFilledResult` behaves
   differently once the player has infinite materials.
 

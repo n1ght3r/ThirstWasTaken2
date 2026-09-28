@@ -19,6 +19,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 //?}
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 
 import java.io.IOException;
@@ -50,6 +51,11 @@ final class TestFixtures {
      *
      * <p>Fluid spreading is scheduled rather than immediate, and these tests run inside a single
      * tick, so the source cannot flow away before it is sampled.
+     *
+     * <p>The water's grade comes from the biome, and where a test lands in the test world depends on
+     * the seed and on how many tests run before it, so without help a test could stand in an ocean and
+     * get salt water, which hydrates nothing (1.20.1 on Forge did, once tests were added). So the patch
+     * around the water is made plains first, and the water is the same in every run on every node.
      */
     static BlockPos water(GameTestHelper helper) {
         for (int x = 1; x <= 3; x++) {
@@ -57,8 +63,18 @@ final class TestFixtures {
                 helper.setBlock(new BlockPos(x, WATER.getY() - 1, z), Blocks.STONE);
             }
         }
+        BlockPos from = helper.absolutePos(new BlockPos(0, WATER.getY() - 1, 0));
+        BlockPos to = helper.absolutePos(new BlockPos(4, WATER.getY() + 1, 4));
+        helper.getLevel().getServer().getCommands().performPrefixedCommand(
+                helper.getLevel().getServer().createCommandSourceStack().withLevel(helper.getLevel()).withSuppressedOutput(),
+                "fillbiome " + Math.min(from.getX(), to.getX()) + " " + from.getY() + " " + Math.min(from.getZ(), to.getZ())
+                        + " " + Math.max(from.getX(), to.getX()) + " " + to.getY() + " " + Math.max(from.getZ(), to.getZ())
+                        + " minecraft:plains");
         helper.setBlock(WATER, Blocks.WATER);
-        return helper.absolutePos(WATER);
+        BlockPos water = helper.absolutePos(WATER);
+        check(helper, helper.getLevel().getBiome(water).is(Biomes.PLAINS),
+                "the water fixture should stand in plains, got " + helper.getLevel().getBiome(water));
+        return water;
     }
 
     /**

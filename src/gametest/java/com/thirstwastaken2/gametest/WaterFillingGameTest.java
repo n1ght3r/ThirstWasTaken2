@@ -30,10 +30,16 @@ public final class WaterFillingGameTest {
     public void sampledGradeReflectsSurroundings(GameTestHelper helper) {
         BlockPos water = TestFixtures.water(helper);
 
+        int before = WaterPurity.nearbyPollution(helper.getLevel(), water);
         WaterQuality clean = WaterPurity.sampleAt(helper.getLevel(), water);
         pollute(helper);
+        int after = WaterPurity.nearbyPollution(helper.getLevel(), water);
         WaterQuality polluted = WaterPurity.sampleAt(helper.getLevel(), water);
 
+        // The points are checked on their own as well: whether they cross a grade boundary depends on
+        // the biome's starting score, which TestFixtures.water pins to plains, Murky, where they do.
+        TestFixtures.check(helper, before == 0 && after == 25,
+                "mud and farmland beside the water should add 15 and 10 to its score, got " + before + " then " + after);
         TestFixtures.check(helper, clean instanceof WaterQuality.Fresh fresh
                         && polluted instanceof WaterQuality.Fresh dirtied
                         && dirtied.purity() < fresh.purity(),

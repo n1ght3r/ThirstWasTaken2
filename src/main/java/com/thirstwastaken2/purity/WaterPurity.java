@@ -337,7 +337,12 @@ public final class WaterPurity {
         }
     }
 
-    private static int nearbyPollution(Level level, BlockPos origin) {
+    /**
+     * What the blocks around {@code origin} add to its contamination score: mud or mangrove roots, and
+     * farmland, each counted once. Public so a gametest can check it apart from the biome, which the test
+     * world picks at random and which decides whether the added points cross a grade boundary.
+     */
+    public static int nearbyPollution(Level level, BlockPos origin) {
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         boolean muddy = false;
         boolean agricultural = false;
