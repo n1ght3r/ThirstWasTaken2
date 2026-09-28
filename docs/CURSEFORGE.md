@@ -225,6 +225,84 @@ Also works with:
 
 </div>
 
+### Versions
+
+<div class="spoiler">
+
+<table>
+  <tr>
+    <th>Mod</th>
+    <th>Fabric</th>
+    <th>NeoForge</th>
+    <th>Forge (1.20.1)</th>
+  </tr>
+  <tr>
+    <td><a href="https://www.curseforge.com/minecraft/mc-mods/appleskin">AppleSkin</a>, <a href="https://www.curseforge.com/minecraft/mc-mods/jade">Jade</a>, <a href="https://www.curseforge.com/minecraft/mc-mods/serene-seasons">Serene Seasons</a></td>
+    <td>every version</td>
+    <td>every version</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></td>
+    <td>every version (Refabricated)</td>
+    <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></td>
+    <td>26.1.x, 26.2 (Create Fly)</td>
+    <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks / Storage</a></td>
+    <td>no</td>
+    <td>1.21.1, 1.21.11, 26.1.x, 26.2</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></td>
+    <td>every version (Refabricated)</td>
+    <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
+    <td>1.21.1 and newer</td>
+    <td>1.21.1</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
+    <td>1.21.1</td>
+    <td>1.21.1</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
+    <td>no</td>
+    <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
+    <td>no</td>
+    <td>1.21.1</td>
+    <td>no</td>
+  </tr>
+</table>
+
+On Minecraft 1.20.1, the drinks and meals of every addon above restore thirst wherever the addon has
+them, marked or not. What the table leaves out there, and why:
+
+- Brewin' and Chewin': its 1.20.1 Keg is an older design, so water poured into it does not keep its
+  grade.
+- Expanded Delight: its 1.20.1 build is Fabric only, and there the Cooking Pot still cooks its two soups
+  from sea water.
+- Cultural Delights: its 1.20.1 build has no Vat, so there is nothing to change.
+
+</div>
+
 ## Settings Screen
 Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://www.curseforge.com/minecraft/mc-mods/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 
@@ -272,9 +350,6 @@ player.addItem(ThirstApi.waterBottle(ThirstApi.maxPurity()));
 See the [data pack](https://n1ght3r.github.io/ThirstWasTaken2/docs/developers/data-packs) and [Java API](https://n1ght3r.github.io/ThirstWasTaken2/docs/developers/java-api) guides.
 
 ## Quick FAQ
-
-**Is there a Forge version?**  
-Yes, for Minecraft 1.20.1. The later versions are on Fabric and NeoForge.
 
 **Does it work in Peaceful mode?**  
 Yes. Thirst refills on its own, unless [`thirstDepletionInPeaceful`](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration#thirstdepletioninpeaceful) is on. Pairs well with [Peaceful Hunger](https://modrinth.com/mod/peaceful-hunger).
