@@ -165,16 +165,6 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a></b><br>
-      <i>1.21.1 NeoForge</i><br><br>
-      Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.
-    </td>
-    <td width="45%">
-      <img alt="Cold Sweat's body temperature gauge between the hearts and the thirst bar, over a snowy taiga" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/cold-sweat/cold-sweat-hud.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
       <i>Fabric: <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
       1.21.1 NeoForge: <a href="https://modrinth.com/mod/farmers-delight">Farmer's Delight</a></i><br><br>
@@ -218,6 +208,10 @@ Also works with:
   <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight"><img alt="Rustic Delight" src="https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png" width="242"></a><br><i>Fabric and 1.21.1 NeoForge</i></td>
     <td width="55%">Its coffees, soups and bell peppers restore thirst.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat"><img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="180"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.</td>
   </tr>
   <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric and NeoForge</i></td>

@@ -1,5 +1,7 @@
 # Cold Sweat
 
+<img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="360">
+
 With Cold Sweat installed, thirst follows the temperature Cold Sweat measures around the player, and
 Cold Sweat's own Waterskin carries a water grade and quenches thirst.
 
