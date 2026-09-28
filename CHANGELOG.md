@@ -16,6 +16,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Compatibility with Kaleidoscope Cookery on Fabric and Forge 1.20.1:
   - The Stockpot and the Teapot keep the grade of the water poured in, and the Teapot brews nothing
     from sea water, the same as on the later versions.
+- Compatibility with Fruits Delight on Forge 1.20.1:
+  - Sea water makes no juice and no fruit cauldron, the same as on NeoForge 1.21.1.
 - Compatibility with Create on Forge 1.20.1:
   - The Sand Filter cleans water pumped through it by one grade.
   - Water keeps its grade through pipes, pumps, Spouts and Item Drains.

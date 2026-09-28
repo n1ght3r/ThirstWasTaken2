@@ -238,7 +238,7 @@ val integrations: List<Integration> = listOf(
     Integration(
         dir = "fruitsdelight",
         depsKey = "deps.fruits_delight",
-        loaders = setOf(Loader.NEOFORGE),
+        loaders = setOf(Loader.NEOFORGE, Loader.FORGE),
         mixinConfig = "thirstwastaken2.fruitsdelight.mixins.json",
         neoForgeDependencies = listOf("fruitsdelight"),
     ),

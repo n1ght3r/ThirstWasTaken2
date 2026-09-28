@@ -194,7 +194,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
 | Brewin' and Chewin' | `deps.brewin_and_chewin`: both 1.21.1 nodes | [src/main/brewinandchewin/AGENTS.md](src/main/brewinandchewin/AGENTS.md) |
 | Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge` | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md) |
-| Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
+| Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge`, `1.20.1-forge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
 | Expanded Delight | `deps.expanded_delight`: `1.21.1-neoforge` | [src/main/expandeddelight/AGENTS.md](src/main/expandeddelight/AGENTS.md) |
 | Cultural Delights | `deps.cultural_delights`: `1.21.1-neoforge` (the Fabric port stopped at 0.17 and is not built against) | [src/main/culturaldelights/AGENTS.md](src/main/culturaldelights/AGENTS.md) |
 | Serene Seasons | `deps.serene_seasons`: every node, every loader | [src/main/sereneseasons/AGENTS.md](src/main/sereneseasons/AGENTS.md) |

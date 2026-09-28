@@ -300,6 +300,13 @@ fun forgeMixinConfig(line: String, withRefmap: Boolean): String {
     return added.joinToString("") { "$indent$it\n" } + line
 }
 
+// A mixin that names its target by string does so because the mod is optional and nothing compiles
+// against it (Fruits Delight and the L2 Library nested in it). Forge's annotation processor, unlike Loom's,
+// fails the build when such a target is not on the classpath; a warning is what Fabric gives.
+tasks.named<JavaCompile>("compileJava") {
+    options.compilerArgs.add("-AMSG_MIXIN_SOFT_TARGET_NOT_FOUND=warning")
+}
+
 mixin {
     add(sourceSets.main.get(), refmap)
     config("$modId.mixins.json")
@@ -353,6 +360,12 @@ dependencies {
         modCompileOnly("maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
         runClientMod(listOf("kaleidoscope-cookery", "kaleidoscope-cookery-refabricated", "kaleidoscope_cookery"),
             "maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
+    }
+    // Fruits Delight: nothing compiles against it, its mixins name their targets by string. Only here to
+    // test them. Its L2 libraries are nested in its jar, which Forge loads itself.
+    findProperty("deps.fruits_delight")?.let {
+        runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"),
+            "maven.modrinth:fruits-delight:$it") { isTransitive = false }
     }
     // Test the drinks and meals Farmer's Delight adds, and the Cooking Pot recipes. Reached by id only.
     findProperty("deps.farmersdelight")?.let {

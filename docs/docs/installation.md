@@ -113,6 +113,7 @@ On Minecraft 1.20.1 only. The settings screen opens from the Config button in Fo
 | [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 9.1.0.3 | The same as on Fabric. |
 | [Farmer's Delight](https://modrinth.com/mod/farmers-delight) | 1.20.1-1.3.4 | The same as on Fabric. |
 | [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) | 1.5.1-forge+mc1.20.1 | The same as on NeoForge. |
+| [Fruits Delight](https://modrinth.com/mod/fruits-delight) | 1.1.3 | The same as on NeoForge. |
 
 Other food mods usually work as they are. Drinks their mod marks as drinks restore thirst, and any
 item can be given a value in [Configuration](/docs/configuration).

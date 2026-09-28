@@ -22,6 +22,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * recipe, where sea water should not count either. Named by string, since L2 Core is not on the compile
  * classpath; the record's one field is a Minecraft type.
  */
+// L2 Library on 1.20.1, where the field is a plain Potion and a bridge test(Object) sits beside
+// test(ItemStack), so the target names its descriptor. Neither name is Minecraft's, so neither is remapped.
+//? if >=1.20.5 {
 @Mixin(targets = "dev.xkmc.l2core.serial.ingredients.PotionIngredient")
 abstract class WaterBottleIngredientMixin {
     @Shadow
@@ -33,3 +36,15 @@ abstract class WaterBottleIngredientMixin {
         if (potion.value() == Potions.WATER.value() && WaterPurity.isSalty(stack)) cir.setReturnValue(false);
     }
 }
+//?} else {
+/*@Mixin(targets = "dev.xkmc.l2library.serial.ingredients.PotionIngredient", remap = false)
+abstract class WaterBottleIngredientMixin {
+    @Shadow
+    public Potion potion;
+
+    @Inject(method = "test(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
+    private void thirst$seaWaterIsNotWater(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+        if (potion == Potions.WATER && WaterPurity.isSalty(stack)) cir.setReturnValue(false);
+    }
+}
+*///?}

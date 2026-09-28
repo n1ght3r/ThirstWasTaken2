@@ -1,6 +1,5 @@
 package com.thirstwastaken2.fruitsdelight;
 
-import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -16,14 +15,16 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Whether Fruits Delight is installed, and whether each class a mixin targets still has its method.
  *
- * <p>Names no class of Fruits Delight's or L2 Core's and no Minecraft class, so the mixin plugin can ask
- * before anything they hold is loaded. It reads FML's list of discovered mods, which is complete before
- * any mixin config is read, and reads class files without loading them. L2 Core is nested in Fruits
- * Delight's jar and is not a mod file of its own there, which is why a target is looked up on the
- * classpath rather than in a mod's jar.
+ * <p>Names no class of Fruits Delight's or L2 Core's, no Minecraft class and no loader, so the mixin
+ * plugin can ask before anything they hold is loaded, on NeoForge and on Forge 47 alike: every answer is
+ * a resource lookup or a class file read, which never loads a class. L2 Core (L2 Library on 1.20.1) is
+ * nested in Fruits Delight's jar and is not a mod file of its own there, which is why a target is looked
+ * up on the classpath rather than in a mod's jar.
  */
 public final class FruitsDelightPresence {
     public static final String MOD_ID = "fruitsdelight";
+    /** A class every build of Fruits Delight the integration supports has, looked up without loading it. */
+    private static final String MARKER = "dev/xkmc/fruitsdelight/content/cauldrons/FDCauldronInteraction.class";
 
     private static final Logger LOGGER = LoggerFactory.getLogger("thirstwastaken2");
 
@@ -35,7 +36,7 @@ public final class FruitsDelightPresence {
     public static boolean isPresent() {
         Boolean known = present;
         if (known == null) {
-            known = LoadingModList.get().getModFileById(MOD_ID) != null;
+            known = FruitsDelightPresence.class.getClassLoader().getResource(MARKER) != null;
             present = known;
         }
         return known;

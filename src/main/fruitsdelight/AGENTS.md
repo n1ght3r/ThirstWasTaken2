@@ -7,7 +7,8 @@ thirst. Both took sea water. This directory refuses it, as Brewin' and Chewin's 
 Delights' vat brew nothing from it. The plan and its decisions are in
 [docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md](../../../docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md).
 
-**Built on `1.21.1-neoforge` only**, the mod's one build. What it does:
+**Built on `1.21.1-neoforge` and `1.20.1-forge`**, the mod's two builds for a version this mod supports
+(1.2.14 and 1.1.3). What it does:
 
 - **a bottle of sea water is not a water bottle** to a recipe: no juice from it;
 - **a full cauldron of sea water takes no lemon slice and no jam**, by hand or by dispenser;
@@ -49,12 +50,12 @@ fruitsdelight/resources/
 
 ## How it stays optional
 
-1. **Build.** Only where `deps.fruits_delight` is set does `build.neoforge.gradle.kts` add this
-   directory and append the mixin config to the built manifest with `fruitsdelight` as an optional
+1. **Build.** Only where `deps.fruits_delight` is set do `build.neoforge.gradle.kts` and
+   `build.forge.gradle.kts` add this directory and append the mixin config to the built manifest with `fruitsdelight` as an optional
    dependency, from [its row in the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt).
    `-PwithoutOptional=fruitsdelight` (or `fruits-delight`) leaves the mod out of `runClient`.
-2. **Runtime gate.** `FruitsDelightPresence` reads FML's list of mod files and looks for each target on
-   the classpath, never loading a class. A class or method gone upstream is logged once and its mixin
+2. **Runtime gate.** `FruitsDelightPresence` looks up a class of the mod, and each target, on the
+   classpath as a resource, never loading a class, so both loaders compile it. A class or method gone upstream is logged once and its mixin
    skipped.
 3. **Mixin plugin.** `shouldApplyMixin` asks the gate, then whether the method is still declared.
 
@@ -68,3 +69,11 @@ fruitsdelight/resources/
 - What it does is checked in a real client with
   [tools/agent/integrations/fruits-delight.jsonl](../../../tools/agent/integrations/fruits-delight.jsonl),
   whose header says how to run and verify it.
+- On 1.20.1 the juice takes its water through L2 Library's `PotionIngredient`, whose field is a plain
+  `Potion` beside a bridge `test(Object)`, so `WaterBottleIngredientMixin` forks its target and names the
+  descriptor. Forge's annotation processor fails on a string target it cannot find; the Forge script
+  makes that a warning, as Loom does.
+  [tools/agent/integrations/fruits-delight-1.20.1.jsonl](../../../tools/agent/integrations/fruits-delight-1.20.1.jsonl)
+  passed on `1.20.1-forge` on 2026-09-28: all 53 ids exist, plain and Dirty bottles make orange juice
+  and a sea water one does not, a lemon slice makes lemonade of a plain and a Dirty cauldron and not of
+  sea water, and juice, jello and an orange restore 8, 3 and 2.

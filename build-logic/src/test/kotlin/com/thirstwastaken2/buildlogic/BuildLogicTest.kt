@@ -55,7 +55,7 @@ class BuildLogicTest {
             integrationsFor(Loader.FABRIC, everything).map { it.dir })
         assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons"),
             integrationsFor(Loader.NEOFORGE, everything).map { it.dir })
-        assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "sereneseasons"), integrations.filter { it.loaderIndependent }.map { it.dir })
+        assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "sereneseasons"), integrations.filter { it.loaderIndependent }.map { it.dir })
     }
 
     @Test

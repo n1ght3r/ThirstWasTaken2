@@ -1,0 +1,206 @@
+// fruits-delight.jsonl for Minecraft 1.20.1, on 1.20.1-forge, Fruits Delight's only 1.20.1 build (1.1.3,
+// L2 Library nested). Water is the potion's NBT, and an inventory is searched with `execute if data`,
+// since 1.20.1 has no `execute if items`; the checks and their order are the same.
+//     python tools/agent/new_world.py 1.20.1-forge FruitsAgent
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/fruits-delight-1.20.1.jsonl -Pquickplay=FruitsAgent
+//     python tools/agent/drive.py run/1.20.1-forge/agent/client tools/agent/integrations/fruits-delight-1.20.1.jsonl --verify --max-age 15
+//
+// The rest of the header of fruits-delight.jsonl holds here: its juice takes the water bottle through
+// L2 Library's potion ingredient, which WaterBottleIngredientMixin targets on 1.20.1.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 60"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -8 199 -8 8 199 8 minecraft:stone"}}
+
+// Every id ThirstConfig lists for the mod exists: /give refuses an unknown item.
+{"id": "id_hamimelon_juice", "command": "server.command", "args": {"command": "give @p fruitsdelight:hamimelon_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kiwi_juice", "command": "server.command", "args": {"command": "give @p fruitsdelight:kiwi_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_juice", "command": "server.command", "args": {"command": "give @p fruitsdelight:orange_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon_juice", "command": "server.command", "args": {"command": "give @p fruitsdelight:lemon_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pear_juice", "command": "server.command", "args": {"command": "give @p fruitsdelight:pear_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hawberry_tea", "command": "server.command", "args": {"command": "give @p fruitsdelight:hawberry_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mango_tea", "command": "server.command", "args": {"command": "give @p fruitsdelight:mango_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_peach_tea", "command": "server.command", "args": {"command": "give @p fruitsdelight:peach_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lychee_cherry_tea", "command": "server.command", "args": {"command": "give @p fruitsdelight:lychee_cherry_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mangosteen_tea", "command": "server.command", "args": {"command": "give @p fruitsdelight:mangosteen_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bayberry_soup", "command": "server.command", "args": {"command": "give @p fruitsdelight:bayberry_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mango_milkshake", "command": "server.command", "args": {"command": "give @p fruitsdelight:mango_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bellini_cocktail", "command": "server.command", "args": {"command": "give @p fruitsdelight:bellini_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hamimelon_shaved_ice", "command": "server.command", "args": {"command": "give @p fruitsdelight:hamimelon_shaved_ice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hamimelon_popsicle", "command": "server.command", "args": {"command": "give @p fruitsdelight:hamimelon_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kiwi_popsicle", "command": "server.command", "args": {"command": "give @p fruitsdelight:kiwi_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:apple_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bayberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:bayberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_blueberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:blueberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chorus_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:chorus_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cranberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:cranberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_durian_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:durian_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_fig_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:fig_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glowberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:glowberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hamimelon_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:hamimelon_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hawberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:hawberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kiwi_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:kiwi_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:lemon_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lychee_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:lychee_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mango_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:mango_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mangosteen_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:mangosteen_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_melon_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:melon_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:orange_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_peach_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:peach_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pear_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:pear_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_persimmon_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:persimmon_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pineapple_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:pineapple_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweetberry_jello", "command": "server.command", "args": {"command": "give @p fruitsdelight:sweetberry_jello"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hamimelon_slice", "command": "server.command", "args": {"command": "give @p fruitsdelight:hamimelon_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange", "command": "server.command", "args": {"command": "give @p fruitsdelight:orange"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lychee", "command": "server.command", "args": {"command": "give @p fruitsdelight:lychee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pineapple_slice", "command": "server.command", "args": {"command": "give @p fruitsdelight:pineapple_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kiwi", "command": "server.command", "args": {"command": "give @p fruitsdelight:kiwi"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_peach", "command": "server.command", "args": {"command": "give @p fruitsdelight:peach"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mango", "command": "server.command", "args": {"command": "give @p fruitsdelight:mango"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pear", "command": "server.command", "args": {"command": "give @p fruitsdelight:pear"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_slice", "command": "server.command", "args": {"command": "give @p fruitsdelight:orange_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon_slice", "command": "server.command", "args": {"command": "give @p fruitsdelight:lemon_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_baked_pear", "command": "server.command", "args": {"command": "give @p fruitsdelight:baked_pear"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pear_with_rock_sugar", "command": "server.command", "args": {"command": "give @p fruitsdelight:pear_with_rock_sugar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_fig_chicken_stew", "command": "server.command", "args": {"command": "give @p fruitsdelight:fig_chicken_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mango_salad", "command": "server.command", "args": {"command": "give @p fruitsdelight:mango_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_blueberry_custard", "command": "server.command", "args": {"command": "give @p fruitsdelight:blueberry_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Orange juice from a plain, a Dirty and a sea water bottle. Each is crafted on its own, and taking the
+// result proves the recipe accepted the bottle. The plain and the Dirty one do; the sea water one does
+// not (WaterBottleIngredientMixin). No glass bottle comes back, as with vanilla's own water bottle recipes.
+{"id": "table", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:crafting_table"}}
+{"id": "plain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "plain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 45"}}
+{"id": "plain_give9", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:potion{Potion:\"minecraft:water\"}"}}
+{"id": "plain_give10", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:sugar"}}
+{"id": "plain_give11", "command": "server.command", "args": {"command": "item replace entity @p container.11 with fruitsdelight:orange 2"}}
+{"id": "plain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "plain_open", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "plain_opened", "command": "wait", "args": {"ticks": 10}}
+{"id": "plain_take0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "plain_put0", "command": "client.slot", "args": {"slot": 1}}
+{"id": "plain_take1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "plain_put1", "command": "client.slot", "args": {"slot": 2}}
+{"id": "plain_take2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "plain_put2a", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "plain_put2b", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "plain_grid", "command": "client.slots"}
+{"id": "plain_result", "command": "client.slot", "args": {"slot": 0, "action": "quick_move"}}
+{"id": "plain_close", "command": "client.screen", "args": {"open": "none"}}
+{"id": "plain_juice", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"fruitsdelight:orange_juice\"}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "plain_bottleBack", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"minecraft:glass_bottle\"}]"}}
+{"id": "dirty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "dirty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 45"}}
+{"id": "dirty_give9", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:potion{Potion:\"minecraft:water\",thirstwastaken2:{purity:0,salty:0b}}"}}
+{"id": "dirty_give10", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:sugar"}}
+{"id": "dirty_give11", "command": "server.command", "args": {"command": "item replace entity @p container.11 with fruitsdelight:orange 2"}}
+{"id": "dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirty_open", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "dirty_opened", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirty_take0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "dirty_put0", "command": "client.slot", "args": {"slot": 1}}
+{"id": "dirty_take1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "dirty_put1", "command": "client.slot", "args": {"slot": 2}}
+{"id": "dirty_take2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "dirty_put2a", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "dirty_put2b", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "dirty_grid", "command": "client.slots"}
+{"id": "dirty_result", "command": "client.slot", "args": {"slot": 0, "action": "quick_move"}}
+{"id": "dirty_close", "command": "client.screen", "args": {"open": "none"}}
+{"id": "dirty_juice", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"fruitsdelight:orange_juice\"}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "dirty_bottleBack", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"minecraft:glass_bottle\"}]"}}
+{"id": "salty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "salty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 45"}}
+{"id": "salty_give9", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:potion{Potion:\"minecraft:water\",thirstwastaken2:{salty:1b}}"}}
+{"id": "salty_give10", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:sugar"}}
+{"id": "salty_give11", "command": "server.command", "args": {"command": "item replace entity @p container.11 with fruitsdelight:orange 2"}}
+{"id": "salty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "salty_open", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "salty_opened", "command": "wait", "args": {"ticks": 10}}
+{"id": "salty_take0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "salty_put0", "command": "client.slot", "args": {"slot": 1}}
+{"id": "salty_take1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "salty_put1", "command": "client.slot", "args": {"slot": 2}}
+{"id": "salty_take2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "salty_put2a", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "salty_put2b", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "salty_grid", "command": "client.slots"}
+{"id": "salty_result", "command": "client.slot", "args": {"slot": 0, "action": "quick_move"}}
+{"id": "salty_close", "command": "client.screen", "args": {"open": "none"}}
+{"id": "salty_juice", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"fruitsdelight:orange_juice\"}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "salty_bottleBack", "command": "server.command", "args": {"command": "execute if data entity @p Inventory[{id:\"minecraft:glass_bottle\"}]"}}
+
+// A lemon slice on a full cauldron of plain, Dirty and sea water. The first two become a lemonade
+// cauldron, the grade going with the replaced block; the sea water one stays (FruitCauldronMixin). The player
+// looks at the cauldron's body at pitch 30; at 45 the ray passes between its legs to the floor.
+{"id": "cauldron_plain", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:water_cauldron[level=3]"}}
+{"id": "lemon_plain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "lemon_plain_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:lemon_slice"}}
+{"id": "lemon_plain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "lemon_plain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_plain_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "lemon_plain_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_plain_block", "command": "server.command", "args": {"command": "execute if block 0 200 2 fruitsdelight:lemonade_cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "cauldron_dirty", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:water_cauldron[level=3,purity=1]"}}
+{"id": "lemon_dirty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "lemon_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:lemon_slice"}}
+{"id": "lemon_dirty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "lemon_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "lemon_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_dirty_block", "command": "server.command", "args": {"command": "execute if block 0 200 2 fruitsdelight:lemonade_cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "cauldron_salty", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:water_cauldron[level=3,purity=5]"}}
+{"id": "lemon_salty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "lemon_salty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:lemon_slice"}}
+{"id": "lemon_salty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "lemon_salty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_salty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "lemon_salty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "lemon_salty_block", "command": "server.command", "args": {"command": "execute if block 0 200 2 fruitsdelight:lemonade_cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "cauldronGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// Drinking: orange juice restores 8, an apple jello 3, an orange 2, from thirst 4 and quenched 0.
+{"id": "drink_juice_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_juice_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_juice_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_juice_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_juice_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:orange_juice"}}
+{"id": "drink_juice_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_juice_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_juice_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_juice_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_juice_state", "command": "client.state", "expect": {"result.thirst": 12}}
+{"id": "drink_jello_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_jello_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_jello_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_jello_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_jello_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:apple_jello"}}
+{"id": "drink_jello_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_jello_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_jello_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_jello_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_jello_state", "command": "client.state", "expect": {"result.thirst": 7}}
+{"id": "drink_orange_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_orange_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_orange_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_orange_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_orange_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with fruitsdelight:orange"}}
+{"id": "drink_orange_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_orange_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_orange_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_orange_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_orange_state", "command": "client.state", "expect": {"result.thirst": 6}}
+
+{"id": "done", "command": "client.state"}

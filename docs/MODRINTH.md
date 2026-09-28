@@ -214,7 +214,7 @@ Also works with:
     <td width="55%">Its drinks, cucumbers and salads restore thirst, and the Vat brews nothing from sea water.</td>
   </tr>
   <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight"><img alt="Fruits Delight" src="https://media.forgecdn.net/attachments/765/821/logo2.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight"><img alt="Fruits Delight" src="https://media.forgecdn.net/attachments/765/821/logo2.png" width="272"></a><br><i>1.21.1 NeoForge, 1.20.1 Forge</i></td>
     <td width="55%">Its juices, teas, jellos, popsicles and juicy fruits restore thirst, and sea water makes no juice.</td>
   </tr>
   <tr>
