@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "thirstwastaken2:item/salt_water_bucket"
-  }
-}

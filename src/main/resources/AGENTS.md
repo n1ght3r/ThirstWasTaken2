@@ -121,17 +121,11 @@ sampled bowls; cooking recipes write it in the result. The PNG variants are repr
 the original sprite by `tools/generate_water_sprites.py`, salt included. Waterskins deliberately do
 not display quality in their sprite, only in their durability-bar colour.
 
-`items/salt_water_bottle.json` and `items/salt_water_bucket.json` exist for vanilla's containers,
-which cannot be given a model of ours at registration. `WaterPurity.setQuality` points the
-`minecraft:item_model` component at them when the water is salty and clears it when it is not, so a
-sea-water bottle never looks like a drinkable one.
-
-The bottle one is worth copying rather than reinventing: it reuses **vanilla's own**
-`minecraft:item/potion` model and only replaces the tint, `minecraft:potion` becoming a
-`minecraft:constant` of the sea colour. It ships no texture, so the bottle keeps whatever shape the
-player's resource pack gives potions. The bucket has no tinted overlay layer to borrow, so
-`textures/item/salt_water_bucket.png` is a one-off recolour of vanilla's water bucket: same bucket,
-sea-coloured water.
+Sea water in vanilla's bottle and bucket keeps vanilla's sprite on every version, so all nodes look
+the same; only its tooltip says Salty. Up to 1.4 the 1.21.2+ nodes pointed the `minecraft:item_model`
+component at `items/salt_water_bottle.json` and `items/salt_water_bucket.json`, which 1.21.1 and 1.20.1
+could not do. Those two definitions are still generated for stacks saved back then, and draw exactly
+what vanilla's `potion` and `water_bucket` definitions draw. Nothing sets the component any more.
 
 ## The hanging pots
 

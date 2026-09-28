@@ -4,8 +4,8 @@
     "model": "minecraft:item/potion",
     "tints": [
       {
-        "type": "minecraft:constant",
-        "value": -13386568
+        "type": "minecraft:potion",
+        "default": -13083194
       }
     ]
   }

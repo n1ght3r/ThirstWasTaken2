@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "thirstwastaken2:item/salt_water_bucket"
+    "model": "minecraft:item/water_bucket"
   }
 }

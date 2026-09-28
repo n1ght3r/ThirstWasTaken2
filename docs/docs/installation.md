@@ -51,7 +51,6 @@ The Java version is the minimum on every loader. The runtime Minecraft ships wit
 
 ### Minecraft 1.20.1 to 1.21.1
 
-- Sea water in a bottle or bucket looks like ordinary water. Its tooltip still reads Salty.
 - The droplets in item tooltips have a shadow.
 
 ## Compatible mods

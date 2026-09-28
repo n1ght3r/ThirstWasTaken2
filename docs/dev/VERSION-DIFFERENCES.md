@@ -51,7 +51,6 @@ and config. The gametests hold every node to that. Only these differ:
 
 | | 26.3 | 26.2 | 26.1.x | 1.21.11 | 1.21.1 |
 |---|---|---|---|---|---|
-| Sea water in a bottle or bucket has its own sprite | yes | yes | yes | yes | **no**, it looks like ordinary water |
 | Droplets in item tooltips | no shadow | no shadow | no shadow | no shadow | **with a shadow** |
 | Config screen section headings | vanilla heading | vanilla heading | vanilla heading | vanilla heading | **a centred text row** |
 | The Sand Filter on Fabric, through Create Fly | **no** | yes | yes | **no** | **no** |
@@ -63,18 +62,16 @@ the rest of this page.
 
 ### Why 1.21.1 looks different
 
-- **Sea-water bottles and buckets.** Later versions swap their sprite through the `minecraft:item_model`
-  component, which only exists from 1.21.2. On 1.21.1 a vanilla item has one model for every stack,
-  and changing that would mean overriding vanilla's `potion` and `water_bucket` models, which breaks
-  resource packs and other mods. The bowl is unaffected because it is the mod's own item, with its own
-  model and custom model data overrides.
 - **The droplet shadow.** Later versions turn it off with `Style#withoutShadow`, which only exists
   from 1.21.4. On 1.21.1 the tooltip renderer decides, for all text at once.
 
-One of these could still be closed: a sea-water **bottle** can be tinted through the potion's custom
-colour, since vanilla's potion model already tints by it. The cost is that sea-water bottles then carry
-different potion contents from ordinary ones, which other mods comparing contents would notice. The
-bucket has no tint layer, and the shadow has no per-text switch, so those two stay.
+The shadow has no per-text switch, so it stays.
+
+Sea water in a bottle or bucket looks like ordinary water on **every** version, and only its tooltip
+says Salty. Up to 1.4 the 1.21.2+ nodes swapped the sprite through the `minecraft:item_model`
+component, which 1.21.1 and 1.20.1 lack, so the versions looked different; it was dropped to make them
+the same. The bowl keeps its sea-water sprite everywhere, because it is the mod's own item, with its
+own model and custom model data overrides.
 
 ### Why the Sand Filter is missing
 
@@ -219,7 +216,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Items and blocks are given their id before construction, and a block item names itself after the block only when asked | `Vanilla.registerItem`, `registerBlock`, `registerBlockItem`; `SophisticatedUpgradeItem` (Sophisticated's `platform/`) |
 | `Block#updateShape` reordered its parameters and schedules ticks through its own argument | `SupportedBlock` |
 | Drinking became the consumable component | `DrinkItem`; on 1.21.1 it overrides use, animation, duration and finishing |
-| The `item_model` component | `Vanilla.swapItemModel` (visible, see above); `ItemAppearanceGameTest` only asserts the swap where the component exists |
+| The `item_model` component | `Vanilla.itemModelOf`, `null` before 1.21.2; `ItemAppearanceGameTest` asserts sea water sets none on any version |
 | `Item#use` returns a result without the resulting stack; `CONSUME` became `SUCCESS_SERVER` | `ItemStackMixin`, `Loader.onUseItem`; the constant is a replacement |
 | Server-side damage became `hurtServer` | `Vanilla.hurt` |
 | `FoodData#tick` takes a `ServerPlayer` | `FoodDataMixin` |

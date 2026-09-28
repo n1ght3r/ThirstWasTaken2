@@ -96,7 +96,7 @@ The generators are the same; the formats they write to are older.
   takes the last override the value reaches, so the list is in rising order.
 - **Custom model data is one integer**, not a float list; `Vanilla.modelSelector` writes it, and the
   recipe results carry it in that form.
-- **No sea-water bottle or bucket models**, since nothing on 1.21.1 could select them.
+- **No legacy sea-water bottle and bucket definitions**, since no 1.21.1 stack ever pointed at them.
 - **The advancement background is a texture path**, `minecraft:textures/block/terracotta.png`.
 - **Ingredients are `{"item": …}` objects.** Nothing branches for this; the codec writes it.
 - **The filled-bowl crafting recipe is built by hand.** 1.21.1's shapeless builder cannot give its
@@ -116,7 +116,7 @@ The generators are the same; the formats they write to are older.
 | `ThirstBiomeTagProvider` | `data/…/tags/worldgen/biome/stagnant_water.json` |
 | `ThirstBlockLootProvider` | `data/…/loot_table/blocks/`, as JSON through vanilla's codec |
 | `ThirstModelProvider` | `assets/…/models/item/`, the definitions for the mod's own items, and through `HangingPotModels` the pot's blockstate and generated block models |
-| `ThirstItemModelDefinitionProvider` | the two definitions in `assets/…/items/` that have no item; 1.21.4 and later |
+| `ThirstItemModelDefinitionProvider` | the two legacy definitions in `assets/…/items/` that have no item, kept for sea-water bottles and buckets saved up to 1.4; 1.21.4 and later |
 
 `FarmersDelightRecipeProvider` is a plain `DataProvider` because nothing of Farmer's Delight is on
 the datagen classpath, so there is no recipe class to hand a builder. It encodes the same ingredient

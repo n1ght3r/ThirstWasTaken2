@@ -34,10 +34,8 @@ import java.util.List;
  * no definitions: the item's own model carries an override per value, and custom model data is one
  * integer. Both versions select the same sprite for the same stack.
  *
- * <p>{@code salt_water_bottle} and {@code salt_water_bucket} are handled by
- * {@code ThirstItemModelDefinitionProvider} instead: they are model ids for vanilla's own
- * containers, not items of the mod's own, so there is no item here to hang them on. 1.21.1 has no way
- * to use them, so neither is written there.
+ * <p>Sea water in a vanilla bottle or bucket keeps vanilla's sprite on every version; only the bowl,
+ * which is the mod's own, has a salty one.
  */
 public final class ThirstModelProvider extends FabricModelProvider {
     /** The dispatch value sea water gets, one past the last fresh grade. */
@@ -74,19 +72,6 @@ public final class ThirstModelProvider extends FabricModelProvider {
                 dispatch(generators, ThirstItems.TERRACOTTA_WATER_BOWL, ThirstItems.BOWL_MODEL_INDEX, bowlVariants()));
         generators.itemModelOutput.accept(ThirstItems.WATERSKIN,
                 dispatch(generators, ThirstItems.WATERSKIN, ThirstItems.WATERSKIN_MODEL_INDEX, waterskinVariants()));
-
-        // The sea-water bucket sprite. Its definition is written next door; only the model belongs
-        // here, because it is an ordinary flat item model that happens to have no item.
-        // 26.1 wrapped the texture in a Material, which 1.21.11 has no overload for.
-        //? if >=26.1 {
-        TextureMapping bucket = TextureMapping.layer0(
-                new net.minecraft.client.resources.model.sprite.Material(
-                        ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL));
-        //?} else
-        //TextureMapping bucket = TextureMapping.layer0(ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL);
-
-        ModelTemplates.FLAT_ITEM.create(
-                ThirstItemModelDefinitionProvider.SALT_WATER_BUCKET_MODEL, bucket, generators.modelOutput);
     }
 
     // Generates one flat model per suffix and returns a range dispatch over them, with the first

@@ -422,22 +422,9 @@ public final class Vanilla {
     }
 
     /**
-     * Points a stack at the item model {@code model} while {@code use} holds, and takes it away again
-     * once it does not, but only if this mod set it, so a modded container keeps its own. The
-     * {@code minecraft:item_model} component arrived in 1.21.2; before it a vanilla item's sprite
-     * cannot be swapped per stack, so this does nothing and the stack keeps its usual sprite.
+     * The item model a stack is pointed at, or {@code null}. Always {@code null} before 1.21.2, where the
+     * {@code minecraft:item_model} component does not exist.
      */
-    public static void swapItemModel(ItemStack stack, Identifier model, boolean use) {
-        //? if >=1.21.2 {
-        if (use) {
-            stack.set(net.minecraft.core.component.DataComponents.ITEM_MODEL, model);
-        } else if (model.equals(stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL))) {
-            stack.remove(net.minecraft.core.component.DataComponents.ITEM_MODEL);
-        }
-        //?}
-    }
-
-    /** The item model a stack is pointed at, or {@code null}. Always {@code null} before 1.21.2, see {@link #swapItemModel}. */
     public static Identifier itemModelOf(ItemStack stack) {
         //? if >=1.21.2 {
         return stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);

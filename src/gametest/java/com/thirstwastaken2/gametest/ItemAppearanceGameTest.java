@@ -11,7 +11,8 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * What decides how an item looks, as far as a server can see it: the custom model data the sprites
- * dispatch on, the item model sea water swaps in, and the waterskin's durability bar.
+ * dispatch on, that sea water leaves vanilla's bottle and bucket alone, and the waterskin's durability
+ * bar.
  *
  * <p>Whether the sprite the client then draws is the right picture is a manual check; see
  * docs/dev/MANUAL-TESTING.md. What is tested here is that the value it draws from is right.
@@ -54,21 +55,24 @@ public final class ItemAppearanceGameTest {
     }
 
     /**
-     * Sea water in a vanilla bottle swaps its whole item model, and swaps it back when the water is
-     * fresh again. 1.21.1 has no item model component, so there the bottle keeps vanilla's sprite and
-     * only the tooltip tells it apart; that is a documented limitation, not something to test for.
+     * Sea water in a vanilla bottle or bucket keeps vanilla's sprite, the same on every version: only
+     * the tooltip tells it apart. Up to 1.4 it swapped the item model on 1.21.2 and later, which left the
+     * versions looking different.
      */
     @GameTest
-    public void seaWaterInABottleLooksLikeSeaWater(GameTestHelper helper) {
+    public void seaWaterInABottleOrBucketKeepsVanillasSprite(GameTestHelper helper) {
         ItemStack bottle = WaterPurity.setQuality(TestFixtures.waterBottle(), WaterQuality.SALT);
-        //? if >=1.21.2 {
-        TestFixtures.check(helper, com.thirstwastaken2.ThirstWasTaken2.id("salt_water_bottle")
-                        .equals(Vanilla.itemModelOf(bottle)),
-                "a salty bottle should point at the sea-water model, got " + Vanilla.itemModelOf(bottle));
-        WaterPurity.setQuality(bottle, WaterQuality.fresh(2));
-        TestFixtures.check(helper, Vanilla.itemModelOf(bottle) == null,
-                "a bottle that holds fresh water again should lose the sea-water model");
-        //?}
+        ItemStack bucket = WaterPurity.setQuality(
+                new ItemStack(net.minecraft.world.item.Items.WATER_BUCKET), WaterQuality.SALT);
+        TestFixtures.check(helper, WaterPurity.isSalty(bottle) && WaterPurity.isSalty(bucket),
+                "the bottle and the bucket should hold sea water");
+        // From 1.21.4 every item carries an item model by default, so compare with an untouched stack.
+        Object vanillaBottle = Vanilla.itemModelOf(TestFixtures.waterBottle());
+        Object vanillaBucket = Vanilla.itemModelOf(new ItemStack(net.minecraft.world.item.Items.WATER_BUCKET));
+        TestFixtures.check(helper, java.util.Objects.equals(vanillaBottle, Vanilla.itemModelOf(bottle)),
+                "a salty bottle should keep vanilla's model " + vanillaBottle + ", got " + Vanilla.itemModelOf(bottle));
+        TestFixtures.check(helper, java.util.Objects.equals(vanillaBucket, Vanilla.itemModelOf(bucket)),
+                "a salty bucket should keep vanilla's model " + vanillaBucket + ", got " + Vanilla.itemModelOf(bucket));
         TestFixtures.check(helper, WaterPurity.setQuality(bottle, WaterQuality.fresh(2)).is(net.minecraft.world.item.Items.POTION),
                 "changing the water should never change the item itself");
         helper.succeed();

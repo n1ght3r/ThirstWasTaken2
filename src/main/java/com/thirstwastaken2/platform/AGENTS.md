@@ -49,7 +49,7 @@ seam gets a row there too.
 | `updateShape` in its later parameter order | `SupportedBlock` | the older override, with ticks scheduled on the level |
 | the consumable component | `DrinkItem` | overrides use, animation, duration and finishing itself |
 | custom model data as float lists | `modelSelector(index, value)` | one integer; no item reads more than one index |
-| the `item_model` component | `swapItemModel` | nothing: a sea-water bottle or bucket keeps vanilla's sprite, and only its tooltip says salty |
+| the `item_model` component | `itemModelOf` | `null`; only a gametest asks, to check sea water leaves vanilla's model alone |
 | styles without a shadow | `dropletFont` | the tooltip droplets are drawn with a shadow |
 | a block's id inside its constructor | `isWaterCauldron` | `BlocksMixin` marks the water cauldron's construction |
 | `hurtServer`, `level()` as `ServerLevel`, permission sets, environment attributes | `hurt`, `level`, `isGameMaster`, `isOwner`, `waterEvaporates` | the older call, same meaning |

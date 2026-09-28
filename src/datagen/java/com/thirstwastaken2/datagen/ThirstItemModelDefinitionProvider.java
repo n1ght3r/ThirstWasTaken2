@@ -1,12 +1,13 @@
 package com.thirstwastaken2.datagen;
 
-// Item model definitions, assets/<namespace>/items/, arrived in 1.21.4. Before it a vanilla container
-// cannot be pointed at another model per stack, so there is nothing for this provider to write, and on
-// those versions the file holds no class at all. Comments inside the block stay line comments: a
+// Item model definitions, assets/<namespace>/items/, arrived in 1.21.4. Before it no stack could have
+// been pointed at one, so there is nothing for this provider to write, and on those versions the file
+// holds no class at all. Comments inside the block stay line comments: a
 // disabled branch is itself one block comment.
 //? if >=1.21.4 {
 import com.thirstwastaken2.ThirstWasTaken2;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.minecraft.client.color.item.Potion;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -19,27 +20,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-// The two item model definitions that belong to no item of the mod's own.
+// The two item model definitions that belong to no item of the mod's own, kept only for old saves.
 //
-// Sea water is carried in vanilla's water bottle and water bucket, which cannot be given a model of
-// ours at registration, so WaterPurity.setQuality points their minecraft:item_model component at these
-// ids instead and clears it when the water is not salty. ThirstModelProvider cannot write them, because
-// everything it writes is keyed by an Item and these have none, so they are written here straight into
-// assets/thirstwastaken2/items/.
-//
-// The bottle ships no texture on purpose. It reuses vanilla's own minecraft:item/potion model and
-// replaces only the tint, so a resource pack that reshapes potions reshapes this too. The bucket has no
-// tinted overlay layer to borrow, so it gets a flat model over a one-off recolour of the water bucket
-// sprite; that model is written by ThirstModelProvider, which is where every other flat item model lives.
+// Up to 1.4 sea water pointed the minecraft:item_model component of vanilla's water bottle and water
+// bucket at these ids, so a bottle or bucket filled back then still carries it. Sea water no longer
+// changes their sprite, so every node looks the same, 1.21.1 and 1.20.1 included, which never could;
+// the tooltip says Salty instead. Without these files such a stack would draw as a missing model, so
+// each draws exactly what vanilla's own definition draws: the potion model tinted by its contents, and
+// the water bucket.
 public final class ThirstItemModelDefinitionProvider implements DataProvider {
-    // Sea colour, ARGB. The only place it is written; nothing on the Java side knows it.
-    private static final int SEA_TINT = 0xFF33BCB8;
-
-    // Vanilla's potion model, borrowed whole so resource packs keep control of the bottle's shape.
     private static final Identifier POTION_MODEL = Identifier.withDefaultNamespace("item/potion");
-
-    // The flat model ThirstModelProvider writes for the sea-water bucket, and its texture.
-    public static final Identifier SALT_WATER_BUCKET_MODEL = ThirstWasTaken2.id("item/salt_water_bucket");
+    private static final Identifier WATER_BUCKET_MODEL = Identifier.withDefaultNamespace("item/water_bucket");
 
     private final PackOutput.PathProvider definitions;
 
@@ -51,9 +42,9 @@ public final class ThirstItemModelDefinitionProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput writer) {
         Map<Identifier, ClientItem> items = new LinkedHashMap<>();
         items.put(ThirstWasTaken2.id("salt_water_bottle"),
-                definition(ItemModelUtils.tintedModel(POTION_MODEL, ItemModelUtils.constantTint(SEA_TINT))));
+                definition(ItemModelUtils.tintedModel(POTION_MODEL, new Potion())));
         items.put(ThirstWasTaken2.id("salt_water_bucket"),
-                definition(ItemModelUtils.plainModel(SALT_WATER_BUCKET_MODEL)));
+                definition(ItemModelUtils.plainModel(WATER_BUCKET_MODEL)));
 
         return DataProvider.saveAll(writer, ClientItem.CODEC, definitions, items);
     }

@@ -27,10 +27,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - With Farmer's Delight on Fabric, the Cooking Pot boiled salt water, and any other potion, into Pure
   water. It now refuses them, as it always did on NeoForge.
 
-### Notes
+### Changed
 
-- Sea water in a bottle or bucket looks like ordinary water on 1.20.1, as on 1.21.1. Its tooltip
-  still reads Salty.
+- Sea water in a bottle or bucket now looks like ordinary water on every version, as it always did on
+  1.20.1 and 1.21.1. Its tooltip still reads Salty, and a bowl of sea water keeps its own colour.
 
 ## [1.4.1] - 2026-09-28
 

@@ -236,7 +236,9 @@ them through different code.
 
 ### 26.3
 
-- [x] A sea-water bottle is drawn in the sea colour, and a sea-water bucket with its recoloured water.
+- [ ] A sea-water bottle and bucket look like ordinary water, and their tooltip says "Salty". A
+      bottle or bucket filled with sea water on 1.4 or earlier, in an old world, still draws vanilla's
+      sprite rather than a missing model.
 - [x] The "Open thirstwastaken2.json" button is one full-width row. 26.3 moved the call it makes
       (`Blaze3D.openPath`); `ui/config-screen.jsonl` presses it.
 - [x] Breaking a hanging pot drops it. 26.3 removed the block codec it used to carry.
@@ -248,7 +250,7 @@ them through different code.
 - [x] F1 hides the bar. 26.2 moved the "HUD hidden" state into the HUD object itself, a code path of
       its own.
 - [x] The config file button is one full-width row (26.2 opens screens through a different call).
-- [x] Sea-water bottle and bucket sprites, as on 26.3.
+- [ ] Sea-water bottle and bucket look like ordinary water, as on 26.3.
 - [x] Create Fly (Fabric 26.1.x and 26.2.x): a Spout fills waterskins and terracotta bowls with its
       grade, a waterskin of another grade passes through, and an Item Drain empties them with their
       grade. `integrations/createfly-waterskin.jsonl` runs two waterskins in a row, which catches a
@@ -258,13 +260,13 @@ them through different code.
 
 - [x] F1 hides the bar (read from the options, unlike 26.2).
 - [x] The config file button is a row of its own, even though 26.1 has no full-width row call.
-- [x] Sea-water bottle and bucket sprites, as on 26.3.
+- [ ] Sea-water bottle and bucket look like ordinary water, as on 26.3.
 
 ### 1.21.11
 
 - [x] F1 hides the bar, as on 26.1.
 - [x] The config file button, as on 26.1.
-- [x] Sea-water bottle and bucket sprites, as on 26.3.
+- [ ] Sea-water bottle and bucket look like ordinary water, as on 26.3.
 - [x] The droplet glyphs have no shadow.
 
 ### 1.21.1
@@ -285,9 +287,8 @@ different on purpose. Check all of these on every release that ships a 1.21.1 ja
       servings and the bowl.
 - [x] **Known, by design:** the tooltip droplets are drawn with a shadow (styles cannot turn it off
       before 1.21.4). Check that they are still legible, not that the shadow is gone.
-- [x] **Known, by design:** a sea-water bottle and bucket look like ordinary water (there is no
-      item-model component before 1.21.2). Check that the tooltip says "Salty" and that the bowl
-      still changes to the sea colour.
+- [x] A sea-water bottle and bucket look like ordinary water, as on every version. Check that the
+      tooltip says "Salty" and that the bowl still changes to the sea colour.
 - [x] **The config screen's headings are text rows**, not vanilla headings, which 1.21.1 lacks. Check
       that they are centred and readable and that the list still scrolls.
 - [x] The config preview's food icons and droplet outlines have transparent corners, not black ones

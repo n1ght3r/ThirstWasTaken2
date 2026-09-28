@@ -77,11 +77,10 @@ checks all three implementations against one set of assertions, in millibuckets.
   cookable - which is exactly what went wrong with looted water bottles once, and what
   `PurificationGameTest` now watches.
 - **Sprites are part of the contract, not decoration.** `syncModel` runs inside `setQuality`. The
-  mod's bowl switches on custom model data index 1 (`0..3` grades, `4` salt); vanilla's bottle and
-  bucket cannot be given a model at registration, so salt water points `minecraft:item_model` at one
-  of this mod's item definitions instead. The bottle's definition reuses vanilla's own potion model
-  and only swaps the tint, so it follows resource packs. Clearing the component only ever clears a
-  model this mod set, so a modded container keeps its own.
+  mod's bowl switches on custom model data index 1 (`0..3` grades, `4` salt). Vanilla's bottle and
+  bucket keep vanilla's sprite whatever they hold, on every version, and only the tooltip says Salty:
+  1.21.1 and 1.20.1 have no `minecraft:item_model` component to swap it with, so swapping it on the
+  later versions only made the nodes look different.
 - **Waterskin mixing is serving-weighted and rounds down**, so one clean mouthful cannot talk a batch
   up a grade. Salt is not averaged at all: a single salty serving turns the whole skin into sea
   water. Cauldrons cannot average, because their blockstate has room for one value, so they keep the
@@ -136,7 +135,7 @@ checks all three implementations against one set of assertions, in millibuckets.
   where those colours sit among the other lines. Adding a grade means
   Adding a grade means touching both switches plus `thirst.purity.*` in all nine lang files. The
   grade colours run warm to cool so that all four stay apart on a dark tooltip, and salt's line sits
-  off that ramp entirely, in the pale cream of dried salt. Its sprites are turquoise instead, deep
+  off that ramp entirely, in the pale cream of dried salt. Its bowl sprite is turquoise instead, deep
   enough that a bowl of sea water is not mistaken for the light blue of a pure one.
 
 ## Why interactions are deferred

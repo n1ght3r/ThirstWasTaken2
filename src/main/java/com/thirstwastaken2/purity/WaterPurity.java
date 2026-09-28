@@ -70,14 +70,10 @@ public final class WaterPurity {
     private static final int MAX_SCORE = 100;
 
     /**
-     * Vanilla containers cannot be given a model of ours at registration, so salt water swaps their
-     * whole item model through {@code minecraft:item_model}. The mod's own bowl has custom model
-     * data for the same job. On 1.21.1, which has no such component, only the bowl changes sprite
-     * and a sea-water bottle or bucket is told apart by its tooltip alone.
+     * The bowl's model variant for salt water, one past the four grades. Only the mod's own bowl has a
+     * salty sprite: sea water in a vanilla bottle or bucket looks like any water on every version, and
+     * its tooltip says Salty.
      */
-    private static final Identifier SALT_WATER_BOTTLE_MODEL = ThirstWasTaken2.id("salt_water_bottle");
-    private static final Identifier SALT_WATER_BUCKET_MODEL = ThirstWasTaken2.id("salt_water_bucket");
-    /** The bowl's model variant for salt water, one past the four grades. */
     private static final int SALT_BOWL_MODEL = 4;
 
     /** Purity that has to be looked up from the config instead of being baked into the item. */
@@ -147,14 +143,12 @@ public final class WaterPurity {
 
     /**
      * A copy of {@code stack} without its quality, the plain container other mods compare against: both
-     * components and the salt-water sprite come off. Salt water loses its salt too, so only hand this to
-     * code that gets the quality back from the caller.
+     * components come off. Salt water loses its salt too, so only hand this to code that gets the
+     * quality back from the caller.
      */
     public static ItemStack unstamped(ItemStack stack) {
         ItemStack plain = stack.copy();
         ItemWaterData.clearQuality(plain);
-        Identifier saltModel = saltModel(plain);
-        if (saltModel != null) Vanilla.swapItemModel(plain, saltModel, false);
         return plain;
     }
 
@@ -361,17 +355,7 @@ public final class WaterPurity {
         if (stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)) {
             int variant = quality instanceof WaterQuality.Fresh fresh ? fresh.purity() : SALT_BOWL_MODEL;
             Vanilla.setModelSelector(stack, ThirstItems.BOWL_MODEL_INDEX, variant);
-            return;
         }
-        Identifier saltModel = saltModel(stack);
-        if (saltModel != null) Vanilla.swapItemModel(stack, saltModel, quality.salty());
-    }
-
-    /** The salt-water sprite for a vanilla container, or {@code null} for anything else. */
-    private static Identifier saltModel(ItemStack stack) {
-        if (stack.is(Items.POTION)) return SALT_WATER_BOTTLE_MODEL;
-        if (stack.is(Items.WATER_BUCKET)) return SALT_WATER_BUCKET_MODEL;
-        return null;
     }
 
     private static ItemInfo info(Item item) {
