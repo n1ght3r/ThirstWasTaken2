@@ -2,12 +2,16 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.4.1] - 2026-09-28
 
 ### Fixed
 
 - With Cold Sweat on NeoForge 1.21.1, worlds failed to create or load with a data pack error unless
   both Farmer's Delight and Kaleidoscope Cookery were installed.
+
+### Notes
+
+- Released for NeoForge 1.21.1 only. Every other version is unchanged and stays on 1.4.0.
 
 ## [1.4.0] - 2026-09-27
 
