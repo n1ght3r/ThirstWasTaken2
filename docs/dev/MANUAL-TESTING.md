@@ -213,8 +213,16 @@ looks and sounds.
       - `create` on `1.21.1-neoforge`, and on the Fabric nodes that build Create Fly
       - `kaleidoscope_cookery` on `1.21.1-neoforge` and every Fabric node
 - [ ] The same with `-PwithoutOptional=all`, on one node per loader.
+- [ ] A world **opens** with an integration's mod and without a mod its data names, for every
+      integration that ships data about another mod. Reaching the title screen is not enough: a broken
+      data file only shows when a world loads. Add `-Pquickplay=<world>`; `boot.jsonl` then fails when
+      the world never opened. 1.3.0 and 1.4.0 opened no world with Cold Sweat and without Farmer's
+      Delight or Kaleidoscope Cookery.
+      - Cold Sweat on `1.21.1-neoforge` (uncomment its `runClientMod` line), with
+        `-PwithoutOptional=farmersdelight,kaleidoscope_cookery`
 
-`checkOptionalSeam` is the static half of these two checks; CI runs it on every node.
+`checkOptionalSeam` is the static half of these checks for classes, and `checkDataConditions` for data
+files; CI runs both on every node.
 
 ## Per version
 

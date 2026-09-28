@@ -31,6 +31,7 @@ One source tree, one jar per node. Nodes are the Gradle subprojects in `settings
 | `./gradlew ":<node>:runClient" -Pagent=tools/agent/smoke/boot.jsonl -PwithoutOptional=<name,...>\|all` | A dev client without those optional mods comes up and stays up. The check 1.0.9 lacked |
 | `./gradlew ":<node>:checkOptionalSeam"` | Fails when a class loaded without an optional mod names that mod. CI runs it |
 | `./gradlew ":<node>:checkLang"` | Fails when one of the nine lang files lacks a key `en_us` has, or has one it lacks. CI runs it |
+| `./gradlew ":<node>:checkDataConditions"` | Fails when a shipped data file names another mod's id without a `mod_loaded` condition for it. CI runs it |
 | `./gradlew ":<node>:checkApiSurface"` | Fails when a public signature in `com.thirstwastaken2.api` names an internal type. CI runs it |
 | `python tools/release/publish.py --dry-run` | Release to Modrinth, then `publish_curseforge.py --no-build`. Checklist and flags in the scripts' docstrings |
 

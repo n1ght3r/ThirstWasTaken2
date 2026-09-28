@@ -101,7 +101,7 @@ hot Kaleidoscope Cookery teas. Plain water gets none: the waterskin already carr
 **Every file needs `neoforge:conditions`** with `mod_loaded` for `cold_sweat` and for each mod whose
 items it names. Cold Sweat loads these from any namespace, but honours `required_mods` before decoding
 only in its own: in ours an item id that does not exist fails the whole registry and no world loads.
-That was 1.3.0 and 1.4.0 without Farmer's Delight.
+That was 1.3.0 and 1.4.0 without Farmer's Delight. `checkDataConditions` now fails the build on it.
 
 ## Testing
 

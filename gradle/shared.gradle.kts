@@ -235,6 +235,87 @@ tasks.register("checkLang") {
 }
 
 /**
+ * Fails when a data pack file this mod ships names another mod's id without a `mod_loaded` condition
+ * for that mod.
+ *
+ * Such a file loads fine in every dev run, since runClient has every optional mod, and breaks the
+ * players who lack that one. In a registry Minecraft reads while opening a world it breaks all of them:
+ * 1.3.0 and 1.4.0 shipped Cold Sweat food data naming `farmersdelight:hot_cocoa` with only Cold Sweat's
+ * own `required_mods`, which it ignores outside its namespace, and with Cold Sweat and without Farmer's
+ * Delight no world could be opened. So every file under `src/main` that names a namespace other than the
+ * mod's, Minecraft's and the shared `c` has to be gated on it, whatever registry it is for:
+ * `neoforge:conditions` with `neoforge:mod_loaded`, or `fabric:load_conditions` with
+ * `fabric:all_mods_loaded` (or `any_mods_loaded`). Two things need no condition, since they already
+ * tolerate a missing id: a tag entry with `"required": false`, and this mod's own drinks files, whose
+ * loader skips an unknown item with a warning. The generated output is read too.
+ */
+tasks.register("checkDataConditions") {
+    group = "verification"
+    description = "Fails when a shipped data file names another mod's id without a mod_loaded condition"
+
+    val own = setOf("minecraft", "thirstwastaken2", "c", "neoforge", "fabric")
+    val dataFiles = rootProject.file("src/main").walk()
+        .onEnter { it.name != "java" }
+        .filter { it.isFile && it.extension == "json" && "/data/" in it.invariantSeparatorsPath }
+        .filterNot { "/thirstwastaken2/drinks/" in it.invariantSeparatorsPath }
+        .toList()
+    inputs.files(dataFiles)
+
+    doLast {
+        val id = Regex("#?([a-z][a-z0-9_.-]*):[a-z0-9_/.-]+")
+
+        /** Every namespace [value] names outside its conditions, skipping optional tag entries. */
+        fun namespaces(value: Any?, into: MutableSet<String>) {
+            when (value) {
+                is Map<*, *> -> {
+                    if (value["required"] == false) return
+                    value.forEach { (key, child) ->
+                        if (key == "neoforge:conditions" || key == "fabric:load_conditions") return@forEach
+                        id.matchEntire(key.toString())?.let { into += it.groupValues[1] }
+                        namespaces(child, into)
+                    }
+                }
+                is List<*> -> value.forEach { namespaces(it, into) }
+                is String -> id.matchEntire(value)?.let { into += it.groupValues[1] }
+            }
+        }
+
+        /** The mods a file's conditions require, on either loader. */
+        fun gated(value: Any?, into: MutableSet<String>) {
+            when (value) {
+                is Map<*, *> -> {
+                    (value["modid"] as? String)?.let { into += it }
+                    if ((value["condition"] as? String)?.endsWith("_mods_loaded") == true) {
+                        (value["values"] as? List<*>)?.filterIsInstance<String>()?.let { into += it }
+                    }
+                    value.values.forEach { gated(it, into) }
+                }
+                is List<*> -> value.forEach { gated(it, into) }
+            }
+        }
+
+        val problems = dataFiles.sortedBy { it.invariantSeparatorsPath }.mapNotNull { file ->
+            val json = groovy.json.JsonSlurper().parse(file) as? Map<*, *> ?: return@mapNotNull null
+            val named = mutableSetOf<String>().also { namespaces(json, it) } - own
+            val required = mutableSetOf<String>().also {
+                gated(json["neoforge:conditions"], it)
+                gated(json["fabric:load_conditions"], it)
+            }
+            val ungated = named - required
+            if (ungated.isEmpty()) null
+            else "${file.relativeTo(rootProject.projectDir).invariantSeparatorsPath}: ${ungated.sorted().joinToString()}"
+        }
+        check(problems.isEmpty()) {
+            "These data files name a mod's ids without a condition that the mod is loaded. Without it the " +
+                "file fails for everyone who lacks that mod, and in a registry read while opening a world, " +
+                "no world opens. Add neoforge:conditions (neoforge:mod_loaded) or fabric:load_conditions " +
+                "(fabric:all_mods_loaded) for each mod listed:\n" + problems.joinToString("\n")
+        }
+        logger.lifecycle("checkDataConditions: ${dataFiles.size} data files, every other mod's id gated")
+    }
+}
+
+/**
  * Fails when the agent's loader independent half stops being loader independent.
  *
  * `dev/agent/core` is the queue, the envelope and the dispatch loop: plain Java and Gson, and nothing

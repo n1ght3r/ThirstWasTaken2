@@ -1,6 +1,10 @@
 {
   "neoforge:conditions": [
     {
+      "type": "neoforge:mod_loaded",
+      "modid": "sophisticatedcore"
+    },
+    {
       "type": "neoforge:registered",
       "value": "thirstwastaken2:advanced_drinking_upgrade"
     }

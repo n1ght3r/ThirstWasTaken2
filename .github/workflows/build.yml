@@ -138,8 +138,10 @@ jobs:
         # Sophisticated Core; it reads the compiled classes, so it needs no mod on the classpath.
         # checkApiSurface fails when a public signature in com.thirstwastaken2.api names an internal
         # type, which would make that type part of the API other mods compile against. checkLang fails
-        # when one of the nine lang files lacks a key en_us has.
-        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkLang" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" --stacktrace
+        # when one of the nine lang files lacks a key en_us has. checkDataConditions fails when a data
+        # file names another mod's id without a mod_loaded condition, which is how 1.3.0 and 1.4.0 kept
+        # every world from opening with Cold Sweat and without Farmer's Delight.
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkLang" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
 
       # The NeoForge node has the dev tools too, both the agent and the benchmark, and no
       # generators of its own; it reads what the Fabric node of the same Minecraft version
@@ -147,7 +149,7 @@ jobs:
       # that JSON. The seam checks read the same files on every node and are cheap to repeat here.
       - name: Build (NeoForge)
         if: ${{ endsWith(matrix.version, '-neoforge') }}
-        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" --stacktrace
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
 
       # Regenerates every datapack and asset JSON and fails if the result differs from what is
       # committed, which is what catches a generator edited without regenerating and a generated
