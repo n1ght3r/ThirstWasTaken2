@@ -1,22 +1,26 @@
-// A recording of the config screen for the docs and the mod pages: the virtual pointer drags a slider,
-// flips a toggle, walks the sidebar and a page's tabs, cycles AppleSkin's outline in its preview and
-// switches its tooltip droplets off and on again, scrolls the item list to its end, opens a mod's
-// group and scrolls on under its pinned heading, and ends resting on Done. Cancel is pressed after the
-// recording stops, so nothing it changed is saved. Evidence for a person,
-// not a check; nothing here is asserted but that each click landed.
+// A recording of the config screen for the docs and the mod pages: the virtual pointer walks every page
+// in the sidebar and every tab of each page. On the way it drags a slider, flips a toggle, scrolls a
+// sickness table, cycles AppleSkin's outline in its preview and switches its tooltip droplets off and
+// on again, scrolls the item list to its end, opens a mod's group and scrolls on under its pinned
+// heading, and ends on Done after a short pause. Cancel is pressed after the recording stops, so
+// nothing it changed is saved. Evidence for a person, not a check; nothing here is asserted but that
+// each click landed.
 //
 //     python tools/agent/new_world.py 26.3.x ShowcaseAgent --from "New World"
 //     ./gradlew ":26.3.x:runClient" -Pagent=tools/agent/ui/config-showcase.jsonl -Pquickplay=ShowcaseAgent
-//     python tools/agent/make_gif.py run/26.3.x/agent/client/screenshots/config-showcase docs/public/screenshots/config/config-showcase.gif
+//     python tools/agent/make_gif.py run/26.3.x/agent/client/screenshots/config-showcase docs/public/screenshots/config/config-showcase.gif --hold 300
 //
-// A frame every tick, 20 a second, which takes the recording three minutes or so; see "Recording a
+// A frame every tick, 20 a second, which takes the recording a few minutes; see "Recording a
 // screen" in the agent's AGENTS.md for why. The world behind the screen shows through it, so shoot in
-// real terrain, not on a test floor. The AppleSkin page starts from the shipped defaults, Diamond and
-// on, in run/26.3.x/config/thirstwastaken2.json.
+// real terrain, not on a test floor. Every page should start from the shipped defaults, in
+// run/26.3.x/config/thirstwastaken2.json, or its changed rows show amber.
 //
 // Coordinates are for a maximised window with a 512 x 298 GUI (2048 x 1191 at scale 4), the size
 // `window` answers; see config-screen.jsonl for how the screen is laid out. The sidebar is measured
-// from the corner, tab i centred on y = 49 + 24 i; the page from the top, x from the centre.
+// from the corner, tab i centred on y = 49 + 24 i; the page from the top, x from the centre. A page's
+// tab strip sits on y = 81, each tab as wide as its name plus a share of what is left, so the x given
+// for a tab is the middle of where it was measured. Thirst shows no strip here: its Seasons tab needs
+// Serene Seasons, which runClient leaves out.
 
 {"id": "load", "command": "wait", "args": {"ticks": 300}}
 {"id": "joined", "command": "client.state", "expect": {"result.alive": true}}
@@ -44,16 +48,53 @@
 {"id": "toggle", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "toggleDrawn", "command": "wait", "args": {"ticks": 12}}
 
-// Water, then two of its tabs.
+// Water, opening on Drinking, then its other three tabs.
 {"id": "toWater", "command": "client.mouse", "args": {"x": 40, "y": 73, "from": "corner", "ticks": 8}}
 {"id": "water", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "waterDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toQuenched", "command": "client.mouse", "args": {"x": -27, "y": 78, "from": "top", "ticks": 7}}
+{"id": "toQuenched", "command": "client.mouse", "args": {"x": -25, "y": 81, "from": "top", "ticks": 7}}
 {"id": "quenched", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "quenchedDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toSeaWater", "command": "client.mouse", "args": {"x": 55, "y": 78, "from": "top", "ticks": 5}}
+{"id": "toSeaWater", "command": "client.mouse", "args": {"x": 57, "y": 81, "from": "top", "ticks": 5}}
 {"id": "seaWater", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "seaWaterDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toCollected", "command": "client.mouse", "args": {"x": 163, "y": 81, "from": "top", "ticks": 5}}
+{"id": "collected", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "collectedDrawn", "command": "wait", "args": {"ticks": 12}}
+
+// Sickness, opening on General, then a tab per difficulty. Normal's table scrolls down to Pure.
+{"id": "toSickness", "command": "client.mouse", "args": {"x": 40, "y": 97, "from": "corner", "ticks": 7}}
+{"id": "sickness", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "sicknessDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toPeaceful", "command": "client.mouse", "args": {"x": -16, "y": 81, "from": "top", "ticks": 6}}
+{"id": "peaceful", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "peacefulDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toEasy", "command": "client.mouse", "args": {"x": 58, "y": 81, "from": "top", "ticks": 5}}
+{"id": "easy", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "easyDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toNormal", "command": "client.mouse", "args": {"x": 126, "y": 81, "from": "top", "ticks": 5}}
+{"id": "normal", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "normalDrawn", "command": "wait", "args": {"ticks": 10}}
+{"id": "toTable", "command": "client.mouse", "args": {"x": -40, "y": 150, "from": "top", "ticks": 6}}
+{"id": "tableScroll1", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll1Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll2", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll2Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll3", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll3Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll4", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll4Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll5", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll5Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll6", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll6Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll7", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll7Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "tableScroll8", "command": "client.scroll", "args": {"amount": 1}}
+{"id": "tableScroll8Drawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toHard", "command": "client.mouse", "args": {"x": 195, "y": 81, "from": "top", "ticks": 6}}
+{"id": "hard", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "hardDrawn", "command": "wait", "args": {"ticks": 12}}
 
 // AppleSkin: the Quenched Outline through Ice, Gold and AppleSkin's own, the preview redrawing each,
 // then the tooltip droplets off and back on.
@@ -133,15 +174,34 @@
 {"id": "modScroll8", "command": "client.scroll", "args": {"amount": 1}}
 {"id": "modScroll8Drawn", "command": "wait", "args": {"ticks": 14}}
 
-// Containers.
+// Matching, the right half of the strip.
+{"id": "toMatching", "command": "client.mouse", "args": {"x": 136, "y": 81, "from": "top", "ticks": 7}}
+{"id": "matching", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "matchingDrawn", "command": "wait", "args": {"ticks": 12}}
+
+// Mod Items, opening on Items, then Blocks, the right half.
+{"id": "toModItems", "command": "client.mouse", "args": {"x": 40, "y": 169, "from": "corner", "ticks": 8}}
+{"id": "modItems", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "modItemsDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toBlocks", "command": "client.mouse", "args": {"x": 135, "y": 81, "from": "top", "ticks": 7}}
+{"id": "blocks", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "blocksDrawn", "command": "wait", "args": {"ticks": 12}}
+
+// Containers, opening on Capacity, then Boil in Hand and Hanging Pots.
 {"id": "toContainers", "command": "client.mouse", "args": {"x": 40, "y": 193, "from": "corner", "ticks": 8}}
 {"id": "containers", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "containersDrawn", "command": "wait", "args": {"ticks": 18}}
+{"id": "containersDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toBoiling", "command": "client.mouse", "args": {"x": 35, "y": 81, "from": "top", "ticks": 6}}
+{"id": "boiling", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "boilingDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toHangingPots", "command": "client.mouse", "args": {"x": 162, "y": 81, "from": "top", "ticks": 5}}
+{"id": "hangingPots", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "hangingPotsDrawn", "command": "wait", "args": {"ticks": 14}}
 
-// The pointer comes to rest on Done, the way a player leaves, and the recording stops there. Cancel is
-// pressed after it, off the recording, so the slider and the toggle are not saved.
+// The pointer comes to Done, the way a player leaves, and the recording stops a moment later.
+// Cancel is pressed after it, off the recording, so the slider and the toggle are not saved.
 {"id": "toDone", "command": "client.mouse", "args": {"x": 203, "y": -16, "from": "bottom", "ticks": 8}}
-{"id": "doneDrawn", "command": "wait", "args": {"ticks": 16}}
+{"id": "doneDrawn", "command": "wait", "args": {"ticks": 4}}
 {"id": "stopRecording", "command": "client.record", "args": {"action": "stop"}, "expect": {"result.failed": 0}}
 {"id": "cancel", "command": "client.click", "args": {"x": 109, "y": -16, "button": 0, "from": "bottom"}, "expect": {"result.taken": true}}
 {"id": "hide", "command": "client.mouse", "args": {"hide": true}}
