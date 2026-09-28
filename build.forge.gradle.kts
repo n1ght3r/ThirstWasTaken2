@@ -348,6 +348,12 @@ dependencies {
         // Keeps `-PwithoutOptional=serene-seasons` in the agent scripts a known name while the lines above are off.
         optionalRunMods.include(names + listOf("glitchcore"))
     }
+    findProperty("deps.kaleidoscope_cookery")?.let { kaleidoscopeCookery ->
+        // Mixed into, and in SRG names, so remapped. See src/main/kaleidoscope/AGENTS.md.
+        modCompileOnly("maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
+        runClientMod(listOf("kaleidoscope-cookery", "kaleidoscope-cookery-refabricated", "kaleidoscope_cookery"),
+            "maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
+    }
     // Test the drinks and meals Farmer's Delight adds, and the Cooking Pot recipes. Reached by id only.
     findProperty("deps.farmersdelight")?.let {
         runClientMod(listOf("farmers-delight", "farmersdelight"), "maven.modrinth:farmers-delight:$it")

@@ -68,6 +68,12 @@ public final class BrewedWaterQuality {
         if (quality != null) Vanilla.putBlockEntityInt(teapot, KEY, WaterPurity.storedValue(quality));
     }
 
+    /** {@link #stampItem}, handing {@code result} back, for a {@code @ModifyReturnValue} on what a teapot's use returns. */
+    public static <T> T stamped(T result, ItemStack teapot, WaterQuality quality) {
+        stampItem(teapot, quality);
+        return result;
+    }
+
     /**
      * Writes {@code quality} through {@code putInt}, a {@code CompoundTag}'s on 1.21.1 or a
      * {@code ValueOutput}'s from 1.21.6, so the mixins' version forks differ only in their signature.

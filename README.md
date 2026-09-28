@@ -50,7 +50,7 @@ All integrations are soft dependencies: nothing is required, and nothing is load
 | [Farmer's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/) | every version (Refabricated) | 1.21.1 | yes |
 | [Create](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create) | 26.1.x, 26.2 (Create Fly) | 1.21.1 | yes |
 | [Sophisticated Backpacks / Storage](https://modrinth.com/mod/sophisticated-backpacks) | – | 1.21.1, 1.21.11, 26.1.x, 26.2 | – |
-| [Kaleidoscope Cookery](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery) | 1.21.1 and newer (Refabricated) | 1.21.1 | – |
+| [Kaleidoscope Cookery](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery) | every version (Refabricated) | 1.21.1 | yes |
 | [Rustic Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight) | 1.21.1 and newer | 1.21.1 | – |
 | [Supplementaries](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries), [Brewin' and Chewin'](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin), [Ocean's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight) | 1.21.1 | 1.21.1 | – |
 | [Cold Sweat](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat), [Cultural Delights](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights), [Fruits Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight), [Expanded Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight) | – | 1.21.1 | – |

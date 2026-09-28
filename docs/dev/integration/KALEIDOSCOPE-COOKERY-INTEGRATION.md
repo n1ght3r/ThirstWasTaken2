@@ -26,6 +26,8 @@ NeoForge release.
 |---|---|---|---|---|---|
 | `1.21.1-neoforge` | official | `1.5.1-neoforge+mc1.21.1` (published 2026-09-22, same targets as 1.5.0) | `7vH6mhde` | yes | yes |
 | `1.21.1` | Refabricated | `1.5.1.1-fabric+mc1.21.1` | `sD88E3p2` | yes | yes |
+| `1.20.1-forge` | official | `1.5.1-forge+mc1.20.1` | `oR27Hgav` | yes | yes |
+| `1.20.1` | Refabricated | `1.5.1.1-fabric+mc1.20.1` | `mFCiKNl7` | yes | yes |
 | `1.21.11` | Refabricated | `1.3.0.9-fabric+mc1.21.11`, **frozen** ("1.4+ no longer supported") | `Gns9Xmuq` | yes | no |
 | `26.1.x` | Refabricated | `1.5.1.1-fabric+mc26.1.2` | `pHws6vCC` | yes | no |
 | `26.2.x` | Refabricated | `1.5.1.1-fabric+mc26.2` | `jjvsGTGz` | yes | no |

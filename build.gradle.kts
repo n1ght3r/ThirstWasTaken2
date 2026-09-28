@@ -496,7 +496,8 @@ dependencies {
         findProperty("deps.forge_config_api_port")?.let { forgeConfigApiPort ->
             val library = names + listOf("forge-config-api-port", "forgeconfigapiport")
             runClientMod(library, "maven.modrinth:forge-config-api-port:$forgeConfigApiPort")
-            runClientMod(library, files(nestedMods("forge-config-api-port", forgeConfigApiPort.toString())))
+            // Unpacked when the classpath is resolved; see Farmer's Delight above.
+            runClientMod(library, files(provider { nestedMods("forge-config-api-port", forgeConfigApiPort.toString()) }))
         }
     }
 

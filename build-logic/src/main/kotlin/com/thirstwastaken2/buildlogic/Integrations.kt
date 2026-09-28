@@ -193,7 +193,7 @@ val integrations: List<Integration> = listOf(
     Integration(
         dir = "kaleidoscope",
         depsKey = "deps.kaleidoscope_cookery",
-        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE, Loader.FORGE),
         client = true,
         mixinConfig = "thirstwastaken2.kaleidoscope.mixins.json",
         fabricEntrypoints = mapOf("jade" to listOf("com.thirstwastaken2.client.kaleidoscope.KaleidoscopeJade")),

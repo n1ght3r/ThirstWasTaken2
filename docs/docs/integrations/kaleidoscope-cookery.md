@@ -4,7 +4,7 @@ With Kaleidoscope Cookery installed, its teas and soups restore thirst, and wate
 the Stockpot and the Teapot.
 
 ::: warning Supported versions
-Everything on this page works on NeoForge, Minecraft 1.21.1, with
+Everything on this page works on NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with
 [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) 1.5.1, and on Fabric, every
 supported Minecraft version, with
 [Kaleidoscope Cookery Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated). The
@@ -39,7 +39,7 @@ straight off a placed block are solid food and restore no thirst. Every value ca
 - A Teapot picked up with water in it keeps the grade when it is placed again.
 - An empty Teapot dipped into water grades it where it lies, the way filling a bucket there does.
 - Water dripping into a Teapot from pointed dripstone is Pure, as it is in a cauldron. Only the
-  Minecraft 1.21.1 builds of Kaleidoscope Cookery let dripstone fill a Teapot.
+  Minecraft 1.20.1 and 1.21.1 builds of Kaleidoscope Cookery let dripstone fill a Teapot.
 - The Stockpot and the Teapot take sea water, from a bucket or, for the Teapot, straight from the sea.
   A bucket taken back out is still sea water.
 - The Teapot brews no tea from sea water. Tea from it would come out safe, which would make the sea

@@ -150,7 +150,7 @@
     <td width="55%">
       <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></b><br>
       <i>Fabric: <a href="https://modrinth.com/mod/kaleidoscope-cookery-refabricated">Kaleidoscope Cookery Refabricated</a><br>
-      1.21.1 NeoForge: <a href="https://www.curseforge.com/minecraft/mc-mods/kaleidoscope-cookery">Kaleidoscope Cookery</a></i><br><br>
+      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://www.curseforge.com/minecraft/mc-mods/kaleidoscope-cookery">Kaleidoscope Cookery</a></i><br><br>
       Teas, milk tea and soups restore thirst. Water keeps its purity grade in the Stockpot and the Teapot, and the Teapot brews nothing from sea water.
     </td>
     <td width="45%">

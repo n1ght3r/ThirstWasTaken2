@@ -6,15 +6,15 @@ bucket had is lost on the way in. This directory is where that gets fixed. The p
 and what is still to do are in
 [docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md](../../../docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md).
 
-**Built on the six nodes that set the key**: `1.21.1-neoforge` and the five Fabric nodes. What it
-does there:
+**Built on the eight nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and the six Fabric
+nodes. What it does there:
 
 - **the stockpot and the teapot keep the grade** of the water poured in, and hand it back on the
   bucket taken out;
 - **a teapot picked up and placed again** keeps it, in the item's block entity data;
 - **an empty teapot item dipped into water** samples it where it lies, as a bucket does;
-- **dripstone** fills a teapot with `dripstonePurity` water, as it does a cauldron (the 1.21.1 builds
-  only: the others do not let dripstone fill a teapot at all);
+- **dripstone** fills a teapot with `dripstonePurity` water, as it does a cauldron (the 1.20.1 and
+  1.21.1 builds only: the others do not let dripstone fill a teapot at all);
 - **sea water**: both blocks take it, the teapot from a bucket or from the world, and hand it back
   salty; the teapot **brews nothing from it**, since tea brewed from it would come out safe;
 - and **Jade** names the grade under the crosshair.
@@ -27,21 +27,22 @@ on the unsupported official Fabric build.
 
 | Node | Mod | Modrinth project |
 |---|---|---|
-| `1.21.1-neoforge` | the official mod | `kaleidoscope-cookery` |
-| `1.21.1`, `1.21.11`, `26.1.x`, `26.2.x`, `26.3.x` | Refabricated, the Fabric port | `kaleidoscope-cookery-refabricated` |
+| `1.21.1-neoforge`, `1.20.1-forge` | the official mod | `kaleidoscope-cookery` |
+| `1.20.1`, `1.21.1`, `1.21.11`, `26.1.x`, `26.2.x`, `26.3.x` | Refabricated, the Fabric port | `kaleidoscope-cookery-refabricated` |
 
 The official mod has no NeoForge build past 1.21.1, so the other NeoForge nodes do not set the key and
 do not compile this directory. The official Fabric build stopped at 1.0.1, before the teapot, and is not
 supported. Refabricated has the same mod id and the same package, so one directory serves both, and
-since it names no loader and no fluid API, **both loaders compile it**, as with
+since it names no loader and no fluid API, **all three loaders compile it**, as with
 [src/main/supplementaries](../supplementaries/AGENTS.md), and `checkLoaderSeam` keeps it that way.
 Each key is pinned by Modrinth version id; the
 Fabric uploads of different Minecraft versions share one version number. `1.21.11` is frozen upstream at
 1.3.0.9, and `update_mc_deps.py` leaves it alone.
 
-On `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port, `deps.forge_config_api_port`, on
+On `1.20.1`, `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port, `deps.forge_config_api_port`, on
 the `runClient` classpath only. Its Night Config is nested in its jar, which Loom does not unpack into a
-run, so `nestedMods` in `build.gradle.kts` takes it out, as it does Moonlight's CodecUI. From 26.1 on it
+run, so `nestedMods` in `build.gradle.kts` takes it out, as it does Moonlight's CodecUI, when the
+classpath is resolved (the Loom that builds 1.20.1 refuses one resolved while the project configures). From 26.1 on it
 is optional and no table names it.
 
 ```
@@ -140,7 +141,9 @@ Only in the mixins, each body one line:
 |---|---|
 | `saveAdditional` / `loadAdditional` take a `ValueOutput` / `ValueInput` from 1.21.6 | both block entity mixins; `BrewedWaterQuality.save` / `load` take `putInt` / `getIntOr`, so each branch makes the same call |
 | `getDrops` hands `setBlockEntityData` a `TagValueOutput` after 1.21.1 | `TeapotBlockEntityMixin` |
-| `pickupBlock` takes any `LivingEntity` after 1.21.1 | `TeapotItemMixin`, whose body is `BrewedWaterQuality.scoop` |
+| `pickupBlock` takes any `LivingEntity` after 1.21.1, and no entity before 1.20.2 | `TeapotItemMixin`, whose body is `BrewedWaterQuality.scoop`; on 1.20.1 the player comes from `use`'s arguments |
+| Before 1.20.5 the block entities save through `saveAdditional(CompoundTag)` and load through `load(CompoundTag)`, with no registries | both block entity mixins |
+| The 1.20.1 Forge build fills a scooping teapot through a fluid capability and never calls `fillFluid` | `TeapotItemMixin` stamps the teapot `use` returns before 1.20.5, on both loaders, rather than wrapping `fillFluid` |
 
 Vanilla's own differences go through `Vanilla`: the item's block entity data (`putBlockEntityInt`,
 `TypedEntityData` from 1.21.9) and the action bar (`sendOverlayMessage`, from 26.1).
@@ -164,3 +167,7 @@ Vanilla's own differences go through `Vanilla`: the item's block entity data (`p
   failing, as they must there. Run again on the four Fabric nodes after the pins moved to
   Refabricated 1.5.1, with the same result. Make its world with `tools/agent/new_world.py`, which
   also copies the `data/minecraft` files 26.x keeps its world generation settings in.
+- [tools/agent/integrations/kaleidoscope-cookery-1.20.1.jsonl](../../../tools/agent/integrations/kaleidoscope-cookery-1.20.1.jsonl)
+  is the same script in 1.20.1's NBT. Every one of its 26 checks passed on `1.20.1` (Refabricated
+  1.5.1.1) and `1.20.1-forge` (the original 1.5.1) on 2026-09-28, dripstone included, and the Forge Jade
+  capture reads Salty under the teapot of sea water.

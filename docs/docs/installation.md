@@ -70,7 +70,7 @@ All optional except Fabric API. Versions are listed in the order 26.3, 26.2, 26.
 | [Create Fly](https://modrinth.com/mod/create-fly) | 26.2-rc-2-6.0.9-1, 26.1.2-6.0.9-4 | The [Sand Filter](/docs/integrations/create). 26.2 and 26.1.2 only. |
 | [Jade](https://modrinth.com/mod/jade) | 26.3.1, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
 | [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | [Water that keeps its grade](/docs/integrations/supplementaries) in Jars, Goblets and Faucets, and a Jar or Goblet of water that can be drunk. 1.21.1 only. |
-| [Kaleidoscope Cookery Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.5.1.1-fabric+mc26.3, 1.5.1.1-fabric+mc26.2, 1.5.1.1-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.5.1.1-fabric+mc1.21.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
+| [Kaleidoscope Cookery Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.5.1.1-fabric+mc26.3, 1.5.1.1-fabric+mc26.2, 1.5.1.1-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.5.1.1-fabric+mc1.21.1, 1.5.1.1-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
 | [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 26.1.2.0.7, 26.1.2.0.6, 21.11.0.4, 10.1.0.9, 9.1.0.3 | Thirst that [follows the season](/docs/integrations/serene-seasons). Needs GlitchCore. |
 | [Farmer's Delight Refabricated](https://modrinth.com/mod/farmers-delight-refabricated) | 26.3-3.6.27, 26.2-3.6.26, 26.1-3.6.26, 1.21.11-3.6.16, 1.21.1-3.3.6, 1.20.1-2.5.7 | Thirst from its [drinks and meals](/docs/integrations/farmers-delight/), Pure water from the Cooking Pot, and no drain under Nourishment. |
 | [Brewin' and Chewin'](https://modrinth.com/mod/brewin-and-chewin) | v4.5.0+1.21.1-fabric | Thirst from its [brews and soups](/docs/integrations/farmers-delight/brewin-and-chewin), and water that keeps its grade in the Keg. 1.21.1 only. |
@@ -112,6 +112,7 @@ On Minecraft 1.20.1 only. The settings screen opens from the Config button in Fo
 | [Create](https://modrinth.com/mod/create) | 6.0.8 | The [Sand Filter](/docs/integrations/create). |
 | [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 9.1.0.3 | The same as on Fabric. |
 | [Farmer's Delight](https://modrinth.com/mod/farmers-delight) | 1.20.1-1.3.4 | The same as on Fabric. |
+| [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) | 1.5.1-forge+mc1.20.1 | The same as on NeoForge. |
 
 Other food mods usually work as they are. Drinks their mod marks as drinks restore thirst, and any
 item can be given a value in [Configuration](/docs/configuration).

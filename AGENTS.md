@@ -191,7 +191,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Create | `deps.create`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/create/AGENTS.md](src/main/create/AGENTS.md), [src/main/createforge/AGENTS.md](src/main/createforge/AGENTS.md) |
 | Sophisticated Backpacks and Storage | `deps.sophisticated_core`: every NeoForge node but `26.3.x-neoforge` | [src/main/sophisticated/AGENTS.md](src/main/sophisticated/AGENTS.md) |
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
-| Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
+| Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
 | Brewin' and Chewin' | `deps.brewin_and_chewin`: both 1.21.1 nodes | [src/main/brewinandchewin/AGENTS.md](src/main/brewinandchewin/AGENTS.md) |
 | Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge` | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md) |
 | Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |

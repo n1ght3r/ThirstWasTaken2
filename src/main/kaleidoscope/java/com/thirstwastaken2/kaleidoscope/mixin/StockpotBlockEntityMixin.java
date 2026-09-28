@@ -60,7 +60,8 @@ abstract class StockpotBlockEntityMixin implements BrewedWater {
     }
 
     // Minecraft's own methods, so remapped: the Fabric 1.21.x jars name them in intermediary. From
-    // 1.21.6 they take a ValueOutput / ValueInput rather than a tag.
+    // 1.21.6 they take a ValueOutput / ValueInput rather than a tag; before 1.20.5 they take no
+    // registries, and loading is `load`.
     //? if >=1.21.6 {
     @Inject(method = "saveAdditional", at = @At("TAIL"), remap = true)
     private void thirst$saveGrade(net.minecraft.world.level.storage.ValueOutput output, CallbackInfo ci) {
@@ -71,7 +72,7 @@ abstract class StockpotBlockEntityMixin implements BrewedWater {
     private void thirst$loadGrade(net.minecraft.world.level.storage.ValueInput input, CallbackInfo ci) {
         thirst$quality = BrewedWaterQuality.load(input::getIntOr);
     }
-    //?} else {
+    //?} elif >=1.20.5 {
     /*@Inject(method = "saveAdditional", at = @At("TAIL"), remap = true)
     private void thirst$saveGrade(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries, CallbackInfo ci) {
         BrewedWaterQuality.save(tag::putInt, thirst$heldWater());
@@ -79,6 +80,16 @@ abstract class StockpotBlockEntityMixin implements BrewedWater {
 
     @Inject(method = "loadAdditional", at = @At("TAIL"), remap = true)
     private void thirst$loadGrade(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries, CallbackInfo ci) {
+        thirst$quality = BrewedWaterQuality.load((key, fallback) -> com.thirstwastaken2.platform.Vanilla.getInt(tag, key, fallback));
+    }
+    *///?} else {
+    /*@Inject(method = "saveAdditional", at = @At("TAIL"), remap = true)
+    private void thirst$saveGrade(net.minecraft.nbt.CompoundTag tag, CallbackInfo ci) {
+        BrewedWaterQuality.save(tag::putInt, thirst$heldWater());
+    }
+
+    @Inject(method = "load", at = @At("TAIL"), remap = true)
+    private void thirst$loadGrade(net.minecraft.nbt.CompoundTag tag, CallbackInfo ci) {
         thirst$quality = BrewedWaterQuality.load((key, fallback) -> com.thirstwastaken2.platform.Vanilla.getInt(tag, key, fallback));
     }
     *///?}
