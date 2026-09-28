@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": { "item": "create:fluid_tank" },
+    "N": { "item": "create:nozzle" },
+    "S": { "tag": "forge:sand" }
+  },
+  "pattern": [
+    "S",
+    "N",
+    "C"
+  ],
+  "result": {
+    "item": "thirstwastaken2:sand_filter"
+  }
+}

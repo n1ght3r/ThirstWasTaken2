@@ -142,6 +142,15 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.create.mixins.json",
         neoForgeDependencies = listOf("create"),
     ),
+    // The same Sand Filter on Forge 47, for Create 6's 1.20.1 build: the same deps key, its own directory,
+    // since every class names the loader's fluid and capability API. See src/main/createforge/AGENTS.md.
+    Integration(
+        dir = "createforge",
+        depsKey = "deps.create",
+        loaders = setOf(Loader.FORGE),
+        mixinConfig = "thirstwastaken2.createforge.mixins.json",
+        neoForgeDependencies = listOf("create"),
+    ),
     // NeoForge only; Core's tanks move fluid through the fluid API of their NeoForge generation.
     // See src/main/sophisticated/AGENTS.md.
     Integration(

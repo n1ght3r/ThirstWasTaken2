@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.thirstwastaken2.createforge.mixin",
+  "plugin": "com.thirstwastaken2.createforge.CreateMixinPlugin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "FluidDrainingBehaviourMixin",
+    "GenericItemEmptyingMixin",
+    "GenericItemFillingMixin",
+    "OpenEndedPipeMixin"
+  ],
+  "injectors": { "defaultRequire": 1 }
+}

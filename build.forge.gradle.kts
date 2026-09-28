@@ -3,6 +3,7 @@ import com.thirstwastaken2.buildlogic.OptionalRunMods
 import com.thirstwastaken2.buildlogic.flightRecorder
 import com.thirstwastaken2.buildlogic.integrations
 import com.thirstwastaken2.buildlogic.integrationsFor
+import java.util.zip.ZipFile
 
 plugins {
     // ModDevGradle's MinecraftForge flavour. Its version is on the plugin classpath from
@@ -51,6 +52,15 @@ repositories {
         forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
         filter { includeGroup("maven.modrinth") }
     }
+    // The libraries Create bundles, which the Sand Filter compiles against; see createLibraries.
+    exclusiveContent {
+        forRepository { maven("https://maven.createmod.net") { name = "Create" } }
+        filter { includeGroup("dev.engine-room.flywheel"); includeGroup("net.createmod.ponder") }
+    }
+    exclusiveContent {
+        forRepository { maven("https://maven.tterrag.com") { name = "tterrag" } }
+        filter { includeGroup("com.tterrag.registrate") }
+    }
 }
 
 /** See build.neoforge.gradle.kts: the loader this node builds for, by its source directory name. */
@@ -86,6 +96,25 @@ sourceSets.main {
  * has one fluid API, so a row split by fluid API generation takes its `fluidhandler` half.
  */
 val nodeIntegrations = integrationsFor(Loader.FORGE) { findProperty(it) != null }
+
+/**
+ * The libraries Create bundles in its jar (Ponder with Catnip, Flywheel, Registrate), as the Maven
+ * coordinates its `META-INF/jarjar/metadata.json` names, so a new Create brings its own. They are in SRG
+ * names like Create, and a remapping configuration takes only modules, so they are compiled against
+ * from their own Mavens rather than copied out of the jar as on NeoForge. MixinExtras is left out: this
+ * mod nests its own.
+ */
+val createLibraries: List<String> = (findProperty("deps.create") as String?)?.let { version ->
+    val jar = configurations.detachedConfiguration(dependencies.create("maven.modrinth:create:$version"))
+        .apply { isTransitive = false }.singleFile
+    ZipFile(jar).use { zip ->
+        val metadata = zip.getInputStream(zip.getEntry("META-INF/jarjar/metadata.json")).reader().readText()
+        @Suppress("UNCHECKED_CAST")
+        val jars = (groovy.json.JsonSlurper().parseText(metadata) as Map<String, Any?>)["jars"] as List<Map<String, Map<String, String>>>
+        jars.map { "${it.getValue("identifier")["group"]}:${it.getValue("identifier")["artifact"]}:${it.getValue("version")["artifactVersion"]}" }
+            .filterNot { it.startsWith("io.github.llamalad7:") }
+    }
+}.orEmpty()
 
 sourceSets.main {
     nodeIntegrations.forEach { integration ->
@@ -295,6 +324,14 @@ dependencies {
     runClientMod(listOf("jade"), "maven.modrinth:jade:${property("deps.jade")}")
     findProperty("deps.cloth_config")?.let {
         runClientMod(listOf("cloth-config", "cloth_config"), "maven.modrinth:cloth-config:$it")
+    }
+    findProperty("deps.create")?.let { create ->
+        // Create and the libraries it bundles (Ponder with Catnip, Flywheel, Registrate) are all in SRG
+        // names, so all are remapped; the Sand Filter extends classes whose supertypes live in them. At
+        // runtime FML reads the libraries out of Create's jar itself. See src/main/createforge/AGENTS.md.
+        modCompileOnly("maven.modrinth:create:$create") { isTransitive = false }
+        createLibraries.forEach { modCompileOnly(it) { isTransitive = false } }
+        runClientMod(listOf("create"), "maven.modrinth:create:$create") { isTransitive = false }
     }
     findProperty("deps.serene_seasons")?.let { sereneSeasons ->
         val glitchCore = property("deps.glitchcore").toString()

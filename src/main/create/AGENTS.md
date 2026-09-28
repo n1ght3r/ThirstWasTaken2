@@ -8,7 +8,8 @@ the four mixins are the same, and this file only records what differs.
 
 This directory is **only compiled by nodes that set `deps.create`** in
 `stonecutter.properties.toml`. Today that is `1.21.1-neoforge`, with Create 6.0.10. Create 6 ships
-for NeoForge on 1.21.1 only, so no other NeoForge node can set it.
+for NeoForge on 1.21.1 only, so no other NeoForge node can set it. Its 1.20.1 build is for Forge 47, and
+the same filter for it lives in [src/main/createforge](../createforge/AGENTS.md).
 
 ```
 java/com/thirstwastaken2/create/

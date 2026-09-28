@@ -73,7 +73,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](do
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Create, Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat, Cultural Delights, Fruits Delight and Expanded Delight mixins
+  Fabric-client, dev, Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat, Cultural Delights, Fruits Delight and Expanded Delight mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -187,7 +187,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | AppleSkin, Jade, Mod Menu, Farmer's Delight, loot | all | [compat/AGENTS.md](src/main/java/com/thirstwastaken2/compat/AGENTS.md) |
 | Drinks from other mods | all | their own data pack files (`data/<ns>/thirstwastaken2/drinks/`), the `c:drinks` tag, and registry ids in `ThirstConfig`; no class references. See [docs/docs/developers/data-packs.md](docs/docs/developers/data-packs.md) |
 | Create Fly | `deps.create_fly`: Fabric 26.1.x, 26.2.x (no 26.3 build) | [src/main/createfly/AGENTS.md](src/main/createfly/AGENTS.md) |
-| Create | `deps.create`: `1.21.1-neoforge` | [src/main/create/AGENTS.md](src/main/create/AGENTS.md) |
+| Create | `deps.create`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/create/AGENTS.md](src/main/create/AGENTS.md), [src/main/createforge/AGENTS.md](src/main/createforge/AGENTS.md) |
 | Sophisticated Backpacks and Storage | `deps.sophisticated_core`: every NeoForge node but `26.3.x-neoforge` | [src/main/sophisticated/AGENTS.md](src/main/sophisticated/AGENTS.md) |
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |

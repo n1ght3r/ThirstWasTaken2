@@ -1,0 +1,73 @@
+// create-water.jsonl for the Forge 1.20.1 Sand Filter (src/main/createforge, Create 6.0.8), where water on
+// a fluid stack and an item is an NBT tag: a fluid stack saves as {FluidName, Amount, Tag}, with the
+// quality in Tag.thirstwastaken2, and an item as {id, Count, tag}. The same checks: the Sand Filter
+// raises a tank of Murky water to Clean, a Mechanical Pump drawing from a sea-water pool fills a Fluid
+// Tank with salty water, a Spout fills a waterskin with three servings of the tank's grade and spends
+// 750 mB, and an Item Drain keeps a dirty bowl's grade in its tank.
+//
+// Read with server.command, which reads block entities on 1.20.1 (create-water.jsonl needs
+// client.command on 1.21.1, and 1.20.1 worlds made by new_world.py do not allow cheats): every
+// "...Check" line and "spoutAfter" in run/1.20.1-forge/agent/client/out.jsonl has to say "Test passed".
+//
+//     python tools/agent/new_world.py 1.20.1-forge CreateAgent
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/create-water-1.20.1.jsonl -Pquickplay=CreateAgent
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "effects", "command": "server.command", "args": {"command": "effect clear @p"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "up", "command": "server.command", "args": {"command": "tp @p -240.5 201 160.5 0 -90"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 60}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -246 199 154 -234 206 166 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -246 199 154 -234 200 166 minecraft:stone"}}
+{"id": "biome", "command": "server.command", "args": {"command": "fillbiome -246 190 154 -234 210 166 minecraft:ocean"}}
+
+// The Sand Filter, given a bucket of Murky water by NBT.
+{"id": "filter", "command": "server.command", "args": {"command": "setblock -244 201 156 thirstwastaken2:sand_filter"}}
+{"id": "filterPlaced", "command": "wait", "args": {"ticks": 20}}
+{"id": "filterFill", "command": "server.command", "args": {"command": "data merge block -244 201 156 {InputTanks:[{TankContent:{FluidName:\"minecraft:water\",Amount:1000,Tag:{thirstwastaken2:{purity:1}}}}]}"}}
+{"id": "filtering", "command": "wait", "args": {"ticks": 140}}
+{"id": "filterRead", "command": "server.command", "args": {"command": "data get block -244 201 156 OutputTanks"}}
+{"id": "filterCheck", "command": "server.command", "args": {"command": "execute if data block -244 201 156 OutputTanks[0].TankContent.Tag.thirstwastaken2{purity:2}"}}
+{"id": "filterChat", "command": "wait", "args": {"ticks": 5}}
+
+// A one-block sea-water pool, an open pipe end, a Mechanical Pump turned by a Creative Motor through a
+// cogwheel, and a Fluid Tank.
+{"id": "walls1", "command": "server.command", "args": {"command": "setblock -235 201 164 minecraft:stone"}}
+{"id": "walls2", "command": "server.command", "args": {"command": "setblock -236 201 163 minecraft:stone"}}
+{"id": "walls3", "command": "server.command", "args": {"command": "setblock -236 201 165 minecraft:stone"}}
+{"id": "pool", "command": "server.command", "args": {"command": "setblock -236 201 164 minecraft:water"}}
+{"id": "pipeIn", "command": "server.command", "args": {"command": "setblock -237 201 164 create:fluid_pipe[east=true,west=true]"}}
+{"id": "pump", "command": "server.command", "args": {"command": "setblock -238 201 164 create:mechanical_pump[facing=west]"}}
+{"id": "pipeOut", "command": "server.command", "args": {"command": "setblock -239 201 164 create:fluid_pipe[east=true,west=true]"}}
+{"id": "tank", "command": "server.command", "args": {"command": "setblock -240 201 164 create:fluid_tank"}}
+{"id": "cog", "command": "server.command", "args": {"command": "setblock -238 201 165 create:cogwheel[axis=x]"}}
+{"id": "motor", "command": "server.command", "args": {"command": "setblock -239 201 165 create:creative_motor[facing=east]"}}
+{"id": "pumping", "command": "wait", "args": {"ticks": 200}}
+{"id": "pumpRead", "command": "server.command", "args": {"command": "data get block -240 201 164 TankContent"}}
+{"id": "pumpCheck", "command": "server.command", "args": {"command": "execute if data block -240 201 164 TankContent.Tag.thirstwastaken2{salty:1b}"}}
+{"id": "pumpChat", "command": "wait", "args": {"ticks": 5}}
+
+// A Spout two blocks above a Depot fills a waterskin dropped on it; an Item Drain empties a bowl.
+{"id": "depot", "command": "server.command", "args": {"command": "setblock -242 201 158 create:depot"}}
+{"id": "spout", "command": "server.command", "args": {"command": "setblock -242 203 158 create:spout"}}
+{"id": "drain", "command": "server.command", "args": {"command": "setblock -244 201 160 create:item_drain"}}
+{"id": "placed", "command": "wait", "args": {"ticks": 20}}
+{"id": "spoutFill", "command": "server.command", "args": {"command": "data merge block -242 203 158 {Tanks:[{TankContent:{FluidName:\"minecraft:water\",Amount:1000,Tag:{thirstwastaken2:{purity:2}}}}]}"}}
+{"id": "spoutBefore", "command": "server.command", "args": {"command": "data get block -242 203 158"}}
+{"id": "skinDrop", "command": "server.command", "args": {"command": "summon item -241.5 202.2 158.5 {Item:{id:\"thirstwastaken2:waterskin\",Count:1b}}"}}
+{"id": "bowlDrop", "command": "server.command", "args": {"command": "summon item -243.5 202.2 160.5 {Item:{id:\"thirstwastaken2:terracotta_water_bowl\",Count:1b,tag:{thirstwastaken2:{purity:0,salty:0b}}}}"}}
+{"id": "working", "command": "wait", "args": {"ticks": 160}}
+{"id": "spoutRead", "command": "server.command", "args": {"command": "data get block -242 201 158 HeldItem"}}
+{"id": "spoutCheck", "command": "server.command", "args": {"command": "execute if data block -242 201 158 HeldItem.Item.tag.thirstwastaken2{servings:3,purity:2}"}}
+{"id": "spoutAfter", "command": "server.command", "args": {"command": "execute if data block -242 203 158 Tanks[0].TankContent{Amount:250}"}}
+{"id": "drainRead", "command": "server.command", "args": {"command": "data get block -244 201 160"}}
+{"id": "drainCheck", "command": "server.command", "args": {"command": "execute if data block -244 201 160 Tanks[0].TankContent{Amount:250,Tag:{thirstwastaken2:{purity:0}}}"}}
+{"id": "containersChat", "command": "wait", "args": {"ticks": 5}}
+
+// Broken, the Sand Filter drops itself: Forge 47 reads no conditions on a loot table, so it drops
+// through the item tag thirstwastaken2:sand_filter, which holds the block's item only once Create has
+// registered it. "filterDrop" has to pass.
+{"id": "filterBreak", "command": "server.command", "args": {"command": "setblock -244 201 156 minecraft:air destroy"}}
+{"id": "dropped", "command": "wait", "args": {"ticks": 10}}
+{"id": "filterDrop", "command": "server.command", "args": {"command": "execute positioned -244 201 156 if entity @e[type=item,distance=..3,nbt={Item:{id:\"thirstwastaken2:sand_filter\"}}]"}}

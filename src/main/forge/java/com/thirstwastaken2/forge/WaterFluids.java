@@ -1,9 +1,11 @@
 package com.thirstwastaken2.forge;
 
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 /**
@@ -46,6 +48,17 @@ public final class WaterFluids {
         else data.putBoolean(SALTY, true);
         stack.getOrCreateTag().put(TAG, data);
         return stack;
+    }
+
+    /** {@link #stamp}, unless there is no quality to write. */
+    public static FluidStack stampIfKnown(FluidStack stack, WaterQuality quality) {
+        return quality == null ? stack : stamp(stack, quality);
+    }
+
+    /** Stamps a container just filled with the quality of the water it was filled from. */
+    public static ItemStack stampContainer(ItemStack filled, WaterQuality quality) {
+        if (quality != null && WaterPurity.isWaterContainer(filled)) WaterPurity.setQuality(filled, quality);
+        return filled;
     }
 
     private static CompoundTag data(FluidStack stack) {
