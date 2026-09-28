@@ -108,7 +108,7 @@ final class InteractionScenario implements Stage {
                         throw new IllegalStateException("Interaction '" + operation.name()
                                 + "' had no effect, so its timing would be meaningless (result " + sink
                                 + ", main hand " + player.getMainHandItem() + " "
-                                + player.getMainHandItem().getComponentsPatch() + ")");
+                                + data(player.getMainHandItem()) + ")");
                     }
                     checked = true;
                 }
@@ -383,5 +383,14 @@ final class InteractionScenario implements Stage {
         double meanNanos = samples.mean();
         json.addProperty("opsPerMillisecond", Metrics.round(meanNanos <= 0.0 ? 0.0 : 1_000_000.0 / meanNanos));
         return json;
+    }
+
+    /** What a stack carries beyond its item, for a failure message: its components, or before 1.20.5 its tag. */
+    private static Object data(net.minecraft.world.item.ItemStack stack) {
+        //? if >=1.20.5 {
+        return stack.getComponentsPatch();
+        //?} else {
+        /*return stack.getTag();
+        *///?}
     }
 }

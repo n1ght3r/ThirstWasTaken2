@@ -8,6 +8,7 @@ import com.thirstwastaken2.config.QuenchedOverlay;
 import com.thirstwastaken2.data.ThirstData;
 import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
+import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -80,8 +81,8 @@ public final class ThirstHud {
         boolean shake = quenched <= 0 && player.tickCount % (thirst * 3 + 1) == 0;
 
         drawBar(graphics, right, top, thirst, quenched, data.exhaustion(), AppleSkin.quenchedOverlay(),
-                AppleSkinIntegration.shouldShowExhaustion(), shake, player.hasEffect(ThirstEffects.PARCHED),
-                player.hasEffect(ThirstEffects.UPSET_STOMACH));
+                AppleSkinIntegration.shouldShowExhaustion(), shake, Vanilla.hasEffect(player, ThirstEffects.PARCHED),
+                Vanilla.hasEffect(player, ThirstEffects.UPSET_STOMACH));
     }
 
     /**

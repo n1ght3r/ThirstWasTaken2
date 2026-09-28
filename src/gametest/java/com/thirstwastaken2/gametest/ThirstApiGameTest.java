@@ -78,12 +78,14 @@ public final class ThirstApiGameTest {
         TestFixtures.check(helper, new ItemStack(Items.NAUTILUS_SHELL).is(DRINKS),
                 "the gametest data pack should tag the nautilus shell c:drinks, or this test proves nothing");
         restores(helper, Items.NAUTILUS_SHELL, ThirstConfig.get().drinkTagValue);
-        // Fabric API tags the ominous bottle c:drinks too, as a magic drink.
+        // Fabric API tags the ominous bottle c:drinks too, as a magic drink. It arrived with 1.20.5.
+        //? if >=1.20.5 {
         TestFixtures.check(helper, new ItemStack(Items.OMINOUS_BOTTLE).is(DRINKS),
                 "the ominous bottle should be tagged c:drinks, or its exclusion below proves nothing");
         TestFixtures.check(helper, ThirstApi.thirstValues(new ItemStack(Items.OMINOUS_BOTTLE)) == null,
                 "a magic drink should restore nothing, got "
                         + Arrays.toString(ThirstApi.thirstValues(new ItemStack(Items.OMINOUS_BOTTLE))));
+        //?}
         helper.succeed();
     }
 

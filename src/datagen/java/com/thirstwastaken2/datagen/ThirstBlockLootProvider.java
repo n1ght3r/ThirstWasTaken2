@@ -34,7 +34,7 @@ public final class ThirstBlockLootProvider implements DataProvider {
     private final CompletableFuture<HolderLookup.Provider> registries;
 
     public ThirstBlockLootProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        this.tables = output.createPathProvider(PackOutput.Target.DATA_PACK, "loot_table");
+        this.tables = output.createPathProvider(PackOutput.Target.DATA_PACK, DataDirectories.of("loot_table"));
         this.registries = registries;
     }
 
@@ -46,7 +46,11 @@ public final class ThirstBlockLootProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
         return registries.thenCompose(lookup -> {
+            //? if >=1.20.5 {
             DynamicOps<JsonElement> ops = lookup.createSerializationContext(JsonOps.INSTANCE);
+            //?} else {
+            /*DynamicOps<JsonElement> ops = JsonOps.INSTANCE;
+            *///?}
             Map<String, Item> pots = Map.of(
                     "copper_hanging_pot", ThirstItems.COPPER_HANGING_POT,
                     "iron_hanging_pot", ThirstItems.IRON_HANGING_POT);
@@ -65,7 +69,12 @@ public final class ThirstBlockLootProvider implements DataProvider {
                         .when(ExplosionCondition.survivesExplosion()))
                 .setRandomSequence(id)
                 .build();
+        // Before 1.20.5 a loot table is written by Gson rather than by a codec.
+        //? if >=1.20.5 {
         JsonElement json = LootTable.DIRECT_CODEC.encodeStart(ops, table).getOrThrow();
+        //?} else {
+        /*JsonElement json = net.minecraft.world.level.storage.loot.LootDataType.TABLE.parser().toJsonTree(table);
+        *///?}
         return DataProvider.saveStable(cache, json, tables.json(id));
     }
 }

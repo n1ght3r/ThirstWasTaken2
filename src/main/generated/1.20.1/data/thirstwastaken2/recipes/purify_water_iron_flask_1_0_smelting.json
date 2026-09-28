@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:iron_flask"
+    }
+  ],
+  "type": "thirstwastaken2:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "fabric:type": "fabric:nbt",
+    "base": {
+      "item": "thirstwastaken2:iron_flask"
+    },
+    "nbt": "{thirstwastaken2:{purity:0,salty:0b,servings:1}}",
+    "strict": false
+  },
+  "result": {
+    "item": "thirstwastaken2:iron_flask",
+    "nbt": "{thirstwastaken2:{purity:2,salty:0b,servings:1}}"
+  }
+}

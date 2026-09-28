@@ -29,6 +29,15 @@ stonecutter parameters {
         // 1.21.11 renamed ResourceLocation to Identifier, ResourceKey#location to #identifier, and
         // moved Util into net.minecraft.util, changing nothing else about any of them.
         string(current.parsed < "1.21.11") {
+            // 1.21 made ResourceLocation's constructors private behind factory methods of the same
+            // meaning. Replacements do not chain, so the pre-1.21 spelling is chosen here rather than
+            // by a rule of its own.
+            val before121 = current.parsed < "1.21"
+            replace("Identifier.fromNamespaceAndPath(",
+                    if (before121) "new ResourceLocation(" else "ResourceLocation.fromNamespaceAndPath(")
+            replace("Identifier.withDefaultNamespace(",
+                    if (before121) "new ResourceLocation(" else "ResourceLocation.withDefaultNamespace(")
+            replace("Identifier.parse(", if (before121) "new ResourceLocation(" else "ResourceLocation.parse(")
             replace("Identifier", "ResourceLocation")
             replace(".identifier()", ".location()")
             replace("net.minecraft.util.Util", "net.minecraft.Util")

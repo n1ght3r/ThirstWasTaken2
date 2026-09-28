@@ -1,0 +1,175 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_frame"
+      },
+      "when": {
+        "axis": "z",
+        "hanging": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot"
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_frame",
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "hanging": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot",
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_1_purity_0"
+      },
+      "when": {
+        "level": "1",
+        "purity": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_1_purity_1"
+      },
+      "when": {
+        "level": "1",
+        "purity": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_1_purity_2"
+      },
+      "when": {
+        "level": "1",
+        "purity": "0|3"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_1_purity_3"
+      },
+      "when": {
+        "level": "1",
+        "purity": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_1_salty"
+      },
+      "when": {
+        "level": "1",
+        "purity": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_2_purity_0"
+      },
+      "when": {
+        "level": "2",
+        "purity": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_2_purity_1"
+      },
+      "when": {
+        "level": "2",
+        "purity": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_2_purity_2"
+      },
+      "when": {
+        "level": "2",
+        "purity": "0|3"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_2_purity_3"
+      },
+      "when": {
+        "level": "2",
+        "purity": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_2_salty"
+      },
+      "when": {
+        "level": "2",
+        "purity": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_3_purity_0"
+      },
+      "when": {
+        "level": "3",
+        "purity": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_3_purity_1"
+      },
+      "when": {
+        "level": "3",
+        "purity": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_3_purity_2"
+      },
+      "when": {
+        "level": "3",
+        "purity": "0|3"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_3_purity_3"
+      },
+      "when": {
+        "level": "3",
+        "purity": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "thirstwastaken2:block/copper_hanging_pot_water_3_salty"
+      },
+      "when": {
+        "level": "3",
+        "purity": "5"
+      }
+    }
+  ]
+}

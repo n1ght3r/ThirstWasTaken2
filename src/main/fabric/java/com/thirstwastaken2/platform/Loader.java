@@ -2,25 +2,16 @@ package com.thirstwastaken2.platform;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
-import com.thirstwastaken2.fabric.ClientboundPayloads;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -28,10 +19,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
@@ -93,12 +82,7 @@ public final class Loader {
     public static <T> PlayerData<T> playerData(Identifier id, Supplier<T> initial, Codec<T> codec,
                                                BiConsumer<T, FriendlyByteBuf> write,
                                                Function<FriendlyByteBuf, T> read) {
-        StreamCodec<FriendlyByteBuf, T> streamCodec = streamCodec(write, read);
-        AttachmentType<T> type = AttachmentRegistry.create(id, builder -> builder
-                .initializer(initial)
-                .persistent(codec)
-                .syncWith(streamCodec, AttachmentSyncPredicate.targetOnly()));
-        return new AttachmentPlayerData<>(type);
+        return FabricNetworking.playerData(id, initial, codec, write, read);
     }
 
     /**
@@ -154,8 +138,14 @@ public final class Loader {
      * packs cannot be told apart from a player's data pack, and its answer for them changed between
      * versions. Taking every table is the one rule that holds on every version and every loader.
      */
-    public static void onLootTable(BiConsumer<ResourceKey<LootTable>, Consumer<LootPool.Builder>> handler) {
-        LootTableEvents.MODIFY.register((key, table, source, registries) -> handler.accept(key, table::withPool));
+    public static void onLootTable(BiConsumer<Identifier, Consumer<LootPool.Builder>> handler) {
+        //? if >=1.20.5 {
+        net.fabricmc.fabric.api.loot.v3.LootTableEvents.MODIFY.register((key, table, source, registries) ->
+                handler.accept(key.identifier(), table::withPool));
+        //?} else {
+        /*net.fabricmc.fabric.api.loot.v2.LootTableEvents.MODIFY.register((resources, loot, id, table, source) ->
+                handler.accept(id, table::withPool));
+        *///?}
     }
 
     /**
@@ -199,47 +189,10 @@ public final class Loader {
      * runs on the client's main thread. Call it during {@code initialize}, on both sides.
      *
      * <p>Fabric API keeps the client receiver in its client module, which common code cannot see, so the
-     * handler waits in {@link ClientboundPayloads} until the client entrypoint registers it.
+     * handler waits in {@link FabricNetworking} until the client entrypoint registers it.
      */
     public static <T> Clientbound<T> clientboundPayload(Identifier id, BiConsumer<T, FriendlyByteBuf> write,
                                                         Function<FriendlyByteBuf, T> read, Consumer<T> handler) {
-        CustomPacketPayload.Type<Wrapped<T>> type = new CustomPacketPayload.Type<>(id);
-        StreamCodec<FriendlyByteBuf, Wrapped<T>> codec = wrappedCodec(type, write, read);
-        //? if >=26.1 {
-        PayloadTypeRegistry.clientboundPlay().register(type, codec);
-        //?} else {
-        /*PayloadTypeRegistry.playS2C().register(type, codec);
-        *///?}
-        ClientboundPayloads.add(type, payload -> handler.accept(payload.value()));
-        return (player, value) -> {
-            if (ServerPlayNetworking.canSend(player, type)) ServerPlayNetworking.send(player, new Wrapped<>(type, value));
-        };
-    }
-
-    /** A common-code payload inside the loader's own packet type. */
-    private record Wrapped<T>(CustomPacketPayload.Type<Wrapped<T>> type, T value) implements CustomPacketPayload { }
-
-    private static <T> StreamCodec<FriendlyByteBuf, T> streamCodec(BiConsumer<T, FriendlyByteBuf> write,
-                                                                   Function<FriendlyByteBuf, T> read) {
-        return StreamCodec.ofMember(write::accept, read::apply);
-    }
-
-    private static <T> StreamCodec<FriendlyByteBuf, Wrapped<T>> wrappedCodec(
-            CustomPacketPayload.Type<Wrapped<T>> type, BiConsumer<T, FriendlyByteBuf> write,
-            Function<FriendlyByteBuf, T> read) {
-        return StreamCodec.ofMember((payload, buffer) -> write.accept(payload.value(), buffer),
-                buffer -> new Wrapped<>(type, read.apply(buffer)));
-    }
-
-    private record AttachmentPlayerData<T>(AttachmentType<T> type) implements PlayerData<T> {
-        @Override
-        public T get(Player player) {
-            return player.getAttachedOrCreate(type);
-        }
-
-        @Override
-        public void set(Player player, T value) {
-            player.setAttached(type, value);
-        }
+        return FabricNetworking.clientboundPayload(id, write, read, handler);
     }
 }

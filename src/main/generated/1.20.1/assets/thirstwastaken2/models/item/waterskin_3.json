@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thirstwastaken2:item/waterskin_3"
+  }
+}

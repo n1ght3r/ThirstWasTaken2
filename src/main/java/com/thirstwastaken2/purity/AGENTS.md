@@ -12,7 +12,6 @@ and core stays on Java 17 for 1.20.1; see the root `AGENTS.md`.)
 
 | File | Owns |
 |---|---|
-| `ThirstComponents` | purity, salinity and serving data component types. Core reads and writes them only through `platform/ItemWaterData` |
 | `WaterQuality` | the sealed pair, `Fresh` or `Salt` |
 | `WaterPurity` | environmental sampling, storage, sickness, sprites and container tests |
 | `WaterInteractions` | the interaction callbacks that move quality between world, blocks and items |

@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:copper_hanging_pot"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:copper_ingots"
+    },
+    "K": {
+      "item": "minecraft:chain"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "SKS",
+    "C C",
+    "CCC"
+  ],
+  "result": {
+    "item": "thirstwastaken2:copper_hanging_pot"
+  },
+  "show_notification": true
+}

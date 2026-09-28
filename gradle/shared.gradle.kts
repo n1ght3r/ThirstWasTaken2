@@ -467,7 +467,9 @@ tasks.register("checkOptionalSeam") {
     inputs.files(classDirs, resourceDirs)
 
     val coreRoots = listOf("src/main/java", "src/client/java", "src/main/fabric", "src/main/neoforge",
-        "src/client/fabric", "src/client/neoforge", "src/main/neoforge-fluidhandler", "src/main/neoforge-transfer")
+        "src/client/fabric", "src/client/neoforge", "src/main/neoforge-fluidhandler", "src/main/neoforge-transfer",
+        "src/main/fabric-payload", "src/client/fabric-payload", "src/main/fabric-legacypayload",
+        "src/client/fabric-legacypayload")
         .map(rootProject::file)
     inputs.files(coreRoots.map { fileTree(it) { include("**/*.java") } })
 

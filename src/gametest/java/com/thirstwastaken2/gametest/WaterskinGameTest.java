@@ -142,7 +142,18 @@ public final class WaterskinGameTest {
         SimpleContainer container = new SimpleContainer(1);
         container.setItem(0, skin);
         Slot slot = new Slot(container, 0, 0, 0);
-        SlotAccess carried = SlotAccess.of(() -> cursor[0], stack -> cursor[0] = stack);
+        SlotAccess carried = new SlotAccess() {
+            @Override
+            public ItemStack get() {
+                return cursor[0];
+            }
+
+            @Override
+            public boolean set(ItemStack stack) {
+                cursor[0] = stack;
+                return true;
+            }
+        };
         return skin.getItem().overrideOtherStackedOnMe(skin, cursor[0], slot, action, player, carried);
     }
 

@@ -1,6 +1,7 @@
 package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.item.ThirstItems;
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -9,9 +10,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -39,8 +38,7 @@ public final class PurificationGameTest {
     @GameTest
     public void lootedWaterBottlesCanBeBoiled(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
-        LootTable table = level.getServer().reloadableRegistries()
-                .getLootTable(BuiltInLootTables.SIMPLE_DUNGEON);
+        LootTable table = TestFixtures.lootTable(helper, Vanilla.lootTableId(BuiltInLootTables.SIMPLE_DUNGEON));
         LootParams params = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(helper.absolutePos(BlockPos.ZERO)))
                 .create(LootContextParamSets.CHEST);
@@ -125,9 +123,9 @@ public final class PurificationGameTest {
     }
 
     private static ItemStack craftBowl(GameTestHelper helper, WaterQuality bucket) {
-        return TestFixtures.craft(helper, RecipeType.CRAFTING, CraftingInput.of(2, 1, List.of(
+        return TestFixtures.craftGrid(helper, 2, 1, List.of(
                 new ItemStack(ThirstItems.TERRACOTTA_BOWL),
-                WaterPurity.setQuality(new ItemStack(Items.WATER_BUCKET), bucket))));
+                WaterPurity.setQuality(new ItemStack(Items.WATER_BUCKET), bucket)));
     }
 
     private static void boiled(GameTestHelper helper, ItemStack input, ItemStack result, WaterQuality expected, String where) {
@@ -138,8 +136,6 @@ public final class PurificationGameTest {
     }
 
     private static boolean hasSmeltingRecipe(GameTestHelper helper, ItemStack stack) {
-        return helper.getLevel().getServer().getRecipeManager()
-                .getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), helper.getLevel())
-                .isPresent();
+        return !TestFixtures.cook(helper, RecipeType.SMELTING, stack).isEmpty();
     }
 }

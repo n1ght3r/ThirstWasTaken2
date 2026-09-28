@@ -1,7 +1,7 @@
 package com.thirstwastaken2.gametest.platform;
 
 import com.thirstwastaken2.neoforge.WaterFluids;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ThirstComponents;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;

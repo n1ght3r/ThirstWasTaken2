@@ -30,9 +30,12 @@ public final class EnvironmentGameTest {
         TestFixtures.check(helper, source.is(DamageTypeTags.BYPASSES_ARMOR),
                 "the mod's bypasses_armor tag entry should have loaded, so armour cannot soften "
                         + "dehydration");
+        // The no_knockback tag arrived with 1.20.2; before it no damage type knocks back without an attacker.
+        //? if >=1.20.5 {
         TestFixtures.check(helper, source.is(DamageTypeTags.NO_KNOCKBACK),
                 "the mod's no_knockback tag entry should have loaded, so dehydration does not "
                         + "knock the player back");
+        //?}
         TestFixtures.check(helper, source.is(DamageTypeTags.NO_IMPACT),
                 "the mod's no_impact tag entry should have loaded, so dehydration hurts the way "
                         + "drowning does");

@@ -2,7 +2,6 @@ package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.ThirstWasTaken2;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -37,10 +36,10 @@ public final class AdvancementGameTest {
     @GameTest
     public void everyAdvancementHangsOffTheRoot(GameTestHelper helper) {
         for (String name : TAB) {
-            AdvancementHolder holder = advancement(helper, ThirstWasTaken2.id(name));
+            var holder = advancement(helper, ThirstWasTaken2.id(name));
             TestFixtures.check(helper, holder != null, "advancement " + name + " did not load");
             boolean shouldBeRoot = name.equals("root");
-            TestFixtures.check(helper, holder.value().isRoot() == shouldBeRoot,
+            TestFixtures.check(helper, isRoot(holder) == shouldBeRoot,
                     shouldBeRoot ? "the root advancement should have no parent"
                             : name + " should hang off another advancement of this mod");
         }
@@ -52,11 +51,11 @@ public final class AdvancementGameTest {
     public void recipeAdvancementsRewardRecipesThatExist(GameTestHelper helper) {
         MinecraftServer server = helper.getLevel().getServer();
         for (String name : RECIPE_UNLOCKS) {
-            AdvancementHolder holder = advancement(helper, ThirstWasTaken2.id("recipes/misc/" + name));
+            var holder = advancement(helper, ThirstWasTaken2.id("recipes/misc/" + name));
             TestFixtures.check(helper, holder != null, "recipe advancement " + name + " did not load");
             if (holder == null) continue;
 
-            var rewards = holder.value().rewards().recipes();
+            var rewards = rewardedRecipes(holder);
             TestFixtures.check(helper, !rewards.isEmpty(), name + " should unlock at least one recipe");
             for (var recipe : rewards) {
                 TestFixtures.check(helper, server.getRecipeManager().byKey(recipe).isPresent(),
@@ -94,7 +93,43 @@ public final class AdvancementGameTest {
         helper.succeed();
     }
 
-    private static AdvancementHolder advancement(GameTestHelper helper, Identifier id) {
+    // An advancement by id, whether it is the root, and the recipes it rewards. 1.20.2 put an advancement
+    // behind a holder that carries its id, and 1.21.2 named the recipes by registry key.
+    //? if >=1.21.2 {
+    private static net.minecraft.advancements.AdvancementHolder advancement(GameTestHelper helper, Identifier id) {
         return helper.getLevel().getServer().getAdvancements().get(id);
     }
+
+    private static boolean isRoot(net.minecraft.advancements.AdvancementHolder holder) {
+        return holder.value().isRoot();
+    }
+
+    private static List<ResourceKey<Recipe<?>>> rewardedRecipes(net.minecraft.advancements.AdvancementHolder holder) {
+        return holder.value().rewards().recipes();
+    }
+    //?} elif >=1.20.5 {
+    /*private static net.minecraft.advancements.AdvancementHolder advancement(GameTestHelper helper, Identifier id) {
+        return helper.getLevel().getServer().getAdvancements().get(id);
+    }
+
+    private static boolean isRoot(net.minecraft.advancements.AdvancementHolder holder) {
+        return holder.value().isRoot();
+    }
+
+    private static List<Identifier> rewardedRecipes(net.minecraft.advancements.AdvancementHolder holder) {
+        return holder.value().rewards().recipes();
+    }
+    *///?} else {
+    /*private static net.minecraft.advancements.Advancement advancement(GameTestHelper helper, Identifier id) {
+        return helper.getLevel().getServer().getAdvancements().getAdvancement(id);
+    }
+
+    private static boolean isRoot(net.minecraft.advancements.Advancement advancement) {
+        return advancement.getParent() == null;
+    }
+
+    private static List<Identifier> rewardedRecipes(net.minecraft.advancements.Advancement advancement) {
+        return List.of(advancement.getRewards().getRecipes());
+    }
+    *///?}
 }

@@ -3,6 +3,7 @@ package com.thirstwastaken2.purity;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
+import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
@@ -249,7 +250,7 @@ public final class WaterInteractions {
 
     private static BlockHitResult pick(Player player, Level level, ClipContext.Fluid fluidMode) {
         Vec3 start = player.getEyePosition();
-        Vec3 end = start.add(player.getViewVector(1.0F).scale(player.blockInteractionRange()));
+        Vec3 end = start.add(player.getViewVector(1.0F).scale(Vanilla.blockReach(player)));
         return level.clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, fluidMode, player));
     }
 }

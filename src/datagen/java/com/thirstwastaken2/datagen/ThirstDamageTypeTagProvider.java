@@ -28,6 +28,8 @@ public final class ThirstDamageTypeTagProvider extends FabricTagsProvider<Damage
     @Override
     protected void addTags(HolderLookup.Provider registries) {
         addDehydrate(DamageTypeTags.BYPASSES_ARMOR);
+        // The no_knockback tag arrived with 1.20.2.
+        //? if >=1.20.5
         addDehydrate(DamageTypeTags.NO_KNOCKBACK);
         addDehydrate(DamageTypeTags.NO_IMPACT);
     }

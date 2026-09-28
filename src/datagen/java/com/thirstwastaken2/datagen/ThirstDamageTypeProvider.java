@@ -22,15 +22,29 @@ import java.util.function.BiConsumer;
  * would compound.
  */
 public final class ThirstDamageTypeProvider extends FabricCodecDataProvider<DamageType> {
+    // Before 1.20.5 a codec provider names its directory itself and is handed no registries.
+    //? if >=1.20.5 {
     public ThirstDamageTypeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, Registries.DAMAGE_TYPE, DamageType.DIRECT_CODEC);
     }
 
     @Override
     protected void configure(BiConsumer<Identifier, DamageType> provider, HolderLookup.Provider registries) {
-        provider.accept(
-                ThirstDamageTypes.DEHYDRATE.identifier(),
-                new DamageType("dehydrate", DamageScaling.NEVER, 0.0F));
+        provider.accept(ThirstDamageTypes.DEHYDRATE.identifier(), dehydrate());
+    }
+    //?} else {
+    /*public ThirstDamageTypeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, net.minecraft.data.PackOutput.Target.DATA_PACK, "damage_type", DamageType.CODEC);
+    }
+
+    @Override
+    protected void configure(BiConsumer<Identifier, DamageType> provider) {
+        provider.accept(ThirstDamageTypes.DEHYDRATE.identifier(), dehydrate());
+    }
+    *///?}
+
+    private static DamageType dehydrate() {
+        return new DamageType("dehydrate", DamageScaling.NEVER, 0.0F);
     }
 
     @Override

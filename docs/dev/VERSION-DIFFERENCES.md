@@ -13,6 +13,7 @@ Supported nodes and their jars:
 | `26.1.x` | `+26.1.2` | 26.1, 26.1.1, 26.1.2 | 25 | Fabric API 0.155.3+26.1.2 |
 | `1.21.11` | `+1.21.11` | 1.21.11 | 21 | Fabric API 0.141.6+1.21.11 |
 | `1.21.1` | `+1.21.1` | 1.21, 1.21.1 | 21 | Fabric API 0.116.17+1.21.1 |
+| `1.20.1` | `+1.20.1` | 1.20.1 | 17 | Fabric API 0.92.12+1.20.1 |
 | `26.3.x-neoforge` | `+26.3-neoforge` | 26.3 | 25 | NeoForge 26.3.0.22-beta |
 | `26.2.x-neoforge` | `+26.2-neoforge` | 26.2 | 25 | NeoForge 26.2.0.88 |
 | `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.109 |
@@ -228,6 +229,34 @@ already has by default. The stack the furnace hands out is the same; see
 | Use animations became `ItemUseAnimation` | `Vanilla.isDrinkAnimation`, which `DrinkingUpgradeWrapper.canFilter` calls; `AlchemyUpgradeWrapperMixin` (Sophisticated, NeoForge only) |
 | A recipe names an ingredient by id or `#tag` rather than as an object | the Drinking upgrade's recipes, one copy per generation in `src/main/sophisticated-fluidhandler` and `-transfer` |
 
+### 1.20.5 and 1.21 (affect 1.20.1)
+
+The `1.20.1` node is Fabric only so far; the Forge one is phase 2 of
+[VERSION-1.20.1.md](VERSION-1.20.1.md). Most of these are written `>=1.20.5` or `<1.20.5` though the
+change came earlier, in 1.20.2 or 1.20.3: with no node in between, the boundary only has to fall
+between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
+
+| Difference | Code |
+|---|---|
+| No data components: an item's water is a `thirstwastaken2` compound in its tag, `{servings, purity, salty}` | `platform/ItemWaterData`; `platform/ThirstComponents` is empty there. A fluid variant carries the same compound: `FabricTransfer` |
+| No default components: a new stack is given its item's default tag (the filled bowl's grade 3 and its model) | `platform/DefaultData`, filled by `ItemWaterData.freshByDefault` and `Vanilla.modelSelectorByDefault`, applied by `ItemStackMixin` in `ItemStack`'s constructor |
+| A vanilla recipe result cannot carry a tag (a cooking result is a bare item id) | `platform/NbtRecipes`: `thirstwastaken2:smelting`, `smoking`, `campfire_cooking` and `crafting_shapeless`, whose `result` takes `nbt`. They build vanilla's recipes, so a client is sent vanilla's |
+| Custom model data is the `CustomModelData` tag; potions are the `Potion` tag | `Vanilla.modelSelector` and its neighbours, `Vanilla.waterBottle`, `Vanilla.holdsWaterPotion` |
+| Effects are keyed by `MobEffect`, not `Holder<MobEffect>` | `Vanilla.getEffect`, `hasEffect`, `effectInstance`, `poison` |
+| `ResourceLocation` has public constructors instead of `fromNamespaceAndPath`, `withDefaultNamespace` and `parse` | `replacements` in `stonecutter.gradle.kts` (below 1.21) |
+| No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
+| Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
+| `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |
+| Hover text is handed the level; `FoodData` adds food through `eat(int, float)`; the cauldron is told its weather by a predicate | `ItemStackMixin`, `FoodDataMixin`, `BlocksMixin` |
+| No GUI sprite atlas: vanilla's HUD icons are regions of `textures/gui/icons.png` | `ClientVanilla.blitSprite` knows the food icons the config preview draws; the dev `GuiDrawMixin` records food and air from `blit` |
+| The mouse wheel has no horizontal amount; widgets have no `setHeight`; `Util.OS.openPath` took a `File` | `client/platform/ScrollingScreen`, `ClientVanilla.setHeight`, `ClientVanilla.openPath` |
+| Enchantments are registered objects, not data (1.21) | `Vanilla.damageProtection` |
+| Data directories are plural: `recipes`, `advancements`, `loot_tables`, `tags/items` (1.21) | datagen `DataDirectories`; `processGametestResources` renames the gametests' own data |
+| Recipes and advancements are built through `FinishedRecipe` and `Consumer<Advancement>` | `src/datagen/legacy`, which `build.gradle.kts` compiles in place of `ThirstRecipeProvider`, `ThirstAdvancementProvider` and `FarmersDelightRecipeProvider` |
+| Fabric's convention tags name the material first (`c:copper_ingots`) and have no iron nuggets | `LegacyRecipeProvider` |
+| No `no_knockback` damage tag, ominous bottle or trade rebalance pack | `ThirstDamageTypeTagProvider`; the gametests that need them are left out |
+| Runs on Java 17 | `requiredJava` in `build.gradle.kts` |
+
 ### Somewhere between 1.21.1 and 1.21.11
 
 These are written `>1.21.1` because the exact release was not pinned down. With no node in between,
@@ -255,6 +284,16 @@ it makes no difference to any jar.
 | Levels expose their highest buildable y | `BenchmarkWorld` |
 
 ## Differences in Fabric API rather than Minecraft
+
+- **Payload types and attachment sync** do not exist on 1.20.1. Its attachments save themselves but
+  do not sync, and payloads are plain channels. `src/main/fabric-legacypayload` and
+  `src/client/fabric-legacypayload` hold its `FabricNetworking` and `ClientboundReceivers`, which send
+  a player's value when it is set and again on joining, respawning and changing dimension, holding
+  what a client has not yet said it takes until it does. `src/main/fabric-payload` is every later
+  version's; `build.gradle.kts` picks one.
+- **Resource conditions** on 1.20.1 are a predicate over the JSON rather than typed conditions with a
+  codec. `ItemEnabledCondition` forks for it, and implements `ConditionJsonProvider` there for datagen.
+  Loot tables are modified through `loot.v2`: `Loader.onLootTable`.
 
 - **Attachment sync** exists on every version, including 1.21.1, where Fabric API backported it.
   `Loader.playerData` is the same on all four Fabric nodes.

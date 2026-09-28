@@ -269,8 +269,12 @@ final class ClientProbes {
             Minecraft minecraft = client();
             LocalPlayer player = player(minecraft);
             ItemStack stack = stack(request, player);
-            List<Component> lines = stack.getTooltipLines(Item.TooltipContext.of(player.level()), player,
-                    request.flag("advanced", false) ? TooltipFlag.ADVANCED : TooltipFlag.NORMAL);
+            TooltipFlag flag = request.flag("advanced", false) ? TooltipFlag.ADVANCED : TooltipFlag.NORMAL;
+            //? if >=1.20.5 {
+            List<Component> lines = stack.getTooltipLines(Item.TooltipContext.of(player.level()), player, flag);
+            //?} else {
+            /*List<Component> lines = stack.getTooltipLines(player, flag);
+            *///?}
             JsonArray text = new JsonArray();
             JsonArray colours = new JsonArray();
             for (Component line : lines) {
@@ -341,7 +345,7 @@ final class ClientProbes {
             // its size, as the config screen does. The game's wheel is positive upwards.
             boolean taken = false;
             for (int notch = 0; notch < Math.abs(amount); notch++) {
-                taken |= screen.mouseScrolled(x, y, 0.0, -Math.signum(amount));
+                taken |= ClientVanilla.mouseScrolled(screen, x, y, -Math.signum(amount));
             }
             JsonObject result = new JsonObject();
             result.addProperty("x", x);
@@ -501,7 +505,12 @@ final class ClientProbes {
             Minecraft minecraft = client();
             if (minecraft.level == null) throw new AgentException("client.disconnect: no world is loaded");
             reply.ok();
+            //? if >=1.20.5 {
             minecraft.disconnect(new TitleScreen(), false);
+            //?} else {
+            /*minecraft.level.disconnect();
+            minecraft.clearLevel(new TitleScreen());
+            *///?}
         });
 
         dispatcher.register("client.connect", (request, reply) -> {
@@ -511,11 +520,19 @@ final class ClientProbes {
                 throw new AgentException("client.connect: a world is already loaded; disconnect first");
             }
             reply.ok();
+            //? if >=1.20.5 {
             ServerData data = new ServerData("agent", address, ServerData.Type.OTHER);
             net.minecraft.client.gui.screens.ConnectScreen.startConnecting(
                     new TitleScreen(), minecraft,
                     net.minecraft.client.multiplayer.resolver.ServerAddress.parseString(address),
                     data, false, null);
+            //?} else {
+            /*ServerData data = new ServerData("agent", address, false);
+            net.minecraft.client.gui.screens.ConnectScreen.startConnecting(
+                    new TitleScreen(), minecraft,
+                    net.minecraft.client.multiplayer.resolver.ServerAddress.parseString(address),
+                    data, false);
+            *///?}
         });
     }
 

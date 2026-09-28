@@ -4,6 +4,7 @@ import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.data.ThirstData;
 import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
+import com.thirstwastaken2.platform.Vanilla;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -118,8 +119,8 @@ public final class PlayerStateGameTest {
         ServerPlayer control = survivalPlayer(helper);
         ServerPlayer parched = survivalPlayer(helper);
         ServerPlayer veryParched = survivalPlayer(helper);
-        parched.addEffect(new MobEffectInstance(ThirstEffects.PARCHED, 200, 0));
-        veryParched.addEffect(new MobEffectInstance(ThirstEffects.PARCHED, 200, 1));
+        parched.addEffect(Vanilla.effectInstance(ThirstEffects.PARCHED, 200, 0));
+        veryParched.addEffect(Vanilla.effectInstance(ThirstEffects.PARCHED, 200, 1));
 
         for (int i = 0; i < PARCHED_TICKS; i++) {
             ThirstManager.tickPlayer(control);

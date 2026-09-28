@@ -3,7 +3,7 @@ package com.thirstwastaken2.dev.benchmark;
 import com.thirstwastaken2.createfly.SandFilter;
 import com.thirstwastaken2.createfly.SandFilterBlockEntity;
 import com.thirstwastaken2.createfly.WaterFluids;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import com.zurrtum.create.catnip.math.BlockFace;

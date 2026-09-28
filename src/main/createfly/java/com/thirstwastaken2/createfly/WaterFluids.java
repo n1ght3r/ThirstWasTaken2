@@ -1,7 +1,7 @@
 package com.thirstwastaken2.createfly;
 
 import com.thirstwastaken2.config.ThirstConfig;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import com.zurrtum.create.infrastructure.fluids.FluidStack;

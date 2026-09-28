@@ -3,6 +3,7 @@ package com.thirstwastaken2.gametest;
 import com.thirstwastaken2.data.ThirstData;
 import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
+import com.thirstwastaken2.platform.Vanilla;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,8 +35,8 @@ public final class UpsetStomachGameTest {
         ServerPlayer control = quietPlayer(helper);
         ServerPlayer sick = quietPlayer(helper);
         ServerPlayer verySick = quietPlayer(helper);
-        sick.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
-        verySick.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 1));
+        sick.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
+        verySick.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 1));
         ThirstData start = ThirstManager.get(control);
 
         for (int i = 0; i < DRAIN_TICKS; i++) {
@@ -59,8 +60,8 @@ public final class UpsetStomachGameTest {
     public void aBurstCostsNothingOnTopOfUpsetStomach(GameTestHelper helper) {
         ServerPlayer sick = quietPlayer(helper);
         ServerPlayer bursting = quietPlayer(helper);
-        sick.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
-        bursting.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
+        sick.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
+        bursting.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
         bursting.addEffect(new MobEffectInstance(MobEffects.NAUSEA, DRAIN_TICKS * 2, 0));
         ThirstData start = ThirstManager.get(sick);
 
@@ -96,7 +97,7 @@ public final class UpsetStomachGameTest {
         TestFixtures.withConfig(config -> config.quenchedHealthRegen = 0.0, () -> {
             ServerPlayer player = TestFixtures.survivalPlayer(helper);
             player.setHealth(HURT_HEALTH);
-            player.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, HEALTH_TICKS * 2, 1));
+            player.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, HEALTH_TICKS * 2, 1));
 
             for (int i = 0; i < HEALTH_TICKS; i++) ThirstManager.tickPlayer(player);
 
@@ -126,7 +127,7 @@ public final class UpsetStomachGameTest {
     private static float saturationFromMeal(GameTestHelper helper, int amplifier) {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         if (amplifier >= 0) {
-            player.addEffect(new MobEffectInstance(ThirstEffects.UPSET_STOMACH, 200, amplifier));
+            player.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 200, amplifier));
         }
         player.getFoodData().setFoodLevel(10);
         player.getFoodData().setSaturation(0.0F);

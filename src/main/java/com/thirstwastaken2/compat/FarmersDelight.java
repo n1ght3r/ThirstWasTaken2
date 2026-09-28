@@ -39,6 +39,6 @@ public final class FarmersDelight {
             if (effect == null) return false;
             nourishment = effect;
         }
-        return player.hasEffect(effect);
+        return Vanilla.hasEffect(player, effect);
     }
 }

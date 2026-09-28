@@ -1,12 +1,7 @@
 package com.thirstwastaken2.platform;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.config.ThirstConfig;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -15,34 +10,79 @@ import net.minecraft.resources.Identifier;
  * an item off loses its recipes on the next data load. The NeoForge build translates it to its own
  * condition of the same id.
  *
- * <p>Here rather than beside the Fabric entrypoint because the parameter of {@code test} changed in
- * 1.21.2, and a fork belongs in {@code platform/}.
+ * <p>Here rather than beside the Fabric entrypoint because Fabric API rewrote its conditions for
+ * 1.20.5, typed conditions with codecs replacing a predicate over the JSON, and the parameter of
+ * {@code test} changed again in 1.21.2. A fork belongs in {@code platform/}. Both forms read and write
+ * the same JSON.
  */
-public record ItemEnabledCondition(Identifier item) implements ResourceCondition {
-    public static final MapCodec<ItemEnabledCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Identifier.CODEC.fieldOf("item").forGetter(ItemEnabledCondition::item)
-    ).apply(instance, ItemEnabledCondition::new));
-    public static final ResourceConditionType<ItemEnabledCondition> TYPE =
-            ResourceConditionType.create(ThirstWasTaken2.id("item_enabled"), CODEC);
+//? if >=1.21.2 {
+public record ItemEnabledCondition(Identifier item)
+        implements net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition {
+    public static final com.mojang.serialization.MapCodec<ItemEnabledCondition> CODEC =
+            com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    Identifier.CODEC.fieldOf("item").forGetter(ItemEnabledCondition::item)
+            ).apply(instance, ItemEnabledCondition::new));
+    public static final net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType<ItemEnabledCondition> TYPE =
+            net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType.create(
+                    ThirstWasTaken2.id("item_enabled"), CODEC);
 
     static void register() {
-        ResourceConditions.register(TYPE);
+        net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions.register(TYPE);
     }
 
     @Override
-    public ResourceConditionType<?> getType() {
+    public net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType<?> getType() {
         return TYPE;
     }
 
-    //? if >=1.21.2 {
     @Override
     public boolean test(net.minecraft.resources.RegistryOps.RegistryInfoLookup registryInfo) {
         return ThirstConfig.get().isItemEnabled(item.toString());
     }
-    //?} else {
-    /*@Override
+}
+//?} elif >=1.20.5 {
+/*public record ItemEnabledCondition(Identifier item)
+        implements net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition {
+    public static final com.mojang.serialization.MapCodec<ItemEnabledCondition> CODEC =
+            com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    Identifier.CODEC.fieldOf("item").forGetter(ItemEnabledCondition::item)
+            ).apply(instance, ItemEnabledCondition::new));
+    public static final net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType<ItemEnabledCondition> TYPE =
+            net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType.create(
+                    ThirstWasTaken2.id("item_enabled"), CODEC);
+
+    static void register() {
+        net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions.register(TYPE);
+    }
+
+    @Override
+    public net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType<?> getType() {
+        return TYPE;
+    }
+
+    @Override
     public boolean test(net.minecraft.core.HolderLookup.Provider registryLookup) {
         return ThirstConfig.get().isItemEnabled(item.toString());
     }
-    *///?}
 }
+*///?} else {
+/*public record ItemEnabledCondition(Identifier item)
+        implements net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider {
+    private static final Identifier ID = ThirstWasTaken2.id("item_enabled");
+
+    static void register() {
+        net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions.register(ID, json ->
+                ThirstConfig.get().isItemEnabled(net.minecraft.util.GsonHelper.getAsString(json, "item")));
+    }
+
+    @Override
+    public Identifier getConditionId() {
+        return ID;
+    }
+
+    @Override
+    public void writeParameters(com.google.gson.JsonObject json) {
+        json.addProperty("item", item.toString());
+    }
+}
+*///?}

@@ -6,6 +6,7 @@ import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
+import com.thirstwastaken2.platform.Vanilla;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,7 +38,7 @@ public final class BalanceConfigGameTest {
         }, () -> {
             WaterPurity.applyEffects(player, bowl(WaterQuality.SALT));
             TestFixtures.check(helper, !player.hasEffect(MobEffects.NAUSEA), "0 seconds of Nausea should give none");
-            MobEffectInstance parched = player.getEffect(ThirstEffects.PARCHED);
+            MobEffectInstance parched = Vanilla.getEffect(player, ThirstEffects.PARCHED);
             TestFixtures.check(helper, parched != null && parched.getDuration() == 200,
                     "Parched should last 10 seconds, got " + parched);
         });

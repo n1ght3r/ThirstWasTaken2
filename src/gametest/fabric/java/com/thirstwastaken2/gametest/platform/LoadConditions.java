@@ -2,8 +2,6 @@ package com.thirstwastaken2.gametest.platform;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 
 /**
@@ -23,6 +21,12 @@ public final class LoadConditions {
     public static boolean hold(JsonObject json) {
         JsonElement conditions = json.get(ResourceConditions.CONDITIONS_KEY);
         if (conditions == null) return true;
-        return ResourceCondition.CONDITION_CODEC.parse(JsonOps.INSTANCE, conditions).getOrThrow().test(null);
+        // Fabric API rewrote its conditions for 1.20.5; before it they are tested straight off the JSON.
+        //? if >=1.20.5 {
+        return net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition.CONDITION_CODEC
+                .parse(com.mojang.serialization.JsonOps.INSTANCE, conditions).getOrThrow().test(null);
+        //?} else {
+        /*return ResourceConditions.objectMatchesConditions(json);
+        *///?}
     }
 }

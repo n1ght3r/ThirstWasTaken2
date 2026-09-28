@@ -13,6 +13,19 @@ deps.fabric_loader = "0.19.5"
 # Pinned to a release rather than `1.17-SNAPSHOT`, so the same commit builds the same jars later.
 loomx.loom_version = "1.17.21"
 
+[fabric."1.20.1"]
+# The node older than data components, payload types and Fabric's attachment API; see
+# docs/dev/VERSION-1.20.1.md. No integration keys yet: those come one at a time in its phase 3.
+mod.mc_compat = "1.20.1"
+mod.mc_releases = ["1.20.1"]
+
+deps.fabric_api = "0.92.12+1.20.1"
+deps.modmenu = "7.2.2"
+# 2.5.2+mc1.20.1, the Fabric upload.
+deps.appleskin = "N5XeV21r"
+deps.cloth_config = "11.1.136+fabric"
+deps.jade = "11.13.3+fabric"
+
 # No shared ["1.21.1"] table: the two loaders claim different releases there.
 [fabric."1.21.1"]
 # One jar for both: nothing the mod touches moved between 1.21 and 1.21.1.

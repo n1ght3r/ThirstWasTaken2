@@ -1,0 +1,41 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:terracotta_bowl"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_clay_bowl": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thirstwastaken2:clay_bowl"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thirstwastaken2:terracotta_bowl_from_smelting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_clay_bowl",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thirstwastaken2:terracotta_bowl_from_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

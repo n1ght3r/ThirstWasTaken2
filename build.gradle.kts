@@ -27,9 +27,12 @@ val loaderVersion = property("deps.fabric_loader") as String
 version = "${property("mod.version")}+${sc.current.version}"
 base.archivesName = modName
 
-/** Minecraft 26.1 moved to Java 25; 1.21.x still runs on Java 21. */
-val requiredJava: JavaVersion =
-    if (sc.current.parsed >= "26.1") JavaVersion.VERSION_25 else JavaVersion.VERSION_21
+/** Minecraft 26.1 moved to Java 25; 1.20.5 to 1.21.x run on Java 21, 1.20.1 on Java 17. */
+val requiredJava: JavaVersion = when {
+    sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
+    sc.current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
+    else -> JavaVersion.VERSION_17
+}
 
 repositories {
     // Loom supplies the Minecraft and Fabric repositories.
@@ -170,6 +173,15 @@ sourceSets.named("client") {
     java.srcDir("src/client/$loader/java")
     resources.srcDir("src/client/$loader/resources")
 }
+/**
+ * Player data sync and clientbound payloads, one directory per generation of Fabric's networking:
+ * payload types and attachments that sync themselves from 1.20.5, plain channels before it. Each holds
+ * a `platform/FabricNetworking` and a client `ClientboundReceivers` with the same signatures, the way
+ * NeoForge's fluid API directories do in build.neoforge.gradle.kts.
+ */
+val networking = if (sc.current.parsed >= "1.20.5") "payload" else "legacypayload"
+sourceSets.main { java.srcDir("src/main/$loader-$networking/java") }
+sourceSets.named("client") { java.srcDir("src/client/$loader-$networking/java") }
 // The dev tools have loader code of their own, under the same rule: the entrypoints, and the small
 // seam the agent needs beyond the mod's own `platform/Loader`. See src/dev/java/AGENTS.md.
 dev.java.srcDir("src/dev/$loader/java")
@@ -319,6 +331,22 @@ fabricApi.configureDataGeneration {
     strictValidation = false
 }
 
+/*
+ * 1.20.1 writes recipes and advancements through types the later providers share nothing with, and has
+ * no data components for their ingredients and results to carry, so its own two providers in
+ * src/datagen/legacy replace those in src/datagen/java there. See src/datagen/java/AGENTS.md.
+ */
+if (sc.current.parsed < "1.20.5") {
+    sourceSets.named("datagen") {
+        java {
+            srcDir("src/datagen/legacy/java")
+            exclude("com/thirstwastaken2/datagen/ThirstRecipeProvider.java",
+                    "com/thirstwastaken2/datagen/ThirstAdvancementProvider.java",
+                    "com/thirstwastaken2/datagen/FarmersDelightRecipeProvider.java")
+        }
+    }
+}
+
 // Loom adds the datagen output to `main`'s resources by reading the source directories back and
 // setting them again, which flattens them to plain files and loses the task dependency Stonecutter
 // had attached to the one it generates. Without this, building any node other than the active one
@@ -414,9 +442,11 @@ dependencies {
     runClientMod(listOf("modmenu"), "maven.modrinth:modmenu:${property("deps.modmenu")}")
     // Test the water purity line Jade shows when looking at water or a cauldron.
     runClientMod(listOf("jade"), "maven.modrinth:jade:${property("deps.jade")}")
-    // Test the drinks and meals Farmer's Delight adds, and the c:drinks tag it fills.
-    runClientMod(listOf("farmers-delight-refabricated", "farmersdelight"),
-        "maven.modrinth:farmers-delight-refabricated:${property("deps.farmersdelight")}")
+    // Test the drinks and meals Farmer's Delight adds, and the c:drinks tag it fills. Not yet on 1.20.1.
+    findProperty("deps.farmersdelight")?.let { farmersDelight ->
+        runClientMod(listOf("farmers-delight-refabricated", "farmersdelight"),
+            "maven.modrinth:farmers-delight-refabricated:$farmersDelight")
+    }
 
     if (createFlyClasses != null) {
         // The Sand Filter extends Create classes on both sides, so both source sets compile against it.
@@ -525,6 +555,15 @@ tasks.processResources {
             nodeIntegrations.forEach { it.patchFabricManifest(json) }
             manifest.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)))
         }
+    }
+}
+
+// 1.21 renamed the data pack directories from plural to singular. The gametests' own data is written
+// the newer way and renamed here for the versions before it, rather than kept twice.
+if (sc.current.parsed < "1.21") {
+    tasks.named<ProcessResources>("processGametestResources") {
+        eachFile { path = path.replace("/tags/item/", "/tags/items/") }
+        includeEmptyDirs = false
     }
 }
 

@@ -12,9 +12,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+//? if >=1.21 {
 import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
+//?}
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Blocks;
 
@@ -137,25 +139,97 @@ final class TestFixtures {
         }
     }
 
-    /** What a furnace or campfire makes of {@code stack}, or an empty stack when no recipe takes it. */
+    // What a furnace or campfire makes of a stack, and what a crafting grid of the given size makes of
+    // its items in order, or an empty stack when no recipe takes them. 1.21 gave recipes inputs of their
+    // own in place of containers, and 26.1 dropped the registry lookup assembling a result took.
+    //? if >=26.1 {
     static <T extends Recipe<SingleRecipeInput>> ItemStack cook(GameTestHelper helper, RecipeType<T> type, ItemStack stack) {
         return craft(helper, type, new SingleRecipeInput(stack));
     }
 
-    /** What the recipe manager makes of {@code input}, or an empty stack when no recipe matches it. */
-    static <I extends RecipeInput, T extends Recipe<I>> ItemStack craft(GameTestHelper helper, RecipeType<T> type, I input) {
+    static ItemStack craftGrid(GameTestHelper helper, int width, int height, java.util.List<ItemStack> items) {
+        return craft(helper, RecipeType.CRAFTING, net.minecraft.world.item.crafting.CraftingInput.of(width, height, items));
+    }
+
+    private static <I extends RecipeInput, T extends Recipe<I>> ItemStack craft(GameTestHelper helper, RecipeType<T> type, I input) {
         return helper.getLevel().getServer().getRecipeManager()
                 .getRecipeFor(type, input, helper.getLevel())
-                .map(holder -> assemble(helper, holder.value(), input))
+                .map(holder -> holder.value().assemble(input))
+                .orElse(ItemStack.EMPTY);
+    }
+    //?} elif >=1.21 {
+    /*static <T extends Recipe<SingleRecipeInput>> ItemStack cook(GameTestHelper helper, RecipeType<T> type, ItemStack stack) {
+        return craft(helper, type, new SingleRecipeInput(stack));
+    }
+
+    static ItemStack craftGrid(GameTestHelper helper, int width, int height, java.util.List<ItemStack> items) {
+        return craft(helper, RecipeType.CRAFTING, net.minecraft.world.item.crafting.CraftingInput.of(width, height, items));
+    }
+
+    private static <I extends RecipeInput, T extends Recipe<I>> ItemStack craft(GameTestHelper helper, RecipeType<T> type, I input) {
+        return helper.getLevel().getServer().getRecipeManager()
+                .getRecipeFor(type, input, helper.getLevel())
+                .map(holder -> holder.value().assemble(input, helper.getLevel().registryAccess()))
+                .orElse(ItemStack.EMPTY);
+    }
+    *///?} else {
+    /*static <T extends Recipe<net.minecraft.world.Container>> ItemStack cook(GameTestHelper helper, RecipeType<T> type,
+                                                                       ItemStack stack) {
+        return craft(helper, type, new net.minecraft.world.SimpleContainer(stack));
+    }
+
+    static ItemStack craftGrid(GameTestHelper helper, int width, int height, java.util.List<ItemStack> items) {
+        return craft(helper, RecipeType.CRAFTING, new Grid(width, height, items));
+    }
+
+    private static <C extends net.minecraft.world.Container, T extends Recipe<C>> ItemStack craft(
+            GameTestHelper helper, RecipeType<T> type, C input) {
+        return helper.getLevel().getServer().getRecipeManager()
+                .getRecipeFor(type, input, helper.getLevel())
+                .map(recipe -> recipe.assemble(input, helper.getLevel().registryAccess()))
                 .orElse(ItemStack.EMPTY);
     }
 
-    /** Builds a recipe's result. 26.1 dropped the registry lookup the call used to take. */
-    private static <I extends RecipeInput> ItemStack assemble(GameTestHelper helper, Recipe<I> recipe, I input) {
-        //? if >=26.1 {
-        return recipe.assemble(input);
-        //?} else
-        /*return recipe.assemble(input, helper.getLevel().registryAccess());*/
+    // A crafting grid with no menu behind it, which is what 1.21's CraftingInput is.
+    private static final class Grid extends net.minecraft.world.SimpleContainer
+            implements net.minecraft.world.inventory.CraftingContainer {
+        private final int width;
+        private final int height;
+
+        Grid(int width, int height, java.util.List<ItemStack> items) {
+            super(items.toArray(new ItemStack[0]));
+            this.width = width;
+            this.height = height;
+        }
+
+        @Override
+        public int getWidth() {
+            return width;
+        }
+
+        @Override
+        public int getHeight() {
+            return height;
+        }
+
+        @Override
+        public java.util.List<ItemStack> getItems() {
+            java.util.List<ItemStack> items = new java.util.ArrayList<>();
+            for (int slot = 0; slot < getContainerSize(); slot++) items.add(getItem(slot));
+            return items;
+        }
+    }
+    *///?}
+
+    // A loot table by id. From 1.20.5 loot tables are a reloadable registry; before it the server's loot
+    // data holds them by id.
+    static net.minecraft.world.level.storage.loot.LootTable lootTable(GameTestHelper helper, net.minecraft.resources.Identifier id) {
+        //? if >=1.20.5 {
+        return helper.getLevel().getServer().reloadableRegistries().getLootTable(net.minecraft.resources.ResourceKey.create(
+                net.minecraft.core.registries.Registries.LOOT_TABLE, id));
+        //?} else {
+        /*return helper.getLevel().getServer().getLootData().getLootTable(id);
+        *///?}
     }
 
     /**

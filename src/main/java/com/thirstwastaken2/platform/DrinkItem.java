@@ -83,19 +83,27 @@ public class DrinkItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return DRINK_TICKS;
-    }
-
-    @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         drinkEffects(stack, level, entity);
         if (emptyContainer != null && entity instanceof Player player) {
             // Shrinks the stack, and hands the empty container back or into the inventory.
             return net.minecraft.world.item.ItemUtils.createFilledResult(stack, player, new ItemStack(emptyContainer));
         }
-        if (!(entity instanceof Player player) || !player.hasInfiniteMaterials()) stack.shrink(1);
+        if (!(entity instanceof Player player) || !Vanilla.hasInfiniteMaterials(player)) stack.shrink(1);
         return stack.isEmpty() && emptyContainer != null ? new ItemStack(emptyContainer) : stack;
+    }
+    *///?}
+
+    // 1.20.5 handed the use duration the entity using the item.
+    //? if >=1.20.5 <1.21.2 {
+    /*@Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return DRINK_TICKS;
+    }
+    *///?} elif <1.20.5 {
+    /*@Override
+    public int getUseDuration(ItemStack stack) {
+        return DRINK_TICKS;
     }
     *///?}
 }

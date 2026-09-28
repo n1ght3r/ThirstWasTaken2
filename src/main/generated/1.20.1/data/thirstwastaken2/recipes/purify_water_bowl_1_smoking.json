@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:terracotta_water_bowl"
+    }
+  ],
+  "type": "thirstwastaken2:smoking",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "fabric:type": "fabric:nbt",
+    "base": {
+      "item": "thirstwastaken2:terracotta_water_bowl"
+    },
+    "nbt": "{thirstwastaken2:{purity:1,salty:0b}}",
+    "strict": false
+  },
+  "result": {
+    "item": "thirstwastaken2:terracotta_water_bowl",
+    "nbt": "{CustomModelData:3,thirstwastaken2:{purity:3,salty:0b}}"
+  }
+}

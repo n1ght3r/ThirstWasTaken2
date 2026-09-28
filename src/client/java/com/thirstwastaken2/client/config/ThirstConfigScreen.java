@@ -2,6 +2,7 @@ package com.thirstwastaken2.client.config;
 
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.client.platform.ClientVanilla;
+import com.thirstwastaken2.client.platform.ScrollingScreen;
 import com.thirstwastaken2.config.ThirstConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -34,7 +35,7 @@ import net.minecraft.util.Mth;
  * HUD, tooltips and the AppleSkin preview follow every change while the screen is open. Done (or
  * Escape) saves; Cancel puts back the copy taken when the screen opened.
  */
-public final class ThirstConfigScreen extends Screen {
+public final class ThirstConfigScreen extends ScrollingScreen {
     private static final int HEADER_HEIGHT = 32;
     private static final int FOOTER_HEIGHT = 32;
     private static final int TAB_HEIGHT = 24;
@@ -313,14 +314,14 @@ public final class ThirstConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+    protected boolean scrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (scrollY != 0 && mouseX >= sidebarWidth && mouseY >= HEADER_HEIGHT && mouseY < height - FOOTER_HEIGHT) {
             int before = scroll;
             scroll -= (int) Math.signum(scrollY);
             layoutRows();
-            if (scroll != before) return true;
+            return scroll != before;
         }
-        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        return false;
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,9 +56,6 @@ public final class ThirstAdvancements {
 
     /** Awards one advancement, or does nothing if a datapack has removed it. */
     private static void award(ServerPlayer player, Identifier id) {
-        MinecraftServer server = player.level().getServer();
-        if (server == null) return;
-        AdvancementHolder advancement = server.getAdvancements().get(id);
-        if (advancement != null) player.getAdvancements().award(advancement, CRITERION);
+        Vanilla.awardAdvancement(player, id, CRITERION);
     }
 }

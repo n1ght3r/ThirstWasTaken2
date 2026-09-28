@@ -1,0 +1,7 @@
+{
+  "parent": "thirstwastaken2:block/template_copper_hanging_pot_item",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "chain": "minecraft:block/chain"
+  }
+}

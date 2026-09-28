@@ -1,0 +1,9 @@
+{
+  "parent": "thirstwastaken2:block/template_copper_hanging_pot_item",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "chain": "minecraft:block/chain",
+    "frame": "thirstwastaken2:block/iron_hanging_pot",
+    "particle": "minecraft:block/cauldron_side"
+  }
+}

@@ -47,7 +47,12 @@ abstract class FoodDataMixin {
         thirst$saturationScale = UpsetStomach.saturationScale(player);
     }
 
+    // Before 1.20.5 food is added through eat(int, float), whose float is the saturation modifier the
+    // saturation is a multiple of, so scaling it scales the saturation the same.
+    //? if >=1.20.5 {
     @ModifyVariable(method = "add", at = @At("HEAD"), argsOnly = true)
+    //?} else
+    /*@ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)*/
     private float thirst$scaleSaturation(float saturation) {
         return saturation * thirst$saturationScale;
     }

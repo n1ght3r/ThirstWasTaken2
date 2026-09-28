@@ -1,7 +1,7 @@
 package com.thirstwastaken2.neoforge;
 
 import com.thirstwastaken2.config.ThirstConfig;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.tags.FluidTags;

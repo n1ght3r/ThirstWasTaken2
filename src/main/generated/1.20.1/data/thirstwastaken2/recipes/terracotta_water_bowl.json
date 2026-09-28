@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:terracotta_water_bowl"
+    }
+  ],
+  "type": "thirstwastaken2:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "thirstwastaken2:terracotta_bowl"
+    },
+    {
+      "fabric:type": "fabric:nbt",
+      "base": {
+        "item": "minecraft:water_bucket"
+      },
+      "nbt": "{thirstwastaken2:{salty:0b}}",
+      "strict": false
+    }
+  ],
+  "result": {
+    "item": "thirstwastaken2:terracotta_water_bowl",
+    "nbt": "{CustomModelData:2,thirstwastaken2:{purity:2,salty:0b}}"
+  }
+}

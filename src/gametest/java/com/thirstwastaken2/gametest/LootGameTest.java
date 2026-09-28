@@ -1,10 +1,11 @@
 package com.thirstwastaken2.gametest;
 
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -22,12 +23,12 @@ import java.util.List;
  * clean or pure, and nothing added anywhere else.
  */
 public final class LootGameTest {
-    private static final List<ResourceKey<LootTable>> CHESTS = List.of(
-            BuiltInLootTables.ABANDONED_MINESHAFT,
-            BuiltInLootTables.BASTION_OTHER,
-            BuiltInLootTables.NETHER_BRIDGE,
-            BuiltInLootTables.SHIPWRECK_SUPPLY,
-            BuiltInLootTables.SIMPLE_DUNGEON);
+    private static final List<Identifier> CHESTS = List.of(
+            Vanilla.lootTableId(BuiltInLootTables.ABANDONED_MINESHAFT),
+            Vanilla.lootTableId(BuiltInLootTables.BASTION_OTHER),
+            Vanilla.lootTableId(BuiltInLootTables.NETHER_BRIDGE),
+            Vanilla.lootTableId(BuiltInLootTables.SHIPWRECK_SUPPLY),
+            Vanilla.lootTableId(BuiltInLootTables.SIMPLE_DUNGEON));
     /** The chest pool yields water half the time, so this many rolls cannot all miss by chance. */
     private static final int CHEST_ROLLS = 80;
     /** Bartering yields water 3 times in 40, so this many rolls cannot all miss by chance. */
@@ -37,9 +38,9 @@ public final class LootGameTest {
     public void everySeededChestCanHoldGradedWater(GameTestHelper helper) {
         StringBuilder counts = new StringBuilder();
         boolean everyChest = true;
-        for (ResourceKey<LootTable> chest : CHESTS) {
+        for (Identifier chest : CHESTS) {
             int water = countGradedWater(helper, table(helper, chest), chestParams(helper), CHEST_ROLLS);
-            counts.append(chest.identifier()).append('=').append(water).append(' ');
+            counts.append(chest).append('=').append(water).append(' ');
             everyChest &= water > 0;
         }
         TestFixtures.check(helper, everyChest,
@@ -53,6 +54,8 @@ public final class LootGameTest {
      * The mod used to skip replaced tables, which left that chest dry on some versions and not on
      * others, because Fabric API changed how it reports experiment packs.
      */
+    // The trade rebalance experiment arrived with 1.20.2.
+    //? if >=1.20.5 {
     @GameTest
     public void aTableADataPackReplacedStillGetsWater(GameTestHelper helper) {
         var packs = helper.getLevel().getServer().getPackRepository().getSelectedIds();
@@ -60,12 +63,13 @@ public final class LootGameTest {
                 "this test relies on the test server enabling the trade rebalance pack, which replaces the "
                         + "mineshaft chest; enabled packs are " + packs);
 
-        int water = countGradedWater(helper, table(helper, BuiltInLootTables.ABANDONED_MINESHAFT),
+        int water = countGradedWater(helper, table(helper, Vanilla.lootTableId(BuiltInLootTables.ABANDONED_MINESHAFT)),
                 chestParams(helper), CHEST_ROLLS);
         TestFixtures.check(helper, water > 0,
                 "the mineshaft chest the trade rebalance pack replaced should still hold water, got none");
         helper.succeed();
     }
+    //?}
 
     @GameTest
     public void piglinsBarterGradedWater(GameTestHelper helper) {
@@ -74,7 +78,7 @@ public final class LootGameTest {
                 .withParameter(LootContextParams.THIS_ENTITY, piglin)
                 .create(LootContextParamSets.PIGLIN_BARTER);
 
-        int water = countGradedWater(helper, table(helper, BuiltInLootTables.PIGLIN_BARTERING), params, BARTER_ROLLS);
+        int water = countGradedWater(helper, table(helper, Vanilla.lootTableId(BuiltInLootTables.PIGLIN_BARTERING)), params, BARTER_ROLLS);
 
         TestFixtures.check(helper, water > 0, "piglins should barter water in " + BARTER_ROLLS + " rolls, got none");
         helper.succeed();
@@ -82,7 +86,7 @@ public final class LootGameTest {
 
     @GameTest
     public void otherChestsAreLeftAlone(GameTestHelper helper) {
-        int water = countAnyStampedWater(table(helper, BuiltInLootTables.DESERT_PYRAMID), chestParams(helper), CHEST_ROLLS);
+        int water = countAnyStampedWater(table(helper, Vanilla.lootTableId(BuiltInLootTables.DESERT_PYRAMID)), chestParams(helper), CHEST_ROLLS);
 
         TestFixtures.check(helper, water == 0,
                 "a chest the mod does not seed should never hold its water, got " + water + " stacks");
@@ -116,9 +120,8 @@ public final class LootGameTest {
         return water;
     }
 
-    private static LootTable table(GameTestHelper helper, ResourceKey<LootTable> key) {
-        ServerLevel level = helper.getLevel();
-        return level.getServer().reloadableRegistries().getLootTable(key);
+    private static LootTable table(GameTestHelper helper, Identifier id) {
+        return TestFixtures.lootTable(helper, id);
     }
 
     private static LootParams chestParams(GameTestHelper helper) {

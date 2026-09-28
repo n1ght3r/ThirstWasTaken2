@@ -9,7 +9,6 @@ import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -113,8 +112,13 @@ public final class DrinkingGameTest {
         for (ItemStack drink : new ItemStack[] {bowl(WaterQuality.fresh(2)), skin}) {
             TestFixtures.check(helper, drink.getUseAnimation().name().equals("DRINK"),
                     drink + " should use the drinking animation, got " + drink.getUseAnimation());
-            TestFixtures.check(helper, drink.getUseDuration(player) == DRINK_TICKS,
-                    drink + " should take " + DRINK_TICKS + " ticks like a potion, got " + drink.getUseDuration(player));
+            //? if >=1.20.5 {
+            int ticks = drink.getUseDuration(player);
+            //?} else {
+            /*int ticks = drink.getUseDuration();
+            *///?}
+            TestFixtures.check(helper, ticks == DRINK_TICKS,
+                    drink + " should take " + DRINK_TICKS + " ticks like a potion, got " + ticks);
         }
         helper.succeed();
     }
@@ -263,7 +267,11 @@ public final class DrinkingGameTest {
     }
 
     private static boolean earned(GameTestHelper helper, ServerPlayer player, String name) {
-        AdvancementHolder advancement = helper.getLevel().getServer().getAdvancements().get(ThirstWasTaken2.id(name));
+        //? if >=1.20.5 {
+        var advancement = helper.getLevel().getServer().getAdvancements().get(ThirstWasTaken2.id(name));
+        //?} else {
+        /*var advancement = helper.getLevel().getServer().getAdvancements().getAdvancement(ThirstWasTaken2.id(name));
+        *///?}
         return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 }

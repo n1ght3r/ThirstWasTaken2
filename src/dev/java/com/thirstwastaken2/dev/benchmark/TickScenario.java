@@ -115,9 +115,17 @@ final class TickScenario implements Stage {
     public boolean run(long deadlineNanos) {
         if (buffer == null) {
             buffer = new FriendlyByteBuf(Unpooled.buffer(64));
+            // Enchantments became data in 1.21; before it they are registered objects, and Protection
+            // had a longer name.
+            //? if >=1.21 {
             protection = world.enchantment(Enchantments.PROTECTION);
             unbreaking = world.enchantment(Enchantments.UNBREAKING);
             mending = world.enchantment(Enchantments.MENDING);
+            //?} else {
+            /*protection = net.minecraft.core.registries.BuiltInRegistries.ENCHANTMENT.wrapAsHolder(Enchantments.ALL_DAMAGE_PROTECTION);
+            unbreaking = net.minecraft.core.registries.BuiltInRegistries.ENCHANTMENT.wrapAsHolder(Enchantments.UNBREAKING);
+            mending = net.minecraft.core.registries.BuiltInRegistries.ENCHANTMENT.wrapAsHolder(Enchantments.MENDING);
+            *///?}
         }
         while (prepared < count) {
             if (System.nanoTime() >= deadlineNanos) return false;
@@ -172,9 +180,15 @@ final class TickScenario implements Stage {
 
     private ItemStack armour(Item item) {
         ItemStack stack = new ItemStack(item);
+        //? if >=1.21 {
         stack.enchant(protection, 4);
         stack.enchant(unbreaking, 3);
         stack.enchant(mending, 1);
+        //?} else {
+        /*stack.enchant(protection.value(), 4);
+        stack.enchant(unbreaking.value(), 3);
+        stack.enchant(mending.value(), 1);
+        *///?}
         return stack;
     }
 

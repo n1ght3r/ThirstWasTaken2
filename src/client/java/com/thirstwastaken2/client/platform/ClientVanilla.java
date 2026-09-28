@@ -50,26 +50,62 @@ public final class ClientVanilla {
      * renamed the method a widget draws in.
      */
     public static AbstractWidget canvas(int width, int height, Component narration, Painter painter) {
-        AbstractWidget canvas = new AbstractWidget(0, 0, width, height, narration) {
-            //? if >=26.1 {
-            @Override
-            protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-                painter.paint(graphics, this, mouseX, mouseY);
-            }
-            //?} else {
-            /*@Override
-            protected void renderWidget(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-                painter.paint(graphics, this, mouseX, mouseY);
-            }
-            *///?}
-
-            @Override
-            protected void updateWidgetNarration(NarrationElementOutput output) {
-                output.add(NarratedElementType.TITLE, getMessage());
-            }
-        };
+        Canvas canvas = new Canvas(width, height, narration, painter);
         canvas.active = false;
         return canvas;
+    }
+
+    /** Resizes a widget vertically. Before 1.20.5 only a {@link #canvas} can be, which is all the mod resizes. */
+    public static void setHeight(AbstractWidget widget, int height) {
+        //? if >=1.20.5 {
+        widget.setHeight(height);
+        //?} else {
+        /*if (widget instanceof Canvas canvas) canvas.resize(height);
+        *///?}
+    }
+
+    /** See {@link #canvas}. */
+    private static final class Canvas extends AbstractWidget {
+        private final Painter painter;
+
+        Canvas(int width, int height, Component narration, Painter painter) {
+            super(0, 0, width, height, narration);
+            this.painter = painter;
+        }
+
+        void resize(int height) {
+            this.height = height;
+        }
+
+        //? if >=26.1 {
+        @Override
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            painter.paint(graphics, this, mouseX, mouseY);
+        }
+        //?} else {
+        /*@Override
+        protected void renderWidget(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            painter.paint(graphics, this, mouseX, mouseY);
+        }
+        *///?}
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput output) {
+            output.add(NarratedElementType.TITLE, getMessage());
+        }
+    }
+
+    /**
+     * Turns the mouse wheel over a screen, {@code scrollY} notches up. See {@link ScrollingScreen}: before
+     * 1.20.2 the wheel had no horizontal amount.
+     */
+    public static boolean mouseScrolled(net.minecraft.client.gui.screens.Screen screen, double mouseX, double mouseY,
+                                        double scrollY) {
+        //? if >=1.20.5 {
+        return screen.mouseScrolled(mouseX, mouseY, 0.0, scrollY);
+        //?} else {
+        /*return screen.mouseScrolled(mouseX, mouseY, scrollY);
+        *///?}
     }
 
     /**
@@ -118,16 +154,35 @@ public final class ClientVanilla {
         *///?}
     }
 
-    /** Draws a sprite from the GUI atlas, such as vanilla's {@code hud/food_full}. */
+    /**
+     * Draws a sprite from the GUI atlas, such as vanilla's {@code hud/food_full}. 1.20.1 has no GUI
+     * atlas: vanilla's HUD icons are regions of {@code textures/gui/icons.png}, so there only the sprites
+     * the mod draws are known, by where they sit on that sheet, and any other draws nothing.
+     */
     public static void blitSprite(GuiGraphicsExtractor graphics, Identifier sprite, int x, int y, int width, int height) {
         //? if >1.21.1 {
         graphics.blitSprite(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, sprite, x, y, width, height);
-        //?} else {
+        //?} elif >=1.20.5 {
         /*com.mojang.blaze3d.systems.RenderSystem.enableBlend();
         graphics.blitSprite(sprite, x, y, width, height);
         com.mojang.blaze3d.systems.RenderSystem.disableBlend();
+        *///?} else {
+        /*int[] uv = LEGACY_ICONS.get(sprite);
+        if (uv == null) return;
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        graphics.blit(LEGACY_ICON_SHEET, x, y, uv[0], uv[1], width, height);
+        com.mojang.blaze3d.systems.RenderSystem.disableBlend();
         *///?}
     }
+
+    //? if <1.20.5 {
+    /*private static final Identifier LEGACY_ICON_SHEET = Identifier.withDefaultNamespace("textures/gui/icons.png");
+    // Where 1.20.1's Gui draws each sprite from on that sheet.
+    private static final java.util.Map<Identifier, int[]> LEGACY_ICONS = java.util.Map.of(
+            Identifier.withDefaultNamespace("hud/food_empty"), new int[]{16, 27},
+            Identifier.withDefaultNamespace("hud/food_full"), new int[]{52, 27},
+            Identifier.withDefaultNamespace("hud/food_half"), new int[]{61, 27});
+    *///?}
 
     /**
      * Draws a {@code width} by {@code height} region of a texture sheet at {@code u, v}, tinted with
@@ -149,12 +204,17 @@ public final class ClientVanilla {
         *///?}
     }
 
-    /** Opens a folder or file in the player's file manager. 26.3 moved this off {@code Util.OS}. */
+    /**
+     * Opens a folder or file in the player's file manager. 26.3 moved this off {@code Util.OS}, which
+     * took a {@code File} before 1.20.5.
+     */
     public static void openPath(java.nio.file.Path path) {
         //? if >=26.3 {
         com.mojang.blaze3d.Blaze3D.openPath(path);
-        //?} else {
+        //?} elif >=1.20.5 {
         /*net.minecraft.util.Util.getPlatform().openPath(path);
+        *///?} else {
+        /*net.minecraft.util.Util.getPlatform().openFile(path.toFile());
         *///?}
     }
 }

@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:clay_bowl"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "pattern": [
+    "C C",
+    " C "
+  ],
+  "result": {
+    "count": 4,
+    "item": "thirstwastaken2:clay_bowl"
+  },
+  "show_notification": true
+}

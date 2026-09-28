@@ -19,7 +19,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -41,7 +40,9 @@ public final class Vanilla {
 
     /** Vanilla's description id for the water cauldron, see {@link #isWaterCauldron}. */
     private static final String WATER_CAULDRON = "block.minecraft.water_cauldron";
-    /** Set while {@code BlocksMixin} constructs the water cauldron, on 1.21.1 only. */
+    /** The tag 1.20.1 keeps custom model data in, see {@link #modelSelector}. */
+    private static final String CUSTOM_MODEL_DATA = "CustomModelData";
+    /** Set while {@code BlocksMixin} constructs the water cauldron, on 1.21.1 and 1.20.1 only. */
     private static boolean buildingWaterCauldron;
 
     private Vanilla() { }
@@ -78,8 +79,133 @@ public final class Vanilla {
     public static Holder<MobEffect> mobEffect(Identifier id) {
         //? if >=1.21.2 {
         return BuiltInRegistries.MOB_EFFECT.get(id).<Holder<MobEffect>>map(holder -> holder).orElse(null);
-        //?} else
-        /*return BuiltInRegistries.MOB_EFFECT.getHolder(id).<Holder<MobEffect>>map(holder -> holder).orElse(null);*/
+        //?} elif >=1.20.5 {
+        /*return BuiltInRegistries.MOB_EFFECT.getHolder(id).<Holder<MobEffect>>map(holder -> holder).orElse(null);
+        *///?} else {
+        /*return BuiltInRegistries.MOB_EFFECT.getHolder(ResourceKey.create(Registries.MOB_EFFECT, id))
+                .<Holder<MobEffect>>map(holder -> holder).orElse(null);
+        *///?}
+    }
+
+    /**
+     * The instance of {@code effect} an entity has, or {@code null}. Before 1.20.5 an entity's effects
+     * are keyed by the effect itself rather than by its holder, and so are the next three.
+     */
+    public static net.minecraft.world.effect.MobEffectInstance getEffect(
+            net.minecraft.world.entity.LivingEntity entity, Holder<MobEffect> effect) {
+        //? if >=1.20.5 {
+        return entity.getEffect(effect);
+        //?} else {
+        /*return entity.getEffect(effect.value());
+        *///?}
+    }
+
+    /** Whether an entity has {@code effect}. See {@link #getEffect}. */
+    public static boolean hasEffect(net.minecraft.world.entity.LivingEntity entity, Holder<MobEffect> effect) {
+        //? if >=1.20.5 {
+        return entity.hasEffect(effect);
+        //?} else {
+        /*return entity.hasEffect(effect.value());
+        *///?}
+    }
+
+    /** {@code effect} for {@code ticks} at {@code amplifier}, with particles and an icon. See {@link #getEffect}. */
+    public static net.minecraft.world.effect.MobEffectInstance effectInstance(Holder<MobEffect> effect, int ticks,
+                                                                             int amplifier) {
+        return effectInstance(effect, ticks, amplifier, false, true, true);
+    }
+
+    /** {@code effect} with every flag vanilla's constructor takes. See {@link #getEffect}. */
+    public static net.minecraft.world.effect.MobEffectInstance effectInstance(Holder<MobEffect> effect, int ticks,
+            int amplifier, boolean ambient, boolean visible, boolean showIcon) {
+        //? if >=1.20.5 {
+        return new net.minecraft.world.effect.MobEffectInstance(effect, ticks, amplifier, ambient, visible, showIcon);
+        //?} else {
+        /*return new net.minecraft.world.effect.MobEffectInstance(effect.value(), ticks, amplifier, ambient, visible, showIcon);
+        *///?}
+    }
+
+    /** Vanilla's Poison as a holder, which it already is from 1.20.5. See {@link #getEffect}. */
+    public static Holder<MobEffect> poison() {
+        //? if >=1.20.5 {
+        return net.minecraft.world.effect.MobEffects.POISON;
+        //?} else {
+        /*return BuiltInRegistries.MOB_EFFECT.wrapAsHolder(net.minecraft.world.effect.MobEffects.POISON);
+        *///?}
+    }
+
+    /**
+     * A built-in loot table's id. From 1.20.5 loot tables are a registry and the constants are keys;
+     * before it they are the ids themselves.
+     */
+    //? if >=1.20.5 {
+    public static Identifier lootTableId(ResourceKey<net.minecraft.world.level.storage.loot.LootTable> table) {
+        return table.identifier();
+    }
+    //?} else {
+    /*public static Identifier lootTableId(Identifier table) {
+        return table;
+    }
+    *///?}
+
+    /**
+     * Awards one criterion of an advancement, or does nothing if a datapack has removed it. 1.20.2 put
+     * an advancement behind a holder that carries its id.
+     */
+    public static void awardAdvancement(ServerPlayer player, Identifier id, String criterion) {
+        net.minecraft.server.MinecraftServer server = player.level().getServer();
+        if (server == null) return;
+        //? if >=1.20.5 {
+        net.minecraft.advancements.AdvancementHolder advancement = server.getAdvancements().get(id);
+        //?} else {
+        /*net.minecraft.advancements.Advancement advancement = server.getAdvancements().getAdvancement(id);
+        *///?}
+        if (advancement != null) player.getAdvancements().award(advancement, criterion);
+    }
+
+    /**
+     * Twice the total level of the enchantments on a player's armour that protect against
+     * {@code source}. 1.21 made enchantments data, which read the level to decide.
+     */
+    public static float damageProtection(ServerPlayer player, DamageSource source) {
+        //? if >=1.21 {
+        return net.minecraft.world.item.enchantment.EnchantmentHelper.getDamageProtection(level(player), player, source);
+        //?} else {
+        /*return net.minecraft.world.item.enchantment.EnchantmentHelper.getDamageProtection(player.getArmorSlots(), source);
+        *///?}
+    }
+
+    /**
+     * How far a player reaches to use a block. 1.20.5 made it an attribute; before it survival reached
+     * 4.5 blocks and creative 5.
+     */
+    public static double blockReach(net.minecraft.world.entity.player.Player player) {
+        //? if >=1.20.5 {
+        return player.blockInteractionRange();
+        //?} else {
+        /*return player.getAbilities().instabuild ? 5.0 : 4.5;
+        *///?}
+    }
+
+    /** Whether a player uses no items up, as in creative mode. A method of its own from 1.20.5. */
+    public static boolean hasInfiniteMaterials(net.minecraft.world.entity.player.Player player) {
+        //? if >=1.20.5 {
+        return player.hasInfiniteMaterials();
+        //?} else {
+        /*return player.getAbilities().instabuild;
+        *///?}
+    }
+
+    /**
+     * The wisp of steam over boiling water. White smoke arrived in 1.20.3; before it a cloud puff is the
+     * nearest white particle.
+     */
+    public static net.minecraft.core.particles.SimpleParticleType steamParticle() {
+        //? if >=1.20.5 {
+        return net.minecraft.core.particles.ParticleTypes.WHITE_SMOKE;
+        //?} else {
+        /*return net.minecraft.core.particles.ParticleTypes.CLOUD;
+        *///?}
     }
 
     /**
@@ -92,6 +218,7 @@ public final class Vanilla {
         Item item = factory.apply(properties.setId(key));
         //?} else
         /*Item item = factory.apply(properties);*/
+        DefaultData.itemBuilt(properties, item);
         return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 
@@ -198,32 +325,54 @@ public final class Vanilla {
     /**
      * Custom model data holding {@code value} at float index {@code index}, which is what the item
      * models dispatch on. 1.21.4 turned custom model data into lists; before it the component was a
-     * single integer, which is enough because no item of this mod reads more than one index.
+     * single integer, which is enough because no item of this mod reads more than one index. On 1.20.1,
+     * which has no components, it is that same integer as the stack's {@code CustomModelData} tag, and
+     * this returns it boxed: only datagen and {@link #selectsModel} use the value itself.
      */
-    public static CustomModelData modelSelector(int index, int value) {
-        //? if >=1.21.4 {
+    //? if >=1.21.4 {
+    public static net.minecraft.world.item.component.CustomModelData modelSelector(int index, int value) {
         Float[] floats = new Float[index + 1];
         java.util.Arrays.fill(floats, 0.0F);
         floats[index] = (float) value;
-        return new CustomModelData(java.util.List.of(floats), java.util.List.of(), java.util.List.of(), java.util.List.of());
-        //?} else
-        /*return new CustomModelData(value);*/
+        return new net.minecraft.world.item.component.CustomModelData(
+                java.util.List.of(floats), java.util.List.of(), java.util.List.of(), java.util.List.of());
     }
+    //?} elif >=1.20.5 {
+    /*public static net.minecraft.world.item.component.CustomModelData modelSelector(int index, int value) {
+        return new net.minecraft.world.item.component.CustomModelData(value);
+    }
+    *///?} else {
+    /*public static Integer modelSelector(int index, int value) {
+        return value;
+    }
+    *///?}
 
     /** Sets a stack's model selector, see {@link #modelSelector(int, int)}. */
     public static void setModelSelector(ItemStack stack, int index, int value) {
+        //? if >=1.20.5 {
         stack.set(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA, modelSelector(index, value));
+        //?} else {
+        /*stack.getOrCreateTag().putInt(CUSTOM_MODEL_DATA, value);
+        *///?}
     }
 
     /** Takes a stack's model selector away, so its item model falls back to its plain sprite. */
     public static void clearModelSelector(ItemStack stack) {
+        //? if >=1.20.5 {
         stack.remove(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
+        //?} else {
+        /*stack.removeTagKey(CUSTOM_MODEL_DATA);
+        *///?}
     }
 
     /** Item properties whose stacks start out with a model selector, see {@link #modelSelector(int, int)}. */
     public static Item.Properties modelSelectorByDefault(Item.Properties properties, int index, int value) {
+        //? if >=1.20.5 {
         return properties.component(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA,
                 modelSelector(index, value));
+        //?} else {
+        /*return DefaultData.add(properties, tag -> tag.putInt(CUSTOM_MODEL_DATA, value));
+        *///?}
     }
 
     /**
@@ -231,7 +380,13 @@ public final class Vanilla {
      * whatever the version stores.
      */
     public static Object modelSelectorOf(ItemStack stack) {
+        //? if >=1.20.5 {
         return stack.get(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
+        //?} else {
+        /*net.minecraft.nbt.CompoundTag tag = stack.getTag();
+        return tag != null && tag.contains(CUSTOM_MODEL_DATA, net.minecraft.nbt.Tag.TAG_ANY_NUMERIC)
+                ? tag.getInt(CUSTOM_MODEL_DATA) : null;
+        *///?}
     }
 
     /** Whether a stack carries exactly the model selector {@code modelSelector(index, value)}. */
@@ -241,15 +396,29 @@ public final class Vanilla {
 
     /** A vanilla water bottle: a potion whose contents are plain water. */
     public static ItemStack waterBottle() {
+        //? if >=1.20.5 {
         return net.minecraft.world.item.alchemy.PotionContents.createItemStack(
                 net.minecraft.world.item.Items.POTION, net.minecraft.world.item.alchemy.Potions.WATER);
+        //?} else {
+        /*return net.minecraft.world.item.alchemy.PotionUtils.setPotion(
+                new ItemStack(net.minecraft.world.item.Items.POTION), net.minecraft.world.item.alchemy.Potions.WATER);
+        *///?}
     }
 
     /** Whether a stack's potion contents are plain water, whatever the item. */
     public static boolean holdsWaterPotion(ItemStack stack) {
+        //? if >=1.20.5 {
         net.minecraft.world.item.alchemy.PotionContents potion =
                 stack.get(net.minecraft.core.component.DataComponents.POTION_CONTENTS);
         return potion != null && potion.is(net.minecraft.world.item.alchemy.Potions.WATER);
+        //?} else {
+        /*// The potion's id as the tag spells it, rather than PotionUtils.getPotion, which parses it into a
+        // new id on every call, and tooltips ask this every frame.
+        net.minecraft.nbt.CompoundTag tag = stack.getTag();
+        if (tag == null) return false;
+        String potion = tag.getString("Potion");
+        return potion.equals("minecraft:water") || potion.equals("water");
+        *///?}
     }
 
     /**
@@ -308,10 +477,13 @@ public final class Vanilla {
         tag.putInt(key, value);
         stack.set(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA,
                 net.minecraft.world.item.component.TypedEntityData.of(data.type(), tag));
-        //?} else {
+        //?} elif >=1.20.5 {
         /*if (!stack.has(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA)) return;
         net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.BLOCK_ENTITY_DATA,
                 stack, tag -> tag.putInt(key, value));
+        *///?} else {
+        /*net.minecraft.nbt.CompoundTag tag = stack.getTagElement("BlockEntityTag");
+        if (tag != null) tag.putInt(key, value);
         *///?}
     }
 

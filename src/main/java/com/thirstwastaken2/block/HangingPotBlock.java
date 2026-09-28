@@ -2,6 +2,7 @@ package com.thirstwastaken2.block;
 
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.platform.SupportedBlock;
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.core.BlockPos;
@@ -182,7 +183,7 @@ public final class HangingPotBlock extends SupportedBlock {
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         return level.getBlockState(below).is(BlockTags.CAMPFIRES) || canSupportCenter(level, below, Direction.UP);
     }
@@ -195,14 +196,14 @@ public final class HangingPotBlock extends SupportedBlock {
     }
 
     @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean movedByPiston) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean movedByPiston) {
         if (needsBoiling(state) && isHeat(level.getBlockState(pos.below()))) {
             level.scheduleTick(pos, this, stepTicks());
         }
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!needsBoiling(state)) {
             if (state.getValue(BOIL) != 0) level.setBlock(pos, state.setValue(BOIL, 0), BLOCK_UPDATE_FLAGS);
             return;
@@ -246,7 +247,7 @@ public final class HangingPotBlock extends SupportedBlock {
         double z = pos.getZ() + 0.3 + random.nextDouble() * 0.4;
         level.addParticle(ParticleTypes.BUBBLE_POP, x, surface, z, 0.0, 0.02, 0.0);
         if (random.nextInt(4) == 0) {
-            level.addParticle(ParticleTypes.WHITE_SMOKE, x, surface + 0.1, z, 0.0, 0.03, 0.0);
+            level.addParticle(Vanilla.steamParticle(), x, surface + 0.1, z, 0.0, 0.03, 0.0);
         }
         if (random.nextInt(10) == 0) {
             level.playLocalSound(pos.getX() + 0.5, surface, pos.getZ() + 0.5, SoundEvents.BUBBLE_COLUMN_BUBBLE_POP,
@@ -255,13 +256,13 @@ public final class HangingPotBlock extends SupportedBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (!state.getValue(HANGING)) return POT;
         return state.getValue(AXIS) == Direction.Axis.Z ? FRAME_ALONG_Z : FRAME_ALONG_X;
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return switch (rotation) {
             case CLOCKWISE_90, COUNTERCLOCKWISE_90 -> state.setValue(AXIS,
                     state.getValue(AXIS) == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
@@ -270,7 +271,7 @@ public final class HangingPotBlock extends SupportedBlock {
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType type) {
+    public boolean isPathfindable(BlockState state, PathComputationType type) {
         return false;
     }
 }

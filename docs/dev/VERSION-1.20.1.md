@@ -105,6 +105,25 @@ changes as before the refactor.
 
 ## Phase 1: the Fabric node `1.20.1`
 
+**Status (2026-09-28): built.** On `1.20.1`: `build`, `runServer`, `runDatagen` and `checkDatagen`,
+`runGametest` (all 197 pass), the seam, lang, API and data-condition checks, and the `boot.jsonl`
+client smoke pass, and a dev client showed the thirst bar, a default bowl's "Pure" tooltip, drinking,
+and thirst reaching the client. The full eleven-node run passed with it: every node's gametests, build
+and CI checks, and datagen output unchanged on every other Fabric node. D5 is **b**: Fabric API's last
+build for 1.20 (0.83.0) has no attachment API, which the jar needs, so it claims 1.20.1 only, and
+`fabric.mod.json` names `fabric-data-attachment-api-v1` so an older Fabric API on 1.20.1 is refused by
+the loader rather than crashing. CI installs Java 17 for the node. Where it landed, and what the plan below did not foresee, is in
+[VERSION-DIFFERENCES.md](VERSION-DIFFERENCES.md) under 1.20.5 and 1.21. In short:
+
+- Fabric API 0.92 does have the attachment API, without sync, so D3's save mixin was not needed:
+  `src/main/fabric-legacypayload` syncs by hand. The directories are named after the networking
+  generation (`fabric-payload` / `fabric-legacypayload`) rather than `fabric-attachment` / `-legacydata`.
+- 1.20.1 cannot put a tag on a vanilla recipe result, so the purification recipes use the mod's own
+  recipe types there (`platform/NbtRecipes`). Phase 2 can register the same four on Forge.
+- Datagen could not fork provider by provider: 1.20.1 has its own recipe and advancement providers in
+  `src/datagen/legacy`. The Cooking Pot recipes wait for Farmer's Delight in phase 3.
+- `ThirstComponents` moved to `platform/`, since it is empty on 1.20.1.
+
 ### 1.1 The node
 
 - `settings.gradle.kts`: `version("1.20.1", "1.20.1")`.

@@ -62,13 +62,30 @@ abstract class ItemStackMixin {
                                          TooltipFlag flag, Consumer<Component> tooltip, CallbackInfo ci) {
         ThirstTooltip.appendTo((ItemStack) (Object) this, tooltip);
     }
-    //?} else {
+    //?} elif >=1.20.5 {
     /*@WrapOperation(method = "getTooltipLines", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/Item$TooltipContext;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"))
     private void thirst$addPurityTooltip(Item item, ItemStack stack, Item.TooltipContext context,
                                          List<Component> lines, TooltipFlag flag, Operation<Void> original) {
         original.call(item, stack, context, lines, flag);
         ThirstTooltip.appendTo(stack, lines::add);
+    }
+    *///?} else {
+    /*// Before 1.20.5 the hover text is handed the level rather than a tooltip context.
+    @WrapOperation(method = "getTooltipLines", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/item/Item;appendHoverText(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Ljava/util/List;Lnet/minecraft/world/item/TooltipFlag;)V"))
+    private void thirst$addPurityTooltip(Item item, ItemStack stack, Level level,
+                                         List<Component> lines, TooltipFlag flag, Operation<Void> original) {
+        original.call(item, stack, level, lines, flag);
+        ThirstTooltip.appendTo(stack, lines::add);
+    }
+    *///?}
+
+    // 1.20.1 has no default components, so a new stack is handed its item's default tag instead.
+    //? if <1.20.5 {
+    /*@Inject(method = "<init>(Lnet/minecraft/world/level/ItemLike;I)V", at = @At("TAIL"))
+    private void thirst$applyDefaultData(net.minecraft.world.level.ItemLike item, int count, CallbackInfo ci) {
+        com.thirstwastaken2.platform.DefaultData.apply((ItemStack) (Object) this);
     }
     *///?}
 }

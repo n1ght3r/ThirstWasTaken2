@@ -1,7 +1,7 @@
 package com.thirstwastaken2.coldsweat;
 
 import com.thirstwastaken2.neoforge.WaterFluids;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.core.BlockPos;

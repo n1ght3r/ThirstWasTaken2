@@ -1,5 +1,7 @@
 package com.thirstwastaken2.effect;
 
+import com.thirstwastaken2.platform.Vanilla;
+
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 
@@ -38,7 +40,7 @@ public final class UpsetStomach {
      * {@code player} has the effect; 1 without it.
      */
     public static float saturationScale(Player player) {
-        MobEffectInstance effect = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance effect = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         if (effect == null) return 1.0F;
         return SATURATION[Math.min(effect.getAmplifier(), SATURATION.length - 1)];
     }

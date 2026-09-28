@@ -7,6 +7,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import com.thirstwastaken2.platform.Vanilla;
 
 /**
  * Hand drinking from water the crosshair does not target.
@@ -34,7 +35,7 @@ public final class HandDrinking {
                 : player.getOffhandItem().isEmpty() ? InteractionHand.OFF_HAND : null;
         if (hand == null) return;
 
-        if (!(player.pick(player.blockInteractionRange(), 1.0F, true) instanceof BlockHitResult hit)
+        if (!(player.pick(Vanilla.blockReach(player), 1.0F, true) instanceof BlockHitResult hit)
                 || hit.getType() != HitResult.Type.BLOCK
                 || !player.level().getFluidState(hit.getBlockPos()).is(FluidTags.WATER)) {
             return;

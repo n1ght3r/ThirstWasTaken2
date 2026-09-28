@@ -74,6 +74,13 @@ here, and they are handled differently:
 **No block comments inside a `//?` block**: a disabled branch is itself one block comment, and a
 nested `*/` ends it early. The 1.21.1 blocks use line comments for that reason.
 
+**1.20.1 has providers of its own** for recipes and advancements, in `src/datagen/legacy`:
+`LegacyRecipeProvider` and `LegacyAdvancementProvider`. It writes both through types the later
+providers share nothing with, and its recipes need the mod's `NbtRecipes` types for a result that
+carries water. `build.gradle.kts` compiles that directory there in place of `ThirstRecipeProvider`,
+`ThirstAdvancementProvider` and `FarmersDelightRecipeProvider`. A recipe added to one side is added
+to the other. `DataDirectories` spells the plural directories 1.20.1 reads.
+
 `builder(TagKey)` rather than `tag(TagKey)` is deliberate — it is Fabric's and needs no conditional
 from 1.21.11 on. Vanilla's `tag` only exists from 26.2. On 1.21.1 Fabric still called it
 `getOrCreateTagBuilder`, which is the one tag branch in each tag provider.

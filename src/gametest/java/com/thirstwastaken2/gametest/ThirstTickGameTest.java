@@ -157,8 +157,13 @@ public final class ThirstTickGameTest {
             ServerPlayer plain = player(helper, ThirstData.full());
             ServerPlayer armoured = player(helper, ThirstData.full());
             ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
+            // Enchantments became data in 1.21, looked up through the registries.
+            //? if >=1.21 {
             boots.enchant(helper.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
                     .getOrThrow(Enchantments.FIRE_PROTECTION), 4);
+            //?} else {
+            /*boots.enchant(Enchantments.FIRE_PROTECTION, 4);
+            *///?}
             armoured.setItemSlot(EquipmentSlot.FEET, boots);
 
             float normal = charge(plain);

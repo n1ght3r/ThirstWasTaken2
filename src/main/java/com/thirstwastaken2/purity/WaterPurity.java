@@ -12,6 +12,7 @@ import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
@@ -220,7 +221,7 @@ public final class WaterPurity {
         // getting rid of it than the drink brought in. Bad fresh water dries you out only
         // later, once it makes you ill, so it does not make you Parched.
         if (config.seaWaterParchedSeconds > 0) {
-            player.addEffect(new MobEffectInstance(ThirstEffects.PARCHED, config.seaWaterParchedSeconds * 20,
+            player.addEffect(Vanilla.effectInstance(ThirstEffects.PARCHED, config.seaWaterParchedSeconds * 20,
                     SALT_PARCHED_LEVEL, false, false, true));
         }
         return false;
@@ -325,11 +326,11 @@ public final class WaterPurity {
      */
     private static final class TooltipLines {
         static final Component[] PURITY = new Component[MAX + 1];
-        static final Component SALT = Component.translatable("thirst.water.salty").withColor(0xE6DFC8);
+        static final Component SALT = Component.translatable("thirst.water.salty").withStyle(Style.EMPTY.withColor(0xE6DFC8));
 
         static {
             for (int purity = MIN; purity <= MAX; purity++) {
-                PURITY[purity] = Component.translatable(purityKey(purity)).withColor(purityColor(purity));
+                PURITY[purity] = Component.translatable(purityKey(purity)).withStyle(Style.EMPTY.withColor(purityColor(purity)));
             }
         }
     }

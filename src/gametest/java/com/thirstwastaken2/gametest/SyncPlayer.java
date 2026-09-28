@@ -4,8 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.thirstwastaken2.gametest.platform.CapturingConnection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
-import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -34,7 +32,11 @@ final class SyncPlayer extends ServerPlayer {
     private final List<Packet<?>> captured = new ArrayList<>();
 
     private SyncPlayer(ServerLevel level, int index) {
-        super(level.getServer(), level, profile(index), ClientInformation.createDefault());
+        //? if >=1.20.5 {
+        super(level.getServer(), level, profile(index), net.minecraft.server.level.ClientInformation.createDefault());
+        //?} else {
+        /*super(level.getServer(), level, profile(index));
+        *///?}
         CapturingConnection.install(this, captured::add);
     }
 
@@ -76,8 +78,11 @@ final class SyncPlayer extends ServerPlayer {
     static void settle(List<SyncPlayer> players, BlockPos at, int step) {
         double y = at.getY() + (step % 2 == 0 ? 0 : SECTION);
         for (SyncPlayer player : players) {
+            // Before 1.20.2 chunks are sent as the chunk map loads them, with no batches to acknowledge.
+            //? if >=1.20.5 {
             player.connection.chunkSender.sendNextChunks(player);
             player.connection.chunkSender.onChunkBatchReceivedByClient(64.0F);
+            //?}
             player.snapTo(at.getX() + 0.5, y, at.getZ() + 0.5, 0.0F, 0.0F);
         }
     }
@@ -118,20 +123,29 @@ final class SyncPlayer extends ServerPlayer {
     }
 
     /** The custom payloads sent to this player since the last {@link #clear}. */
-    List<ClientboundCustomPayloadPacket> payloads() {
-        List<ClientboundCustomPayloadPacket> payloads = new ArrayList<>();
+    List<String> payloads() {
+        List<String> payloads = new ArrayList<>();
         for (Packet<?> packet : captured) {
-            if (packet instanceof ClientboundCustomPayloadPacket payload) payloads.add(payload);
+            //? if >=1.20.5 {
+            if (packet instanceof net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket payload) {
+                payloads.add(payload.payload().type().id().toString());
+            }
+            //?} else {
+            /*if (packet instanceof net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket payload) {
+                // The channel is the first thing the packet writes.
+                net.minecraft.network.FriendlyByteBuf buffer =
+                        new net.minecraft.network.FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
+                payload.write(buffer);
+                payloads.add(buffer.readResourceLocation().toString());
+            }
+            *///?}
         }
         return payloads;
     }
 
     /** The payload ids sent to this player, for a failure message that names what actually arrived. */
     String payloadIds() {
-        List<String> ids = new ArrayList<>();
-        for (ClientboundCustomPayloadPacket payload : payloads()) {
-            ids.add(payload.payload().type().id().toString());
-        }
+        List<String> ids = payloads();
         return ids.isEmpty() ? "nothing" : String.join(", ", ids);
     }
 
@@ -148,9 +162,11 @@ final class SyncPlayer extends ServerPlayer {
     public void tick() {
     }
 
+    //? if >=1.20.5 {
     @Override
-    public void updateOptions(ClientInformation settings) {
+    public void updateOptions(net.minecraft.server.level.ClientInformation settings) {
     }
+    //?}
 
     /** Derived from the index, so a run reuses the previous run's stats and advancements rather than piling up. */
     private static GameProfile profile(int index) {

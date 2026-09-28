@@ -15,7 +15,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -150,10 +149,8 @@ public final class CanteenGameTest {
     public void bothAreCraftedFromScratch(GameTestHelper helper) {
         ItemStack copper = new ItemStack(Items.COPPER_INGOT);
         ItemStack iron = new ItemStack(Items.IRON_INGOT);
-        ItemStack canteen = TestFixtures.craft(helper, RecipeType.CRAFTING,
-                grid(new ItemStack(Items.LEATHER), copper));
-        ItemStack flask = TestFixtures.craft(helper, RecipeType.CRAFTING,
-                grid(new ItemStack(Items.IRON_NUGGET), iron));
+        ItemStack canteen = TestFixtures.craftGrid(helper, 3, 3, grid(new ItemStack(Items.LEATHER), copper));
+        ItemStack flask = TestFixtures.craftGrid(helper, 3, 3, grid(new ItemStack(Items.IRON_NUGGET), iron));
         TestFixtures.check(helper, canteen.is(ThirstItems.COPPER_CANTEEN), "leather over five copper should make a canteen, got " + canteen);
         TestFixtures.check(helper, flask.is(ThirstItems.IRON_FLASK), "a nugget over five iron should make a flask, got " + flask);
         TestFixtures.check(helper, WaterContainers.handles(canteen) && WaterContainers.capacity(flask) == 6,
@@ -176,12 +173,11 @@ public final class CanteenGameTest {
     }
 
     /** A U of {@code metal} under {@code top}, the shape both recipes share. */
-    private static CraftingInput grid(ItemStack top, ItemStack metal) {
-        List<ItemStack> items = new ArrayList<>(List.of(
+    private static List<ItemStack> grid(ItemStack top, ItemStack metal) {
+        return new ArrayList<>(List.of(
                 ItemStack.EMPTY, top.copy(), ItemStack.EMPTY,
                 metal.copy(), ItemStack.EMPTY, metal.copy(),
                 metal.copy(), metal.copy(), metal.copy()));
-        return CraftingInput.of(3, 3, items);
     }
 
     private static ServerPlayer playerAtCampfire(GameTestHelper helper, BlockState campfire, ItemStack stack) {

@@ -27,11 +27,23 @@ abstract class GuiDrawMixin {
                                         int width, int height, CallbackInfo info) {
         HudRecord.sprite(sprite.toString(), ((GuiGraphicsExtractor) (Object) this).pose().transformPosition(x, y, new org.joml.Vector2f()), width, height);
     }
-    //?} else {
+    //?} elif >=1.20.5 {
     /*@Inject(method = "blitSprite(Lnet/minecraft/resources/Identifier;IIII)V", at = @At("HEAD"))
     private void thirst$recordHudSprite(Identifier sprite, int x, int y, int width, int height,
                                         CallbackInfo info) {
         HudRecord.sprite(sprite.toString(), ((GuiGraphicsExtractor) (Object) this).pose().last().pose().transformPosition(x, y, 0.0F, new org.joml.Vector3f()), width, height);
+    }
+    *///?} else {
+    /*// 1.20.1 has no GUI atlas: the food and air icons are regions of icons.png, named here by where
+    // they sit on it, the plain food background and the hunger one, then a full bubble and a bursting one.
+    @Inject(method = "blit(Lnet/minecraft/resources/Identifier;IIIIII)V", at = @At("HEAD"))
+    private void thirst$recordHudSprite(Identifier texture, int x, int y, int u, int v, int width, int height,
+                                        CallbackInfo info) {
+        if (!texture.getPath().equals("textures/gui/icons.png")) return;
+        String sprite = v == 27 && (u == 16 || u == 133) ? "minecraft:hud/food_empty"
+                : v == 18 && (u == 16 || u == 25) ? "minecraft:hud/air" : null;
+        if (sprite == null) return;
+        HudRecord.sprite(sprite, ((GuiGraphicsExtractor) (Object) this).pose().last().pose().transformPosition(x, y, 0.0F, new org.joml.Vector3f()), width, height);
     }
     *///?}
 }

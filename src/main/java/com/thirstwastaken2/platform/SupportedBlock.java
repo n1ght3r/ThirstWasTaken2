@@ -21,22 +21,37 @@ import java.util.function.IntConsumer;
  * <p>A class rather than a method for the same reason as {@link DrinkItem}: what differs is an override.
  */
 public abstract class SupportedBlock extends Block {
-    //? if <26.3 {
+    //? if >=1.20.5 <26.3 {
     /*private final com.mojang.serialization.MapCodec<? extends Block> codec;
     *///?}
 
     protected SupportedBlock(Properties properties,
                              java.util.function.Function<Properties, ? extends SupportedBlock> copy) {
         super(properties);
-        //? if <26.3 {
+        //? if >=1.20.5 <26.3 {
         /*this.codec = simpleCodec(copy::apply);
         *///?}
     }
 
-    //? if <26.3 {
+    //? if >=1.20.5 <26.3 {
     /*@Override
     protected com.mojang.serialization.MapCodec<? extends Block> codec() {
         return codec;
+    }
+    *///?}
+
+    // Before 1.20.5 whether mobs path through a block is also asked with its level and position. The
+    // one block here answers without them, so the older form hands over to the newer one, which says
+    // no unless the block says otherwise.
+    //? if <1.20.5 {
+    /*@Override
+    public boolean isPathfindable(BlockState state, net.minecraft.world.level.BlockGetter level, BlockPos pos,
+                                  net.minecraft.world.level.pathfinder.PathComputationType type) {
+        return isPathfindable(state, type);
+    }
+
+    protected boolean isPathfindable(BlockState state, net.minecraft.world.level.pathfinder.PathComputationType type) {
+        return false;
     }
     *///?}
 
@@ -68,7 +83,7 @@ public abstract class SupportedBlock extends Block {
     }
     //?} else {
     /*@Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighbor,
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighbor,
                                      net.minecraft.world.level.LevelAccessor level, BlockPos pos,
                                      BlockPos neighborPos) {
         return neighborChanged(state, level, pos, direction, neighbor,

@@ -1,0 +1,7 @@
+{
+  "parent": "thirstwastaken2:block/copper_hanging_pot",
+  "textures": {
+    "particle": "minecraft:block/cauldron_side",
+    "pot": "thirstwastaken2:block/iron_hanging_pot"
+  }
+}

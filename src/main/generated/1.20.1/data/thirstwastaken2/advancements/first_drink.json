@@ -1,0 +1,30 @@
+{
+  "parent": "thirstwastaken2:root",
+  "criteria": {
+    "thirst": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.thirstwastaken2.first_drink.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "thirstwastaken2:terracotta_water_bowl",
+      "nbt": "{CustomModelData:3,thirstwastaken2:{purity:3,salty:0b}}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.thirstwastaken2.first_drink.title"
+    }
+  },
+  "requirements": [
+    [
+      "thirst"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

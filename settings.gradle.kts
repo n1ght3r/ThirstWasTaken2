@@ -30,6 +30,8 @@ plugins {
 
 stonecutter {
     create(rootProject) {
+        // Fabric only for now: the Forge node is phase 2 of docs/dev/VERSION-1.20.1.md.
+        version("1.20.1", "1.20.1")
         versions("1.21.1", "1.21.11")
         // NeoForge on 1.21.1 only: 1.21 is a separate NeoForge generation (21.0), unlike on Fabric.
         version("1.21.1-neoforge", "1.21.1").buildscript = "build.neoforge.gradle.kts"

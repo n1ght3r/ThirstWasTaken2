@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:iron_hanging_pot"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:iron_ingots"
+    },
+    "K": {
+      "item": "minecraft:chain"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "SKS",
+    "I I",
+    "III"
+  ],
+  "result": {
+    "item": "thirstwastaken2:iron_hanging_pot"
+  },
+  "show_notification": true
+}

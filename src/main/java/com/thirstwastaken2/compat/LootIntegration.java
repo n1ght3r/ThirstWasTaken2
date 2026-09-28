@@ -3,12 +3,11 @@ package com.thirstwastaken2.compat;
 import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Loader;
 import com.thirstwastaken2.platform.Vanilla;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
@@ -21,12 +20,13 @@ import java.util.Set;
  * Piglin barters with water bottles of varying purity.
  */
 public final class LootIntegration {
-    private static final Set<ResourceKey<LootTable>> CHESTS = Set.of(
-            BuiltInLootTables.ABANDONED_MINESHAFT,
-            BuiltInLootTables.BASTION_OTHER,
-            BuiltInLootTables.NETHER_BRIDGE,
-            BuiltInLootTables.SHIPWRECK_SUPPLY,
-            BuiltInLootTables.SIMPLE_DUNGEON);
+    private static final Set<Identifier> CHESTS = Set.of(
+            Vanilla.lootTableId(BuiltInLootTables.ABANDONED_MINESHAFT),
+            Vanilla.lootTableId(BuiltInLootTables.BASTION_OTHER),
+            Vanilla.lootTableId(BuiltInLootTables.NETHER_BRIDGE),
+            Vanilla.lootTableId(BuiltInLootTables.SHIPWRECK_SUPPLY),
+            Vanilla.lootTableId(BuiltInLootTables.SIMPLE_DUNGEON));
+    private static final Identifier PIGLIN_BARTERING = Vanilla.lootTableId(BuiltInLootTables.PIGLIN_BARTERING);
 
     private LootIntegration() { }
 
@@ -37,7 +37,7 @@ public final class LootIntegration {
         Loader.onLootTable((key, addPool) -> {
             if (CHESTS.contains(key)) {
                 addPool.accept(waterPool(true));
-            } else if (BuiltInLootTables.PIGLIN_BARTERING.equals(key)) {
+            } else if (PIGLIN_BARTERING.equals(key)) {
                 addPool.accept(waterPool(false));
             }
         });

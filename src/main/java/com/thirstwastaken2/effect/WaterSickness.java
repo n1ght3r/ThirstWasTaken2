@@ -4,6 +4,7 @@ import com.thirstwastaken2.config.SicknessPreset;
 import com.thirstwastaken2.config.SicknessTable;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.purity.WaterQuality;
+import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.Holder;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
@@ -75,7 +76,7 @@ public final class WaterSickness {
         Outcome current = current(player);
         if (outcome.compareTo(current) < 0) return;
         boolean again = outcome == current;
-        MobEffectInstance upset = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         int amplifier = again && upset != null ? Math.max(upsetAmplifier, Math.min(upset.getAmplifier() + 1,
                 SicknessTable.MAX_UPSET_STOMACH_LEVEL - 1)) : upsetAmplifier;
         give(player, ThirstEffects.UPSET_STOMACH, upsetStomachTicks(difficulty), amplifier, again);
@@ -91,7 +92,7 @@ public final class WaterSickness {
      * together read as Poisoning. Once the Poison wears off, what is left is Upset Stomach.
      */
     public static Outcome current(Player player) {
-        if (!player.hasEffect(ThirstEffects.UPSET_STOMACH)) return Outcome.NONE;
+        if (!Vanilla.hasEffect(player, ThirstEffects.UPSET_STOMACH)) return Outcome.NONE;
         return player.hasEffect(MobEffects.POISON) ? Outcome.POISONING : Outcome.UPSET_STOMACH;
     }
 
@@ -114,11 +115,11 @@ public final class WaterSickness {
     public static PoisoningEffect[] poisoning(Difficulty difficulty) {
         return switch (difficulty) {
             case PEACEFUL, EASY -> new PoisoningEffect[]{
-                    new PoisoningEffect(MobEffects.POISON, 0, 10 * TICKS_PER_SECOND)};
+                    new PoisoningEffect(Vanilla.poison(), 0, 10 * TICKS_PER_SECOND)};
             case NORMAL -> new PoisoningEffect[]{
-                    new PoisoningEffect(MobEffects.POISON, 0, 20 * TICKS_PER_SECOND)};
+                    new PoisoningEffect(Vanilla.poison(), 0, 20 * TICKS_PER_SECOND)};
             case HARD -> new PoisoningEffect[]{
-                    new PoisoningEffect(MobEffects.POISON, 0, 30 * TICKS_PER_SECOND)};
+                    new PoisoningEffect(Vanilla.poison(), 0, 30 * TICKS_PER_SECOND)};
         };
     }
 
@@ -128,10 +129,10 @@ public final class WaterSickness {
      * effect the player already has short.
      */
     private static void give(Player player, Holder<MobEffect> effect, int ticks, int amplifier, boolean extend) {
-        MobEffectInstance existing = player.getEffect(effect);
+        MobEffectInstance existing = Vanilla.getEffect(player, effect);
         int duration = ticks;
         if (extend && existing != null) duration = Math.min(existing.getDuration() + ticks, 2 * ticks);
-        player.addEffect(new MobEffectInstance(effect, duration, amplifier));
+        player.addEffect(Vanilla.effectInstance(effect, duration, amplifier));
     }
 
     /** The roll before the sickness rework, which ignored the difficulty. */

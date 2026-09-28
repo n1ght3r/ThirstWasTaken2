@@ -20,7 +20,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -225,9 +224,9 @@ public final class Loader {
      * Runs for every loot table as it loads, handing over the table's id and a way to append a pool,
      * whoever wrote the table: vanilla, a mod, or a data pack that replaced it.
      */
-    public static void onLootTable(BiConsumer<ResourceKey<LootTable>, Consumer<LootPool.Builder>> handler) {
+    public static void onLootTable(BiConsumer<Identifier, Consumer<LootPool.Builder>> handler) {
         NeoForge.EVENT_BUS.addListener((LootTableLoadEvent event) ->
-                handler.accept(event.getKey(), pool -> event.getTable().addPool(pool.build())));
+                handler.accept(event.getKey().identifier(), pool -> event.getTable().addPool(pool.build())));
     }
 
     /**

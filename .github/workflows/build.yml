@@ -103,26 +103,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # 26.1 and later need Java 25; 1.21.x needs Java 21. Both are installed so no job has to
-      # download a JDK at build time.
+      # 26.1 and later need Java 25, 1.21.x Java 21 and 1.20.1 Java 17. All three are installed so no
+      # job has to download a JDK at build time.
       - name: Set up Java
         uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: |
+            17
             21
             25
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Register both JDKs as Gradle toolchains
+      - name: Register the JDKs as Gradle toolchains
         # setup-java exports every JDK it installs as JAVA_HOME_<major>_X64 but does not tell Gradle
         # about them, and Gradle does not scan the runner tool cache. Without this, the job whose
         # required toolchain is not the current JAVA_HOME provisions a second JDK of its own.
         run: |
           mkdir -p ~/.gradle
-          echo "org.gradle.java.installations.fromEnv=JAVA_HOME_21_X64,JAVA_HOME_25_X64" >> ~/.gradle/gradle.properties
+          echo "org.gradle.java.installations.fromEnv=JAVA_HOME_17_X64,JAVA_HOME_21_X64,JAVA_HOME_25_X64" >> ~/.gradle/gradle.properties
 
       - name: Build
         if: ${{ matrix.loader == 'fabric' }}

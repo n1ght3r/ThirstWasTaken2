@@ -203,7 +203,7 @@ public final class ThirstManager {
         // amounts from the same tick, so they cancel exactly instead of leaving float noise behind that
         // would still cost a sync packet.
         boolean slowTick = player.tickCount % SLOW_TICK_INTERVAL == 0;
-        MobEffectInstance upsetStomach = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance upsetStomach = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         // Nausea bursts, rolled on the slow tick so the fast path stays a lookup.
         if (upsetStomach != null && slowTick && !player.hasEffect(MobEffects.NAUSEA)
                 && player.getRandom().nextFloat()
@@ -219,7 +219,7 @@ public final class ThirstManager {
         if (upsetStomach == null && player.hasEffect(MobEffects.NAUSEA)) {
             raw += NAUSEA_EXHAUSTION;
         }
-        MobEffectInstance parched = player.getEffect(ThirstEffects.PARCHED);
+        MobEffectInstance parched = Vanilla.getEffect(player, ThirstEffects.PARCHED);
         if (parched != null) raw += PARCHED_EXHAUSTION * (parched.getAmplifier() + 1);
         if (upsetStomach != null) raw += UpsetStomach.EXHAUSTION * (upsetStomach.getAmplifier() + 1);
         // Nourishment stops thirst draining the way it stops hunger, as in the original mod. Everything
@@ -359,8 +359,7 @@ public final class ThirstManager {
         if (player instanceof ServerPlayer serverPlayer) {
             // getDamageProtection returns twice the enchantment level total, and the original scales
             // it by 0.0625 * 0.75 per level.
-            float protection = EnchantmentHelper.getDamageProtection(
-                    Vanilla.level(serverPlayer), serverPlayer, serverPlayer.damageSources().onFire());
+            float protection = Vanilla.damageProtection(serverPlayer, serverPlayer.damageSources().onFire());
             modifier *= Math.max(0.25F, 1.0F - protection * 0.0234375F);
         }
         return modifier;

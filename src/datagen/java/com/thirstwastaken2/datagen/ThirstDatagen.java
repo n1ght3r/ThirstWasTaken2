@@ -21,9 +21,16 @@ public final class ThirstDatagen implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
 
+        // 1.20.1 has its own recipe and advancement providers in src/datagen/legacy, and no Cooking Pot
+        // recipes yet; see build.gradle.kts.
+        //? if >=1.20.5 {
         pack.addProvider(ThirstRecipeProvider::new);
         pack.addProvider(FarmersDelightRecipeProvider::new);
         pack.addProvider(ThirstAdvancementProvider::new);
+        //?} else {
+        /*pack.addProvider(com.thirstwastaken2.datagen.legacy.LegacyRecipeProvider::new);
+        pack.addProvider(com.thirstwastaken2.datagen.legacy.LegacyAdvancementProvider::new);
+        *///?}
         pack.addProvider(ThirstDamageTypeProvider::new);
         pack.addProvider(ThirstDamageTypeTagProvider::new);
         pack.addProvider(ThirstBiomeTagProvider::new);

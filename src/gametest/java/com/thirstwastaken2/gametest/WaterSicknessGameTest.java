@@ -6,6 +6,7 @@ import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.effect.WaterSickness;
 import com.thirstwastaken2.effect.WaterSickness.PoisoningEffect;
 import com.thirstwastaken2.purity.WaterQuality;
+import com.thirstwastaken2.platform.Vanilla;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
@@ -77,7 +78,7 @@ public final class WaterSicknessGameTest {
         WaterSickness.catchIllness(player, Difficulty.NORMAL, WaterSickness.Outcome.UPSET_STOMACH, 0);
         WaterSickness.catchIllness(player, Difficulty.NORMAL, WaterSickness.Outcome.UPSET_STOMACH, 0);
 
-        MobEffectInstance upset = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1,
                 "catching Upset Stomach I again should make it II, got " + upset);
         TestFixtures.check(helper, upset.getDuration() > ticks && upset.getDuration() <= 2 * ticks,
@@ -85,9 +86,9 @@ public final class WaterSicknessGameTest {
                         + " ticks against " + ticks);
 
         WaterSickness.catchIllness(player, Difficulty.NORMAL, WaterSickness.Outcome.UPSET_STOMACH, 0);
-        TestFixtures.check(helper, player.getEffect(ThirstEffects.UPSET_STOMACH).getDuration() == 2 * ticks,
+        TestFixtures.check(helper, Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH).getDuration() == 2 * ticks,
                 "a third time should stop at twice its time, got "
-                        + player.getEffect(ThirstEffects.UPSET_STOMACH).getDuration());
+                        + Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH).getDuration());
         helper.succeed();
     }
 
@@ -99,9 +100,9 @@ public final class WaterSicknessGameTest {
         TestFixtures.check(helper, WaterSickness.current(player) == WaterSickness.Outcome.POISONING,
                 "Poisoning over Upset Stomach should add its effects, got " + player.getActiveEffects());
 
-        MobEffectInstance before = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance before = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         WaterSickness.catchIllness(player, Difficulty.HARD, WaterSickness.Outcome.UPSET_STOMACH, 0);
-        MobEffectInstance after = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance after = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         TestFixtures.check(helper, after.getDuration() == before.getDuration() && after.getAmplifier() == before.getAmplifier(),
                 "Upset Stomach caught while poisoned is milder and should change nothing, went from " + before
                         + " to " + after);
@@ -116,7 +117,7 @@ public final class WaterSicknessGameTest {
             MobEffectInstance nausea = player.getEffect(MobEffects.NAUSEA);
             TestFixtures.check(helper, nausea != null && nausea.getDuration() == 12 * 20,
                     "classic dirty water always gives 12 s of Nausea, got " + nausea);
-            TestFixtures.check(helper, !player.hasEffect(ThirstEffects.UPSET_STOMACH),
+            TestFixtures.check(helper, !Vanilla.hasEffect(player, ThirstEffects.UPSET_STOMACH),
                     "classic never gives Upset Stomach, got " + player.getActiveEffects());
         });
         helper.succeed();
@@ -157,7 +158,7 @@ public final class WaterSicknessGameTest {
                                        int level, String where) {
         PoisoningEffect[] expected = WaterSickness.poisoning(difficulty);
         for (PoisoningEffect effect : expected) {
-            MobEffectInstance got = player.getEffect(effect.effect());
+            MobEffectInstance got = Vanilla.getEffect(player, effect.effect());
             TestFixtures.check(helper, got != null && got.getAmplifier() == effect.amplifier()
                             && got.getDuration() == effect.ticks(),
                     where + ": Poisoning should give " + effect + ", got " + got);
@@ -179,7 +180,7 @@ public final class WaterSicknessGameTest {
 
     private static void checkUpsetStomachEffect(GameTestHelper helper, ServerPlayer player, Difficulty difficulty,
                                                 int level, String where) {
-        MobEffectInstance upset = player.getEffect(ThirstEffects.UPSET_STOMACH);
+        MobEffectInstance upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
         TestFixtures.check(helper, upset != null && upset.getAmplifier() == level
                         && upset.getDuration() == WaterSickness.upsetStomachTicks(difficulty),
                 where + ": should give Upset Stomach " + (level + 1) + " for "

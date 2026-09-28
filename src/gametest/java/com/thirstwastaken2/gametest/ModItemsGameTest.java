@@ -89,8 +89,14 @@ public final class ModItemsGameTest {
 
     /** A data file of the mod's own, as the server loaded it. */
     private static JsonObject read(GameTestHelper helper, String path) {
+        // 1.21 renamed the data directories from plural to singular; the paths here are the newer ones.
+        //? if >=1.21 {
+        String file = path;
+        //?} else {
+        /*String file = path.replaceFirst("^(recipe|advancement)/", "$1s/");
+        *///?}
         Optional<Resource> resource = helper.getLevel().getServer().getResourceManager()
-                .getResource(ThirstWasTaken2.id(path + ".json"));
+                .getResource(ThirstWasTaken2.id(file + ".json"));
         TestFixtures.check(helper, resource.isPresent(), path + ".json is missing from the mod's data");
         try (Reader reader = resource.orElseThrow().openAsReader()) {
             return JsonParser.parseReader(reader).getAsJsonObject();

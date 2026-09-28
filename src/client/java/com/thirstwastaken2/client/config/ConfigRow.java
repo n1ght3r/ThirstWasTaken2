@@ -301,7 +301,7 @@ abstract class ConfigRow {
             void place(int x, int y, int width) {
                 canvas.setPosition(x, y);
                 canvas.setWidth(width);
-                canvas.setHeight(height(width));
+                ClientVanilla.setHeight(canvas, height(width));
             }
         };
     }

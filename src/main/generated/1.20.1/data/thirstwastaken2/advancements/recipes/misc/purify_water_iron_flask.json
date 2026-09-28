@@ -1,0 +1,58 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:iron_flask"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_iron_flask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thirstwastaken2:iron_flask"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thirstwastaken2:purify_water_iron_flask_1_0_smelting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_iron_flask"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thirstwastaken2:purify_water_iron_flask_1_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_1_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_1_2_smelting",
+      "thirstwastaken2:purify_water_iron_flask_2_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_2_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_2_2_smelting",
+      "thirstwastaken2:purify_water_iron_flask_3_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_3_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_3_2_smelting",
+      "thirstwastaken2:purify_water_iron_flask_4_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_4_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_4_2_smelting",
+      "thirstwastaken2:purify_water_iron_flask_5_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_5_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_5_2_smelting",
+      "thirstwastaken2:purify_water_iron_flask_6_0_smelting",
+      "thirstwastaken2:purify_water_iron_flask_6_1_smelting",
+      "thirstwastaken2:purify_water_iron_flask_6_2_smelting"
+    ]
+  },
+  "sends_telemetry_event": false
+}
