@@ -35,6 +35,10 @@ from the mod's own page or an image host, never committed, and scaled to about 7
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).
 
+An integration page that opens with the mod's banner has no `# Mod name` heading, since the banner
+already shows the name; it sets `title:` in frontmatter instead, for the browser tab. A page without a
+banner keeps its `#` heading.
+
 ## Style
 
 Written for a server owner who has never seen the code. That means:

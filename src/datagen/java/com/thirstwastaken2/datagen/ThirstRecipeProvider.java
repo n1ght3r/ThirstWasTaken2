@@ -408,7 +408,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
          */
         private AdvancementHolder purifyUnlock(String family, List<String> names,
                                                java.util.SequencedMap<String, ItemLike> items) {
-            var representative = recipe(names.getFirst());
+            var representative = recipe(names.get(0));
             Advancement.Builder builder = rootedRecipeAdvancement()
                     // 26.3 made recipes a registry, so the criterion names a holder rather than a key.
                     //? if >=26.3 {

@@ -1,4 +1,6 @@
-# Brewin' and Chewin'
+---
+title: "Brewin' and Chewin'"
+---
 
 ![Brewin' and Chewin'](https://i.imgur.com/EFkjwBq.png)
 

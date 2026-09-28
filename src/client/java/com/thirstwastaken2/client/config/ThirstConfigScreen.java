@@ -19,6 +19,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import net.minecraft.util.Mth;
 
 /**
  * The editor for {@code config/thirstwastaken2.json}, opened from Mod Menu on Fabric and the mods list
@@ -96,7 +97,7 @@ public final class ThirstConfigScreen extends Screen {
     private int sidebarWidth() {
         int widest = 0;
         for (ConfigCategory category : ConfigCategory.values()) widest = Math.max(widest, font.width(category.title()));
-        return Math.clamp(widest + 40, 96, 140);
+        return Mth.clamp(widest + 40, 96, 140);
     }
 
     private void addSearch() {
@@ -196,7 +197,7 @@ public final class ThirstConfigScreen extends Screen {
         if (focused != null && removed.contains(focused)) setFocused(null);
         rows.clear();
 
-        int controlWidth = Math.clamp(listWidth * 2 / 5, 80, 140);
+        int controlWidth = Mth.clamp(listWidth * 2 / 5, 80, 140);
         if (query.isEmpty()) {
             rows.add(ConfigRow.heading(selected.title(), selected.description(), selected.icon()));
             List<ConfigSection> sections = selected.sections();
@@ -265,7 +266,7 @@ public final class ThirstConfigScreen extends Screen {
      * until the next heading takes its place.
      */
     private void layoutRows() {
-        scroll = Math.clamp(scroll, 0, maxScroll());
+        scroll = Mth.clamp(scroll, 0, maxScroll());
         ConfigRow sticky = stickyAt(pinned + scroll);
         int y = listTop;
         boolean full = false;

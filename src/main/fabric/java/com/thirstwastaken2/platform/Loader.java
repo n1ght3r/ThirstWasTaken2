@@ -18,7 +18,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
@@ -36,6 +36,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -85,9 +86,14 @@ public final class Loader {
         ItemEnabledCondition.register();
     }
 
-    /** Registers a per-player value, saved with {@code codec} and synced to its owner with {@code streamCodec}. */
+    /**
+     * Registers a per-player value, saved with {@code codec} and synced to its owner in the form
+     * {@code write} and {@code read} agree on.
+     */
     public static <T> PlayerData<T> playerData(Identifier id, Supplier<T> initial, Codec<T> codec,
-                                               StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+                                               BiConsumer<T, FriendlyByteBuf> write,
+                                               Function<FriendlyByteBuf, T> read) {
+        StreamCodec<FriendlyByteBuf, T> streamCodec = streamCodec(write, read);
         AttachmentType<T> type = AttachmentRegistry.create(id, builder -> builder
                 .initializer(initial)
                 .persistent(codec)
@@ -195,19 +201,34 @@ public final class Loader {
      * <p>Fabric API keeps the client receiver in its client module, which common code cannot see, so the
      * handler waits in {@link ClientboundPayloads} until the client entrypoint registers it.
      */
-    public static <T extends CustomPacketPayload> void clientboundPayload(
-            CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Consumer<T> handler) {
+    public static <T> Clientbound<T> clientboundPayload(Identifier id, BiConsumer<T, FriendlyByteBuf> write,
+                                                        Function<FriendlyByteBuf, T> read, Consumer<T> handler) {
+        CustomPacketPayload.Type<Wrapped<T>> type = new CustomPacketPayload.Type<>(id);
+        StreamCodec<FriendlyByteBuf, Wrapped<T>> codec = wrappedCodec(type, write, read);
         //? if >=26.1 {
         PayloadTypeRegistry.clientboundPlay().register(type, codec);
         //?} else {
         /*PayloadTypeRegistry.playS2C().register(type, codec);
         *///?}
-        ClientboundPayloads.add(type, handler);
+        ClientboundPayloads.add(type, payload -> handler.accept(payload.value()));
+        return (player, value) -> {
+            if (ServerPlayNetworking.canSend(player, type)) ServerPlayNetworking.send(player, new Wrapped<>(type, value));
+        };
     }
 
-    /** Sends {@code payload} to {@code player}, or nothing when their client cannot receive it. */
-    public static void send(ServerPlayer player, CustomPacketPayload payload) {
-        if (ServerPlayNetworking.canSend(player, payload.type())) ServerPlayNetworking.send(player, payload);
+    /** A common-code payload inside the loader's own packet type. */
+    private record Wrapped<T>(CustomPacketPayload.Type<Wrapped<T>> type, T value) implements CustomPacketPayload { }
+
+    private static <T> StreamCodec<FriendlyByteBuf, T> streamCodec(BiConsumer<T, FriendlyByteBuf> write,
+                                                                   Function<FriendlyByteBuf, T> read) {
+        return StreamCodec.ofMember(write::accept, read::apply);
+    }
+
+    private static <T> StreamCodec<FriendlyByteBuf, Wrapped<T>> wrappedCodec(
+            CustomPacketPayload.Type<Wrapped<T>> type, BiConsumer<T, FriendlyByteBuf> write,
+            Function<FriendlyByteBuf, T> read) {
+        return StreamCodec.ofMember((payload, buffer) -> write.accept(payload.value(), buffer),
+                buffer -> new Wrapped<>(type, read.apply(buffer)));
     }
 
     private record AttachmentPlayerData<T>(AttachmentType<T> type) implements PlayerData<T> {

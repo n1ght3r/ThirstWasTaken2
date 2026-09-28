@@ -42,12 +42,11 @@ public final class ThirstAdvancements {
     public static void drank(Player player, WaterQuality quality) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
         award(serverPlayer, FIRST_DRINK);
-        switch (quality) {
-            case WaterQuality.Salt ignored -> award(serverPlayer, SEA_WATER);
-            case WaterQuality.Fresh fresh -> {
-                if (fresh.purity() == WaterPurity.MIN) award(serverPlayer, DIRTY_WATER);
-                if (fresh.purity() == WaterPurity.MAX) award(serverPlayer, PURIFIED_WATER);
-            }
+        if (quality instanceof WaterQuality.Fresh fresh) {
+            if (fresh.purity() == WaterPurity.MIN) award(serverPlayer, DIRTY_WATER);
+            if (fresh.purity() == WaterPurity.MAX) award(serverPlayer, PURIFIED_WATER);
+        } else {
+            award(serverPlayer, SEA_WATER);
         }
         // Where water evaporates, i.e. the Nether and any dimension like it: the same test the
         // exhaustion modifier uses, so the advancement tracks the hardship it is named after.

@@ -6,7 +6,6 @@ import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,17 +21,15 @@ public final class ItemAppearanceGameTest {
     public void aBowlsSpriteFollowsItsWater(GameTestHelper helper) {
         for (int grade = WaterPurity.MIN; grade <= WaterPurity.MAX; grade++) {
             ItemStack bowl = bowl(WaterQuality.fresh(grade));
-            TestFixtures.check(helper, Vanilla.modelSelector(ThirstItems.BOWL_MODEL_INDEX, grade)
-                            .equals(bowl.get(DataComponents.CUSTOM_MODEL_DATA)),
+            TestFixtures.check(helper, Vanilla.selectsModel(bowl, ThirstItems.BOWL_MODEL_INDEX, grade),
                     "a grade " + grade + " bowl should select sprite " + grade + ", got "
-                            + bowl.get(DataComponents.CUSTOM_MODEL_DATA));
+                            + Vanilla.modelSelectorOf(bowl));
         }
         ItemStack salty = bowl(WaterQuality.SALT);
-        TestFixtures.check(helper, Vanilla.modelSelector(ThirstItems.BOWL_MODEL_INDEX, WaterPurity.MAX + 1)
-                        .equals(salty.get(DataComponents.CUSTOM_MODEL_DATA)),
-                "a salty bowl should select the sprite after the grades, got " + salty.get(DataComponents.CUSTOM_MODEL_DATA));
-        TestFixtures.check(helper, Vanilla.modelSelector(ThirstItems.BOWL_MODEL_INDEX, WaterPurity.MAX)
-                        .equals(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL).get(DataComponents.CUSTOM_MODEL_DATA)),
+        TestFixtures.check(helper, Vanilla.selectsModel(salty, ThirstItems.BOWL_MODEL_INDEX, WaterPurity.MAX + 1),
+                "a salty bowl should select the sprite after the grades, got " + Vanilla.modelSelectorOf(salty));
+        TestFixtures.check(helper, Vanilla.selectsModel(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL),
+                        ThirstItems.BOWL_MODEL_INDEX, WaterPurity.MAX),
                 "a bowl straight from the creative tab is pure water and should look it");
         helper.succeed();
     }
@@ -40,19 +37,18 @@ public final class ItemAppearanceGameTest {
     @GameTest
     public void aWaterskinsSpriteFollowsItsServings(GameTestHelper helper) {
         ItemStack skin = new ItemStack(ThirstItems.WATERSKIN);
-        TestFixtures.check(helper, !skin.has(DataComponents.CUSTOM_MODEL_DATA),
+        TestFixtures.check(helper, Vanilla.modelSelectorOf(skin) == null,
                 "an empty waterskin should carry no model data, so it falls back to the empty sprite");
 
         for (int servings = 1; servings <= WaterskinItem.CAPACITY; servings++) {
             WaterskinItem.addWater(skin, WaterQuality.fresh(2), 1);
-            TestFixtures.check(helper, Vanilla.modelSelector(ThirstItems.WATERSKIN_MODEL_INDEX, servings)
-                            .equals(skin.get(DataComponents.CUSTOM_MODEL_DATA)),
+            TestFixtures.check(helper, Vanilla.selectsModel(skin, ThirstItems.WATERSKIN_MODEL_INDEX, servings),
                     "a waterskin with " + servings + " servings should select sprite " + servings + ", got "
-                            + skin.get(DataComponents.CUSTOM_MODEL_DATA));
+                            + Vanilla.modelSelectorOf(skin));
         }
 
         WaterskinItem.removeWater(skin, WaterskinItem.CAPACITY);
-        TestFixtures.check(helper, !skin.has(DataComponents.CUSTOM_MODEL_DATA),
+        TestFixtures.check(helper, Vanilla.modelSelectorOf(skin) == null,
                 "emptying the waterskin should take the model data away again");
         helper.succeed();
     }
@@ -67,10 +63,10 @@ public final class ItemAppearanceGameTest {
         ItemStack bottle = WaterPurity.setQuality(TestFixtures.waterBottle(), WaterQuality.SALT);
         //? if >=1.21.2 {
         TestFixtures.check(helper, com.thirstwastaken2.ThirstWasTaken2.id("salt_water_bottle")
-                        .equals(bottle.get(DataComponents.ITEM_MODEL)),
-                "a salty bottle should point at the sea-water model, got " + bottle.get(DataComponents.ITEM_MODEL));
+                        .equals(Vanilla.itemModelOf(bottle)),
+                "a salty bottle should point at the sea-water model, got " + Vanilla.itemModelOf(bottle));
         WaterPurity.setQuality(bottle, WaterQuality.fresh(2));
-        TestFixtures.check(helper, !bottle.has(DataComponents.ITEM_MODEL),
+        TestFixtures.check(helper, Vanilla.itemModelOf(bottle) == null,
                 "a bottle that holds fresh water again should lose the sea-water model");
         //?}
         TestFixtures.check(helper, WaterPurity.setQuality(bottle, WaterQuality.fresh(2)).is(net.minecraft.world.item.Items.POTION),

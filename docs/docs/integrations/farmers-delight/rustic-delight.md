@@ -1,4 +1,6 @@
-# Rustic Delight
+---
+title: "Rustic Delight"
+---
 
 ![Rustic Delight](https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png)
 

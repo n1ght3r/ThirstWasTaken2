@@ -2,7 +2,7 @@ package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -72,7 +72,7 @@ public final class WaterskinGameTest {
 
         TestFixtures.check(helper, WaterskinItem.servings(skin) == 0,
                 "the waterskin should be empty, got " + WaterskinItem.servings(skin));
-        TestFixtures.check(helper, !skin.has(ThirstComponents.WATER_PURITY),
+        TestFixtures.check(helper, !ItemWaterData.hasGrade(skin),
                 "an empty waterskin must not remember the water it held");
 
         ItemStack saltySkin = new ItemStack(ThirstItems.WATERSKIN);

@@ -23,6 +23,8 @@ tools/*
 # What publishes a release to Modrinth and CurseForge. It reads the properties file every node is
 # described in, so it belongs beside them rather than on one machine; its tokens stay in .env.
 !tools/release/
+# What a node's name says, which CI, the release, benchmark and dependency scripts all ask.
+!tools/node_names.py
 
 # Bytecode from running .github/scripts by hand.
 __pycache__/

@@ -270,7 +270,7 @@ final class ItemValueRows {
     private static ConfigRow groupRow(String namespace, List<String> ids, boolean open, Runnable onToggle) {
         Component title = Component.literal(modName(namespace));
         Component count = Component.literal(" (" + ids.size() + ")");
-        Item first = installed(ids.getFirst());
+        Item first = installed(ids.get(0));
         ItemStack[] icon = new ItemStack[1];
         ClientVanilla.Painter painter = (graphics, widget, mouseX, mouseY) -> {
             int x = widget.getX();

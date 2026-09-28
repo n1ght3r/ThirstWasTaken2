@@ -59,16 +59,14 @@ jobs:
         # versions from it, so the two cannot drift. A hard-coded list would let a version added to
         # settings.gradle.kts go silently unbuilt. `[fabric."26.2.x"]` is the node `26.2.x` and
         # `[neoforge."26.2.x"]` the node `26.2.x-neoforge`; a shared `["26.2.x"]` table is not a node.
+        # tools/node_names.py reads the node names the same way the release and dependency scripts do, and
+        # gives each its loader, which picks the steps below.
         run: |
           set -euo pipefail
-          names=$(sed -nE 's/^\[fabric\."([^"]+)"\][[:space:]]*$/\1/p; s/^\[neoforge\."([^"]+)"\][[:space:]]*$/\1-neoforge/p' stonecutter.properties.toml)
-          if [ -z "$names" ]; then
-            echo "No version tables found in stonecutter.properties.toml." >&2
-            exit 1
-          fi
+          nodes=$(python3 tools/node_names.py matrix)
           echo "Versions to build:"
-          echo "$names"
-          echo "versions=$(echo "$names" | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+          echo "$nodes" | jq -r '.[] | "\(.version) (\(.loader))"'
+          echo "versions=$nodes" >> "$GITHUB_OUTPUT"
 
   build-logic:
     # The integration table and the rest of build-logic are plain Kotlin with tests of their own. Every
@@ -98,8 +96,9 @@ jobs:
     strategy:
       # One job per Minecraft version, so a break is attributed to the version that caused it.
       fail-fast: false
+      # Each entry is {version, loader}: `version` is the node's name, `loader` what it builds for.
       matrix:
-        version: ${{ fromJSON(needs.discover.outputs.versions) }}
+        include: ${{ fromJSON(needs.discover.outputs.versions) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -126,7 +125,7 @@ jobs:
           echo "org.gradle.java.installations.fromEnv=JAVA_HOME_21_X64,JAVA_HOME_25_X64" >> ~/.gradle/gradle.properties
 
       - name: Build
-        if: ${{ !endsWith(matrix.version, '-neoforge') }}
+        if: ${{ matrix.loader == 'fabric' }}
         # devClasses compiles the dev tools (/thirst benchmark and the agent). They never ship, so
         # nothing else would notice them breaking on one version. checkAgentCore fails when the agent's
         # loader independent half starts naming Minecraft or a loader. checkLoaderSeam fails on a mod
@@ -148,7 +147,7 @@ jobs:
       # generates. checkNeoForgeResources fails when a Fabric-only key survives the translation of
       # that JSON. The seam checks read the same files on every node and are cheap to repeat here.
       - name: Build (NeoForge)
-        if: ${{ endsWith(matrix.version, '-neoforge') }}
+        if: ${{ matrix.loader == 'neoforge' }}
         run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
 
       # Regenerates every datapack and asset JSON and fails if the result differs from what is
@@ -156,7 +155,7 @@ jobs:
       # file edited by hand. Fabric runs the generators out of the client's main before a window is
       # ever created, so this needs no display either.
       - name: Check generated resources
-        if: ${{ !endsWith(matrix.version, '-neoforge') }}
+        if: ${{ matrix.loader == 'fabric' }}
         run: ./gradlew ":${{ matrix.version }}:checkDatagen" --stacktrace
 
       # The GameTest runner replaces the dedicated server, skips the EULA prompt and needs no

@@ -210,6 +210,48 @@ public final class Vanilla {
         /*return new CustomModelData(value);*/
     }
 
+    /** Sets a stack's model selector, see {@link #modelSelector(int, int)}. */
+    public static void setModelSelector(ItemStack stack, int index, int value) {
+        stack.set(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA, modelSelector(index, value));
+    }
+
+    /** Takes a stack's model selector away, so its item model falls back to its plain sprite. */
+    public static void clearModelSelector(ItemStack stack) {
+        stack.remove(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
+    }
+
+    /** Item properties whose stacks start out with a model selector, see {@link #modelSelector(int, int)}. */
+    public static Item.Properties modelSelectorByDefault(Item.Properties properties, int index, int value) {
+        return properties.component(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA,
+                modelSelector(index, value));
+    }
+
+    /**
+     * The model selector a stack carries, or {@code null}. Only for comparing and printing: its type is
+     * whatever the version stores.
+     */
+    public static Object modelSelectorOf(ItemStack stack) {
+        return stack.get(net.minecraft.core.component.DataComponents.CUSTOM_MODEL_DATA);
+    }
+
+    /** Whether a stack carries exactly the model selector {@code modelSelector(index, value)}. */
+    public static boolean selectsModel(ItemStack stack, int index, int value) {
+        return modelSelector(index, value).equals(modelSelectorOf(stack));
+    }
+
+    /** A vanilla water bottle: a potion whose contents are plain water. */
+    public static ItemStack waterBottle() {
+        return net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                net.minecraft.world.item.Items.POTION, net.minecraft.world.item.alchemy.Potions.WATER);
+    }
+
+    /** Whether a stack's potion contents are plain water, whatever the item. */
+    public static boolean holdsWaterPotion(ItemStack stack) {
+        net.minecraft.world.item.alchemy.PotionContents potion =
+                stack.get(net.minecraft.core.component.DataComponents.POTION_CONTENTS);
+        return potion != null && potion.is(net.minecraft.world.item.alchemy.Potions.WATER);
+    }
+
     /**
      * Points a stack at the item model {@code model} while {@code use} holds, and takes it away again
      * once it does not, but only if this mod set it, so a modded container keeps its own. The
@@ -224,6 +266,14 @@ public final class Vanilla {
             stack.remove(net.minecraft.core.component.DataComponents.ITEM_MODEL);
         }
         //?}
+    }
+
+    /** The item model a stack is pointed at, or {@code null}. Always {@code null} before 1.21.2, see {@link #swapItemModel}. */
+    public static Identifier itemModelOf(ItemStack stack) {
+        //? if >=1.21.2 {
+        return stack.get(net.minecraft.core.component.DataComponents.ITEM_MODEL);
+        //?} else
+        /*return null;*/
     }
 
     /**

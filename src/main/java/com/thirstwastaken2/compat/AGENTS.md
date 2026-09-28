@@ -91,6 +91,6 @@ vanilla's own experiment packs, and Fabric API changed its answer between versio
 Trade Rebalance experiment on, mineshaft chests held water on 1.21.1 and none on later versions. A
 few water bottles are an addition any pack can live with; a rule that differs per version is not.
 
-Water bottles are emitted as `minecraft:potion` + `SetPotionFunction` + a `SetComponentsFunction` that
-stamps `water_purity`, so loot water arrives already stamped rather than falling back to
-`defaultPurity`.
+Water bottles are emitted as `minecraft:potion` + `SetPotionFunction` + the functions
+`ItemWaterData.stampFreshLoot` adds, which stamp `water_purity` and `water_salty`, so loot water arrives
+already stamped rather than falling back to `defaultPurity`.

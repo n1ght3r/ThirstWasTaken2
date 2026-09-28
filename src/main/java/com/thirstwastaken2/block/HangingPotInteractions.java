@@ -17,8 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -116,7 +114,7 @@ public final class HangingPotInteractions {
         }
         if (held.is(Items.GLASS_BOTTLE)) {
             return servings >= 1
-                    ? Transfer.draw(1, PotionContents.createItemStack(Items.POTION, Potions.WATER), SoundEvents.BOTTLE_FILL)
+                    ? Transfer.draw(1, Vanilla.waterBottle(), SoundEvents.BOTTLE_FILL)
                     : null;
         }
         if (held.is(ThirstItems.TERRACOTTA_BOWL)) {

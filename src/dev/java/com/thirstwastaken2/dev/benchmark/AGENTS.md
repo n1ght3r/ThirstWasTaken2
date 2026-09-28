@@ -125,7 +125,7 @@ For each player count, every simulated tick does, for every player, what a real 
 | `interactions` | Once every 30 s per player, staggered: sample the fixture water into a bowl, and half a cycle later drink a bowl | `WaterPurity.sampleAt`, `ItemStackMixin` → `ThirstManager.drinkItem` |
 | `food_tick` | Vanilla `FoodData#tick`, with health kept below full so regeneration keeps firing | `FoodDataMixin`, `HealthRegen` |
 | `thirst_tick` | `ThirstManager.tickPlayer` | buffered exhaustion, modifier cache, Hunger refund, consumption |
-| `sync_encode` | `ThirstData.STREAM_CODEC` for every player whose attachment changed | what a real client's sync packet carries |
+| `sync_encode` | `ThirstData.write` for every player whose attachment changed | what a real client's sync packet carries |
 
 Half the players wear diamond armour with Protection IV, Unbreaking III and Mending, which is what makes
 the exhaustion modifier expensive to compute. 1 in 20 has Nausea and 1 in 20 Fire Resistance. Upkeep that

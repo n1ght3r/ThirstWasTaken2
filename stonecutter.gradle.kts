@@ -1,3 +1,6 @@
+import com.thirstwastaken2.buildlogic.Loader
+import com.thirstwastaken2.buildlogic.loaderOf
+import com.thirstwastaken2.buildlogic.minecraftOf
 import com.thirstwastaken2.buildlogic.parseWithoutOptional
 
 plugins {
@@ -12,12 +15,11 @@ stonecutter active "26.3.x"
 
 
 stonecutter parameters {
-    // Every node is `<version>` on Fabric or `<version>-neoforge` on NeoForge. Tagging both parts lets
-    // stonecutter.properties.toml keep what both loaders share in `["26.2.x"]` and the rest in
-    // `[fabric."26.2.x"]` or `[neoforge."26.2.x"]`; see the top of that file.
-    val loader = if (current.project.endsWith("-neoforge")) "neoforge" else "fabric"
+    // Every node is `<version>` on Fabric or `<version>-<loader>` on another loader, `26.2.x-neoforge`.
+    // Tagging both parts lets stonecutter.properties.toml keep what the loaders share in `["26.2.x"]` and
+    // the rest in `[fabric."26.2.x"]` or `[neoforge."26.2.x"]`; see the top of that file.
     properties {
-        tags(current.project.removeSuffix("-neoforge"), loader)
+        tags(minecraftOf(current.project), loaderOf(current.project).id)
     }
 
     // Bakes the target Minecraft version into the jar, so the startup log line is never stale.
@@ -107,7 +109,7 @@ stonecutter parameters {
         // changes, so a test keeps writing `@GameTest` with no arguments. See src/gametest/java/AGENTS.md.
         // That harness sets the template itself on every Minecraft version, so the rule below is for
         // Fabric only; two rules rewriting the same import would be ambiguous anyway.
-        val neoForge = current.project.endsWith("-neoforge")
+        val neoForge = loaderOf(current.project) == Loader.NEOFORGE
         string(neoForge) {
             replace("import net.fabricmc.fabric.api.gametest.v1.GameTest;",
                     "import com.thirstwastaken2.gametest.neoforge.GameTest;")

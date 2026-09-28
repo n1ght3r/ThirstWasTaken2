@@ -8,7 +8,8 @@ import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.dev.platform.DevLoader;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ItemWaterData;
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterInteractions;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
@@ -23,8 +24,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -164,7 +163,7 @@ final class InteractionScenario implements Stage {
         BlockHitResult cauldronHit = new BlockHitResult(Vec3.atCenterOf(cauldron), Direction.UP, cauldron, false);
         WaterQuality acceptable = WaterQuality.fresh(2);
         WaterQuality dirty = WaterQuality.fresh(0);
-        ItemStack waterBottle = WaterPurity.setQuality(PotionContents.createItemStack(Items.POTION, Potions.WATER), acceptable);
+        ItemStack waterBottle = WaterPurity.setQuality(Vanilla.waterBottle(), acceptable);
         ItemStack fullWaterskin = new ItemStack(ThirstItems.WATERSKIN);
         WaterskinItem.addWater(fullWaterskin, acceptable, WaterskinItem.CAPACITY);
         ItemStack apple = new ItemStack(Items.APPLE);
@@ -188,7 +187,7 @@ final class InteractionScenario implements Stage {
                     player.setItemInHand(HAND, new ItemStack(Items.GLASS_BOTTLE));
                 },
                 () -> sink = player.gameMode.useItem(player, level, player.getMainHandItem(), HAND),
-                () -> player.getMainHandItem().has(ThirstComponents.WATER_PURITY));
+                () -> ItemWaterData.hasGrade(player.getMainHandItem()));
         single("fill_bucket", "Bucket used on water: vanilla BucketItem#use plus the purity capture and stamp",
                 () -> {
                     world.refillWater();
@@ -197,7 +196,7 @@ final class InteractionScenario implements Stage {
                 },
                 () -> sink = player.gameMode.useItem(player, level, player.getMainHandItem(), HAND),
                 () -> player.getMainHandItem().is(Items.WATER_BUCKET)
-                        && player.getMainHandItem().has(ThirstComponents.WATER_PURITY));
+                        && ItemWaterData.hasGrade(player.getMainHandItem()));
         single("fill_bowl", "Terracotta bowl scooping water (WaterInteractions.fillFromWater)",
                 () -> {
                     world.refillWater();
@@ -206,7 +205,7 @@ final class InteractionScenario implements Stage {
                 },
                 () -> sink = WaterInteractions.fillFromWater(player, level, HAND),
                 () -> player.getMainHandItem().is(ThirstItems.TERRACOTTA_WATER_BOWL));
-        single("fill_waterskin", "Waterskin taking one more serving and mixing its quality",
+        single("fill_waterskin", "Waterskin filling up from water and mixing its quality",
                 () -> {
                     world.refillWater();
                     standing();
@@ -215,7 +214,8 @@ final class InteractionScenario implements Stage {
                     player.setItemInHand(HAND, waterskin);
                 },
                 () -> sink = WaterInteractions.fillFromWater(player, level, HAND),
-                () -> WaterskinItem.servings(player.getMainHandItem()) == 2);
+                // Scooping from water fills a waterskin to capacity, not one serving at a time.
+                () -> WaterskinItem.servings(player.getMainHandItem()) == WaterskinItem.CAPACITY);
         single("drink_water_bottle", "Finishing a water bottle: vanilla consumption, thirst gain and the purity roll",
                 () -> {
                     thirsty();

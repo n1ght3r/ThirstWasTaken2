@@ -1,11 +1,9 @@
 package com.thirstwastaken2.data;
 
 import com.thirstwastaken2.ThirstWasTaken2;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 
 import java.util.IdentityHashMap;
@@ -15,24 +13,29 @@ import java.util.Map;
  * Every data pack thirst value the server loaded, sent to a client on join and after {@code /reload}
  * so its tooltips agree with what drinking restores. See {@link DataPackDrinks}.
  *
- * <p>Items travel as registry ids, so the packet is a few bytes per entry. A client without the mod
+ * <p>Items travel as raw registry ids, so the packet is a few bytes per entry. A client without the mod
  * never receives it: each loader checks that the channel was negotiated before sending.
  */
-public record DrinkValuesPayload(Map<Item, int[]> values) implements CustomPacketPayload {
-    public static final Type<DrinkValuesPayload> TYPE = new Type<>(ThirstWasTaken2.id("drink_values"));
+public record DrinkValuesPayload(Map<Item, int[]> values) {
+    public static final Identifier ID = ThirstWasTaken2.id("drink_values");
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, int[]> AMOUNTS = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, amounts -> amounts[0],
-            ByteBufCodecs.VAR_INT, amounts -> amounts[1],
-            (thirst, quenched) -> new int[]{thirst, quenched});
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(values.size());
+        values.forEach((item, amounts) -> {
+            buffer.writeVarInt(BuiltInRegistries.ITEM.getId(item));
+            buffer.writeVarInt(amounts[0]);
+            buffer.writeVarInt(amounts[1]);
+        });
+    }
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, DrinkValuesPayload> STREAM_CODEC =
-            ByteBufCodecs.<RegistryFriendlyByteBuf, Item, int[], Map<Item, int[]>>map(
-                            IdentityHashMap::new, ByteBufCodecs.registry(Registries.ITEM), AMOUNTS)
-                    .map(DrinkValuesPayload::new, DrinkValuesPayload::values);
-
-    @Override
-    public Type<DrinkValuesPayload> type() {
-        return TYPE;
+    public static DrinkValuesPayload read(FriendlyByteBuf buffer) {
+        int size = buffer.readVarInt();
+        // Sized no larger than vanilla's own map codec would, whatever count the packet claims.
+        Map<Item, int[]> values = new IdentityHashMap<>(Math.min(size, 65536));
+        for (int i = 0; i < size; i++) {
+            Item item = BuiltInRegistries.ITEM.byId(buffer.readVarInt());
+            values.put(item, new int[]{buffer.readVarInt(), buffer.readVarInt()});
+        }
+        return new DrinkValuesPayload(values);
     }
 }

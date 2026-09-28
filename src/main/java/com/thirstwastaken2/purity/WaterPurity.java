@@ -7,9 +7,9 @@ import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.effect.WaterSickness;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -17,14 +17,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -94,9 +93,8 @@ public final class WaterPurity {
         if (stack.isEmpty()) return false;
         if (WaterskinItem.is(stack)) return WaterskinItem.servings(stack) > 0;
         if (info(stack.getItem()).container()) return true;
-        // Water bottles are plain potions distinguished only by their contents component.
-        PotionContents potion = stack.get(DataComponents.POTION_CONTENTS);
-        return potion != null && potion.is(Potions.WATER);
+        // Water bottles are plain potions distinguished only by their contents.
+        return Vanilla.holdsWaterPotion(stack);
     }
 
     /** Water-only drinks are blocked at a full thirst bar, unlike drinks with other gameplay uses. */
@@ -104,8 +102,7 @@ public final class WaterPurity {
         if (stack.isEmpty()) return false;
         if (WaterskinItem.is(stack)) return WaterskinItem.servings(stack) > 0;
         if (stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)) return true;
-        PotionContents potion = stack.get(DataComponents.POTION_CONTENTS);
-        if (stack.is(Items.POTION) && potion != null && potion.is(Potions.WATER)) return true;
+        if (stack.is(Items.POTION) && Vanilla.holdsWaterPotion(stack)) return true;
         return info(stack.getItem()).plainWater();
     }
 
@@ -114,7 +111,7 @@ public final class WaterPurity {
      * already been ruled out, ask {@link #quality(ItemStack)} instead of this.
      */
     public static int get(ItemStack stack) {
-        Integer purity = stack.get(ThirstComponents.WATER_PURITY);
+        Integer purity = ItemWaterData.grade(stack);
         if (purity != null) return purity;
         int staticPurity = info(stack.getItem()).staticPurity();
         return staticPurity == PURITY_FROM_CONFIG ? ThirstConfig.get().defaultPurity : staticPurity;
@@ -125,12 +122,12 @@ public final class WaterPurity {
     }
 
     public static boolean isSalty(ItemStack stack) {
-        return stack.getOrDefault(ThirstComponents.WATER_SALTY, false);
+        return ItemWaterData.salty(stack);
     }
 
     /** Whether a container already carries a sampled quality of its own. */
     public static boolean isStamped(ItemStack stack) {
-        return stack.has(ThirstComponents.WATER_PURITY) || isSalty(stack);
+        return ItemWaterData.hasGrade(stack) || isSalty(stack);
     }
 
     public static ItemStack set(ItemStack stack, int purity) {
@@ -138,19 +135,10 @@ public final class WaterPurity {
     }
 
     public static ItemStack setQuality(ItemStack stack, WaterQuality quality) {
-        switch (quality) {
-            case WaterQuality.Salt ignored -> {
-                // Salt water stores no grade at all, so nothing can read one off it by accident and
-                // the purification recipes, which all match on a grade, cannot match it either.
-                stack.remove(ThirstComponents.WATER_PURITY);
-                stack.set(ThirstComponents.WATER_SALTY, true);
-            }
-            case WaterQuality.Fresh fresh -> {
-                stack.set(ThirstComponents.WATER_PURITY, fresh.purity());
-                // Written even though false is the default: the purification recipes match on it, and
-                // a container that left it out would silently stop being cookable.
-                stack.set(ThirstComponents.WATER_SALTY, false);
-            }
+        if (quality instanceof WaterQuality.Fresh fresh) {
+            ItemWaterData.setFresh(stack, fresh.purity());
+        } else {
+            ItemWaterData.setSalty(stack);
         }
         syncModel(stack, quality);
         return stack;
@@ -163,8 +151,7 @@ public final class WaterPurity {
      */
     public static ItemStack unstamped(ItemStack stack) {
         ItemStack plain = stack.copy();
-        plain.remove(ThirstComponents.WATER_PURITY);
-        plain.remove(ThirstComponents.WATER_SALTY);
+        ItemWaterData.clearQuality(plain);
         Identifier saltModel = saltModel(plain);
         if (saltModel != null) Vanilla.swapItemModel(plain, saltModel, false);
         return plain;
@@ -218,29 +205,25 @@ public final class WaterPurity {
     /** Makes the player ill, or not, from the water in {@code stack}, and returns whether it quenches. */
     public static boolean applyEffects(Player player, ItemStack stack) {
         if (!(player instanceof ServerPlayer) || !isWaterContainer(stack)) return true;
-        switch (quality(stack)) {
-            case WaterQuality.Salt ignored -> {
-                ThirstManager.addExhaustion(player, SALTY_EXHAUSTION);
-                ThirstConfig config = ThirstConfig.get();
-                if (config.seaWaterNauseaSeconds > 0) {
-                    player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, config.seaWaterNauseaSeconds * 20));
-                }
-                // Not in the original. Salt makes you thirstier at once: the body spends more water
-                // getting rid of it than the drink brought in. Bad fresh water dries you out only
-                // later, once it makes you ill, so it does not make you Parched.
-                if (config.seaWaterParchedSeconds > 0) {
-                    player.addEffect(new MobEffectInstance(ThirstEffects.PARCHED, config.seaWaterParchedSeconds * 20,
-                            SALT_PARCHED_LEVEL, false, false, true));
-                }
-                return false;
-            }
-            case WaterQuality.Fresh fresh -> {
-                // Diverges from the original's single Nausea and Poison roll, which also applied Hunger:
-                // bad water now makes you ill by difficulty, and every fresh drink still quenches.
-                WaterSickness.drink(player, fresh);
-                return true;
-            }
+        if (quality(stack) instanceof WaterQuality.Fresh fresh) {
+            // Diverges from the original's single Nausea and Poison roll, which also applied Hunger:
+            // bad water now makes you ill by difficulty, and every fresh drink still quenches.
+            WaterSickness.drink(player, fresh);
+            return true;
         }
+        ThirstManager.addExhaustion(player, SALTY_EXHAUSTION);
+        ThirstConfig config = ThirstConfig.get();
+        if (config.seaWaterNauseaSeconds > 0) {
+            player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, config.seaWaterNauseaSeconds * 20));
+        }
+        // Not in the original. Salt makes you thirstier at once: the body spends more water
+        // getting rid of it than the drink brought in. Bad fresh water dries you out only
+        // later, once it makes you ill, so it does not make you Parched.
+        if (config.seaWaterParchedSeconds > 0) {
+            player.addEffect(new MobEffectInstance(ThirstEffects.PARCHED, config.seaWaterParchedSeconds * 20,
+                    SALT_PARCHED_LEVEL, false, false, true));
+        }
+        return false;
     }
 
     /**
@@ -269,7 +252,7 @@ public final class WaterPurity {
 
     /** @return a fresh copy of the grade line, see {@link TooltipLines}. */
     public static Component tooltip(int purity) {
-        return TooltipLines.PURITY[Math.clamp(purity, MIN, MAX)].copy();
+        return TooltipLines.PURITY[Mth.clamp(purity, MIN, MAX)].copy();
     }
 
     /** The one line salt water gets. It replaces the grade line rather than joining it. */
@@ -305,7 +288,7 @@ public final class WaterPurity {
 
     /** The grade a sampled contamination score falls into. */
     private static int grade(int score) {
-        int clamped = Math.clamp(score, MIN_SCORE, MAX_SCORE);
+        int clamped = Mth.clamp(score, MIN_SCORE, MAX_SCORE);
         if (clamped <= 15) return 3;
         if (clamped <= 35) return 2;
         if (clamped <= 65) return 1;
@@ -376,8 +359,7 @@ public final class WaterPurity {
     private static void syncModel(ItemStack stack, WaterQuality quality) {
         if (stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)) {
             int variant = quality instanceof WaterQuality.Fresh fresh ? fresh.purity() : SALT_BOWL_MODEL;
-            stack.set(DataComponents.CUSTOM_MODEL_DATA,
-                    Vanilla.modelSelector(ThirstItems.BOWL_MODEL_INDEX, variant));
+            Vanilla.setModelSelector(stack, ThirstItems.BOWL_MODEL_INDEX, variant);
             return;
         }
         Identifier saltModel = saltModel(stack);

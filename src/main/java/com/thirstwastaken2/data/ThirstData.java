@@ -7,9 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.platform.Loader;
 import com.thirstwastaken2.platform.PlayerData;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 
 public record ThirstData(int thirst, int quenched, float exhaustion, boolean enabled) {
     public static final int MAX = 20;
@@ -23,17 +21,21 @@ public record ThirstData(int thirst, int quenched, float exhaustion, boolean ena
             Codec.BOOL.optionalFieldOf("enabled", true).forGetter(ThirstData::enabled)
     ).apply(instance, ThirstData::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ThirstData> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, ThirstData::thirst,
-            ByteBufCodecs.VAR_INT, ThirstData::quenched,
-            ByteBufCodecs.FLOAT, ThirstData::exhaustion,
-            ByteBufCodecs.BOOL, ThirstData::enabled,
-            ThirstData::new
-    );
-
     /** Saved with the player and synced to that player's own client only. Read and write it through {@link ThirstManager}. */
-    static final PlayerData<ThirstData> STORAGE =
-            Loader.playerData(ThirstWasTaken2.id("player_data"), ThirstData::full, CODEC, STREAM_CODEC);
+    static final PlayerData<ThirstData> STORAGE = Loader.playerData(ThirstWasTaken2.id("player_data"), ThirstData::full,
+            CODEC, ThirstData::write, ThirstData::read);
+
+    /** The synced form, what {@link #read} takes back. Each loader wraps it in its own packet type. */
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeVarInt(thirst);
+        buffer.writeVarInt(quenched);
+        buffer.writeFloat(exhaustion);
+        buffer.writeBoolean(enabled);
+    }
+
+    public static ThirstData read(FriendlyByteBuf buffer) {
+        return new ThirstData(buffer.readVarInt(), buffer.readVarInt(), buffer.readFloat(), buffer.readBoolean());
+    }
 
     private static boolean registered;
 

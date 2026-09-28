@@ -2,12 +2,11 @@ package com.thirstwastaken2.item;
 
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.platform.DrinkItem;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Vanilla;
-import com.thirstwastaken2.purity.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -21,8 +20,6 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -112,7 +109,7 @@ public final class WaterskinItem extends DrinkItem {
     }
 
     public static int servings(ItemStack stack) {
-        return stack.getOrDefault(ThirstComponents.WATER_SERVINGS, 0);
+        return ItemWaterData.servings(stack);
     }
 
     /** Whether {@code stack} is a carried container with room for more water. */
@@ -276,37 +273,32 @@ public final class WaterskinItem extends DrinkItem {
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return switch (WaterPurity.quality(stack)) {
-            case WaterQuality.Salt ignored -> 0xD8D2BE;
-            case WaterQuality.Fresh fresh -> switch (fresh.purity()) {
-                case 0 -> 0x8A5A2B;
-                case 1 -> 0xB09A63;
-                case 2 -> 0x3F76E4;
-                default -> 0x42C8F5;
-            };
+        if (!(WaterPurity.quality(stack) instanceof WaterQuality.Fresh fresh)) return 0xD8D2BE;
+        return switch (fresh.purity()) {
+            case 0 -> 0x8A5A2B;
+            case 1 -> 0xB09A63;
+            case 2 -> 0x3F76E4;
+            default -> 0x42C8F5;
         };
     }
 
     private static boolean isWaterBottle(ItemStack stack) {
         if (!stack.is(Items.POTION)) return false;
-        PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
-        return contents != null && contents.is(Potions.WATER);
+        return Vanilla.holdsWaterPotion(stack);
     }
 
     private static void setServings(ItemStack stack, int servings) {
-        stack.set(ThirstComponents.WATER_SERVINGS, servings);
+        ItemWaterData.setServings(stack, servings);
         if (!(stack.getItem() instanceof WaterskinItem vessel) || !vessel.spriteShowsServings) return;
         if (servings == 0) {
-            stack.remove(DataComponents.CUSTOM_MODEL_DATA);
+            Vanilla.clearModelSelector(stack);
         } else {
-            stack.set(DataComponents.CUSTOM_MODEL_DATA,
-                    Vanilla.modelSelector(ThirstItems.WATERSKIN_MODEL_INDEX, servings));
+            Vanilla.setModelSelector(stack, ThirstItems.WATERSKIN_MODEL_INDEX, servings);
         }
     }
 
     private static void clearWaterQuality(ItemStack stack) {
-        stack.remove(ThirstComponents.WATER_PURITY);
-        stack.remove(ThirstComponents.WATER_SALTY);
+        ItemWaterData.clearQuality(stack);
     }
 
     private static void consumeContainer(ItemStack carried, ItemStack remainder, Player player,

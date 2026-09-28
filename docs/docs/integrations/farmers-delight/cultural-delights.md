@@ -1,4 +1,6 @@
-# Cultural Delights
+---
+title: "Cultural Delights"
+---
 
 ![Cultural Delights](https://cdn.modrinth.com/data/cached_images/d6a323ce1e69b76f2143b3c0e03bd9ce36fc69e1.png)
 

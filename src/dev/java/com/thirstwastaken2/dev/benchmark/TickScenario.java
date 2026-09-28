@@ -8,7 +8,7 @@ import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.Holder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -70,7 +70,7 @@ final class TickScenario implements Stage {
     private final long[] sectionNanos = new long[SECTIONS.length];
     private final long[] sectionBytes = new long[SECTIONS.length];
     private final Metrics.Samples totals = new Metrics.Samples();
-    private RegistryFriendlyByteBuf buffer;
+    private FriendlyByteBuf buffer;
     private Holder<Enchantment> protection;
     private Holder<Enchantment> unbreaking;
     private Holder<Enchantment> mending;
@@ -114,7 +114,7 @@ final class TickScenario implements Stage {
     @Override
     public boolean run(long deadlineNanos) {
         if (buffer == null) {
-            buffer = new RegistryFriendlyByteBuf(Unpooled.buffer(64), world.server.registryAccess());
+            buffer = new FriendlyByteBuf(Unpooled.buffer(64));
             protection = world.enchantment(Enchantments.PROTECTION);
             unbreaking = world.enchantment(Enchantments.UNBREAKING);
             mending = world.enchantment(Enchantments.MENDING);
@@ -230,7 +230,7 @@ final class TickScenario implements Stage {
         nanos = System.nanoTime();
         for (int k = 0; k < changedCount; k++) {
             buffer.clear();
-            ThirstData.STREAM_CODEC.encode(buffer, ThirstManager.get(players[changed[k]]));
+            ThirstManager.get(players[changed[k]]).write(buffer);
         }
         mark(SYNC_ENCODE, nanos, bytes);
 

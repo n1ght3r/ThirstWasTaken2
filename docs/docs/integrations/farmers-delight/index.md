@@ -1,4 +1,6 @@
-# Farmer's Delight
+---
+title: "Farmer's Delight"
+---
 
 ![Farmer's Delight](https://i.imgur.com/wqSocVR.png)
 

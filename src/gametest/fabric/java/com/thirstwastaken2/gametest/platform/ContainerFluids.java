@@ -1,6 +1,7 @@
 package com.thirstwastaken2.gametest.platform;
 
 import com.thirstwastaken2.fabric.WaterContainerStorage;
+import com.thirstwastaken2.platform.FabricTransfer;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -55,7 +56,7 @@ public final class ContainerFluids {
             drained = held.isBlank() ? 0 : storage.extract(held, amount * DROPLETS_PER_MB, transaction);
             transaction.commit();
         }
-        boolean graded = !held.componentsMatch(net.minecraft.core.component.DataComponentPatch.EMPTY);
+        boolean graded = !FabricTransfer.isPlain(held);
         return new FluidMove((int) (drained / DROPLETS_PER_MB),
                 drained == 0 || !graded ? null : WaterContainerStorage.quality(held), slot.stack());
     }

@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.api.ThirstApi;
+import com.thirstwastaken2.platform.Clientbound;
 import com.thirstwastaken2.platform.Loader;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.FileToIdConverter;
@@ -62,8 +63,15 @@ public final class DataPackDrinks {
 
     /** Swapped whole, never edited, so a reader never sees half a reload. */
     private static volatile Map<Item, int[]> values = Map.of();
+    private static Clientbound<DrinkValuesPayload> channel;
 
     private DataPackDrinks() { }
+
+    /** Declares {@link DrinkValuesPayload}, on both sides, during {@code initialize}. */
+    public static void registerPayload() {
+        channel = Loader.clientboundPayload(DrinkValuesPayload.ID, DrinkValuesPayload::write, DrinkValuesPayload::read,
+                DataPackDrinks::receive);
+    }
 
     /** @return {thirst, quenched} as a data pack gave it, or {@code null} when no pack names the item. */
     public static int[] get(Item item) {
@@ -107,7 +115,7 @@ public final class DataPackDrinks {
 
     /** Sends the current values to one player; called on join and after every reload. */
     public static void sync(ServerPlayer player) {
-        Loader.send(player, new DrinkValuesPayload(values));
+        if (channel != null) channel.send(player, new DrinkValuesPayload(values));
     }
 
     /** The client's side of {@link #sync}. */

@@ -6,7 +6,7 @@ import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.effect.WaterSickness;
 import com.thirstwastaken2.item.ThirstItems;
-import com.thirstwastaken2.purity.ThirstComponents;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
@@ -144,7 +144,7 @@ public final class WaterEffectsGameTest {
 
         TestFixtures.check(helper, WaterPurity.quality(salty) instanceof WaterQuality.Salt,
                 "purifying salt water must leave it salt water, got " + WaterPurity.quality(salty));
-        TestFixtures.check(helper, !salty.has(ThirstComponents.WATER_PURITY),
+        TestFixtures.check(helper, !ItemWaterData.hasGrade(salty),
                 "salt water must not end up carrying a grade");
         helper.succeed();
     }

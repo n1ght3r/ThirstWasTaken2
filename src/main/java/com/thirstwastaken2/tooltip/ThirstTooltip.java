@@ -10,6 +10,7 @@ import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Consumer;
@@ -84,14 +85,13 @@ public final class ThirstTooltip {
                     .withStyle(ChatFormatting.GRAY));
         }
         if (WaterPurity.isWaterContainer(stack)) {
-            switch (WaterPurity.quality(stack)) {
-                case WaterQuality.Salt ignored -> {
-                    // Salt water has no grade to report and restores nothing, so it gets one line of
-                    // its own and no droplet rows to contradict it.
-                    tooltip.accept(WaterPurity.saltTooltip());
-                    return;
-                }
-                case WaterQuality.Fresh fresh -> tooltip.accept(WaterPurity.tooltip(fresh.purity()));
+            if (WaterPurity.quality(stack) instanceof WaterQuality.Fresh fresh) {
+                tooltip.accept(WaterPurity.tooltip(fresh.purity()));
+            } else {
+                // Salt water has no grade to report and restores nothing, so it gets one line of
+                // its own and no droplet rows to contradict it.
+                tooltip.accept(WaterPurity.saltTooltip());
+                return;
             }
         }
         if (!droplets) return;
@@ -156,6 +156,6 @@ public final class ThirstTooltip {
 
     /** How full droplet {@code index} is: 2 whole, 1 half, 0 empty. */
     private static int fillOf(int units, int index) {
-        return Math.clamp(units - index * UNITS_PER_DROPLET, 0, UNITS_PER_DROPLET);
+        return Mth.clamp(units - index * UNITS_PER_DROPLET, 0, UNITS_PER_DROPLET);
     }
 }

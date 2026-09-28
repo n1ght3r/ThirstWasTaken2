@@ -3,12 +3,12 @@ package com.thirstwastaken2.gametest;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterContainers;
 import com.thirstwastaken2.item.WaterskinItem;
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -47,10 +47,10 @@ public final class CanteenGameTest {
     @GameTest
     public void aRigidVesselKeepsOneSprite(GameTestHelper helper) {
         ItemStack canteen = filled(ThirstItems.COPPER_CANTEEN, DIRTY, 2);
-        TestFixtures.check(helper, !canteen.has(DataComponents.CUSTOM_MODEL_DATA),
+        TestFixtures.check(helper, Vanilla.modelSelectorOf(canteen) == null,
                 "a canteen has one sprite, so it should carry no custom model data, got "
-                        + canteen.get(DataComponents.CUSTOM_MODEL_DATA));
-        TestFixtures.check(helper, filled(ThirstItems.WATERSKIN, DIRTY, 2).has(DataComponents.CUSTOM_MODEL_DATA),
+                        + Vanilla.modelSelectorOf(canteen));
+        TestFixtures.check(helper, Vanilla.modelSelectorOf(filled(ThirstItems.WATERSKIN, DIRTY, 2)) != null,
                 "the waterskin should still pick its sprite by fill level");
         helper.succeed();
     }

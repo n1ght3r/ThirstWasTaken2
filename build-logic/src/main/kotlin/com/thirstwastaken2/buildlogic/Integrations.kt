@@ -4,7 +4,26 @@ package com.thirstwastaken2.buildlogic
 enum class Loader(val id: String) {
     FABRIC("fabric"),
     NEOFORGE("neoforge"),
+    /** MinecraftForge. No node builds for it yet; see docs/dev/VERSION-1.20.1.md. */
+    FORGE("forge"),
+    ;
+
+    /** What follows the Minecraft version in the name of a node of this loader: nothing on Fabric. */
+    val nodeSuffix: String get() = if (this == FABRIC) "" else "-$id"
 }
+
+/**
+ * The loader a node builds for, from its name: `26.2.x-neoforge` is NeoForge, and a node with no loader
+ * in its name is Fabric. Every script that needs a node's loader asks this, or `tools/node_names.py`.
+ */
+fun loaderOf(node: String): Loader =
+    Loader.entries.firstOrNull { it != Loader.FABRIC && node.endsWith(it.nodeSuffix) } ?: Loader.FABRIC
+
+/**
+ * A node's name without its loader: `26.2.x` for `26.2.x-neoforge`. It names the table in
+ * stonecutter.properties.toml that every loader of that Minecraft version shares.
+ */
+fun minecraftOf(node: String): String = node.removeSuffix(loaderOf(node).nodeSuffix)
 
 /**
  * One optional integration: its own source directories, compiled only on a node that sets [depsKey] in
@@ -37,8 +56,8 @@ data class Integration(
     /** Mod ids named as optional dependencies in `neoforge.mods.toml`. */
     val neoForgeDependencies: List<String> = emptyList(),
 ) {
-    /** Whether the integration is compiled by every loader, so that none of its code may name one. */
-    val loaderIndependent: Boolean get() = loaders == Loader.entries.toSet()
+    /** Whether more than one loader compiles the integration, so that none of its code may name one. */
+    val loaderIndependent: Boolean get() = loaders.size > 1
 
     /**
      * The roots under `src/main` it adds, each with a `java` and a `resources` directory, relative to the

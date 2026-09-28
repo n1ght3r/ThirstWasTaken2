@@ -1,4 +1,6 @@
-# Cold Sweat
+---
+title: "Cold Sweat"
+---
 
 <img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="360">
 

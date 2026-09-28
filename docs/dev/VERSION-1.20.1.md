@@ -37,6 +37,12 @@ that needs a core-code fork for 1.20.1 retires 1.20.1, not the other way round.
 No new node yet. Each step keeps behaviour the same, so a failing gametest here is a refactor bug, not a
 port bug.
 
+**Status (2026-09-28): built, uncommitted.** Gametests pass on the four check nodes; the full ten-node
+run before merging is still open. Where it landed: `platform/ItemWaterData`, `platform/Clientbound`,
+`FabricTransfer` for the fluid variant's grade, `loaderOf`/`minecraftOf` in build-logic and
+`tools/node_names.py`. NeoForge's `WaterFluids` still names `ThirstComponents` on a `FluidStack`: no
+1.20.1 node compiles it, and Forge gets its own in `forge-fluidhandler`.
+
 ### 0.1 Java 17
 
 Java 21 features that core uses today:

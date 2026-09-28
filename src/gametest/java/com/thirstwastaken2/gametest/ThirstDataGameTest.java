@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
@@ -209,11 +209,10 @@ public final class ThirstDataGameTest {
     @GameTest
     public void theSyncedFormRoundTrips(GameTestHelper helper) {
         ThirstData data = new ThirstData(13, 4, 2.25F, false);
-        RegistryFriendlyByteBuf buffer = new RegistryFriendlyByteBuf(Unpooled.buffer(),
-                helper.getLevel().registryAccess());
+        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
         try {
-            ThirstData.STREAM_CODEC.encode(buffer, data);
-            ThirstData received = ThirstData.STREAM_CODEC.decode(buffer);
+            data.write(buffer);
+            ThirstData received = ThirstData.read(buffer);
             TestFixtures.check(helper, data.equals(received),
                     "the client should receive " + data + ", got " + received);
             TestFixtures.check(helper, buffer.readableBytes() == 0,

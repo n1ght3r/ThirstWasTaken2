@@ -7,7 +7,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 /**
  * Registers the client handler of every payload common code declared through
  * {@code Loader.clientboundPayload}. Registering a receiver is also what tells a server this client
- * can take the payload, so {@code Loader.send} reaches it.
+ * can take the payload, so the {@code Clientbound} it returned reaches it.
  */
 final class ClientboundReceivers {
     private ClientboundReceivers() { }

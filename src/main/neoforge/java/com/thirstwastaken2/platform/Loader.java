@@ -4,9 +4,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.neoforge.ItemEnabledCondition;
+import java.util.function.Function;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.Registry;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
@@ -121,9 +122,14 @@ public final class Loader {
                 NeoForgeRegistries.CONDITION_SERIALIZERS, ThirstWasTaken2.id("item_enabled"), ItemEnabledCondition.CODEC));
     }
 
-    /** Registers a per-player value, saved with {@code codec} and synced to its owner with {@code streamCodec}. */
+    /**
+     * Registers a per-player value, saved with {@code codec} and synced to its owner in the form
+     * {@code write} and {@code read} agree on.
+     */
     public static <T> PlayerData<T> playerData(Identifier id, Supplier<T> initial, Codec<T> codec,
-                                               StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+                                               BiConsumer<T, FriendlyByteBuf> write,
+                                               Function<FriendlyByteBuf, T> read) {
+        StreamCodec<FriendlyByteBuf, T> streamCodec = streamCodec(write, read);
         // An attachment type takes no registry holder, so it can be built now and registered later.
         // NeoForge 21.1 saves an attachment through a plain codec; later versions take a map codec, so
         // the value goes under a field there. A world carried from one to the other starts at full thirst.
@@ -256,20 +262,33 @@ public final class Loader {
      * <p>Registered as optional, so a client without the mod may still join; {@link #send} skips it.
      * The handler is common code, so it is safe to name on a dedicated server, where it never runs.
      */
-    public static <T extends CustomPacketPayload> void clientboundPayload(
-            CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Consumer<T> handler) {
+    public static <T> Clientbound<T> clientboundPayload(Identifier id, BiConsumer<T, FriendlyByteBuf> write,
+                                                        Function<FriendlyByteBuf, T> read, Consumer<T> handler) {
+        CustomPacketPayload.Type<Wrapped<T>> type = new CustomPacketPayload.Type<>(id);
+        StreamCodec<FriendlyByteBuf, Wrapped<T>> codec = wrappedCodec(type, write, read);
         modBus().addListener((RegisterPayloadHandlersEvent event) -> event.registrar("1").optional()
-                .playToClient(type, codec, (payload, context) -> handler.accept(payload)));
+                .playToClient(type, codec, (payload, context) -> handler.accept(payload.value())));
+        // A fake player is turned away first, for the reason syncsTo gives.
+        return (player, value) -> {
+            if (!player.isFakePlayer() && player.connection.hasChannel(type)) {
+                PacketDistributor.sendToPlayer(player, new Wrapped<>(type, value));
+            }
+        };
     }
 
-    /**
-     * Sends {@code payload} to {@code player}, or nothing when their client cannot receive it. A fake
-     * player is turned away first, for the reason {@link #syncsTo} gives.
-     */
-    public static void send(ServerPlayer player, CustomPacketPayload payload) {
-        if (!player.isFakePlayer() && player.connection.hasChannel(payload.type())) {
-            PacketDistributor.sendToPlayer(player, payload);
-        }
+    /** A common-code payload inside the loader's own packet type. */
+    private record Wrapped<T>(CustomPacketPayload.Type<Wrapped<T>> type, T value) implements CustomPacketPayload { }
+
+    private static <T> StreamCodec<FriendlyByteBuf, T> streamCodec(BiConsumer<T, FriendlyByteBuf> write,
+                                                                   Function<FriendlyByteBuf, T> read) {
+        return StreamCodec.ofMember(write::accept, read::apply);
+    }
+
+    private static <T> StreamCodec<FriendlyByteBuf, Wrapped<T>> wrappedCodec(
+            CustomPacketPayload.Type<Wrapped<T>> type, BiConsumer<T, FriendlyByteBuf> write,
+            Function<FriendlyByteBuf, T> read) {
+        return StreamCodec.ofMember((payload, buffer) -> write.accept(payload.value(), buffer),
+                buffer -> new Wrapped<>(type, read.apply(buffer)));
     }
 
     private static IEventBus modBus() {

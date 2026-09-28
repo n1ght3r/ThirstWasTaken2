@@ -32,7 +32,7 @@ thirst, and the client only receives it through the `PlayerData` sync.
 (`ThirstWasTaken2Fabric` in `src/main/fabric`, `ThirstWasTaken2NeoForge` in `src/main/neoforge`), and the
 order matters:
 `ThirstConfig.load()` → `ThirstData.register()` → `ThirstBlocks.register()` →
-`ThirstComponents.register()` → `ThirstItems.register()` → `ThirstItems.registerCreativeTab()` →
+`ItemWaterData.register()` → `ThirstItems.register()` → `ThirstItems.registerCreativeTab()` →
 `ThirstEffects.register()` → `LootIntegration.register()` → `Loader.registerResourceConditions()` → events.
 Nothing in this source set may import a mod loader's API; it goes through `platform/Loader` (see
 `platform/AGENTS.md`).
@@ -45,8 +45,8 @@ phase, so they must not depend on anything `initialize` does after them.
 is where the items are built and registered. **Nothing may touch a `ThirstItems` field before it runs**,
 from a mixin, `ThirstApi` or a static field elsewhere, because an item cannot be built before its
 registry accepts entries. `ThirstComponents` builds its types with the class but registers them only in
-`register()`, so touching one of its fields early is harmless. The items' properties name the components,
-so components are registered first.
+`register()`, which `ItemWaterData.register()` calls, so touching one of its fields early is harmless. The
+items' properties name the components, so components are registered first.
 
 Events registered there, in registration order per event:
 
@@ -62,8 +62,8 @@ Events registered there, in registration order per event:
 - `Loader.onTagsLoaded` → `ThirstApi.clearCache`, because an item's value can come from the `c:drinks`
   tag and tags are rebound on every reload and server join.
 - `Loader.onServerDataReload` → `DataPackDrinks.reload`, which parses the data pack files and drops the
-  `ThirstApi` cache itself when the values changed. `Loader.clientboundPayload` declares
-  `DrinkValuesPayload`, received by `DataPackDrinks.receive`, and `Loader.onDataPackSync` →
+  `ThirstApi` cache itself when the values changed. `DataPackDrinks.registerPayload` declares
+  `DrinkValuesPayload` through `Loader.clientboundPayload`, received by `DataPackDrinks.receive`, and `Loader.onDataPackSync` →
   `DataPackDrinks.sync` sends it to each player on join and after `/reload`, because the tooltip
   resolves on the client.
 

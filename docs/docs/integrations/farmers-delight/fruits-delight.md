@@ -1,4 +1,6 @@
-# Fruits Delight
+---
+title: "Fruits Delight"
+---
 
 ![Fruits Delight](https://media.forgecdn.net/attachments/765/821/logo2.png)
 

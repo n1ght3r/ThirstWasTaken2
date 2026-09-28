@@ -14,7 +14,7 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -109,11 +109,9 @@ public final class IntegrationApiGameTest {
     /** What a client receives on join and after /reload. */
     @GameTest
     public void theSyncPayloadRoundTrips(GameTestHelper helper) {
-        RegistryFriendlyByteBuf buffer = new RegistryFriendlyByteBuf(Unpooled.buffer(),
-                helper.getLevel().getServer().registryAccess());
-        DrinkValuesPayload.STREAM_CODEC.encode(buffer, new DrinkValuesPayload(
-                Map.of(Items.SUGAR, new int[]{3, 2}, Items.APPLE, new int[]{0, 0})));
-        Map<Item, int[]> received = DrinkValuesPayload.STREAM_CODEC.decode(buffer).values();
+        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+        new DrinkValuesPayload(Map.of(Items.SUGAR, new int[]{3, 2}, Items.APPLE, new int[]{0, 0})).write(buffer);
+        Map<Item, int[]> received = DrinkValuesPayload.read(buffer).values();
         TestFixtures.check(helper, received.size() == 2
                         && Arrays.equals(received.get(Items.SUGAR), new int[]{3, 2})
                         && Arrays.equals(received.get(Items.APPLE), new int[]{0, 0})

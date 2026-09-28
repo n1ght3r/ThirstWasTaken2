@@ -37,15 +37,12 @@ public final class WaterFluids {
     public static FluidStack stamp(FluidStack stack, WaterQuality quality) {
         if (!isWater(stack)) return stack;
         // Removing a component a stack does not carry can still copy its component map, so ask first.
-        switch (quality) {
-            case WaterQuality.Salt ignored -> {
-                if (stack.has(ThirstComponents.WATER_PURITY)) stack.remove(ThirstComponents.WATER_PURITY);
-                stack.set(ThirstComponents.WATER_SALTY, true);
-            }
-            case WaterQuality.Fresh fresh -> {
-                if (stack.has(ThirstComponents.WATER_SALTY)) stack.remove(ThirstComponents.WATER_SALTY);
-                stack.set(ThirstComponents.WATER_PURITY, fresh.purity());
-            }
+        if (quality instanceof WaterQuality.Fresh fresh) {
+            if (stack.has(ThirstComponents.WATER_SALTY)) stack.remove(ThirstComponents.WATER_SALTY);
+            stack.set(ThirstComponents.WATER_PURITY, fresh.purity());
+        } else {
+            if (stack.has(ThirstComponents.WATER_PURITY)) stack.remove(ThirstComponents.WATER_PURITY);
+            stack.set(ThirstComponents.WATER_SALTY, true);
         }
         return stack;
     }

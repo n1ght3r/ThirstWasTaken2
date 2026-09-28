@@ -14,7 +14,8 @@ place, comments and layout untouched.
 Rules:
 - A node compiles against the Minecraft version settings.gradle.kts gives it (`26.1.x` -> `26.1.2`),
   so that is the version a candidate has to list. A newer Minecraft patch is a manual bump.
-- A node whose name ends in `-neoforge` takes NeoForge uploads; every other node takes Fabric ones.
+- A node takes the uploads of the loader its name ends in (`26.2.x-neoforge`, NeoForge); a node with no
+  loader in its name takes Fabric ones. `tools/node_names.py` reads the name.
   Each node's values are read and rewritten in its loader table, `[fabric."26.2.x"]` or
   `[neoforge."26.2.x"]`, or else in the shared `["26.2.x"]` table.
 - NeoForge itself comes from maven.neoforged.net: the newest build for the same Minecraft version as the
@@ -60,6 +61,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# tools/node_names.py: what a node's name says, shared with the release and benchmark scripts.
+sys.path.insert(0, str(ROOT / "tools"))
+from node_names import LOADERS, loader_of, minecraft_of  # noqa: E402
 PROPERTIES = ROOT / "stonecutter.properties.toml"
 SETTINGS = ROOT / "settings.gradle.kts"
 README = ROOT / "README.md"
@@ -106,10 +111,10 @@ class ModrinthDep:
     """Nodes whose pin is left alone, because the upstream build for that version will not change again."""
 
     def project_for(self, node: str) -> str:
-        return self.neoforge_project if self.neoforge_project and node_loader(node) == "neoforge" else self.project
+        return self.neoforge_project if self.neoforge_project and loader_of(node) == "neoforge" else self.project
 
     def mirrors_for(self, node: str) -> tuple[Path, ...]:
-        return self.neoforge_mirrors if node_loader(node) == "neoforge" else self.mirrors
+        return self.neoforge_mirrors if loader_of(node) == "neoforge" else self.mirrors
 
 
 # Every per-node dependency the build resolves from Modrinth or from a Maven that publishes the same
@@ -228,7 +233,7 @@ class Properties:
         current: tuple[str | None, str] | None = None
         pattern = self._pattern(key)
         for index, line in enumerate(self.lines):
-            header = re.match(r'^\s*\[(?:(fabric|neoforge)\.)?"([^"]+)"\]\s*$', line)
+            header = re.match(r'^\s*\[(?:(' + "|".join(LOADERS) + r')\.)?"([^"]+)"\]\s*$', line)
             if header:
                 current = (header.group(1), header.group(2))
                 continue
@@ -243,12 +248,12 @@ class Properties:
         version, or in the top level when node is None."""
         if node is None:
             return self._find_in(None, key)
-        version = node.removesuffix("-neoforge")
-        return self._find_in((node_loader(node), version), key) or self._find_in((None, version), key)
+        version = minecraft_of(node)
+        return self._find_in((loader_of(node), version), key) or self._find_in((None, version), key)
 
     def has_node(self, node: str) -> bool:
         """Whether `node` has a loader table, which is what makes it a node to the build and to CI."""
-        header = f'[{node_loader(node)}."{node.removesuffix("-neoforge")}"]'
+        header = f'[{loader_of(node)}."{minecraft_of(node)}"]'
         return any(line.strip() == header for line in self.lines)
 
     def set(self, index: int, key: str, value: str) -> None:
@@ -290,11 +295,6 @@ def modrinth_version(project: str, id_or_number: str) -> dict | None:
         raise
 
 
-def node_loader(node: str) -> str:
-    """The mod loader a node builds for. Only the NeoForge node says so in its name."""
-    return "neoforge" if node.endswith("-neoforge") else "fabric"
-
-
 def modrinth_candidates(project: str, minecraft: str, loader: str) -> list[dict]:
     query = urllib.parse.urlencode({
         "loaders": json.dumps([loader]),
@@ -319,7 +319,7 @@ def check_modrinth(props: Properties, node: str, minecraft: str, dep: ModrinthDe
         return
 
     channels = {"release", current["version_type"]}
-    newest = next((v for v in modrinth_candidates(project, minecraft, node_loader(node)) if v["version_type"] in channels), None)
+    newest = next((v for v in modrinth_candidates(project, minecraft, loader_of(node)) if v["version_type"] in channels), None)
     if newest is None or newest["date_published"] <= current["date_published"]:
         return
     value = newest["id"] if dep.by_id else newest["version_number"]
@@ -613,7 +613,7 @@ def main() -> int:
             continue
         for dep in MODRINTH_DEPS:
             check_modrinth(props, node, minecraft, dep, changes, warnings)
-        if node_loader(node) == "neoforge":
+        if loader_of(node) == "neoforge":
             try:
                 check_neoforge(props, node, changes)
             except Unreachable as error:

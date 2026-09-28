@@ -61,6 +61,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# tools/node_names.py: what a node's name says, shared with the dependency and benchmark scripts.
+sys.path.insert(0, str(ROOT / "tools"))
+from node_names import LOADERS, node_name, suffix  # noqa: E402
 PROPERTIES = ROOT / "stonecutter.properties.toml"
 SETTINGS = ROOT / "settings.gradle.kts"
 CHANGELOG = ROOT / "CHANGELOG.md"
@@ -189,8 +193,7 @@ def node_minecraft_versions() -> dict[str, str]:
 
 def version_number(node: Node, mod_version: str) -> str:
     """What the buildscripts set as the project version, so what the jar and the upload are called."""
-    suffix = "-neoforge" if node.loader == "neoforge" else ""
-    return f"{mod_version}+{node.minecraft}{suffix}"
+    return f"{mod_version}+{node.minecraft}{suffix(node.loader)}"
 
 
 def read_nodes(props: dict, mod_version: str) -> list[Node]:
@@ -202,9 +205,9 @@ def read_nodes(props: dict, mod_version: str) -> list[Node]:
     """
     minecraft_of = node_minecraft_versions()
     nodes: list[Node] = []
-    for loader in ("fabric", "neoforge"):
+    for loader in LOADERS:
         for version, table in props.get(loader, {}).items():
-            name = version if loader == "fabric" else f"{version}-neoforge"
+            name = node_name(version, loader)
             shared = props.get(version, {})
 
             def value(key: str, subkey: str, table=table, shared=shared):
@@ -227,10 +230,10 @@ def read_nodes(props: dict, mod_version: str) -> list[Node]:
             node.jar = LIBS / f"{props['mod']['name']}-{version_number(node, mod_version)}.jar"
             nodes.append(node)
 
-    # Newest Minecraft first, Fabric before NeoForge: the order the sites list them in afterwards, and
+    # Newest Minecraft first, Fabric before the others: the order the sites list them in afterwards, and
     # the order a player reads down the file list.
     def order(node: Node) -> tuple:
-        return (node.loader != "fabric", [-int(part) for part in node.minecraft.split(".")])
+        return (LOADERS.index(node.loader), [-int(part) for part in node.minecraft.split(".")])
 
     return sorted(nodes, key=order)
 

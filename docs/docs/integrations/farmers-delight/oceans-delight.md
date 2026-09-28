@@ -1,4 +1,6 @@
-# Ocean's Delight
+---
+title: "Ocean's Delight"
+---
 
 ![Ocean's Delight](https://i.imgur.com/OqgniyH.png)
 

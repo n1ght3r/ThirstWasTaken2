@@ -4,11 +4,10 @@ import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.platform.DrinkItem;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Loader;
 import com.thirstwastaken2.platform.Vanilla;
-import com.thirstwastaken2.purity.ThirstComponents;
 import net.minecraft.core.Registry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -36,13 +35,10 @@ public final class ThirstItems {
      */
     public static final Item TERRACOTTA_WATER_BOWL = Vanilla.registerItem("terracotta_water_bowl",
             properties -> new DrinkItem(properties, TERRACOTTA_BOWL),
-            new Item.Properties().stacksTo(1)
-                    .component(ThirstComponents.WATER_PURITY, 3)
-                    .component(ThirstComponents.WATER_SALTY, false)
-                    .component(DataComponents.CUSTOM_MODEL_DATA, Vanilla.modelSelector(BOWL_MODEL_INDEX, 3)));
+            Vanilla.modelSelectorByDefault(ItemWaterData.freshByDefault(new Item.Properties().stacksTo(1), 3),
+                    BOWL_MODEL_INDEX, 3));
     public static final Item WATERSKIN = Vanilla.registerItem("waterskin", WaterskinItem::new,
-            new Item.Properties().stacksTo(1)
-                    .component(ThirstComponents.WATER_SERVINGS, 0));
+            ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
     /**
      * Crafted from scratch rather than upgraded from a waterskin. Copper carries heat well, so it boils
      * fastest; it has no furnace recipe, which is the iron flask's.
@@ -50,14 +46,12 @@ public final class ThirstItems {
     public static final Item COPPER_CANTEEN = Vanilla.registerItem("copper_canteen",
             properties -> new WaterskinItem(properties, () -> ThirstConfig.get().copperCanteenCapacity,
                     () -> ThirstConfig.get().copperCanteenBoilSeconds * 20, false),
-            new Item.Properties().stacksTo(1)
-                    .component(ThirstComponents.WATER_SERVINGS, 0));
+            ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
     /** Holds the most and boils slower than copper, but also cleans its water in a furnace. */
     public static final Item IRON_FLASK = Vanilla.registerItem("iron_flask",
             properties -> new WaterskinItem(properties, () -> ThirstConfig.get().ironFlaskCapacity,
                     () -> ThirstConfig.get().ironFlaskBoilSeconds * 20, false),
-            new Item.Properties().stacksTo(1)
-                    .component(ThirstComponents.WATER_SERVINGS, 0));
+            ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
     public static final Item COPPER_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.COPPER_HANGING_POT,
             new Item.Properties());
     public static final Item IRON_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.IRON_HANGING_POT,

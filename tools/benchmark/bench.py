@@ -34,9 +34,13 @@ import sys
 import time
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-# The nodes settings.gradle.kts declares. Add one here when a Minecraft version is added there.
-FABRIC = ["1.21.1", "1.21.11", "26.1.x", "26.2.x", "26.3.x"]
-NEOFORGE = [node + "-neoforge" for node in FABRIC]
+
+# tools/node_names.py: what a node's name says, shared with the release and dependency scripts.
+sys.path.insert(0, str(ROOT / "tools"))
+from node_names import LOADERS, loader_of, loader_tables  # noqa: E402
+
+# Every node, by the loader tables in stonecutter.properties.toml, the way CI finds them. Fabric first.
+NODES = sorted(loader_tables(), key=lambda node: LOADERS.index(loader_of(node)))
 
 
 def gradlew():
@@ -55,11 +59,9 @@ def gradle(arguments, quiet):
 
 def nodes_from(argument):
     if argument in (None, "all"):
-        return FABRIC + NEOFORGE
-    if argument == "fabric":
-        return list(FABRIC)
-    if argument == "neoforge":
-        return list(NEOFORGE)
+        return list(NODES)
+    if argument in LOADERS:
+        return [node for node in NODES if loader_of(node) == argument]
     return [node.strip() for node in argument.split(",") if node.strip()]
 
 
@@ -78,7 +80,7 @@ def status_of(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--nodes", default="all",
-                        help="all, fabric, neoforge, or a comma separated list of node names")
+                        help="all, a loader (" + ", ".join(LOADERS) + "), or a comma separated list of node names")
     parser.add_argument("--repeats", type=int, default=3, help="runs per node (default 3)")
     parser.add_argument("--profile", default="standard",
                         help="what to pass to -Pbenchmark (default standard)")

@@ -13,9 +13,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -174,7 +171,7 @@ public final class ThirstApi {
 
     /** A water bottle of {@code purity}, clamped to the grades, for a mod that hands out water. */
     public static ItemStack waterBottle(int purity) {
-        return WaterPurity.set(PotionContents.createItemStack(Items.POTION, Potions.WATER),
+        return WaterPurity.set(Vanilla.waterBottle(),
                 Math.max(WaterPurity.MIN, Math.min(WaterPurity.MAX, purity)));
     }
 

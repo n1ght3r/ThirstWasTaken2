@@ -1,5 +1,7 @@
 package com.thirstwastaken2.purity;
 
+import net.minecraft.util.Mth;
+
 /**
  * What a container holds.
  *
@@ -35,7 +37,7 @@ public sealed interface WaterQuality {
     /** Drinkable water, graded {@code 0..3}: dirty, murky, clean, pure. */
     record Fresh(int purity) implements WaterQuality {
         public Fresh {
-            purity = Math.clamp(purity, WaterPurity.MIN, WaterPurity.MAX);
+            purity = Mth.clamp(purity, WaterPurity.MIN, WaterPurity.MAX);
         }
     }
 

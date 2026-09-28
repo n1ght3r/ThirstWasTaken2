@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 
 import java.util.ArrayList;
@@ -145,6 +146,6 @@ final class ConfigPreview {
     /** 0 to 20 and back over one sweep, {@code phase} 0 to 1, holding a moment at each end. */
     private static int sweep(float phase) {
         float triangle = phase < 0.5F ? phase * 2.0F : 2.0F - phase * 2.0F;
-        return Math.round(Math.clamp(triangle * 1.2F - 0.1F, 0.0F, 1.0F) * 20.0F);
+        return Math.round(Mth.clamp(triangle * 1.2F - 0.1F, 0.0F, 1.0F) * 20.0F);
     }
 }

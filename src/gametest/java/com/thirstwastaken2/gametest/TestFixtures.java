@@ -1,9 +1,9 @@
 package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -11,9 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -108,9 +105,7 @@ final class TestFixtures {
 
     /** A vanilla water bottle: a potion whose contents are plain water. */
     static ItemStack waterBottle() {
-        ItemStack bottle = new ItemStack(Items.POTION);
-        bottle.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER));
-        return bottle;
+        return Vanilla.waterBottle();
     }
 
     /**

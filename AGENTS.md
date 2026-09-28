@@ -46,7 +46,10 @@ One source tree, one jar per node. Nodes are the Gradle subprojects in `settings
 
 ## Stack and constraints
 
-- **Java**: 26.1+ runs on Java 25, 1.21.x on Java 21. Do not use a language feature newer than Java 21.
+- **Java**: 26.1+ runs on Java 25, 1.21.x on Java 21. Anything a 1.20.1 node will compile (core, the
+  Fabric loader directories, datagen, gametests, dev tools) uses nothing newer than Java 17: no pattern
+  `switch`, no `Math.clamp`, no `getFirst`. Integration directories no 1.20.1 node builds may use Java 21.
+  See [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md).
 - **Multi-version via [Stonecutter](https://stonecutter.kikugie.dev)**. Per-node values (dependency
   versions, compat ranges) live only in `stonecutter.properties.toml`; there is no version catalog.
   `stonecutter.gradle.kts` is the controller, `build.gradle.kts` is the Fabric script (Loom),

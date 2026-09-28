@@ -7,13 +7,12 @@ import com.thirstwastaken2.command.ThirstCommands;
 import com.thirstwastaken2.compat.LootIntegration;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.data.DataPackDrinks;
-import com.thirstwastaken2.data.DrinkValuesPayload;
 import com.thirstwastaken2.data.ThirstData;
 import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.item.ThirstItems;
+import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Loader;
-import com.thirstwastaken2.purity.ThirstComponents;
 import com.thirstwastaken2.purity.WaterInteractions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -47,7 +46,7 @@ public final class ThirstWasTaken2 {
         // Blocks and items take a registry holder when they are built, so a loader that freezes the
         // registries before mods start needs all four of these deferred to its registration phase.
         Loader.onRegister(Registries.BLOCK, ThirstBlocks::register);
-        Loader.onRegister(Registries.DATA_COMPONENT_TYPE, ThirstComponents::register);
+        ItemWaterData.register();
         Loader.onRegister(Registries.ITEM, ThirstItems::register);
         Loader.onRegister(Registries.CREATIVE_MODE_TAB, ThirstItems::registerCreativeTab);
         Loader.onRegister(Registries.MOB_EFFECT, ThirstEffects::register);
@@ -66,7 +65,7 @@ public final class ThirstWasTaken2 {
         Loader.onTagsLoaded(ThirstApi::clearCache);
         // Data pack thirst values: parsed by the server, handed to each client on join and after /reload.
         Loader.onServerDataReload(DataPackDrinks.RELOAD_ID, DataPackDrinks::reload);
-        Loader.clientboundPayload(DrinkValuesPayload.TYPE, DrinkValuesPayload.STREAM_CODEC, DataPackDrinks::receive);
+        DataPackDrinks.registerPayload();
         Loader.onDataPackSync(DataPackDrinks::sync);
 
         LOGGER.info("ThirstWasTaken2 initialized for Minecraft {}{}", MINECRAFT, DEV ? " (dev)" : "");

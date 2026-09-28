@@ -5,12 +5,14 @@ Everything about sampled water quality.
 `WaterQuality` is a **sealed** interface with two cases: `Fresh(purity)`, graded `0..3` (dirty,
 murky, clean, pure), and `Salt`. Sea water is a different kind of water, not a low grade of fresh
 water - cooking cannot improve it, one salty serving spoils a whole batch, and it never hydrates.
-Sealing it is the point: a `switch` over a `WaterQuality` has to answer for salt water or it does not
-compile, which is what stops salt water from quietly inheriting a grade's tooltip, sprite or effects.
+Sealing it is the point: with only two cases, code asks `quality instanceof WaterQuality.Fresh fresh` and
+its `else` is salt water, never "any other grade", which is what stops salt water from quietly inheriting
+a grade's tooltip, sprite or effects. (A pattern `switch` would say so to the compiler, but it is Java 21,
+and core stays on Java 17 for 1.20.1; see the root `AGENTS.md`.)
 
 | File | Owns |
 |---|---|
-| `ThirstComponents` | purity, salinity and serving data component types |
+| `ThirstComponents` | purity, salinity and serving data component types. Core reads and writes them only through `platform/ItemWaterData` |
 | `WaterQuality` | the sealed pair, `Fresh` or `Salt` |
 | `WaterPurity` | environmental sampling, storage, sickness, sprites and container tests |
 | `WaterInteractions` | the interaction callbacks that move quality between world, blocks and items |
@@ -60,14 +62,15 @@ On Fabric the same five items are Transfer API fluid storage (`FluidStorage.ITEM
 `WaterContainerStorage` in `src/main/fabric`. That is what a Create Fly Spout fills and an Item Drain
 empties, through Create Fly's own bridge to the Transfer API. The rules are the same, and so is the
 serving: 250 mB, 20250 droplets, not Fabric's 27000-droplet bottle, so both loaders move the same
-water. The grade rides on the `FluidVariant` as one component, as on Create's fluid stacks.
+water. The grade rides on the `FluidVariant` as one component, as on Create's fluid stacks;
+`platform/FabricTransfer` alone reads and writes it.
 
 What both loaders share, counted in servings, is `item/WaterContainers`. `ContainerFluidGameTest`
 checks all three implementations against one set of assertions, in millibuckets.
 
 ## Rules the code keeps
 
-- **Salt water carries no grade.** `setQuality` removes `water_purity` from a salty stack. That is
+- **Salt water carries no grade.** `setQuality`, through `ItemWaterData.setSalty`, removes `water_purity` from a salty stack. That is
   what keeps the 27 purification recipes, which all match on a grade, from matching sea water, and
   what stops `get` from inventing one. Anything asking "how clean is it" goes through `quality`.
 - **A fresh container always writes `water_salty: false`,** even though false is the component's

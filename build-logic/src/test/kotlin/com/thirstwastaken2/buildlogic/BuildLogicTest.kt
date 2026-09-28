@@ -24,6 +24,17 @@ class BuildLogicTest {
     }
 
     @Test
+    fun aNodeNamesItsLoaderAfterItsMinecraftVersion() {
+        assertEquals(Loader.FABRIC, loaderOf("26.2.x"))
+        assertEquals(Loader.FABRIC, loaderOf("1.21.1"))
+        assertEquals(Loader.NEOFORGE, loaderOf("26.2.x-neoforge"))
+        assertEquals(Loader.FORGE, loaderOf("1.20.1-forge"))
+        assertEquals("26.2.x", minecraftOf("26.2.x-neoforge"))
+        assertEquals("1.20.1", minecraftOf("1.20.1-forge"))
+        assertEquals("1.21.11", minecraftOf("1.21.11"))
+    }
+
+    @Test
     fun dirsAreUnique() {
         assertEquals(integrations.size, integrations.map { it.dir }.toSet().size)
     }

@@ -66,6 +66,14 @@ means the exact release a call changed in was not pinned down; with no node betw
 `SupportedBlock` hands a block one `supportChanged` call when the block below it changes, and breaks the
 block first when `canSurvive` no longer holds.
 
+`ItemWaterData` is the one class that knows how an item stack stores its water: servings, grade and salt,
+as the `ThirstComponents` data components. `WaterPurity` and `WaterskinItem` decide what the values mean;
+this only reads and writes them, and makes item properties and loot functions that preset them. A
+version without data components changes this class and nothing else. The vanilla components core reads
+(`POTION_CONTENTS`, `CUSTOM_MODEL_DATA`, `ITEM_MODEL`, `BLOCK_ENTITY_DATA`, `CONSUMABLE`) are behind
+`Vanilla` (`holdsWaterPotion`, `waterBottle`, `setModelSelector`, `modelSelectorOf`, `itemModelOf`,
+`putBlockEntityInt`) or `DrinkItem` for the same reason.
+
 `DrinkItem` is a class rather than a method because an item's use and animation are overrides. Keep it
 the one place that knows how drinking starts and finishes: `WaterskinItem` extends it and only says
 whether it has anything to drink (`canDrink`) and what a drink removes.
@@ -80,19 +88,23 @@ and no service lookup: a static call to a class that exists once per jar is the 
 is, and the compiler checks every call site.
 
 What does live here are the types those signatures need, because both copies have to share them:
-`PlayerData`, `UseBlockHandler`, `UseItemHandler`, and on the client `StatusBarRenderer`.
+`PlayerData`, `Clientbound`, `UseBlockHandler`, `UseItemHandler`, and on the client `StatusBarRenderer`.
+
+What crosses the network is described in common code as a plain record with `write(FriendlyByteBuf)` and
+`read(FriendlyByteBuf)` (`ThirstData`, `DrinkValuesPayload`), never as a `StreamCodec` or a
+`CustomPacketPayload`, which 1.20.1 lacks. Each `Loader` wraps that pair in its own packet type.
 
 | `Loader` | What it hides |
 |---|---|
 | `isDevelopmentEnvironment`, `configDir`, `isModLoaded` | the loader's own environment |
 | `onRegister` | when a registry accepts entries: at once on Fabric, from the registration event on a loader that freezes registries early |
-| `playerData` | the attachment system that saves a value on a player and syncs it to its owner |
+| `playerData` | the attachment system that saves a value on a player and syncs it to its owner, in the form its `write` and `read` agree on |
 | `creativeTabBuilder` | a tab builder that places itself in the tab list |
 | `onServerTickEnd`, `onUseBlock`, `onUseItem`, `onRegisterCommands`, `onTagsLoaded` | the event bus |
 | `onLootTable` | loot table modification, on every table whoever wrote it |
 | `onServerDataReload` | a server data reload listener, run at startup and on `/reload` |
 | `registerResourceConditions` | the `thirstwastaken2:item_enabled` load condition the mod's recipes carry |
-| `onDataPackSync`, `clientboundPayload`, `send` | telling each client what a data pack decided: when to, the payload's registration, and sending it only to a client that can take it |
+| `onDataPackSync`, `clientboundPayload` | telling each client what a data pack decided: when to, and the payload's registration, which returns the `Clientbound` that sends it only to a client that can take it |
 | `ClientLoader.addRightStatusBar` | HUD layer registration and the right-hand status bar height |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | AppleSkin's own setting, which it keeps in a different class shape on each loader |
 | `ClientLoader.renderCutout` | drawing a block with its transparent pixels cut out |
@@ -113,8 +125,8 @@ What does live here are the types those signatures need, because both copies hav
 | `onServerDataReload` | `ResourceLoader.get(SERVER_DATA).registerReloadListener`, a `ResourceManagerReloadListener` | `AddServerReloadListenersEvent.addListener(id, ...)` |
 | `onDataPackSync` | `ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS` | `OnDatapackSyncEvent.getRelevantPlayers()` |
 | `registerResourceConditions` | `ResourceConditions.register` of `platform/ItemEnabledCondition`, whose `test` takes a `RegistryInfoLookup` from 1.21.2 and a `HolderLookup.Provider` before it, hence its place in `platform/` | `neoforge/ItemEnabledCondition`'s `MapCodec` into `CONDITION_SERIALIZERS` through `onRegister`. The recipe files name it under `condition`, Fabric's key; the build moves it to `type` (`neoForgeConditions`) |
-| `clientboundPayload` | `PayloadTypeRegistry.clientboundPlay()`; the handler waits in `fabric/ClientboundPayloads` until the client entrypoint hands it to `ClientPlayNetworking`, which common code cannot see | `RegisterPayloadHandlersEvent`, `registrar("1").optional().playToClient` on the mod bus |
-| `send` | `ServerPlayNetworking.canSend`, then `send` | `hasChannel`, then `PacketDistributor.sendToPlayer`; never to a fake player, for the reason `syncsTo` gives |
+| `clientboundPayload` | the record wrapped in a private `Wrapped` payload, its codec built with `StreamCodec.ofMember`, then `PayloadTypeRegistry.clientboundPlay()`; the handler waits in `fabric/ClientboundPayloads` until the client entrypoint hands it to `ClientPlayNetworking`, which common code cannot see | the same wrapping, then `RegisterPayloadHandlersEvent`, `registrar("1").optional().playToClient` on the mod bus |
+| sending, through the returned `Clientbound` | `ServerPlayNetworking.canSend`, then `send` | `hasChannel`, then `PacketDistributor.sendToPlayer`; never to a fake player, for the reason `syncsTo` gives |
 | `ClientLoader.addRightStatusBar` | `HudElementRegistry.attachElementAfter(FOOD_BAR)` plus `HudStatusBarHeightRegistry.addRight`; `GuiMixin` on 1.21.1 | a layer `registerAbove(VanillaGuiLayers.FOOD_LEVEL)` that draws at `guiHeight() - hud.rightHeight` and advances `Hud.rightHeight` only when it drew, and only when the player can be hurt, which is when vanilla draws the food bar |
 | `ClientLoader.renderCutout` | `BlockRenderLayerMap` before 26.1, nothing from 26.1, where the game reads the layer off the textures | nothing: the model's `render_type` before 26.1, the textures from 26.1. It runs during mod construction, so it never asks for the block |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | `ModConfig.INSTANCE.showFoodExhaustionHudUnderlay` | `ModConfig.SPEC.isLoaded() && ModConfig.SHOW_FOOD_EXHAUSTION_UNDERLAY.get()`; reading a NeoForge config value before FML loads it throws |

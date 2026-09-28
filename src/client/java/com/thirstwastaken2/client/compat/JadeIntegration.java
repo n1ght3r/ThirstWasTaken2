@@ -99,10 +99,9 @@ public final class JadeIntegration implements IWailaPlugin {
         }
 
         private static Component line(WaterQuality quality) {
-            return switch (quality) {
-                case WaterQuality.Salt ignored -> WaterPurity.saltTooltip();
-                case WaterQuality.Fresh fresh -> WaterPurity.tooltip(fresh.purity());
-            };
+            return quality instanceof WaterQuality.Fresh fresh
+                    ? WaterPurity.tooltip(fresh.purity())
+                    : WaterPurity.saltTooltip();
         }
 
         private static WaterQuality fromContainer(BlockEntity blockEntity) {

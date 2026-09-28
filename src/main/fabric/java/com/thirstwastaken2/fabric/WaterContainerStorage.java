@@ -4,7 +4,6 @@ import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterContainers;
 import com.thirstwastaken2.platform.FabricTransfer;
-import com.thirstwastaken2.purity.ThirstComponents;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
@@ -15,12 +14,11 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 
 import java.util.Iterator;
 import java.util.List;
+import net.minecraft.world.level.material.Fluids;
 
 /**
  * The waterskin and the terracotta bowls as Fabric Transfer API fluid storage, so a Create Fly Spout
@@ -34,18 +32,13 @@ import java.util.List;
  *     <li>Water with no grade fills an empty container as {@code defaultPurity}.</li>
  * </ul>
  *
- * <p>The grade travels on the fluid as one component, {@code water_purity} or {@code water_salty}, like
- * Create's fluid stacks. Any other component on the water is ignored.
+ * <p>How the grade travels on the fluid is {@link FabricTransfer}'s.
  *
  * <p>A storage with one view rather than a {@code SingleSlotStorage}: Create Fly wraps a slotted item
  * storage with a capacity of zero, so its Spout would take every waterskin for full.
  */
 public final class WaterContainerStorage implements Storage<FluidVariant>, StorageView<FluidVariant> {
     public static final long SERVING = FluidConstants.BUCKET / 4;
-    private static final WaterQuality[] QUALITIES = {
-            WaterQuality.fresh(0), WaterQuality.fresh(1), WaterQuality.fresh(2), WaterQuality.fresh(3),
-            WaterQuality.SALT};
-    private static DataComponentPatch[] patches;
 
     private final ContainerItemContext context;
 
@@ -62,35 +55,19 @@ public final class WaterContainerStorage implements Storage<FluidVariant>, Stora
 
     /** Water of {@code quality} as a variant. */
     public static FluidVariant water(WaterQuality quality) {
-        return FluidVariant.of(Fluids.WATER, patch(quality));
+        return FabricTransfer.water(quality);
     }
 
     /**
      * The grade {@code variant} carries, {@code defaultPurity} when none, or {@code null} for anything but
-     * water. Only this mod's two components are read: other mods add their own to the water they hold,
-     * as Create Fly's tanks add {@code create:fluid_max_capacity} after their first fill.
+     * water. Only this mod's own data is read: other mods add their own to the water they hold, as
+     * Create Fly's tanks add {@code create:fluid_max_capacity} after their first fill.
      */
     public static WaterQuality quality(FluidVariant variant) {
         if (!variant.isOf(Fluids.WATER)) return null;
-        if (Boolean.TRUE.equals(FabricTransfer.component(variant, ThirstComponents.WATER_SALTY))) {
-            return WaterQuality.SALT;
-        }
-        Integer purity = FabricTransfer.component(variant, ThirstComponents.WATER_PURITY);
+        if (FabricTransfer.salty(variant)) return WaterQuality.SALT;
+        Integer purity = FabricTransfer.grade(variant);
         return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultPurity);
-    }
-
-    private static DataComponentPatch patch(WaterQuality quality) {
-        DataComponentPatch[] built = patches;
-        if (built == null) {
-            built = new DataComponentPatch[QUALITIES.length];
-            for (int i = 0; i < QUALITIES.length; i++) {
-                built[i] = QUALITIES[i] instanceof WaterQuality.Fresh fresh
-                        ? DataComponentPatch.builder().set(ThirstComponents.WATER_PURITY, fresh.purity()).build()
-                        : DataComponentPatch.builder().set(ThirstComponents.WATER_SALTY, true).build();
-            }
-            patches = built;
-        }
-        return built[quality instanceof WaterQuality.Fresh fresh ? fresh.purity() : QUALITIES.length - 1];
     }
 
     private ItemStack container() {
