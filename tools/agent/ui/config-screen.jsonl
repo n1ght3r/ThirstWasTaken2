@@ -26,8 +26,18 @@
 {"id": "rootDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "rootShot", "command": "client.capture", "args": {"name": "config-root"}}
 
-// Item Values is the fourth tab.
-{"id": "items", "command": "client.click", "args": {"x": 30, "y": 121, "button": 0, "from": "corner"}, "expect": {"result.taken": true}}
+// Sickness is the third tab. Its Normal tab, the fourth of five, holds the table for Normal:
+// every grade's heading, its effect rows and the row that adds one. The strip shares out its width by
+// name, so Normal spans about x = 90 to 159 from the centre.
+{"id": "sickness", "command": "client.click", "args": {"x": 30, "y": 97, "button": 0, "from": "corner"}, "expect": {"result.taken": true}}
+{"id": "sicknessDrawn", "command": "wait", "args": {"ticks": 10}}
+{"id": "normal", "command": "client.click", "args": {"x": 124, "y": 81, "button": 0, "from": "top"}, "expect": {"result.taken": true}}
+{"id": "normalDrawn", "command": "wait", "args": {"ticks": 10}}
+{"id": "onSickness", "command": "client.info", "expect": {"result.screen": "com.thirstwastaken2.client.config.ThirstConfigScreen"}}
+{"id": "sicknessShot", "command": "client.capture", "args": {"name": "config-sickness-normal"}}
+
+// Item Values is the fifth tab.
+{"id": "items", "command": "client.click", "args": {"x": 30, "y": 145, "button": 0, "from": "corner"}, "expect": {"result.taken": true}}
 {"id": "itemsDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "onItems", "command": "client.info", "expect": {"result.screen": "com.thirstwastaken2.client.config.ThirstConfigScreen"}}
 {"id": "itemsShot", "command": "client.capture", "args": {"name": "config-item-values"}}

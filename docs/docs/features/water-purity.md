@@ -74,20 +74,23 @@ Bad water fills the thirst bar but does not last. Dirty water gives no quenched 
 so thirst starts dropping again soon after, the way rotten flesh gives almost no saturation.
 
 Dirty and Murky water taste bad: every drink gives seven seconds of Nausea, even on Peaceful. Then each
-drink can make the player ill, with at most one illness at a time.
+effect below has its own chance, so one drink can give both, or neither.
 
 | Chance per drink | Dirty | Murky | Clean |
 |---|---|---|---|
 | Peaceful | none | none | none |
-| Easy | 15% Poisoning, 50% Upset Stomach I | 5% Poisoning, 30% Upset Stomach I | 5% Upset Stomach I |
-| Normal | 25% Poisoning, 50% Upset Stomach II | 10% Poisoning, 40% Upset Stomach I | 2% Poisoning, 10% Upset Stomach I |
-| Hard | 33% Poisoning, 45% Upset Stomach II | 20% Poisoning, 46% Upset Stomach II | 5% Poisoning, 15% Upset Stomach I |
+| Easy | 65% Upset Stomach I, 25% Poison | 35% Upset Stomach I, 10% Poison | 5% Upset Stomach I, 3% Poison |
+| Normal | 75% Upset Stomach II, 35% Poison | 50% Upset Stomach I, 18% Poison | 12% Upset Stomach I, 5% Poison |
+| Hard | 78% Upset Stomach II, 45% Poison | 66% Upset Stomach II, 30% Poison | 20% Upset Stomach I, 10% Poison |
 
-Drinking again while ill rolls again. The same illness lasts longer, up to twice its time, and Upset
-Stomach I becomes II. A worse one adds its effects. A milder one does nothing.
+Clean water makes the player ill for less time than Dirty or Murky water, as the tables below show.
 
-The chances can be changed per difficulty, or the old Nausea and Poison brought back, with
-[sicknessPreset](/docs/configuration#sicknesspreset).
+Drinking bad water again while an effect from it is still on adds its time again, up to twice as long.
+The stronger level is kept. This can be switched off with
+[extendSicknessEffects](/docs/configuration#extendsicknesseffects).
+
+Every effect, chance, duration and level can be changed for each difficulty and grade, and any effect
+added, with [sicknessEffects](/docs/configuration#sicknesseffects).
 
 ### Upset Stomach
 
@@ -100,19 +103,23 @@ The common one. It never hurts on its own.
 - Food fills less saturation, and drinks less quenched: three quarters at level I, half at level II.
 - The thirst bar turns green while it lasts.
 
-It lasts 45 seconds on Easy, 60 on Normal and 90 on Hard.
+| | Easy | Normal | Hard |
+|---|---|---|---|
+| From Dirty or Murky water | 45 seconds | 60 seconds | 90 seconds |
+| From Clean water | 20 seconds | 30 seconds | 45 seconds |
 
 ![The thirst bar in green while the player has Upset Stomach](/screenshots/hud/upset-stomach-hud.png)
 
-### Poisoning
+### Poison
 
-A bad batch. It comes with Upset Stomach, and milk cures it.
+A bad batch. Milk cures it.
 
 | | Easy | Normal | Hard |
 |---|---|---|---|
-| Poison | 10 seconds | 20 seconds | 30 seconds |
+| From Dirty or Murky water | 10 seconds | 20 seconds | 30 seconds |
+| From Clean water | 5 seconds | 8 seconds | 12 seconds |
 
-Poison stops at half a heart, so Poisoning never kills.
+Poison stops at half a heart, so it never kills.
 
 ## Cleaning fresh water
 

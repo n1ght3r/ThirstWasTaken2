@@ -19,6 +19,7 @@ alone (`ThirstData.STORAGE`), and only the config screen's AppleSkin settings ar
 | `config/ConfigEntry` | one setting: getter/setter on the live config, its default, its control (`toggle`, `choice`, `grade`, `percent`, `number`) and its lang keys |
 | `config/ConfigRow` | one row of the list: heading, tab strip, setting, note, preview or action button |
 | `config/ItemValueRows` | the per-item thirst values on the Item Values page: one row per listed item, and the row that adds one |
+| `config/SicknessRows` | the sickness tables on the Sickness page, one tab per difficulty: a heading per grade with reset, a row per effect (chance, seconds, level, remove), and the row that adds one |
 | `config/ConfigTheme` | the screen's colours and small drawing helpers |
 | `config/ConfigPreview` | the live thirst bar, food bar and tooltip on the AppleSkin page |
 | `platform/ClientVanilla` | client vanilla calls whose shape differs between Minecraft versions |
@@ -182,6 +183,16 @@ namespace matches, under their headings, always open.
   Keep that when adding an edit: never restructure a map the server may be reading.
 - A new item goes into `drinks` with `drinkTagValue`, the value any tagged drink gets. The add box
   completes an id from the item registry and Add takes the completion.
+
+### Sickness
+
+The Sickness page holds `extendSicknessEffects` on its General tab and the `sicknessEffects` tables,
+one tab per difficulty, built by `SicknessRows`. Under each grade, Dirty to Pure, one row per effect: its icon
+and name (a faint id when no installed mod registers it), a chance, seconds and level box, and remove;
+then a box that completes an effect id from the registry and Add. The grade's heading names the three
+columns and resets that grade alone. The footer's Reset only touches the General tab, like the item values.
+Every edit swaps `sicknessEffects` for an edited copy, for the same reason as the item maps.
+`tools/agent/ui/config-screen.jsonl` opens the Normal tab.
 
 ### Mod Items
 

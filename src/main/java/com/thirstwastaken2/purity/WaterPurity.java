@@ -290,6 +290,14 @@ public final class WaterPurity {
         return 0;
     }
 
+    /**
+     * The name of grade {@code purity} in its tooltip colour, so anywhere else that names a grade, such
+     * as the config screen, looks the way the tooltip does. A fresh copy each call.
+     */
+    public static Component purityName(int purity) {
+        return TooltipLines.PURITY[Mth.clamp(purity, MIN, MAX)].copy();
+    }
+
     private static String purityKey(int purity) {
         return switch (purity) {
             case 0 -> "thirst.purity.dirty";

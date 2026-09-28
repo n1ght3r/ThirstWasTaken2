@@ -114,14 +114,13 @@ checks all three implementations against one set of assertions, in millibuckets.
 - **Optional mod support is by registry id only.** `resolve` matches namespaces (currently
   `farmersdelight` and `cold_sweat`) as strings - no class is ever referenced, so no such mod is a dependency. Add support by
   extending `resolve`, not by importing anything.
-- **One roll per drink, by difficulty.** `applyEffects` hands fresh water to `effect/WaterSickness`
-  and always returns true: every fresh drink quenches, the illness is the price. Dirty and Murky
-  water give 7 s of Nausea, the taste, on every difficulty; then, unless Peaceful, one roll from 0 to
-  100 walks the difficulty's `SicknessTable` from worst to mildest (Poisoning, then Upset Stomach) and
-  gives at most one. The difficulty is read at the drink. Drinking again while ill: a worse result
-  adds its effects, the same one extends them up to twice their time and turns Upset Stomach I into
-  II, a milder one does nothing. The `classic` preset keeps the roll from before, Nausea and Poison by
-  grade alone. The original also applied Hunger; this mod never has. Salt water never reaches the
+- **The sickness tables, by difficulty.** `applyEffects` hands fresh water to `effect/WaterSickness`
+  and always returns true: every fresh drink quenches, the illness is the price. `WaterSickness` gives
+  each effect the config's `sicknessEffects` lists for the difficulty and the grade, each rolling on its
+  own; by default Dirty and Murky water always give 7 s of Nausea, the taste, then Upset Stomach and
+  Poison at chances that grow with the difficulty. The difficulty is read at the drink. Drinking again
+  while ill adds the line's time to the effect, up to twice it, while `extendSicknessEffects` is on. The original also applied Hunger; the
+  defaults never have. Salt water never reaches the
   roll: it spends exhaustion, applies Nausea and Parched II (without particles) for the config's
   `seaWaterNauseaSeconds` and `seaWaterParchedSeconds`, and returns false. With `enableSeaWater` off,
   `sampleAt` grades ocean and beach water like any other.

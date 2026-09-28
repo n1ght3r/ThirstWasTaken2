@@ -2,6 +2,7 @@ package com.thirstwastaken2.client.config;
 
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.platform.Loader;
+import com.thirstwastaken2.purity.WaterPurity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -37,6 +38,8 @@ abstract class ConfigEntry<T> {
     private final BiConsumer<ThirstConfig, T> setter;
     /** The mod this setting does nothing without, or {@code null} when it always applies. */
     private String requiredMod;
+    /** What fills the label's {@code %s}, such as a coloured grade name; none for most settings. */
+    private Object[] labelArgs = new Object[0];
 
     private ConfigEntry(String key, Function<ThirstConfig, T> getter, BiConsumer<ThirstConfig, T> setter) {
         this.key = key;
@@ -141,13 +144,22 @@ abstract class ConfigEntry<T> {
         return this;
     }
 
+    /**
+     * Fills the label's {@code %s} with {@code args}, so a part of it, such as a grade's name, keeps a
+     * style of its own.
+     */
+    ConfigEntry<T> labelled(Object... args) {
+        labelArgs = args;
+        return this;
+    }
+
     /** Whether the screen lists this setting: always, unless the mod it needs is missing. */
     boolean isShown() {
         return requiredMod == null || Loader.isModLoaded(requiredMod);
     }
 
     Component label() {
-        return Component.translatable(PREFIX + key);
+        return Component.translatable(PREFIX + key, labelArgs);
     }
 
     Component description() {
@@ -188,14 +200,8 @@ abstract class ConfigEntry<T> {
     }
 
     /** The name the game gives water of {@code purity}, as its tooltip shows it. */
-    private static Component gradeName(int purity) {
-        String name = switch (purity) {
-            case 0 -> "dirty";
-            case 1 -> "slightly_dirty";
-            case 2 -> "acceptable";
-            default -> "purified";
-        };
-        return Component.translatable("thirst.purity." + name);
+    static Component gradeName(int purity) {
+        return WaterPurity.purityName(purity);
     }
 
     /** The vanilla slider over whole numbers, labelled with the value alone. */

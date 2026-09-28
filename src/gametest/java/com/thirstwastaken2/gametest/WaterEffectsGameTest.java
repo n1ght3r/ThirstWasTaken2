@@ -1,10 +1,9 @@
 package com.thirstwastaken2.gametest;
 
-import com.thirstwastaken2.config.SicknessPreset;
+import com.thirstwastaken2.config.SicknessEffect;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.data.ThirstManager;
 import com.thirstwastaken2.effect.ThirstEffects;
-import com.thirstwastaken2.effect.WaterSickness;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.purity.WaterPurity;
@@ -51,7 +50,9 @@ public final class WaterEffectsGameTest {
 
         TestFixtures.check(helper, hydrates, "every drink of fresh water quenches, dirty water included");
         MobEffectInstance nausea = player.getEffect(MobEffects.NAUSEA);
-        TestFixtures.check(helper, nausea != null && nausea.getDuration() == WaterSickness.TASTE_TICKS,
+        // The default table's first line for Dirty water is the taste, at 100% on every difficulty.
+        int taste = SicknessEffect.defaults(SicknessEffect.key(player.level().getDifficulty()), "dirty").get(0).seconds * 20;
+        TestFixtures.check(helper, nausea != null && nausea.getDuration() == taste,
                 "dirty water should always leave the taste of Nausea, got " + nausea);
         TestFixtures.check(helper, !player.hasEffect(MobEffects.HUNGER),
                 "bad water makes the player ill, not hungry, so it must not apply hunger");
@@ -83,8 +84,8 @@ public final class WaterEffectsGameTest {
             TestFixtures.check(helper, got == expected,
                     "grade " + grade + " should give " + percent[grade] + "% of 8 quenched, " + expected + ", got " + got);
         }
-        // Classic, so no illness is rolled that would cut the quenched a second time.
-        TestFixtures.withConfig(config -> config.sicknessPreset = SicknessPreset.CLASSIC, () -> {
+        // No sickness at all, so no Upset Stomach is rolled that would cut the quenched a second time.
+        TestFixtures.withConfig(config -> config.sicknessEffects = WaterSicknessGameTest.everyDifficulty(List.of()), () -> {
             ServerPlayer dirty = TestFixtures.mockPlayer(helper);
             ThirstManager.set(dirty, ThirstManager.get(dirty).withLevels(4, 0));
             ThirstManager.drinkItem(dirty, bowl(WaterQuality.fresh(0)));

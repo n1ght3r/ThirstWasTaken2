@@ -154,7 +154,14 @@ for milk to remove.
 - The three chance tables, by difficulty and grade.
 - The durations and levels of each illness.
 - `sicknessCanKill`: on by default.
-- `sicknessPreset`: `realistic` (this page) or `classic` (the old roll, same on every difficulty).
+- `sicknessEffects`, built in place of the three tables and the presets: per difficulty and grade, a
+  list of any effect id with its chance, seconds and level, each line rolling on its own. The defaults
+  began as this page's numbers, with Poisoning's chance added to Upset Stomach's, since Poisoning
+  brought Upset Stomach with it; later Poison's chance went up on every grade that gives it (Clean
+  included), and Clean's Upset Stomach and Poison got shorter. The one-roll walk and raising Upset
+  Stomach I to II are gone. `extendSicknessEffects` (on) keeps extending: an effect the player has adds
+  the line's time, up to twice it, at the higher level; off, vanilla keeps the stronger or longer
+  instance. `sicknessPreset`, with the old Classic roll, was removed with the tables.
 - `sickVision`: on by default, client side.
 
 ## Why it is realistic

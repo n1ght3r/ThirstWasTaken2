@@ -68,20 +68,6 @@ to the other a little each day.
 
 ![The Water page, split into Drinking, Quenched, Sea Water and Rain and Dripstone tabs](/screenshots/config/config-water.png)
 
-### sicknessPreset
-
-Default `REALISTIC`. How bad water makes players ill.
-
-- `REALISTIC`: Upset Stomach or Poisoning, by difficulty and grade. See
-  [Drinking bad water](/docs/features/water-purity#drinking-bad-water).
-- `CLASSIC`: the Nausea and Poison from before, the same on every difficulty.
-
-| Grade | Nausea | Nausea lasts | Poison, 10 seconds |
-|---|---|---|---|
-| Dirty | 100% | 12 seconds | 30% |
-| Murky | 50% | 8 seconds | 10% |
-| Clean | 5% | 5 seconds | none |
-
 ### defaultPurity
 
 Default `2`, Clean. The grade for water that has none, such as drinks from other mods.
@@ -112,6 +98,46 @@ ignore rain and rain in a cauldron has no grade, so it counts as `defaultPurity`
 
 Default `2`, Clean, and `3`, Pure. The grade of collected rain and of water a pointed dripstone drips
 into a cauldron.
+
+## Sickness
+
+### sicknessEffects
+
+Default: the tables in [Drinking bad water](/docs/features/water-purity#drinking-bad-water). For each
+difficulty and each grade, a list of effects a drink can give. Each effect has its own chance, so one
+drink can give several, or none.
+
+| Field | Meaning |
+|---|---|
+| `effect` | The effect id, such as `minecraft:poison` or `thirstwastaken2:upset_stomach`. Effects from other mods work too |
+| `chance` | `0` to `100`, the percent chance per drink |
+| `seconds` | `1` to `600`, how long it lasts |
+| `level` | `1` to `10`, the effect level |
+
+The Sickness page of the config screen has a tab per difficulty. Each tab lists the grades, from Dirty to Pure, with their
+effects. Effects can be added by id, edited or removed there, and each grade can be reset on its own.
+
+```json
+"sicknessEffects": {
+  "normal": {
+    "dirty": [
+      { "effect": "minecraft:nausea", "chance": 100, "seconds": 7, "level": 1 },
+      { "effect": "minecraft:poison", "chance": 25, "seconds": 20, "level": 1 }
+    ],
+    "pure": [
+      { "effect": "minecraft:regeneration", "chance": 10, "seconds": 5, "level": 1 }
+    ]
+  }
+}
+```
+
+A difficulty or grade left out of the file gets its default effects. An empty list gives nothing. An
+effect from a mod that is not installed is skipped.
+
+### extendSicknessEffects
+
+Default `true`. A drink that gives an effect the player already has adds its time to what is left, up
+to twice the time in the table, and keeps the higher level. Off, the longer of the two is kept.
 
 ## AppleSkin
 

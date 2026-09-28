@@ -54,12 +54,12 @@ Fabric's empty structure as its template, and `stonecutter.gradle.kts` rewrites 
 the annotation, so no test file changes for it. Write `@GameTest` with no arguments, or that
 replacement stops matching.
 
-The same 193 mod tests run on every node. Runners report one or two more because they also include
+The same 195 mod tests run on every node. Runners report one or two more because they also include
 vanilla smoke tests such as `minecraft:always_pass`; those are not the mod's.
 
 ## The NeoForge harness
 
-The `-neoforge` nodes run the same 193 test methods, with no test body changed and no NeoForge-only
+The `-neoforge` nodes run the same 195 test methods, with no test body changed and no NeoForge-only
 branch in any of them. What stands in for Fabric API lives in `src/gametest/neoforge`:
 
 | | Fabric API | NeoForge node |
@@ -136,7 +136,7 @@ cauldron bottle draw.
 |---|---|
 | `WaterFillingGameTest` | bottle and bucket filling, that each fill resamples the water, that an abandoned fill leaves nothing behind |
 | `WaterEffectsGameTest` | salt water, the taste dirty water always leaves and that it still quenches, quenched cut by grade and by Upset Stomach, purified water, milk and honey, boiling not desalinating |
-| `WaterSicknessGameTest` | the one roll per drink, forced into every range of each difficulty's table: exactly Poisoning's effects with Upset Stomach, Upset Stomach alone, or only the taste; Peaceful giving only the taste, Pure giving nothing on Hard, drinking again (extend, I to II, twice the time at most, a milder illness changing nothing) and the classic preset |
+| `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, drinking again extending an effect up to twice its time at the higher level (and not when switched off), the defaults (Dirty always the taste and only it on the best roll, Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in |
 | `UpsetStomachGameTest` | Upset Stomach draining faster than nothing and faster at II, Nausea costing nothing on top of it, the saturation it cuts at I and II, and that it never hurts on its own |
 | `HealthRegenGameTest` | dehydration halting regeneration and the food refund that has to accompany it; quenched healing at the configured share of saturation's and what it costs, and not healing short of full thirst, under `quenchedHealMinFood` or at 0% |
 | `WaterskinGameTest` | mixing, salinity, capacity, emptying |

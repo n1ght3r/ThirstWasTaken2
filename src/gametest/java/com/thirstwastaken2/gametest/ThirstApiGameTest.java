@@ -1,7 +1,7 @@
 package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.api.ThirstApi;
-import com.thirstwastaken2.config.SicknessPreset;
+import com.thirstwastaken2.config.SicknessEffect;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
@@ -138,7 +138,7 @@ public final class ThirstApiGameTest {
         TestFixtures.withConfig(config -> {
             config.defaultPurity = 99;
             config.thirstDepletionModifier = 50.0;
-            config.sicknessPreset = null;
+            config.sicknessEffects = null;
             config.drinks.remove("minecraft:milk_bucket");
             config.drinks.remove("farmersdelight:milk_bottle");
             config.foods.remove("farmersdelight:bone_broth");
@@ -147,8 +147,8 @@ public final class ThirstApiGameTest {
             ThirstConfig config = ThirstConfig.get();
             TestFixtures.check(helper, config.defaultPurity == 3, "default_purity should clamp to 3, got " + config.defaultPurity);
             TestFixtures.check(helper, config.thirstDepletionModifier == 10.0, "thirst_depletion_modifier should clamp to 10");
-            TestFixtures.check(helper, config.sicknessPreset == SicknessPreset.REALISTIC,
-                    "an unknown sickness preset should fall back to realistic, got " + config.sicknessPreset);
+            TestFixtures.check(helper, config.sicknessEffects.equals(SicknessEffect.defaults()),
+                    "missing sickness tables should fall back to the defaults, got " + config.sicknessEffects);
             TestFixtures.check(helper, config.drinks.containsKey("minecraft:milk_bucket"),
                     "a config file written before milk counted should have it merged back in");
             TestFixtures.check(helper, config.drinks.containsKey("farmersdelight:milk_bottle")

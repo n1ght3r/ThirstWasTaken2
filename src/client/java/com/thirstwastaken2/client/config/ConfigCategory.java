@@ -4,7 +4,6 @@ import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.client.platform.ClientVanilla;
 import com.thirstwastaken2.compat.AppleSkin;
 import com.thirstwastaken2.config.QuenchedOverlay;
-import com.thirstwastaken2.config.SicknessPreset;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.item.WaterskinItem;
 import net.minecraft.network.chat.Component;
@@ -60,8 +59,6 @@ enum ConfigCategory {
 
     WATER("water", ThirstWasTaken2.id("textures/item/terracotta_water_bowl_purity_3.png"),
             ConfigSection.of("water.drinking", List.of(
-                    ConfigEntry.choice("sickness_preset", SicknessPreset.values(),
-                            config -> config.sicknessPreset, (config, value) -> config.sicknessPreset = value),
                     ConfigEntry.grade("default_purity",
                             config -> config.defaultPurity, (config, value) -> config.defaultPurity = value),
                     ConfigEntry.toggle("can_drink_by_hand",
@@ -85,6 +82,18 @@ enum ConfigCategory {
                             config -> config.rainwaterPurity, (config, value) -> config.rainwaterPurity = value),
                     ConfigEntry.grade("dripstone_purity",
                             config -> config.dripstonePurity, (config, value) -> config.dripstonePurity = value)))),
+
+    // What bad water does to the drinker is a subject of its own: how effects add up, then one tab per
+    // difficulty since each has its own table. The tables are edited line by line (SicknessRows) and
+    // reset one grade at a time, never from the footer, which only resets the General tab.
+    SICKNESS("sickness", Identifier.withDefaultNamespace("textures/item/spider_eye.png"),
+            ConfigSection.of("sickness.general", List.of(
+                    ConfigEntry.toggle("extend_sickness_effects",
+                            config -> config.extendSicknessEffects, (config, value) -> config.extendSicknessEffects = value))),
+            sicknessTable("peaceful"),
+            sicknessTable("easy"),
+            sicknessTable("normal"),
+            sicknessTable("hard")),
 
     APPLESKIN("appleskin", Identifier.withDefaultNamespace("textures/item/apple.png"), ConfigSection.whole(List.of(
             ConfigEntry.choice("appleskin_quenched_overlay", QuenchedOverlay.values(),
@@ -178,10 +187,19 @@ enum ConfigCategory {
                 (int) Math.round(ThirstConfig.MAX_SEASON_DRAIN * 100), getter, setter).requires("sereneseasons");
     }
 
-    /** One grade's share of a drink's quenched. The value is an element of an array, so it is set in place. */
+    /** One difficulty's tab of the sickness tables. */
+    private static ConfigSection sicknessTable(String difficulty) {
+        return new ConfigSection("sickness." + difficulty, List.of(), SicknessRows.page(difficulty));
+    }
+
+    /**
+     * One grade's share of a drink's quenched. The value is an element of an array, so it is set in place.
+     * The label names the grade in its tooltip colour.
+     */
     private static ConfigEntry<Integer> quenchedPercent(String key, int grade) {
         return ConfigEntry.number(key, 0, 100, ConfigEntry::wholePercent,
-                config -> config.quenchedPercent[grade], (config, value) -> config.quenchedPercent[grade] = value);
+                config -> config.quenchedPercent[grade], (config, value) -> config.quenchedPercent[grade] = value)
+                .labelled(ConfigEntry.gradeName(grade));
     }
 
     Component title() {

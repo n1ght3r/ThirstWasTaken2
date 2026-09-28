@@ -21,6 +21,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Compatibility with Create on Forge 1.20.1:
   - The Sand Filter cleans water pumped through it by one grade.
   - Water keeps its grade through pipes, pumps, Spouts and Item Drains.
+- A Sickness page in the config screen. For each difficulty and water grade, any effect can be added
+  or removed, each with its own chance, duration and level.
+- Drinking bad water while still ill makes the effects last longer, up to twice as long. It can be
+  switched off on the Sickness page.
 
 ### Fixed
 
@@ -31,6 +35,20 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - Sea water in a bottle or bucket now looks like ordinary water on every version, as it always did on
   1.20.1 and 1.21.1. Its tooltip still reads Salty, and a bowl of sea water keeps its own colour.
+- The Sickness setting and its Realistic and Classic choices are gone. Bad water now gives what the
+  Sickness page lists, each effect rolled on its own. See the details below.
+- Bad water poisons more often on every difficulty, and Clean water now can too. Illness from Clean
+  water is shorter.
+
+<details>
+<summary>Configuration file details</summary>
+
+- `sicknessPreset` is removed and ignored if still in the file.
+- `sicknessEffects` holds the effects: by difficulty, then by grade, a list of `effect`, `chance`,
+  `seconds` and `level`.
+- `extendSicknessEffects`, on by default, makes a repeated effect last longer.
+
+</details>
 
 ## [1.4.1] - 2026-09-28
 

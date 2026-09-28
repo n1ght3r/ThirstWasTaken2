@@ -174,7 +174,9 @@ looks and sounds.
 - [x] The three Sickness pages show "Used when Sickness is Realistic", then a header per grade (Dirty,
       Murky, Clean) with Poisoning, Upset Stomach and Upset Stomach Level, no label cut off, in
       English and Vietnamese.
-- [ ] Water Purity's Sickness button cycles Realistic and Classic.
+- [ ] On each difficulty tab of the Sickness page: add an effect by id (the grey completion is taken),
+      edit its chance, seconds and level, remove it, and reset a grade. Done, relaunch: the edits are
+      kept. A drink of Dirty water gives exactly what the tab for the world's difficulty lists.
 - [x] Every page opens, every slider and toggle has a tooltip, and no slider can go outside its range.
 - [x] Reset to Defaults puts that page back and leaves the other pages alone.
 - [x] Change a value, Done, relaunch: it is kept. Change a value, Cancel: it is back, in the HUD too.

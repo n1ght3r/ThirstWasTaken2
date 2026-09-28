@@ -205,7 +205,7 @@ Key families, and who reads them:
 | Prefix | Written by |
 |---|---|
 | `thirstwastaken2.config.*` (+ `.tooltip`, `.category.*`) | the config screens, derived from the snake_case widget key |
-| `thirst.purity.*` | `WaterPurity.tooltip` and the chance sliders |
+| `thirst.purity.*` | `WaterPurity.tooltip`, and every grade name on the config screen through `WaterPurity.purityName`, in the tooltip colour. The `quenched_percent_*` labels take it as `%s` |
 | `thirst.water.salty` | `WaterPurity.saltTooltip`, the one line salt water gets instead of a grade |
 | `tooltip.thirstwastaken2.*` | `ThirstTooltip`: waterskin contents and the clay bowl hint |
 | `item.thirstwastaken2.*`, `block.thirstwastaken2.*`, `effect.thirstwastaken2.*`, `itemGroup.thirstwastaken2` | registration |

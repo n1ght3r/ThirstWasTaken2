@@ -12,8 +12,11 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -103,9 +106,19 @@ public final class ThirstConfig {
 
     // ---- water sickness ---------------------------------------------------
     // This replaced quenchWhenDebuffed, nauseaChance, poisonChance and nauseaSeconds in the sickness
-    // rework, and the chances are now fixed in SicknessTable. The config has no migration: dropped keys
-    // are ignored, and every fresh drink now quenches.
-    public SicknessPreset sicknessPreset = SicknessPreset.REALISTIC;
+    // rework, and later sicknessPreset, whose Realistic and Classic chances were fixed in code. The
+    // config has no migration: dropped keys are ignored, and every fresh drink quenches.
+    /**
+     * What a drink of fresh water gives: difficulty, then grade, then the effects, each rolling on its
+     * own. See {@link SicknessEffect}.
+     */
+    public Map<String, Map<String, List<SicknessEffect>>> sicknessEffects = SicknessEffect.defaults();
+    /**
+     * On, a drink that gives an effect the player already has adds the line's time to what is left, up to
+     * twice the line's time, so drinking bad water while ill makes it last longer. Off, vanilla's rule:
+     * the longer of the two is kept.
+     */
+    public boolean extendSicknessEffects = true;
 
     // ---- item values ------------------------------------------------------
     /**
@@ -281,7 +294,7 @@ public final class ThirstConfig {
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
         itemBlacklist.remove(null);
-        if (sicknessPreset == null) sicknessPreset = SicknessPreset.REALISTIC;
+        sicknessEffects = sanitizeSickness(sicknessEffects);
         if (drinkTagValue == null || drinkTagValue.length != 2) drinkTagValue = new int[]{6, 8};
         if (keywordDrinkValue == null || keywordDrinkValue.length != 2) keywordDrinkValue = new int[]{10, 14};
         if (keywordSoupValue == null || keywordSoupValue.length != 2) keywordSoupValue = new int[]{4, 5};
@@ -339,6 +352,38 @@ public final class ThirstConfig {
             value[0] = clamp(value[0], 0, ThirstData.MAX);
             value[1] = clamp(value[1], 0, ThirstData.MAX);
         }
+    }
+
+    /**
+     * Rebuilds the sickness tables in their fixed order: a difficulty or grade missing from the
+     * file gets its default lines, while one present and empty stays empty, since that is how a player
+     * takes every effect off it. A line with no effect id is dropped and the numbers are clamped. An id
+     * nothing registers is kept, for a mod that may be installed later, and skipped when drinking.
+     */
+    private static Map<String, Map<String, List<SicknessEffect>>> sanitizeSickness(
+            Map<String, Map<String, List<SicknessEffect>>> tables) {
+        Map<String, Map<String, List<SicknessEffect>>> clean = new LinkedHashMap<>();
+        for (String difficulty : SicknessEffect.DIFFICULTIES) {
+            Map<String, List<SicknessEffect>> grades = tables == null ? null : tables.get(difficulty);
+            Map<String, List<SicknessEffect>> cleanGrades = new LinkedHashMap<>();
+            for (String grade : SicknessEffect.GRADES) {
+                List<SicknessEffect> lines = grades == null ? null : grades.get(grade);
+                if (lines == null) {
+                    cleanGrades.put(grade, SicknessEffect.defaults(difficulty, grade));
+                    continue;
+                }
+                List<SicknessEffect> cleanLines = new ArrayList<>();
+                for (SicknessEffect line : lines) {
+                    if (line == null || line.effect == null || line.effect.isBlank()) continue;
+                    cleanLines.add(new SicknessEffect(line.effect.trim().toLowerCase(Locale.ROOT),
+                            clamp(line.chance, 0, 100), clamp(line.seconds, 1, SicknessEffect.MAX_SECONDS),
+                            clamp(line.level, 1, SicknessEffect.MAX_LEVEL)));
+                }
+                cleanGrades.put(grade, cleanLines);
+            }
+            clean.put(difficulty, cleanGrades);
+        }
+        return clean;
     }
 
     private static int clamp(int value, int min, int max) { return Math.max(min, Math.min(max, value)); }

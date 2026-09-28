@@ -33,7 +33,7 @@ this one owns where the code goes. When they disagree, the design page wins and 
 | Thirst drain per tick | `ThirstManager.tickPlayer`: `NAUSEA_EXHAUSTION = 0.06`, `PARCHED_EXHAUSTION = 0.01`, Hunger refund |
 | Dehydration damage | `ThirstManager.tickPlayer`, every `DAMAGE_INTERVAL = 40` ticks at zero thirst |
 | Effects | `ThirstEffects.PARCHED`, `ThirstEffects.UPSET_STOMACH` |
-| Chance tables | `config/SicknessTable`, fixed; `ThirstConfig.sicknessPreset` picks Realistic or Classic |
+| Chance tables | `ThirstConfig.sicknessEffects`, `config/SicknessEffect` lines by difficulty and grade, each rolling on its own in `WaterSickness.drink`, edited on the Sickness page by `client/config/SicknessRows`. `SicknessTable` and `sicknessPreset` were removed for it; see the note under step 4 |
 | Effect tests | `WaterEffectsGameTest`, `UpsetStomachGameTest`, `WaterSicknessGameTest` in `src/gametest/java/com/thirstwastaken2/gametest/` |
 | HUD | `client/ThirstHud`, registered per loader in `client/platform/ClientLoader` |
 | Icons | `textures/mob_effect/parched.png`; `upset_stomach.png` from `tools/generate_upset_stomach_icon.py` |
@@ -79,6 +79,10 @@ Note: `tools/generate_parched_icons.py` is referenced in `client/AGENTS.md` and
   per difficulty, of `poisoningChance`, `upsetStomachChance` and `upsetStomachLevel` for Dirty, Murky
   and Clean. They were config pages for a while and were fixed to keep the screen short. The chances
   are whole percents: nothing before Dysentery needs a fraction.
+  **Later replaced:** the presets, `SicknessTable`, `WaterSickness.poisoning` and the one-roll walk
+  are gone. `ThirstConfig.sicknessEffects` lists every effect per difficulty and grade, any effect id,
+  each rolling on its own; its defaults are the fixed tables above with Poisoning's chance added to
+  Upset Stomach's. The steps below describe the code as it was built.
 - **Choices made here:**
   - Dysentery has no range yet, so the walk is Poisoning then Upset Stomach, and a Dirty drink on
     Normal makes the player ill 75% of the time instead of 80%. Step 5 adds `dysenteryChance` in front.

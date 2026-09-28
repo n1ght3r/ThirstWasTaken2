@@ -57,7 +57,7 @@
 
 // AppleSkin: the Quenched Outline through Ice, Gold and AppleSkin's own, the preview redrawing each,
 // then the tooltip droplets off and back on.
-{"id": "toAppleSkin", "command": "client.mouse", "args": {"x": 40, "y": 97, "from": "corner", "ticks": 6}}
+{"id": "toAppleSkin", "command": "client.mouse", "args": {"x": 40, "y": 121, "from": "corner", "ticks": 6}}
 {"id": "appleSkin", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "appleSkinDrawn", "command": "wait", "args": {"ticks": 12}}
 {"id": "toOutline", "command": "client.mouse", "args": {"x": 172, "y": 145, "from": "top", "ticks": 7}}
@@ -77,7 +77,7 @@
 // groups of the other mods, Minecraft's heading staying pinned over its items. Then Farmer's Delight,
 // the first of them, opens, and the list scrolls on until its heading takes the top. The group stays
 // open for the rest of the session only; nothing records which groups are open.
-{"id": "toItems", "command": "client.mouse", "args": {"x": 40, "y": 121, "from": "corner", "ticks": 8}}
+{"id": "toItems", "command": "client.mouse", "args": {"x": 40, "y": 145, "from": "corner", "ticks": 8}}
 {"id": "items", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "itemsDrawn", "command": "wait", "args": {"ticks": 9}}
 {"id": "toList", "command": "client.mouse", "args": {"x": -40, "y": 150, "from": "top", "ticks": 6}}
@@ -134,7 +134,7 @@
 {"id": "modScroll8Drawn", "command": "wait", "args": {"ticks": 14}}
 
 // Containers.
-{"id": "toContainers", "command": "client.mouse", "args": {"x": 40, "y": 169, "from": "corner", "ticks": 8}}
+{"id": "toContainers", "command": "client.mouse", "args": {"x": 40, "y": 193, "from": "corner", "ticks": 8}}
 {"id": "containers", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "containersDrawn", "command": "wait", "args": {"ticks": 18}}
 
