@@ -1,6 +1,7 @@
 package com.thirstwastaken2.gametest;
 
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.gametest.platform.MockPlayers;
 import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.purity.WaterPurity;
 import net.minecraft.core.BlockPos;
@@ -68,11 +69,11 @@ final class TestFixtures {
      * player list, which the tests rely on. 26.2 added {@code makeMockServerPlayer(GameType)},
      * which builds a player without joining it to the level, so it is not a drop-in replacement,
      * and 1.21.11 and 26.1 do not have it at all. Funnelling every test through here suppresses
-     * the warning once and makes the eventual migration a single edit.
+     * the warning once and makes the eventual migration a single edit. Each loader's
+     * {@code MockPlayers} makes the call, since Forge 47 cannot take vanilla's player as it is.
      */
-    @SuppressWarnings("removal")
     static ServerPlayer mockPlayer(GameTestHelper helper) {
-        return helper.makeMockServerPlayerInLevel();
+        return MockPlayers.create(helper);
     }
 
     /** A survival player with a full hunger bar, so vanilla allows sprinting and charges exhaustion. */

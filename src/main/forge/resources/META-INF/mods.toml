@@ -1,0 +1,57 @@
+# The Forge manifest, the counterpart of src/main/fabric/resources/fabric.mod.json and
+# src/main/neoforge/resources/META-INF/neoforge.mods.toml. Templated: the version and minecraft
+# placeholders are expanded by processResources in build.forge.gradle.kts, which expands comments too,
+# so none are written here. Forge 47 reads no mixin configs from this file: they are in the jar
+# manifest, which build.forge.gradle.kts writes. Keep the three manifests saying the same thing.
+# Any Forge 47 build is taken, as Forge's own template does, rather than the one the jar is built
+# against: 1.20.1 packs stay on older 47 builds, and nothing the mod calls changed within 47.
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "GPL-3.0-only"
+issueTrackerURL = "https://github.com/n1ght3r/ThirstWasTaken2/issues"
+
+[[mods]]
+modId = "thirstwastaken2"
+version = "${version}"
+displayName = "ThirstWasTaken2"
+description = '''Adds a survival thirst bar, drinking, and water purity.'''
+authors = "Nighter, ghen (original ThirstWasTaken)"
+credits = "https://github.com/n1ght3r/ThirstWasTaken2/graphs/contributors"
+displayURL = "https://modrinth.com/mod/thirst-was-taken-2"
+logoFile = "assets/thirstwastaken2/icon.png"
+
+[[dependencies.thirstwastaken2]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thirstwastaken2]]
+modId = "minecraft"
+mandatory = true
+versionRange = "${minecraft}"
+ordering = "NONE"
+side = "BOTH"
+
+# Optional integrations, the same three fabric.mod.json suggests minus Mod Menu, which is Fabric only.
+[[dependencies.thirstwastaken2]]
+modId = "appleskin"
+mandatory = false
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thirstwastaken2]]
+modId = "jade"
+mandatory = false
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.thirstwastaken2]]
+modId = "farmersdelight"
+mandatory = false
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"

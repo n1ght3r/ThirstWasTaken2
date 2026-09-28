@@ -23,8 +23,8 @@ exits non-zero if any required test failed and writes a JUnit XML report to
 `versions/<version>/build/gametest/report.xml`.
 
 This is an ordinary Gradle source set, not part of the mod. `thirstwastaken2_gametest` is its own
-small mod declared in `src/gametest/resources/fabric.mod.json`, and on NeoForge also in
-`src/gametest/neoforge/resources/META-INF/neoforge.mods.toml`, so none of it can reach a published
+small mod declared in `src/gametest/resources/fabric.mod.json`, and on NeoForge and Forge also in
+`src/gametest/neoforge/resources/META-INF/neoforge.mods.toml` and `src/gametest/forge/resources/META-INF/mods.toml`, so none of it can reach a published
 jar. Verify that with `unzip -l build/libs/<jar> | grep gametest` after a release build. The id has an
 underscore rather than a hyphen because NeoForge mod ids cannot contain one.
 
@@ -90,6 +90,23 @@ Two things that differ underneath and have not mattered to any test so far:
   items in static fields, and NeoForge constructs mods before anything may register.
 - Fabric API makes the test server report itself as a dedicated server; NeoForge leaves vanilla's
   `false`. Commands are still registered for a dedicated server on both.
+
+## The Forge harness
+
+`1.20.1-forge` runs the same test methods through `src/gametest/forge`, which is the NeoForge 1.21.1
+path above under Forge 47's names: its own `GameTest` annotation, swapped in by the same import rule, a
+vanilla `TestFunction` per method added from `RegisterGameTestsEvent`, the report through
+`-Dthirstwastaken2.gametest.report`, and the empty structure at the plural
+`data/thirstwastaken2_gametest/structures/empty.nbt` 1.20.1 reads. Two more pieces are its own:
+
+- **`platform/MockPlayers`.** Vanilla 1.20.1 joins its mock player on a connection with no Netty
+  channel, and Forge 47 adds its packet filters to that channel as the player joins, which throws. The
+  Forge copy builds the same player on an `EmbeddedChannel`; the Fabric and NeoForge copies call
+  `makeMockServerPlayerInLevel`, and `TestFixtures.mockPlayer` calls whichever is compiled.
+- **`PlayerSyncGameTest` is skipped**, as on Fabric: Forge reads a client's channels off the Netty
+  channel's attributes, which only a real login fills in. `platform/CapturingConnection` says so.
+
+The player save test looks for the thirst value under `ForgeCaps`, where Forge keeps capabilities.
 
 After changing the harness, break the NeoForge `Loader` on purpose and watch the NeoForge nodes alone go red.
 Skipping `onUseItem` there fails the bowl and waterskin scooping tests; skipping `onUseBlock` fails the

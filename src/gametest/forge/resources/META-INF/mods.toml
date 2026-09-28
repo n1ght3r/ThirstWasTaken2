@@ -1,0 +1,19 @@
+# The gametest mod on Forge, the counterpart of src/gametest/resources/fabric.mod.json. Development
+# only, never published. Its test classes are listed once, in that fabric.mod.json, which
+# ThirstWasTaken2GameTests reads on this loader too.
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "thirstwastaken2_gametest"
+version = "1.0.0"
+displayName = "ThirstWasTaken2 Game Tests"
+description = '''Server-side gametests for ThirstWasTaken2. Development only, never published.'''
+
+[[dependencies.thirstwastaken2_gametest]]
+modId = "thirstwastaken2"
+mandatory = true
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

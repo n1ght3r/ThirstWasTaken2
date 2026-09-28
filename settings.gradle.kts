@@ -10,6 +10,7 @@ pluginManagement {
         maven("https://maven.fabricmc.net/") { name = "Fabric" }
         maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
         maven("https://maven.neoforged.net/releases") { name = "NeoForged" }
+        maven("https://maven.minecraftforge.net/") { name = "MinecraftForge" }
     }
 }
 
@@ -23,6 +24,10 @@ plugins {
     // build.neoforge.gradle.kts: applying it to a Fabric node would put a second Minecraft provider
     // on a project Loom already owns.
     id("net.neoforged.moddev") version "2.0.147" apply false
+    // The same plugin family for MinecraftForge, for the 1.20.1 Forge node, applied only by
+    // build.forge.gradle.kts. It remaps Minecraft and mod dependencies to Mojang's names for development
+    // and the jar back to SRG names for players.
+    id("net.neoforged.moddev.legacyforge") version "2.0.147" apply false
     // Provisions the JDK a version needs when it is not installed locally: 26.1+ wants Java 25,
     // 1.21.x wants Java 21.
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
@@ -30,8 +35,10 @@ plugins {
 
 stonecutter {
     create(rootProject) {
-        // Fabric only for now: the Forge node is phase 2 of docs/dev/VERSION-1.20.1.md.
         version("1.20.1", "1.20.1")
+        // MinecraftForge 47, not NeoForge: nearly every 1.20.1 modpack runs Forge. See
+        // docs/dev/VERSION-1.20.1.md.
+        version("1.20.1-forge", "1.20.1").buildscript = "build.forge.gradle.kts"
         versions("1.21.1", "1.21.11")
         // NeoForge on 1.21.1 only: 1.21 is a separate NeoForge generation (21.0), unlike on Fabric.
         version("1.21.1-neoforge", "1.21.1").buildscript = "build.neoforge.gradle.kts"

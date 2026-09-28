@@ -19,10 +19,15 @@ Supported nodes and their jars:
 | `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.109 |
 | `1.21.11-neoforge` | `+1.21.11-neoforge` | 1.21.11 | 21 | NeoForge 21.11.45 |
 | `1.21.1-neoforge` | `+1.21.1-neoforge` | 1.21.1 | 21 | NeoForge 21.1.251 |
+| `1.20.1-forge` | `+1.20.1-forge` | 1.20.1 | 17 | Forge 47.4.10 |
 
 The NeoForge jars are built and tested on every node. A NeoForge node builds the same Minecraft
 version as the Fabric node it sits under, so everything on this page applies to both. 1.21 is the
 one exception: the Fabric 1.21.1 jar claims it, and NeoForge 21.0 is a generation of its own.
+
+1.20.1 has MinecraftForge 47 in place of NeoForge, built by `build.forge.gradle.kts` with ModDevGradle
+Legacy, and the same holds for it: everything under 1.20.5 and 1.21 below applies to both 1.20.1 jars.
+The Forge jar asks for any Forge 47 build, not the one it is built against.
 
 NeoForge has published only betas for 26.3, so `26.3.x-neoforge` is pinned to one and asks players for
 at least that build. Two of its optional integrations have no 26.3 release yet either: Cloth Config,
@@ -37,7 +42,7 @@ under the release that changed it.
 
 Checked against the code on 2026-09-20: 126 `//? if` blocks, 9 replacement rules with 27 replacements
 in `stonecutter.gradle.kts`, and the version branches in `build.gradle.kts` and
-`build.neoforge.gradle.kts`.
+`build.neoforge.gradle.kts`. `build.forge.gradle.kts` builds one version and has no branches.
 
 ## What a player can see
 
@@ -231,8 +236,8 @@ already has by default. The stack the furnace hands out is the same; see
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
 
-The `1.20.1` node is Fabric only so far; the Forge one is phase 2 of
-[VERSION-1.20.1.md](VERSION-1.20.1.md). Most of these are written `>=1.20.5` or `<1.20.5` though the
+Both 1.20.1 nodes, `1.20.1` on Fabric and `1.20.1-forge`; see [VERSION-1.20.1.md](VERSION-1.20.1.md).
+Most of these are written `>=1.20.5` or `<1.20.5` though the
 change came earlier, in 1.20.2 or 1.20.3: with no node in between, the boundary only has to fall
 between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 
@@ -255,7 +260,9 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | Recipes and advancements are built through `FinishedRecipe` and `Consumer<Advancement>` | `src/datagen/legacy`, which `build.gradle.kts` compiles in place of `ThirstRecipeProvider`, `ThirstAdvancementProvider` and `FarmersDelightRecipeProvider` |
 | Fabric's convention tags name the material first (`c:copper_ingots`) and have no iron nuggets | `LegacyRecipeProvider` |
 | No `no_knockback` damage tag, ominous bottle or trade rebalance pack | `ThirstDamageTypeTagProvider`; the gametests that need them are left out |
-| Runs on Java 17 | `requiredJava` in `build.gradle.kts` |
+| Bucket pickup takes no entity at all (1.20.2 added the player) | `BucketItemMixin` |
+| The gametest mock player joins on a connection with no Netty channel, which Forge 47 cannot take | the Forge `MockPlayers` in `src/gametest/forge`; the other loaders' copies call vanilla |
+| Runs on Java 17 | `requiredJava` in `build.gradle.kts` and `build.forge.gradle.kts` |
 
 ### Somewhere between 1.21.1 and 1.21.11
 
@@ -303,6 +310,22 @@ it makes no difference to any jar.
 - **A resource condition's `test`** takes a `RegistryOps.RegistryInfoLookup` from 1.21.2 and a
   `HolderLookup.Provider` on 1.21.1. `platform/ItemEnabledCondition` in `src/main/fabric` forks for it
   (written `>=1.21.2`); it reads neither. `FabricRecipeProvider.withConditions` is the same on every node.
+
+## Differences in Forge 47 rather than Minecraft
+
+Forge 47 is 1.20.1's loader in place of NeoForge. What differs between it and the other two loaders on
+the same Minecraft version is a loader difference, in
+[platform/AGENTS.md](../../src/main/java/com/thirstwastaken2/platform/AGENTS.md); what belongs here is
+what the Forge node needs that no other node does:
+
+- **The game runs under SRG names** outside development. The jar that ships is `reobfJar`, the mixins
+  carry a refmap, `META-INF/accesstransformer.cfg` is written in SRG names, and mod dependencies are
+  remapped the other way through the `mod*` configurations. All in `build.forge.gradle.kts`.
+- **Mixin configs are named in the jar manifest** (`MixinConfigs`), not in `mods.toml`, and on the run
+  command lines in development.
+- **MixinExtras is not shipped by Forge 47.** The jar nests `mixinextras-forge` (`deps.mixinextras`).
+- **Convention tags are `forge:`**, so `src/main/forge` fills the two `c:` tags the 1.20.1 recipes use
+  from `#forge:ingots/copper` and `#forge:ingots/iron`.
 
 ## Keeping this page true
 

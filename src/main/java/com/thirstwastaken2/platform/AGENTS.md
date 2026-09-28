@@ -83,7 +83,8 @@ whether it has anything to drink (`canDrink`) and what a drink removes.
 `Loader` does not live in this directory. Each loader has its own copy at
 `src/main/<loader>/java/com/thirstwastaken2/platform/Loader.java`, with the same class name and the
 same public signatures, and each node's buildscript (`build.gradle.kts` for Fabric,
-`build.neoforge.gradle.kts` for NeoForge) compiles exactly one of them. There is no interface
+`build.neoforge.gradle.kts` for NeoForge, `build.forge.gradle.kts` for Forge 47 on 1.20.1) compiles
+exactly one of them. There is no interface
 and no service lookup: a static call to a class that exists once per jar is the cheapest seam there
 is, and the compiler checks every call site.
 
@@ -130,6 +131,33 @@ What crosses the network is described in common code as a plain record with `wri
 | `ClientLoader.addRightStatusBar` | `HudElementRegistry.attachElementAfter(FOOD_BAR)` plus `HudStatusBarHeightRegistry.addRight`; `GuiMixin` on 1.21.1 | a layer `registerAbove(VanillaGuiLayers.FOOD_LEVEL)` that draws at `guiHeight() - hud.rightHeight` and advances `Hud.rightHeight` only when it drew, and only when the player can be hurt, which is when vanilla draws the food bar |
 | `ClientLoader.renderCutout` | `BlockRenderLayerMap` before 26.1, nothing from 26.1, where the game reads the layer off the textures | nothing: the model's `render_type` before 26.1, the textures from 26.1. It runs during mod construction, so it never asks for the block |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | `ModConfig.INSTANCE.showFoodExhaustionHudUnderlay` | `ModConfig.SPEC.isLoaded() && ModConfig.SHOW_FOOD_EXHAUSTION_UNDERLAY.get()`; reading a NeoForge config value before FML loads it throws |
+
+### How Forge 47 answers
+
+Forge 47, the `1.20.1-forge` node's loader, is NeoForge's parent one generation back, and answers most
+seams the way the NeoForge column does, under `net.minecraftforge` names: `onRegister` queues for
+`RegisterEvent` the same way, and `onUseBlock`, `onUseItem`, `onTagsLoaded`, `onRegisterCommands` and
+`onLootTable` use the events of the same names. Where it differs:
+
+| Seam | Forge 47 |
+|---|---|
+| `isDevelopmentEnvironment` | the static field `FMLEnvironment.production` |
+| `playerData` | no attachments: one capability, `thirstwastaken2:player`, attached to every player in `AttachCapabilitiesEvent<Entity>`, holding each value under its id and saving it through its codec under `ForgeCaps`. Copied in `PlayerEvent.Clone` unless the player died, as an attachment without `copyOnDeath` is. Sent on every set and again on `PlayerLoggedInEvent`, `PlayerRespawnEvent` and `PlayerChangedDimensionEvent`. All in `ForgeNetworking` |
+| `clientboundPayload` | a `SimpleChannel` per payload, named by its id, accepting a missing mod on either side (`acceptMissingOr`), so a vanilla client may join. The client handler sets the value on `ClientPlayer.get()`, a class in `src/client/forge` a dedicated server never loads |
+| sending, through the returned `Clientbound` | never to a `FakePlayer`, whose connection has no Netty channel; otherwise `isRemotePresent`, then `send(PacketDistributor.PLAYER...)`. Forge negotiates channels at login, so nothing waits the way it does on Fabric 1.20.1 |
+| `onServerTickEnd` | `TickEvent.ServerTickEvent` at `Phase.END` |
+| `onServerDataReload` | `AddReloadListenerEvent`, without an id |
+| `onDataPackSync` | `OnDatapackSyncEvent.getPlayer()`, or every player in the list when it names none, on `/reload` |
+| `registerResourceConditions` | `CraftingHelper.register` of a serializer (`platform/ItemEnabledCondition` in `src/main/forge`). The build moves the condition under `conditions` and `type` (`forgeConditions`) |
+| `ClientLoader.addRightStatusBar` | `RegisterGuiOverlaysEvent.registerAbove(VanillaGuiOverlay.FOOD_LEVEL)`, drawing at `screenHeight - ForgeGui.rightHeight` and advancing it when it drew, only when `shouldDrawSurvivalElements` |
+| `ClientLoader.renderCutout` | `ItemBlockRenderTypes.setRenderLayer(..., cutout())` from `FMLClientSetupEvent`, once the block exists |
+| `ClientLoader.appleSkinShowsExhaustionUnderlay` | the same as NeoForge |
+
+The fluid capability is `IFluidHandlerItem`, attached through `AttachCapabilitiesEvent<ItemStack>` once
+the mod's items are registered (`src/main/forge-fluidhandler`); water on a Forge `FluidStack` carries
+the same `thirstwastaken2` compound an item does (`forge/WaterFluids`). Forge 47 has one mod class per
+mod, not one per side, so `ThirstWasTaken2Forge` starts the client half itself, through a static call a
+dedicated server never makes, and registers the config screen with `ConfigScreenHandler`.
 
 ### What older NeoForge versions change
 
@@ -190,20 +218,23 @@ Rules:
   signature has to be implementable by both.
 - **Every copy changes together.** Adding a method to one `Loader` means adding it to all of them;
   the node that lacks it is the one that fails to compile.
-- **Entrypoints are loader code.** `ThirstWasTaken2Fabric`, `ThirstWasTaken2FabricClient` and the NeoForge
-  `@Mod` classes `ThirstWasTaken2NeoForge` and `ThirstWasTaken2NeoForgeClient` do one thing: call
+- **Entrypoints are loader code.** `ThirstWasTaken2Fabric`, `ThirstWasTaken2FabricClient`, the NeoForge
+  `@Mod` classes `ThirstWasTaken2NeoForge` and `ThirstWasTaken2NeoForgeClient`, and the Forge `@Mod`
+  class `ThirstWasTaken2Forge` with its `ThirstWasTaken2ForgeClient` do one thing: call
   `ThirstWasTaken2.initialize` and `ThirstWasTaken2Client.initialize`. The NeoForge client class also
   registers the config screen with the mods list, which Mod Menu's entrypoint does on Fabric. The
   NeoForge `Loader` finds the mod event bus itself, through `ModList`, so the mod class passes nothing
   in. So are the manifests (`fabric.mod.json`, `neoforge.mods.toml`) and anything written against a
   loader-only mod, such as `ModMenuIntegration`. After `initialize`, both main entrypoints run the integrations both loaders compile:
-  Fabric the `thirstwastaken2:integration` entrypoints (`Runnable`), NeoForge every class its scan data
-  finds marked `@IntegrationEntrypoint`. The annotation is common code in this package, so an
+  Fabric the `thirstwastaken2:integration` entrypoints (`Runnable`), NeoForge and Forge every class
+  their scan data finds marked `@IntegrationEntrypoint`. The annotation is common code in this package, so an
   integration names neither loader to be started.
 - **`checkLoaderSeam` fails on a loader import in `src/main/java` or `src/client/java`.** It reads
   imports, so it cannot see the methods Fabric API injects into vanilla classes
   (`getAttachedOrCreate`, `FabricItemStack` and friends). Those compile on Fabric and only fail on the
-  next loader. Do not call them outside `src/main/fabric`.
+  next loader. Do not call them outside `src/main/fabric`. Nor can it see what Fabric API's transitive
+  access wideners open: `ThirstDamageTypes` reads `DamageSources.source` and `damageTypes`, which Forge 47
+  opens through `src/main/forge/resources/META-INF/accesstransformer.cfg`, in SRG names.
 
 `src/dev` and `src/datagen` are Fabric only, each its own small Fabric mod. They sit outside the seam
 on purpose: neither ships, and datagen output is shared by every loader on a Minecraft version.
@@ -211,6 +242,7 @@ Datagen writes Fabric's spellings once, and the NeoForge node translates the thr
 shapes as it copies resources (`build.neoforge.gradle.kts`), rather than datagen writing a second
 copy; see [src/main/resources/AGENTS.md](../../../../resources/AGENTS.md).
 
-`src/gametest` runs on both loaders. Its test classes are shared; the NeoForge node swaps one import
-and adds a harness of its own in `src/gametest/neoforge`, which is test code rather than a seam. See
+`src/gametest` runs on every loader. Its test classes are shared; the NeoForge and Forge nodes swap one
+import and add a harness of their own in `src/gametest/neoforge` and `src/gametest/forge`, which is test
+code rather than a seam. See
 [src/gametest/java/AGENTS.md](../../../../../gametest/java/AGENTS.md).

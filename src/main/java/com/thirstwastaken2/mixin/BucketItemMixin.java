@@ -18,11 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BucketItem.class)
 abstract class BucketItemMixin {
-    // pickupBlock took the Player itself on 1.21.1; later releases widened it to any living entity.
+    // pickupBlock took no entity on 1.20.1, the Player itself from 1.20.2 to 1.21.1, and any living
+    // entity after that.
     //? if >1.21.1 {
     private static final String PICKUP_BLOCK = "Lnet/minecraft/world/level/block/BucketPickup;pickupBlock(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;";
-    //?} else
-    /*private static final String PICKUP_BLOCK = "Lnet/minecraft/world/level/block/BucketPickup;pickupBlock(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;";*/
+    //?} elif >=1.20.2 {
+    /*private static final String PICKUP_BLOCK = "Lnet/minecraft/world/level/block/BucketPickup;pickupBlock(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;";
+    *///?} else
+    //private static final String PICKUP_BLOCK = "Lnet/minecraft/world/level/block/BucketPickup;pickupBlock(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/item/ItemStack;";
 
     @Inject(method = "use", at = @At("HEAD"))
     private void thirst$clearCapture(Level level, Player player, InteractionHand hand,

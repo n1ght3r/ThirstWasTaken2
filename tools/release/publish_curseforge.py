@@ -48,7 +48,7 @@ CURSEFORGE = "https://minecraft.curseforge.com/api"
 CURSEFORGE_SITE = "https://www.curseforge.com/api/v1"
 # The upload API does not return the project, so the name on the page is written here.
 TITLE = "Thirst Was Taken 2"
-LOADERS = {"fabric": "Fabric", "neoforge": "NeoForge"}
+LOADERS = {"fabric": "Fabric", "neoforge": "NeoForge", "forge": "Forge"}
 
 
 class CurseForge:

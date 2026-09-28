@@ -151,6 +151,12 @@ jobs:
         if: ${{ matrix.loader == 'neoforge' }}
         run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
 
+      # The Forge node, the same steps as NeoForge's: it reads the Fabric node's generated JSON too, and
+      # checkForgeResources fails when a Fabric-only key survives its translation.
+      - name: Build (Forge)
+        if: ${{ matrix.loader == 'forge' }}
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
+
       # Regenerates every datapack and asset JSON and fails if the result differs from what is
       # committed, which is what catches a generator edited without regenerating and a generated
       # file edited by hand. Fabric runs the generators out of the client's main before a window is

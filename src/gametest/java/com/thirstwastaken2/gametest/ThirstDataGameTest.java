@@ -149,8 +149,9 @@ public final class ThirstDataGameTest {
         ThirstManager.set(player, new ThirstData(8, 3, 1.25F, false));
         CompoundTag tag = TestFixtures.savePlayer(player);
 
-        String nativeKey = tag.contains("fabric:attachments")
-                ? "fabric:attachments" : "neoforge:attachments";
+        // Forge 47 keeps it among the player's capabilities, under ForgeCaps.
+        String nativeKey = tag.contains("fabric:attachments") ? "fabric:attachments"
+                : tag.contains("ForgeCaps") ? "ForgeCaps" : "neoforge:attachments";
         String foreignKey = nativeKey.equals("fabric:attachments")
                 ? "neoforge:attachments" : "fabric:attachments";
         Tag attachments = tag.get(nativeKey);

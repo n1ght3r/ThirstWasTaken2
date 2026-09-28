@@ -1,0 +1,19 @@
+# The dev tools mod on Forge, the counterpart of src/dev/resources/fabric.mod.json. Development only,
+# never published. Its mixin config is passed on the command line of each run that loads it, by
+# build.forge.gradle.kts, since Forge 47 reads no mixin configs from this file. See src/dev/java/AGENTS.md.
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "thirstwastaken2_dev"
+version = "1.0.0"
+displayName = "ThirstWasTaken2 Dev Tools"
+description = '''Development-only tooling for ThirstWasTaken2: the agent queue and the benchmark. Never published.'''
+
+[[dependencies.thirstwastaken2_dev]]
+modId = "thirstwastaken2"
+mandatory = true
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"

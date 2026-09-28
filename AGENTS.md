@@ -16,6 +16,8 @@ upstream is a reference, not a spec. Its source is expected at `../Thirst-Mod` w
 One source tree, one jar per node. Nodes are the Gradle subprojects in `settings.gradle.kts`:
 `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1` on Fabric, and the same five with `-neoforge`
 (`build.neoforge.gradle.kts`). The Fabric `1.21.1` jar also covers 1.21; the NeoForge one does not.
+1.20.1 is `1.20.1` on Fabric and `1.20.1-forge` on MinecraftForge 47 (`build.forge.gradle.kts`, whose
+shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md).
 
 | Command | What it does |
 |---|---|
@@ -53,8 +55,8 @@ One source tree, one jar per node. Nodes are the Gradle subprojects in `settings
 - **Multi-version via [Stonecutter](https://stonecutter.kikugie.dev)**. Per-node values (dependency
   versions, compat ranges) live only in `stonecutter.properties.toml`; there is no version catalog.
   `stonecutter.gradle.kts` is the controller, `build.gradle.kts` is the Fabric script (Loom),
-  `build.neoforge.gradle.kts` the NeoForge one (ModDevGradle), `gradle/shared.gradle.kts` the tasks both
-  share. `build-logic` is an included build of plain Kotlin both scripts call: the integration table,
+  `build.neoforge.gradle.kts` the NeoForge one (ModDevGradle), `build.forge.gradle.kts` the Forge one
+  (ModDevGradle Legacy), `gradle/shared.gradle.kts` the tasks all three share. `build-logic` is an included build of plain Kotlin both scripts call: the integration table,
   `-PwithoutOptional`, the JFR arguments. It is data and pure functions only and never depends on Loom,
   ModDevGradle or Stonecutter; the loader scripts make every `sourceSets`, `loom` and `neoForge` call
   themselves. `./gradlew -p build-logic test` runs its tests.
@@ -162,6 +164,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | `src/main/fabric`, `src/client/fabric` | Fabric nodes |
 | `src/main/neoforge`, `src/client/neoforge` | NeoForge nodes (client compiled into main) |
 | `src/main/neoforge-fluidhandler` / `neoforge-transfer` | NeoForge 1.21.1 / 1.21.11+, the fluid container API |
+| `src/main/forge`, `src/client/forge`, `src/main/forge-fluidhandler` | The Forge node (client compiled into main), and its fluid container API |
 | `src/main/<integration>`, `src/client/<integration>`, `src/dev/<integration>` | Where the integration's deps key is set, on the loaders its row allows. Wired from [the integration table](build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt); which nodes, below |
 | `src/main/sophisticated-fluidhandler` / `sophisticated-transfer` | Sophisticated's nodes, 1.21.1 / 1.21.11+: its tank and pump code |
 | `src/main/resources` | Hand-written assets and lang, all nodes |

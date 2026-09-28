@@ -14,13 +14,17 @@ place, comments and layout untouched.
 Rules:
 - A node compiles against the Minecraft version settings.gradle.kts gives it (`26.1.x` -> `26.1.2`),
   so that is the version a candidate has to list. A newer Minecraft patch is a manual bump.
-- A node takes the uploads of the loader its name ends in (`26.2.x-neoforge`, NeoForge); a node with no
-  loader in its name takes Fabric ones. `tools/node_names.py` reads the name.
-  Each node's values are read and rewritten in its loader table, `[fabric."26.2.x"]` or
-  `[neoforge."26.2.x"]`, or else in the shared `["26.2.x"]` table.
+- A node takes the uploads of the loader its name ends in (`26.2.x-neoforge`, NeoForge; `1.20.1-forge`,
+  Forge); a node with no loader in its name takes Fabric ones. `tools/node_names.py` reads the name.
+  Each node's values are read and rewritten in its loader table, `[fabric."26.2.x"]`,
+  `[neoforge."26.2.x"]` or `[forge."1.20.1"]`, or else in the shared `["26.2.x"]` table.
 - NeoForge itself comes from maven.neoforged.net: the newest build for the same Minecraft version as the
   pinned one, releases only unless the pinned build is a beta. Like Fabric Loader, it raises the
   minimum players need, since neoforge.mods.toml writes it as the lower bound.
+- Forge comes from maven.minecraftforge.net's promotions: the build it promotes as latest for the node's
+  Minecraft version. It does not raise what players need: mods.toml asks for Forge 47 or later, as
+  Forge's own template does, since 1.20.1 packs stay on older 47 builds.
+- MixinExtras, which only the Forge nodes nest in their jar, comes from Maven Central, releases only.
 - Only release uploads are taken, unless the pinned version is itself a beta or alpha: a node on a
   pre-release dependency stays on that channel until a release catches up.
 - A candidate has to be published after the pinned version. Nothing is ever downgraded.
@@ -80,7 +84,7 @@ ALL_MIRRORS = DOC_MIRRORS + (KALEIDOSCOPE_DOC,)
 # The pages that print Fabric Loader. VERSION-DIFFERENCES.md lists each node's loader API only.
 LOADER_MIRRORS = (README, INSTALLATION)
 # Modrinth puts the loader on some version numbers. The docs leave it off.
-LOADER_SUFFIXES = ("+fabric", "+neoforge")
+LOADER_SUFFIXES = ("+fabric", "+neoforge", "+forge")
 
 MODRINTH = "https://api.modrinth.com/v2"
 FABRIC_META = "https://meta.fabricmc.net/v2/versions/loader"
@@ -89,6 +93,8 @@ NEOFORGE_METADATA = "https://maven.neoforged.net/releases/net/neoforged/neoforge
 # metadata file keeps failing, which has happened while the API still answered.
 NEOFORGE_API = "https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge"
 NEOFORGE_ATTEMPTS = 3
+FORGE_PROMOTIONS = "https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json"
+MIXINEXTRAS_METADATA = "https://repo1.maven.org/maven2/io/github/llamalad7/mixinextras-forge/maven-metadata.xml"
 # Modrinth asks every client for a User-Agent that identifies the project.
 USER_AGENT = "n1ght3r/ThirstWasTaken2 dependency updater (github.com/n1ght3r/ThirstWasTaken2)"
 
@@ -104,17 +110,17 @@ class ModrinthDep:
     mirrors: tuple[Path, ...] = (INSTALLATION,)
     """The doc mirrors that print this dependency's version on the Fabric nodes."""
     neoforge_mirrors: tuple[Path, ...] = ()
-    """The doc mirrors that print its version on the NeoForge nodes. No user page names a NeoForge build."""
+    """The doc mirrors that print its version on the NeoForge and Forge nodes. No user page names their builds."""
     neoforge_project: str | None = None
-    """Modrinth project slug on the NeoForge nodes, when that loader's build is a different project."""
+    """Modrinth project slug on the NeoForge and Forge nodes, when their build is a different project."""
     frozen: tuple[str, ...] = ()
     """Nodes whose pin is left alone, because the upstream build for that version will not change again."""
 
     def project_for(self, node: str) -> str:
-        return self.neoforge_project if self.neoforge_project and loader_of(node) == "neoforge" else self.project
+        return self.neoforge_project if self.neoforge_project and loader_of(node) != "fabric" else self.project
 
     def mirrors_for(self, node: str) -> tuple[Path, ...]:
-        return self.neoforge_mirrors if loader_of(node) == "neoforge" else self.mirrors
+        return self.neoforge_mirrors if loader_of(node) != "fabric" else self.mirrors
 
 
 # Every per-node dependency the build resolves from Modrinth or from a Maven that publishes the same
@@ -431,6 +437,42 @@ def check_neoforge(props: Properties, node: str, changes: list[Change]) -> None:
                           "https://projects.neoforged.net/neoforged/neoforge", DOC_MIRRORS))
 
 
+def check_forge(props: Properties, node: str, minecraft: str, changes: list[Change]) -> None:
+    """Forge promotes one build per Minecraft version as latest, `47.4.23` for 1.20.1; that is the one."""
+    found = props.find(node, "deps.forge")
+    if found is None:
+        return
+    index, pinned = found
+    try:
+        promoted = get_json(FORGE_PROMOTIONS)["promos"].get(f"{minecraft}-latest")
+    except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as error:
+        raise Unreachable(f"{FORGE_PROMOTIONS}: {error}") from error
+    if promoted is None or numeric(promoted) <= numeric(pinned):
+        return
+    props.set(index, "deps.forge", promoted)
+    changes.append(Change(node, "forge", pinned, promoted, pinned, promoted,
+                          "https://files.minecraftforge.net/net/minecraftforge/forge/", DOC_MIRRORS))
+
+
+def check_mixinextras(props: Properties, node: str, changes: list[Change]) -> None:
+    """The newest MixinExtras release, for the nodes that nest it. No page prints it."""
+    found = props.find(node, "deps.mixinextras")
+    if found is None:
+        return
+    index, pinned = found
+    request = urllib.request.Request(MIXINEXTRAS_METADATA, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            release = re.search(r"<release>([^<]+)</release>", response.read().decode("utf-8"))
+    except (urllib.error.URLError, TimeoutError) as error:
+        raise Unreachable(f"{MIXINEXTRAS_METADATA}: {error}") from error
+    if release is None or "-" in release.group(1) or numeric(release.group(1)) <= numeric(pinned):
+        return
+    props.set(index, "deps.mixinextras", release.group(1))
+    changes.append(Change(node, "mixinextras", pinned, release.group(1), pinned, release.group(1),
+                          "https://github.com/LlamaLad7/MixinExtras/releases"))
+
+
 def forms(version: str) -> list[str]:
     """A version as the docs may print it: the way Modrinth numbers it, and, for the numbers that carry
     a loader suffix, without it, since that is the form the pages use."""
@@ -522,6 +564,9 @@ def check_docs(props: Properties) -> list[str]:
         neoforge = props.find(node, "deps.neoforge")
         if neoforge:
             problems += missing("NeoForge", neoforge[1], DOC_MIRRORS, node)
+        forge = props.find(node, "deps.forge")
+        if forge:
+            problems += missing("Forge", forge[1], DOC_MIRRORS, node)
         for dep in MODRINTH_DEPS:
             found = props.find(node, f"deps.{dep.key}")
             if found is None:
@@ -620,6 +665,15 @@ def main() -> int:
                 # A NeoForge outage should not hold back the Modrinth bumps found above; the next
                 # daily run checks NeoForge again.
                 warnings.append(f"`{node}` `deps.neoforge` was not checked, maven.neoforged.net did not answer ({error}).")
+        if loader_of(node) == "forge":
+            try:
+                check_forge(props, node, minecraft, changes)
+            except Unreachable as error:
+                warnings.append(f"`{node}` `deps.forge` was not checked, files.minecraftforge.net did not answer ({error}).")
+            try:
+                check_mixinextras(props, node, changes)
+            except Unreachable as error:
+                warnings.append(f"`{node}` `deps.mixinextras` was not checked, Maven Central did not answer ({error}).")
 
     for change in changes:
         print(f"{change.node or 'all'}: {change.key} {change.old_label} -> {change.new_label}")

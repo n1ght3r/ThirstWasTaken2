@@ -2,7 +2,8 @@
  * The tasks every node shares, whatever mod loader it builds for: the Java toolchain, the seam
  * checks, what never belongs in a jar, and the task that collects the jars.
  *
- * Applied by both `build.gradle.kts` (the Fabric nodes) and `build.neoforge.gradle.kts`. Each of
+ * Applied by `build.gradle.kts` (the Fabric nodes), `build.neoforge.gradle.kts` and
+ * `build.forge.gradle.kts`. Each of
  * those sets three extra properties first: `thirst.requiredJava`, because the Java version a node
  * needs follows from its Minecraft version and only the node's own script can read that, and
  * `thirst.integrations` and `thirst.loaderIndependentIntegrations`, from the integration table in
@@ -103,8 +104,8 @@ tasks.register("benchmarkRunDirectory") {
 // the end of it, so the task is matched by name rather than looked up.
 tasks.matching { it.name == "runBenchmark" }.configureEach { dependsOn("benchmarkRunDirectory") }
 
-// The NeoForge node has a third check, `checkNeoForgeResources`, in build.neoforge.gradle.kts beside the
-// translation of datagen's Fabric-only JSON it guards.
+// The NeoForge and Forge nodes have a third check, `checkNeoForgeResources` and `checkForgeResources`, in
+// their own scripts beside the translation of datagen's Fabric-only JSON it guards.
 
 /**
  * The integration directories both loaders compile, which must not name a loader any more than core
@@ -132,7 +133,7 @@ tasks.register("checkLoaderSeam") {
     val roots = (listOf("src/main/java", "src/client/java") + loaderIndependentIntegrations.flatMap { dir ->
         listOf("src/main/$dir/java", "src/client/$dir/java")
     }).map(rootProject::file).filter(File::isDirectory)
-    val forbidden = Regex("""\b(net\.fabricmc|net\.neoforged)\.""")
+    val forbidden = Regex("""\b(net\.fabricmc|net\.neoforged|net\.minecraftforge)\.""")
     inputs.files(roots.map { fileTree(it) { include("**/*.java") } })
 
     doLast {
@@ -244,8 +245,8 @@ tasks.register("checkLang") {
  * own `required_mods`, which it ignores outside its namespace, and with Cold Sweat and without Farmer's
  * Delight no world could be opened. So every file under `src/main` that names a namespace other than the
  * mod's, Minecraft's and the shared `c` has to be gated on it, whatever registry it is for:
- * `neoforge:conditions` with `neoforge:mod_loaded`, or `fabric:load_conditions` with
- * `fabric:all_mods_loaded` (or `any_mods_loaded`). Two things need no condition, since they already
+ * `neoforge:conditions` with `neoforge:mod_loaded`, `fabric:load_conditions` with
+ * `fabric:all_mods_loaded` (or `any_mods_loaded`), or Forge 47's `conditions` with `forge:mod_loaded`. Two things need no condition, since they already
  * tolerate a missing id: a tag entry with `"required": false`, and this mod's own drinks files, whose
  * loader skips an unknown item with a warning. The generated output is read too.
  */
@@ -253,7 +254,7 @@ tasks.register("checkDataConditions") {
     group = "verification"
     description = "Fails when a shipped data file names another mod's id without a mod_loaded condition"
 
-    val own = setOf("minecraft", "thirstwastaken2", "c", "neoforge", "fabric")
+    val own = setOf("minecraft", "thirstwastaken2", "c", "neoforge", "fabric", "forge")
     val dataFiles = rootProject.file("src/main").walk()
         .onEnter { it.name != "java" }
         .filter { it.isFile && it.extension == "json" && "/data/" in it.invariantSeparatorsPath }
@@ -270,7 +271,7 @@ tasks.register("checkDataConditions") {
                 is Map<*, *> -> {
                     if (value["required"] == false) return
                     value.forEach { (key, child) ->
-                        if (key == "neoforge:conditions" || key == "fabric:load_conditions") return@forEach
+                        if (key == "neoforge:conditions" || key == "fabric:load_conditions" || key == "conditions") return@forEach
                         id.matchEntire(key.toString())?.let { into += it.groupValues[1] }
                         namespaces(child, into)
                     }
@@ -300,6 +301,7 @@ tasks.register("checkDataConditions") {
             val required = mutableSetOf<String>().also {
                 gated(json["neoforge:conditions"], it)
                 gated(json["fabric:load_conditions"], it)
+                gated(json["conditions"], it)
             }
             val ungated = named - required
             if (ungated.isEmpty()) null
@@ -308,7 +310,7 @@ tasks.register("checkDataConditions") {
         check(problems.isEmpty()) {
             "These data files name a mod's ids without a condition that the mod is loaded. Without it the " +
                 "file fails for everyone who lacks that mod, and in a registry read while opening a world, " +
-                "no world opens. Add neoforge:conditions (neoforge:mod_loaded) or fabric:load_conditions " +
+                "no world opens. Add neoforge:conditions (neoforge:mod_loaded), conditions (forge:mod_loaded) or fabric:load_conditions " +
                 "(fabric:all_mods_loaded) for each mod listed:\n" + problems.joinToString("\n")
         }
         logger.lifecycle("checkDataConditions: ${dataFiles.size} data files, every other mod's id gated")
@@ -328,7 +330,7 @@ tasks.register("checkAgentCore") {
     description = "Fails when the agent's core package imports Minecraft, a mod loader or the mod"
 
     val root = rootProject.file("src/dev/java/com/thirstwastaken2/dev/agent/core")
-    val forbidden = Regex("""^import\s+(net\.minecraft|net\.fabricmc|net\.neoforged|"""
+    val forbidden = Regex("""^import\s+(net\.minecraft|net\.fabricmc|net\.neoforged|net\.minecraftforge|"""
         + """com\.mojang|com\.thirstwastaken2(?!\.dev\.agent\.core))""")
     inputs.files(fileTree(root) { include("**/*.java") })
 
@@ -469,7 +471,7 @@ tasks.register("checkOptionalSeam") {
     val coreRoots = listOf("src/main/java", "src/client/java", "src/main/fabric", "src/main/neoforge",
         "src/client/fabric", "src/client/neoforge", "src/main/neoforge-fluidhandler", "src/main/neoforge-transfer",
         "src/main/fabric-payload", "src/client/fabric-payload", "src/main/fabric-legacypayload",
-        "src/client/fabric-legacypayload")
+        "src/client/fabric-legacypayload", "src/main/forge", "src/client/forge", "src/main/forge-fluidhandler")
         .map(rootProject::file)
     inputs.files(coreRoots.map { fileTree(it) { include("**/*.java") } })
 
@@ -478,7 +480,7 @@ tasks.register("checkOptionalSeam") {
         val always = listOf("java/", "javax/", "jdk/", "sun/", "net/minecraft/", "com/mojang/", "org/slf4j/",
             "org/apache/logging/", "com/google/", "it/unimi/", "org/jetbrains/", "org/jspecify/", "io/netty/",
             "org/joml/", "org/lwjgl/", "org/spongepowered/", "org/objectweb/", "com/llamalad7/",
-            "net/fabricmc/", "net/neoforged/", "com/thirstwastaken2/")
+            "net/fabricmc/", "net/neoforged/", "net/minecraftforge/", "com/thirstwastaken2/")
         /** What a root another mod loads may name as well, keyed by what makes it a root. */
         val loadedBy = mapOf(
             "jade" to listOf("snownee/jade/"),
@@ -514,6 +516,7 @@ tasks.register("checkOptionalSeam") {
         summaries.values.forEach { summary ->
             val strings = summary.strings
             if ("Lnet/neoforged/fml/common/Mod;" in strings || "Lnet/neoforged/fml/common/EventBusSubscriber;" in strings ||
+                "Lnet/minecraftforge/fml/common/Mod;" in strings || "Lnet/minecraftforge/fml/common/Mod\$EventBusSubscriber;" in strings ||
                 "Lcom/thirstwastaken2/platform/IntegrationEntrypoint;" in strings) {
                 root(summary.name, null)
             }

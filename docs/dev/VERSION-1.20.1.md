@@ -199,6 +199,38 @@ dev client.
 
 ## Phase 2: the Forge node `1.20.1-forge`
 
+**Status (2026-09-28): built, uncommitted.** On `1.20.1-forge`: `build`, `runServer` (prints
+`initialized for Minecraft 1.20.1`, the agent answers `server-probe.jsonl`), `runGametest` (all 197
+pass), `checkForgeResources`, `checkOptionalSeam`, `checkLoaderSeam`, `checkVersionSeam`, `checkLang`,
+`checkDataConditions`, `checkApiSurface` and `checkAgentCore`. `runClient` with `boot.jsonl` stays up with
+AppleSkin, Jade and Cloth Config and with `-PwithoutOptional=all`, and `hud-layout.jsonl` in a world
+puts the thirst row between the food bar and the air bubbles. The nodes the shared edits touch still
+pass their gametests (`1.20.1`, `1.21.1`, `1.21.1-neoforge`, `26.3.x`). Still open: the twelve-node run,
+and a check of the shipped `reobfJar` in a production Forge install, which nothing above runs (every dev
+run uses Mojang's names). Where it landed, and what the plan below did not foresee:
+
+- ModDevGradle Legacy is the same `moddev-gradle` artifact at 2.0.147. `mixin { config(...) }` only
+  reaches the dev runs, so `tasks.jar` writes `MixinConfigs` itself, and the configs gain `refmap` and
+  `minVersion` as they are copied (`forgeMixinConfig`). The dev tools' config is passed on the command
+  line of the runs that load them. Mods for runClient go through `obfuscation.createRemappingConfiguration`.
+- **Forge 47 does not ship MixinExtras**, which the core mixins use: the jar nests `mixinextras-forge`
+  (`deps.mixinextras`, Maven Central) through `jarJar`.
+- **Fabric API's transitive access wideners** had quietly opened `DamageSources.source` and
+  `damageTypes` for `ThirstDamageTypes`. Forge opens them in `META-INF/accesstransformer.cfg`, in SRG names.
+- **`BucketItemMixin`'s slice named 1.20.2's `pickupBlock(Player, ...)`**, which 1.20.1 lacks; it now
+  forks a third way. The Fabric 1.20.1 node had run with that slice matching nothing.
+- **Vanilla 1.20.1's gametest mock player** has no Netty channel, which Forge rejects as the player joins,
+  so every loader's gametests now take the player from a `platform/MockPlayers` of their own.
+- **The 1.20.1 recipes use Fabric's `c:copper_ingots` and `c:iron_ingots`**, which Forge 47 does not fill;
+  `src/main/forge/resources` fills them from `#forge:ingots/*`.
+- Player data is one capability for every value (`ForgeNetworking`), payloads a `SimpleChannel` each.
+  Forge negotiates channels at login, so nothing waits the way `fabric-legacypayload` does.
+- `mods.toml` asks for Forge `[47,)`, as Forge's template does, not the 47.4.10 it is built against, so
+  `update_mc_deps.py` (which now bumps `deps.forge` from the promotions and `deps.mixinextras` from Maven
+  Central) never raises what players need. The dev tools on Forge have no loading-error screen hook.
+- Whatever the two ModDevGradle scripts share has not been moved into `gradle/` yet; they share the
+  translation shape but not its tables.
+
 ### 2.1 Build
 
 - `settings.gradle.kts`: `version("1.20.1-forge", "1.20.1").buildscript = "build.forge.gradle.kts"`.

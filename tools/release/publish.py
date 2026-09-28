@@ -1,8 +1,9 @@
 """Publishes one release of ThirstWasTaken2 to Modrinth, and holds what `publish_curseforge.py` shares.
 
-A release is ten files, five Minecraft versions on two loaders, each with its own jar, its own list
-of Minecraft releases and its own list of optional mods. Done by hand in a web form that is ten chances
-to attach the wrong jar or forget a game version, and nothing afterwards would say so. Everything a
+A release is one file per node, each Minecraft version on each of its loaders (Fabric, NeoForge and, on
+1.20.1, Forge), each with its own jar, its own list of Minecraft releases and its own list of optional
+mods. Done by hand in a web form that is a dozen chances to attach the wrong jar or forget a game version,
+and nothing afterwards would say so. Everything a
 release needs is already written down in the repository, so it is read rather than retyped:
 
 - the version number and every node from `stonecutter.properties.toml`, the file the build and CI read
@@ -93,7 +94,8 @@ class Dependency:
 
 
 # Every `deps.*` key that names a mod a player can install. A key left out is left out deliberately:
-# `fabric_loader`, `neoforge` and `loomx.loom_version` are the platform rather than a mod, and
+# `fabric_loader`, `neoforge`, `forge` and `loomx.loom_version` are the platform rather than a mod,
+# `mixinextras` is nested in the Forge jar, and
 # `cloth_config` is only on the dev client's runtime classpath -- no code in the mod names it -- so an
 # upload must not tell players to install it.
 DEPENDENCIES = {
@@ -119,8 +121,8 @@ DEPENDENCIES = {
     "cultural_delights": Dependency("cultural-delights", "YttyNOFA", "cultural-delights"),
     "fruits_delight": Dependency("fruits-delight", "g6sbyCTu", "fruits-delight"),
 }
-# The same keys where a NeoForge node's dependency is a different project: Farmer's Delight Refabricated
-# and Kaleidoscope Cookery Refabricated are Fabric ports, and the NeoForge nodes use the originals.
+# The same keys where a NeoForge or Forge node's dependency is a different project: Farmer's Delight
+# Refabricated and Kaleidoscope Cookery Refabricated are Fabric ports, and the other loaders use the originals.
 NEOFORGE_DEPENDENCIES = {
     "farmersdelight": Dependency("farmers-delight", "R2OftAxM", "farmers-delight"),
     "kaleidoscope_cookery": Dependency("kaleidoscope-cookery", "v17FatAc", "kaleidoscope-cookery"),
@@ -197,7 +199,7 @@ def version_number(node: Node, mod_version: str) -> str:
 
 
 def read_nodes(props: dict, mod_version: str) -> list[Node]:
-    """Every node in the properties file, newest Minecraft first, Fabric before NeoForge.
+    """Every node in the properties file, newest Minecraft first, Fabric before NeoForge before Forge.
 
     A loader table is what makes a node -- the rule CI's matrix and the dependency updater go by -- so
     `[neoforge."26.2.x"]` is the node `26.2.x-neoforge`. Values are read from the loader table first and
@@ -221,7 +223,7 @@ def read_nodes(props: dict, mod_version: str) -> list[Node]:
 
             dependencies = []
             for key, dependency in DEPENDENCIES.items():
-                if loader == "neoforge":
+                if loader != "fabric":
                     dependency = NEOFORGE_DEPENDENCIES.get(key, dependency)
                 if value("deps", key) is not None:
                     dependencies.append(dependency)
