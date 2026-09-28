@@ -114,30 +114,40 @@ public final class ClientVanilla {
      * 26.1 renamed it.
      */
     public static AbstractWidget button(int width, int height, Component message, Runnable onPress, Painter painter) {
-        // The lambdas are locals, not constructor arguments: Forge 1.20.1's recompiled Button names every
-        // constructor parameter the same, so javac rejects a lambda inside this anonymous constructor.
-        Button.OnPress press = button -> onPress.run();
-        Button.CreateNarration narration = supplier -> supplier.get();
-        return new Button(0, 0, width, height, message, press, narration) {
-            //? if >=26.1 {
-            @Override
-            protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-                painter.paint(graphics, this, mouseX, mouseY);
-            }
-            //?}
-            //? if >1.21.1 <26.1 {
-            /*@Override
-            protected void renderContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-                painter.paint(graphics, this, mouseX, mouseY);
-            }
-            *///?}
-            //? if <=1.21.1 {
-            /*@Override
-            protected void renderWidget(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-                painter.paint(graphics, this, mouseX, mouseY);
-            }
-            *///?}
-        };
+        return new PaintedButton(width, height, message, onPress, painter);
+    }
+
+    /**
+     * A named class avoids the anonymous constructor javac synthesises at the call site. Forge 1.20.1's
+     * recompiled {@link Button} gives every constructor parameter the same name, which makes that synthetic
+     * constructor collide with captured values.
+     */
+    private static final class PaintedButton extends Button {
+        private final Painter painter;
+
+        PaintedButton(int width, int height, Component message, Runnable onPress, Painter painter) {
+            super(0, 0, width, height, message, button -> onPress.run(), narration -> narration.get());
+            this.painter = painter;
+        }
+
+        //? if >=26.1 {
+        @Override
+        protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            painter.paint(graphics, this, mouseX, mouseY);
+        }
+        //?}
+        //? if >1.21.1 <26.1 {
+        /*@Override
+        protected void renderContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            painter.paint(graphics, this, mouseX, mouseY);
+        }
+        *///?}
+        //? if <=1.21.1 {
+        /*@Override
+        protected void renderWidget(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            painter.paint(graphics, this, mouseX, mouseY);
+        }
+        *///?}
     }
 
     /** Draws a line of text with a shadow. {@code argb} needs its alpha, which later releases honour. */
