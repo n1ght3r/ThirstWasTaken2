@@ -292,14 +292,16 @@ Also works with:
   </tr>
 </table>
 
-On Minecraft 1.20.1, the drinks and meals of every addon above restore thirst wherever the addon has
-them, marked or not. What the table leaves out there, and why:
+<p>On Minecraft 1.20.1, the drinks and meals of every addon above restore thirst wherever the addon
+has them, marked or not. What the table leaves out there, and why:</p>
 
-- Brewin' and Chewin': its 1.20.1 Keg is an older design, so water poured into it does not keep its
-  grade.
-- Expanded Delight: its 1.20.1 build is Fabric only, and there the Cooking Pot still cooks its two soups
-  from sea water.
-- Cultural Delights: its 1.20.1 build has no Vat, so there is nothing to change.
+<ul>
+  <li>Brewin' and Chewin': its 1.20.1 Keg is an older design, so water poured into it does not keep
+  its grade.</li>
+  <li>Expanded Delight: its 1.20.1 build is Fabric only, and there the Cooking Pot still cooks its two
+  soups from sea water.</li>
+  <li>Cultural Delights: its 1.20.1 build has no Vat, so there is nothing to change.</li>
+</ul>
 
 </div>
 

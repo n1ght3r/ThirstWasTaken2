@@ -30,7 +30,9 @@ sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.
 "Also works with" table, the mod's banner and versions beside one sentence, for a smaller
 integration (Cold Sweat, Serene Seasons); and the Delight Ecosystem (collapsed:
 a `<details>` on Modrinth, a `<div class="spoiler">` on CurseForge, which strips `<details>`),
-which holds Farmer's Delight and every addon of it, in the same two kinds of table. A banner is linked
+which holds Farmer's Delight and every addon of it, in the same two kinds of table. CurseForge renders
+no Markdown inside an HTML block, so text inside a spoiler there is HTML (`<p>`, `<ul><li>`, `<a>`):
+a `- ` list comes out as one run-on paragraph. A banner is linked
 from the mod's own page or an image host, never committed, and scaled to about 74 px high. Versions
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).

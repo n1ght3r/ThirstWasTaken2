@@ -331,6 +331,18 @@ the production Forge server above:
 - Serene Seasons on Fabric showed that the Loom which builds 1.20.1 refuses a dependency resolved while
   the project configures, so `build.gradle.kts` unpacks nested jars lazily.
 
+**Delight addons on 1.20.1.** Their drinks and meals restore thirst there through data and config ids,
+with no code. The parts that need code are still missing, and the Versions section of `MODRINTH.md` and
+`CURSEFORGE.md` lists them for players:
+
+- **Brewin' and Chewin'**: its 1.20.1 Keg is an older design than the 1.21.1 one the mixins in
+  `src/main/brewinandchewin` target, so water poured into it comes back without its grade. A port needs
+  mixins of its own against that Keg.
+- **Expanded Delight**: its 1.20.1 build is Fabric only, and the row builds only on
+  `1.21.1-neoforge`, so the Cooking Pot still cooks its Asparagus Soup and Cinnamon Apples from sea
+  water there. A port needs a Fabric side of the sea water guard.
+- **Cultural Delights**: its 1.20.1 build has no Vat, so there is nothing to port.
+
 ## Phase 4: docs and release
 
 - Update `AGENTS.md` (version list, Java rule, node list, integration table), `platform/AGENTS.md`,
