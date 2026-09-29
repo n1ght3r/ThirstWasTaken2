@@ -19,6 +19,7 @@ npm run docs:build    # must pass before you call a docs change done
 | `docs/integrations/` | One page per optional mod that changes what this one does, under the sidebar's Integrations. Farmer's Delight and its addons (Brewin' and Chewin', Cultural Delights, Fruits Delight, Ocean's Delight, Expanded Delight, Rustic Delight) share `docs/integrations/farmers-delight/`, whose `index.md` is Farmer's Delight's own page. AppleSkin and Jade only show what is already there, so they get no page. |
 | `docs/developers/` | For mod and data pack authors: the data pack format and the Java API. |
 | `.vitepress/config.mts` | Nav, sidebar and the GitHub, Modrinth and CurseForge icons. |
+| `.vitepress/mods.ts` | Every other mod the site links to, with its icon: the sidebar's Integrations group and the home page's "Works with" grid both read it. A new integration is added here once. |
 | `.vitepress/theme/` | Default theme plus `custom.css` for the brand colour. |
 | `public/` | `logo.png` for the navbar and favicon, and `screenshots/`, by subject: `hud/`, `water/`, `recipes/`, `config/`, and `integrations/<mod>/` for each optional mod. A new image goes in the folder of what it shows. The home hero is a slideshow of three screenshots, in `.vitepress/theme/HeroSlideshow.vue`. |
 
@@ -36,8 +37,14 @@ a `- ` list comes out as one run-on paragraph. A banner is linked
 from the mod's own page or an image host, never committed, and scaled to about 74 px high. A link to
 another mod's page (its Modrinth or CurseForge page, or our page about it) has the mod's icon before
 it, from the mod's own page: on the site `![](url){.mod-icon}`, on the store pages an `<img>` 20 px
-square with `align="absmiddle"`. A link that is a banner gets none. An icon with a solid background
-is cleared and committed to `public/icons/mods/` (Sophisticated Backpacks). Versions
+square with `align="absmiddle"`. A link that is a banner gets none. Icons are linked, never downloaded
+or edited into the repo, even one with a solid background (Sophisticated Backpacks): they are the
+mod authors' work. An icon drawn inside a wide transparent margin (Farmer's Delight and its
+addons) goes through wsrv.nl with `trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png`, which
+crops the margin and pads it square again; those show at 24 px on the store pages and a little
+larger on the site (`.mod-icon-lg`). Every sidebar entry has an icon, set in `.vitepress/config.mts`: an
+integration's page the mod's icon, a feature page a texture of this mod (`public/icons/sidebar/`),
+the rest a Lucide icon. Versions
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).
 

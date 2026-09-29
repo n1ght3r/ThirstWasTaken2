@@ -8,7 +8,7 @@ With Fruits Delight installed, its juices, teas, jellos, popsicles and juicy fru
 
 ::: warning Supported versions
 Everything on this page works on NeoForge, Minecraft 1.21.1, with
-![](https://cdn.modrinth.com/data/g6sbyCTu/4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png){.mod-icon} [Fruits Delight](https://modrinth.com/mod/fruits-delight) 1.2.14, and on Forge, Minecraft 1.20.1, with
+![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fg6sbyCTu%2F4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Fruits Delight](https://modrinth.com/mod/fruits-delight) 1.2.14, and on Forge, Minecraft 1.20.1, with
 1.1.3. The mod has no Fabric build and no build for a newer Minecraft version.
 :::
 

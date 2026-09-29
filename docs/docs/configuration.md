@@ -5,68 +5,131 @@ outline: [2, 3]
 # Configuration
 
 Settings live in `config/thirstwastaken2.json`, written on first launch. They can also be changed in
-game: through Mod Menu on Fabric, or the Mods list on NeoForge.
+game, through Mod Menu on Fabric or the Mods list on NeoForge.
 
-![The config screen, with a tab for each group of settings on the left](/screenshots/config/config-screen.png)
+![The settings screen, every page and tab: sliders and switches, the Water tabs, the Sickness tables, the AppleSkin preview, the item list, Mod Items and Containers](/screenshots/config/config-showcase.gif)
 
-- Pick a group from the tabs on the left, or type in the search box to find a setting on any page.
-  A longer page is split into smaller tabs along its top.
-- A setting you have changed is shown in amber. The arrow button next to it puts it back.
-- **Reset to Defaults** resets the whole page, **Done** saves, **Cancel** discards.
+- A changed setting shows in amber; the arrow beside it puts it back.
+- **Reset to Defaults** resets the page, **Done** saves, **Cancel** discards.
 - A file edited by hand is read on the next start.
+
+## The file
+
+Every setting at its default. The long lists are cut short here; see
+[sicknessEffects](#sicknesseffects) and [drinks and foods](#drinks-and-foods).
+
+```json
+{
+  "thirstDepletionModifier": 1.2,
+  "thirstDepletionInPeaceful": false,
+  "preventSprintingWhenThirsty": true,
+  "canDrinkByHand": true,
+  "dehydrationHaltsHealthRegen": true,
+  "quenchedHealthRegen": 0.5,
+  "quenchedHealMinFood": 10,
+  "coldSweatClimate": true,
+  "sereneSeasonsClimate": true,
+  "seasonDrainSpring": 1.0,
+  "seasonDrainSummer": 1.15,
+  "seasonDrainAutumn": 1.0,
+  "seasonDrainWinter": 0.9,
+  "appleskinQuenchedOverlay": "DIAMOND",
+  "appleskinTooltipDroplets": true,
+  "defaultPurity": 2,
+  "quenchedPercent": [0, 50, 100, 100],
+  "enableSeaWater": true,
+  "seaWaterNauseaSeconds": 8,
+  "seaWaterParchedSeconds": 30,
+  "enableRainCollection": true,
+  "rainwaterPurity": 2,
+  "dripstonePurity": 3,
+  "enableBoilingInHand": true,
+  "copperCanteenCapacity": 4,
+  "ironFlaskCapacity": 6,
+  "copperCanteenBoilSeconds": 3,
+  "ironFlaskBoilSeconds": 4,
+  "copperHangingPotBoilSeconds": 4,
+  "ironHangingPotBoilSeconds": 6,
+  "sicknessEffects": {
+    "normal": {
+      "dirty": [
+        { "effect": "minecraft:nausea", "chance": 100, "seconds": 7, "level": 1 },
+        { "effect": "thirstwastaken2:upset_stomach", "chance": 75, "seconds": 60, "level": 2 },
+        { "effect": "minecraft:poison", "chance": 35, "seconds": 20, "level": 1 }
+      ]
+    }
+  },
+  "extendSicknessEffects": true,
+  "enableDrinkTagMatching": true,
+  "drinkTagValue": [6, 8],
+  "enableKeywordMatching": false,
+  "keywordBlacklist": "dried|candied|leaf|leaves|gummy|crate|jam|sauce|bucket|seed|cookie|pie|bush|sapling|bean|curry|cake|candy",
+  "drinkKeywords": "drink|juice|tea|soda|coffee|wine|beer|cider|yogurt|milkshake|smoothie",
+  "soupKeywords": "soup|stew|porridge",
+  "fruitKeywords": "fruit|berry|berries|grape|orange|peach|pear|coconut|lemon|melon|cherry|apple",
+  "keywordDrinkValue": [10, 14],
+  "keywordSoupValue": [4, 5],
+  "keywordFruitValue": [2, 3],
+  "itemBlacklist": [],
+  "drinks": {
+    "minecraft:potion": [6, 8],
+    "thirstwastaken2:terracotta_water_bowl": [4, 5]
+  },
+  "foods": {
+    "minecraft:apple": [2, 3]
+  },
+  "enableBowls": true,
+  "enableWaterskin": true,
+  "enableCopperCanteen": true,
+  "enableIronFlask": true,
+  "enableCopperHangingPot": true,
+  "enableIronHangingPot": true
+}
+```
 
 ## Thirst
 
 ### thirstDepletionModifier
 
-Default `1.2`, shown as `120%`. The base drain speed, before biome changes. `0` stops thirst draining.
+Default `1.2` (`120%`). The base drain speed. `0` stops thirst draining.
 
 ### thirstDepletionInPeaceful
 
-Default `false`. When off, thirst refills on its own on Peaceful.
+Default `false`. Off, thirst refills on its own on Peaceful.
 
 ### preventSprintingWhenThirsty
 
-Default `true`. Stops sprinting at 6 thirst or below.
+Default `true`. No sprinting at 6 thirst or below.
 
 ### dehydrationHaltsHealthRegen
 
-Default `true`. Stops natural healing until thirst is nearly full. See
+Default `true`. No natural healing until thirst is nearly full. See
 [Running low](/docs/features/thirst-and-quenched#running-low).
 
 ### quenchedHealthRegen
 
-Default `0.5`. How fast quenched heals while thirst is full, as a share of how fast saturation
-heals: `1.0` is as fast, `0` turns it off. See
-[Healing](/docs/features/thirst-and-quenched#healing).
+Default `0.5`. How fast quenched heals at full thirst, as a share of saturation's speed. `0` is off.
+See [Healing](/docs/features/thirst-and-quenched#healing).
 
 ### quenchedHealMinFood
 
-Default `10`. The food level, in half shanks, quenched needs before it heals. `10` is five shanks,
-`0` lets it heal even while starving.
+Default `10`. The food level, in half shanks, quenched needs before it heals.
 
 ### coldSweatClimate
 
-Default `true`. With Cold Sweat installed, the drain follows the temperature Cold Sweat measures around
-the player, hearths and shade included, instead of the biome's. Does nothing without Cold Sweat, and the settings screen only shows it
-when Cold Sweat is installed. See
-[Cold Sweat](/docs/integrations/cold-sweat#climate).
+Default `true`. With Cold Sweat, the drain follows Cold Sweat's temperature instead of the biome's.
+See [Cold Sweat](/docs/integrations/cold-sweat#climate).
 
 ### sereneSeasonsClimate
 
-Default `true`. With Serene Seasons installed, the drain follows the season, and tropical biomes follow
-their wet and dry seasons. Shown on the Seasons tab, which only appears with Serene Seasons. See
+Default `true`. With Serene Seasons, the drain follows the season. See
 [Serene Seasons](/docs/integrations/serene-seasons).
 
 ### seasonDrainSpring, seasonDrainSummer, seasonDrainAutumn, seasonDrainWinter
 
-Defaults `1.0`, `1.15`, `1.0` and `0.9`, shown as percentages from `25%` to `400%`. The drain speed in
-the middle of each season, with Serene Seasons installed. Between two seasons the speed moves from one
-to the other a little each day.
+Defaults `1.0`, `1.15`, `1.0`, `0.9`, from `25%` to `400%`. The drain speed in each season.
 
 ## Water
-
-![The Water page, split into Drinking, Quenched, Sea Water and Rain and Dripstone tabs](/screenshots/config/config-water.png)
 
 ### defaultPurity
 
@@ -78,99 +141,64 @@ Default `true`. Sneak and use an empty hand on water to drink.
 
 ### quenchedPercent
 
-Default `[0, 50, 100, 100]`. How much of a drink's quenched water of each grade gives, Dirty first,
-then Murky, Clean and Pure. Bad water fills the bar but does not keep it full. Shown as four sliders.
+Default `[0, 50, 100, 100]`. How much of a drink's quenched each grade gives, Dirty to Pure.
 
 ### enableSeaWater
 
-Default `true`. Ocean and beach water is salty. Off, it is graded like any other water.
+Default `true`. Ocean and beach water is salty.
 
 ### seaWaterNauseaSeconds and seaWaterParchedSeconds
 
-Default `8` and `30`. How long a drink of sea water gives Nausea and Parched. `0` gives none.
+Default `8` and `30`. How long sea water gives Nausea and Parched. `0` gives none.
 
 ### enableRainCollection
 
-Default `true`. Rain fills hanging pots, and rain in a cauldron gets `rainwaterPurity`. Off, pots
-ignore rain and rain in a cauldron has no grade, so it counts as `defaultPurity`.
+Default `true`. Rain fills hanging pots and cauldrons with `rainwaterPurity` water.
 
 ### rainwaterPurity and dripstonePurity
 
-Default `2`, Clean, and `3`, Pure. The grade of collected rain and of water a pointed dripstone drips
-into a cauldron.
+Default `2`, Clean, and `3`, Pure. The grade of rain and of dripstone water.
 
 ## Sickness
 
 ### sicknessEffects
 
 Default: the tables in [Drinking bad water](/docs/features/water-purity#drinking-bad-water). For each
-difficulty and each grade, a list of effects a drink can give. Each effect has its own chance, so one
-drink can give several, or none.
+difficulty and grade, a list of effects a drink can give, each with its own chance.
 
 | Field | Meaning |
 |---|---|
-| `effect` | The effect id, such as `minecraft:poison` or `thirstwastaken2:upset_stomach`. Effects from other mods work too |
-| `chance` | `0` to `100`, the percent chance per drink |
-| `seconds` | `1` to `600`, how long it lasts |
-| `level` | `1` to `10`, the effect level |
+| `effect` | Effect id, from any mod, such as `minecraft:poison` |
+| `chance` | `0` to `100`, percent per drink |
+| `seconds` | `1` to `600` |
+| `level` | `1` to `10` |
 
-The Sickness page of the config screen has a tab per difficulty. Each tab lists the grades, from Dirty to Pure, with their
-effects. Effects can be added by id, edited or removed there, and each grade can be reset on its own.
-
-```json
-"sicknessEffects": {
-  "normal": {
-    "dirty": [
-      { "effect": "minecraft:nausea", "chance": 100, "seconds": 7, "level": 1 },
-      { "effect": "minecraft:poison", "chance": 25, "seconds": 20, "level": 1 }
-    ],
-    "pure": [
-      { "effect": "minecraft:regeneration", "chance": 10, "seconds": 5, "level": 1 }
-    ]
-  }
-}
-```
-
-A difficulty or grade left out of the file gets its default effects. An empty list gives nothing. An
-effect from a mod that is not installed is skipped.
+A difficulty or grade left out gets its defaults, an empty list gives nothing, and an effect from a
+mod that is not installed is skipped.
 
 ### extendSicknessEffects
 
-Default `true`. A drink that gives an effect the player already has adds its time to what is left, up
-to twice the time in the table, and keeps the higher level. Off, the longer of the two is kept.
+Default `true`. The same effect again adds its time, up to twice the table's. Off, the longer one is
+kept.
 
 ## AppleSkin
 
-These settings are client-side and only used while AppleSkin is installed. The exhaustion strip
-follows AppleSkin's **Food Exhaustion HUD Underlay** setting.
-
-![The AppleSkin page, with a live preview of the thirst bar and a drink's tooltip](/screenshots/config/config-appleskin.png)
+Client-side, and only used with AppleSkin installed.
 
 ### appleskinQuenchedOverlay
 
-Default `DIAMOND`. The quenched outline colour: `DIAMOND`, `ICE`, `GOLD`, `APPLESKIN` or `LEGACY`, the
-blue outline of the original Thirst Was Taken. `OFF` hides the outline and the exhaustion strip.
+Default `DIAMOND`. The quenched outline: `DIAMOND`, `ICE`, `GOLD`, `APPLESKIN`, `LEGACY` or `OFF`.
 
 ### appleskinTooltipDroplets
 
-Default `true`. Shows the thirst and quenched droplets in tooltips.
+Default `true`. Thirst and quenched droplets in tooltips.
 
 ## Item values
 
 ### drinks and foods
 
-Two lists of item ids and their thirst and quenched. The **Item Values** page shows one row per item,
-with a box for each number, a switch that puts the item in `itemBlacklist`, and a row to add an item.
-In the file they look like this:
-
-```json
-"drinks": {
-  "minecraft:potion": [6, 8],
-  "thirstwastaken2:terracotta_water_bowl": [4, 5]
-}
-```
-
-Ids for mods that are not installed are ignored. Add entries to support another mod.
+Item ids and their `[thirst, quenched]`. Edit them on the **Item Values** page, or add entries to
+support another mod. Ids for mods that are not installed are ignored.
 
 ### itemBlacklist
 
@@ -178,8 +206,8 @@ Empty by default. Items listed here restore nothing.
 
 ### enableDrinkTagMatching
 
-Default `true`. Items their mod marks as drinks restore `drinkTagValue`. Items in `drinks` or `foods`
-keep their own value.
+Default `true`. Items their mod marks as drinks restore `drinkTagValue`, unless listed in `drinks`
+or `foods`.
 
 ### drinkTagValue
 
@@ -187,34 +215,24 @@ Default `[6, 8]`, the same as a water bottle.
 
 ### enableKeywordMatching
 
-Default `false`. Guesses a value from the item id, so a `strawberry_juice` from any mod counts as a
-drink. Guesses can be wrong, but it covers a large modpack quickly.
+Default `false`. Guesses a value from the item id, so any `strawberry_juice` counts as a drink.
 
 ### drinkKeywords, soupKeywords and fruitKeywords
 
-Words matched against the item id, separated by `|`. Matches are worth `keywordDrinkValue`,
-`keywordSoupValue` or `keywordFruitValue`. Drinks are checked first, then soups, then fruit.
+Words matched against the id, worth `keywordDrinkValue`, `keywordSoupValue` or `keywordFruitValue`.
 
 ### keywordBlacklist
 
-Words that stop a guess, so `melon_seed` is not treated as fruit. Only applies to guesses.
+Words that stop a guess, so `melon_seed` is not fruit.
 
 ## Mod items
 
-![The Mod Items page on its Items tab: one switch per item, under a note that changes apply after /reload](/screenshots/config/config-mod-items.png)
-
-For a modpack that brings its own canteen or pot. A switch that is off stops the item being crafted
-and hides it from the creative tab. Items that already exist keep working, and the item stays in the
-game, so worlds that hold one still load.
-
-Changes apply after `/reload`, or on rejoining a singleplayer world. A dedicated server reads the file
-only on start, so it needs a restart. Recipe viewers such as JEI and EMI still list a switched-off
-item.
+A switch that is off stops the item being crafted and hides it from the creative tab; existing ones
+keep working. Applies after `/reload`, or a restart on a dedicated server.
 
 ### enableBowls
 
-Default `true`. The Clay Bowl, the Terracotta Bowl and the filled bowl, together, since one is no use
-without the others. Off also removes boiling water in a bowl.
+Default `true`. The Clay Bowl, Terracotta Bowl and filled bowl, together.
 
 ### enableWaterskin
 
@@ -230,25 +248,22 @@ Default `true`. The Iron Flask, and cleaning its water in a furnace.
 
 ### enableCopperHangingPot and enableIronHangingPot
 
-Default `true`. The Copper Hanging Pot and the Iron Hanging Pot, one switch each.
+Default `true`. One switch for each hanging pot.
 
 ## Containers
 
-![The Containers page on its Boil in Hand tab, beside the Capacity and Hanging Pots tabs](/screenshots/config/config-containers.png)
-
 ### copperCanteenCapacity and ironFlaskCapacity
 
-Default `4` and `6`, from `1` to `6`. How many drinks each holds when full. One that already holds
-more keeps its water but takes no more.
+Default `4` and `6`, from `1` to `6`. Drinks each holds when full.
 
 ### enableBoilingInHand
 
-Default `true`. Holding use with a Copper Canteen or Iron Flask on a lit campfire boils its water.
+Default `true`. Hold use with a Copper Canteen or Iron Flask over a lit campfire to boil it.
 
 ### copperCanteenBoilSeconds and ironFlaskBoilSeconds
 
-Default `3` and `4`. Seconds each drink takes to boil over a campfire.
+Default `3` and `4`. Seconds per drink over a campfire.
 
 ### copperHangingPotBoilSeconds and ironHangingPotBoilSeconds
 
-Default `4` and `6`. Seconds each drink in a hanging pot takes to boil.
+Default `4` and `6`. Seconds per drink in a hanging pot.

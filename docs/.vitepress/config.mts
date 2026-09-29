@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { DELIGHT_ADDONS, FARMERS_DELIGHT, INTEGRATIONS, type Mod } from './mods'
 
 const REPO = 'https://github.com/n1ght3r/ThirstWasTaken2'
 const MODRINTH = 'https://modrinth.com/mod/thirst-was-taken-2'
@@ -9,62 +10,75 @@ const CURSEFORGE = 'https://www.curseforge.com/minecraft/mc-mods/thirst-was-take
 const CURSEFORGE_ICON = '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>CurseForge</title><path d="M18.326 9.2145S23.2261 8.4418 24 6.1882h-7.5066V4.4H0l2.0318 2.3576V9.173s5.1267-.2665 7.1098 1.2372c2.7146 2.516-3.053 5.917-3.053 5.917L5.0995 19.6c1.5465-1.4726 4.494-3.3775 9.8983-3.2857-2.0565.65-4.1245 1.6651-5.7344 3.2857h10.9248l-1.0288-3.2726s-7.918-4.6688-.8336-7.1127z"/></svg>'
 const BASE = process.env.VITEPRESS_BASE || '/'
 
+// A sidebar entry with the mod's icon before its name. VitePress renders sidebar text as HTML.
+const sidebarMod = (mod: Mod) => ({
+  text: `<img class="sidebar-mod-icon${mod.large ? ' sidebar-mod-icon-lg' : ''}" src="${mod.icon.replace(/&/g, '&amp;')}" alt=""><span>${mod.name}</span>`,
+  link: mod.link
+})
+
+// A page of this mod with one of its own textures before the name, from public/icons/sidebar/. Sidebar
+// HTML is not rewritten for the base path, so the base is added here.
+const pageIcon = (name: string, file: string) =>
+  `<img class="sidebar-mod-icon sidebar-pixel-icon" src="${BASE.replace(/\/?$/, '/')}icons/sidebar/${file}" alt=""><span>${name}</span>`
+
+// Lucide icons (lucide.dev, ISC), inline so they take the text colour. Only the paths are kept.
+const LUCIDE = {
+  home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  overview: '<path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/>',
+  download: '<path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>',
+  help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  terminal: '<path d="M12 19h8"/><path d="m4 17 6-6-6-6"/>',
+  settings: '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>',
+  package: '<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/>',
+  code: '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>'
+}
+const lucide = (name: string, icon: keyof typeof LUCIDE) =>
+  `<svg class="sidebar-mod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LUCIDE[icon]}</svg><span>${name}</span>`
+
 const manualSidebar = [
   {
     text: 'Getting Started',
     items: [
-      { text: 'Overview', link: '/docs/' },
-      { text: 'Installation', link: '/docs/installation' },
-      { text: 'FAQ', link: '/docs/faq' }
+      { text: lucide('Overview', 'overview'), link: '/docs/' },
+      { text: lucide('Installation', 'download'), link: '/docs/installation' },
+      { text: lucide('FAQ', 'help'), link: '/docs/faq' }
     ]
   },
   {
     text: 'Features',
     items: [
-      { text: 'Thirst and Quenched', link: '/docs/features/thirst-and-quenched' },
-      { text: 'Drinking', link: '/docs/features/drinking' },
-      { text: 'Water Purity', link: '/docs/features/water-purity' }
+      { text: pageIcon('Thirst and Quenched', 'thirst.png'), link: '/docs/features/thirst-and-quenched' },
+      { text: pageIcon('Drinking', 'drinking.png'), link: '/docs/features/drinking' },
+      { text: pageIcon('Water Purity', 'water-purity.png'), link: '/docs/features/water-purity' }
     ]
   },
   {
     // Mods that change what this one does get a page each. AppleSkin and Jade only show what is
     // already there, so they are covered on the feature pages instead.
-    text: 'Integrations',
+    // The class lets custom.css space this group's icon rows apart from the others.
+    text: '<span class="sidebar-integrations">Integrations</span>',
     items: [
-      { text: 'Create', link: '/docs/integrations/create' },
-      { text: 'Sophisticated Backpacks', link: '/docs/integrations/sophisticated-backpacks' },
-      { text: 'Supplementaries', link: '/docs/integrations/supplementaries' },
-      { text: 'Kaleidoscope Cookery', link: '/docs/integrations/kaleidoscope-cookery' },
-      { text: 'Cold Sweat', link: '/docs/integrations/cold-sweat' },
-      { text: 'Serene Seasons', link: '/docs/integrations/serene-seasons' },
+      ...INTEGRATIONS.map(sidebarMod),
       {
-        // Farmer's Delight and its addons, together.
-        text: "Farmer's Delight",
-        link: '/docs/integrations/farmers-delight/',
-        collapsed: false,
-        items: [
-          { text: "Brewin' and Chewin'", link: '/docs/integrations/farmers-delight/brewin-and-chewin' },
-          { text: 'Cultural Delights', link: '/docs/integrations/farmers-delight/cultural-delights' },
-          { text: 'Fruits Delight', link: '/docs/integrations/farmers-delight/fruits-delight' },
-          { text: "Ocean's Delight", link: '/docs/integrations/farmers-delight/oceans-delight' },
-          { text: 'Expanded Delight', link: '/docs/integrations/farmers-delight/expanded-delight' },
-          { text: 'Rustic Delight', link: '/docs/integrations/farmers-delight/rustic-delight' }
-        ]
+        // Farmer's Delight and its addons, together. Closed until opened, then open until closed.
+        ...sidebarMod(FARMERS_DELIGHT),
+        collapsed: true,
+        items: DELIGHT_ADDONS.map(sidebarMod)
       }
     ]
   },
   {
     text: 'Server Guide',
     items: [
-      { text: 'Commands', link: '/docs/commands' },
-      { text: 'Configuration', link: '/docs/configuration' }
+      { text: lucide('Commands', 'terminal'), link: '/docs/commands' },
+      { text: lucide('Configuration', 'settings'), link: '/docs/configuration' }
     ]
   },
   {
     text: 'For Developers',
     items: [
-      { text: 'Data Packs', link: '/docs/developers/data-packs' },
-      { text: 'Java API', link: '/docs/developers/java-api' }
+      { text: lucide('Data Packs', 'package'), link: '/docs/developers/data-packs' },
+      { text: lucide('Java API', 'code'), link: '/docs/developers/java-api' }
     ]
   }
 ]
@@ -95,8 +109,8 @@ export default defineConfig({
       provider: 'local'
     },
     nav: [
-      { text: 'Home', link: '/', activeMatch: '^/$' },
-      { text: 'Docs', link: '/docs/', activeMatch: '^/docs/' }
+      { text: lucide('Home', 'home'), link: '/', activeMatch: '^/$' },
+      { text: lucide('Docs', 'overview'), link: '/docs/', activeMatch: '^/docs/' }
     ],
     sidebar: {
       '/docs/': manualSidebar

@@ -9,7 +9,7 @@ Pot cooks nothing from sea water.
 
 ::: warning Supported versions
 Everything on this page works on NeoForge, Minecraft 1.21.1, with
-![](https://cdn.modrinth.com/data/e9V6wFcR/4cbbace573b20628290929948a77c74d95ed7a70.png){.mod-icon} [Expanded Delight](https://modrinth.com/mod/expanded-delight) 0.1.4. The mod has no Fabric build and no
+![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fe9V6wFcR%2F4cbbace573b20628290929948a77c74d95ed7a70.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Expanded Delight](https://modrinth.com/mod/expanded-delight) 0.1.4. The mod has no Fabric build and no
 build for a newer Minecraft version.
 :::
 

@@ -34,7 +34,7 @@
 /* The effect icons are 18px pixel art drawn four times larger; show them at twice the in-game size. */
 .vp-doc img.effect-icon {
   width: 36px;
-  height: 36px;
+  height: 40px;
   image-rendering: pixelated;
 }
 
@@ -50,10 +50,270 @@
   border-radius: 3px;
 }
 
+/* A table cell that names a mod keeps its icon and name on one line; long version lists beside it
+   wrap instead. */
+.vp-doc td:has(> img.mod-icon:first-child) {
+  white-space: nowrap;
+}
+
+/* An icon beside every sidebar page: the mod's icon, a texture of this mod, or a Lucide icon. The
+   text stays on one line. */
+.VPSidebarItem .text:has(> .sidebar-mod-icon) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* Sidebar pages 36px apart (VitePress: 32px), and 39px in Integrations, whose full-colour mod icons
+   need more room. The caret keeps level with its row. */
+.VPSidebarItem.level-1 > .item .text,
+.VPSidebarItem.level-2 > .item .text {
+  padding: 6px 0;
+}
+
+.VPSidebarItem.level-1 > .item > .caret,
+.VPSidebarItem.level-2 > .item > .caret {
+  height: 36px;
+}
+
+.VPSidebarItem.level-0:has(> .item .sidebar-integrations) .VPSidebarItem > .item .text {
+  padding: 7.5px 0;
+}
+
+.VPSidebarItem.level-0:has(> .item .sidebar-integrations) .VPSidebarItem > .item > .caret {
+  height: 39px;
+}
+
+/* Sidebar text is reused by the previous and next page links, so the icon is sized everywhere. */
+.sidebar-mod-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.sidebar-pixel-icon {
+  image-rendering: pixelated;
+}
+
+.pager-link .sidebar-mod-icon {
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: -2px;
+}
+
+/* Farmer's Delight and its addons: wide crate icons (trimmed of their margin by wsrv.nl), shown a
+   little larger. Scaled, not resized, so the line height stays the same. */
+.vp-doc img.mod-icon-lg,
+.sidebar-mod-icon-lg {
+  transform: scale(1.2);
+}
+
+/* Icons in the navbar links. */
+.VPNavBarMenuLink > span:has(> .sidebar-mod-icon),
+.VPNavScreenMenuLink > span:has(> .sidebar-mod-icon) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---- motion ------------------------------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* A new page fades in; Layout.vue restarts this on every route change. */
+.page-enter {
+  animation: page-enter 0.32s ease-out;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A collapsible sidebar group slides open instead of appearing at once. */
+.VPSidebarItem .items {
+  overflow: hidden;
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+
+.VPSidebarItem.collapsed .items {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+}
+
+.VPSidebarItem .item .sidebar-mod-icon {
+  transition: transform 0.2s ease;
+}
+
+.VPSidebarItem .item:hover .sidebar-mod-icon {
+  transform: scale(1.12);
+}
+
+.VPSidebarItem .item:hover .sidebar-mod-icon-lg {
+  transform: scale(1.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .page-enter {
+    animation: none;
+  }
+
+  .VPSidebarItem .items,
+  .VPSidebarItem .item .sidebar-mod-icon {
+    transition: none;
+  }
+}
+
 /* Config keys and command names read better slightly tighter than prose. */
 .vp-doc h3 > code {
   font-size: 0.95em;
   padding: 2px 8px;
+}
+
+/* ---- the home page: the same icons and cards as the docs --------------------------------------- */
+
+/* Feature cards carry the sidebar's icon for the page they link to. */
+.VPFeature .icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--vp-c-brand-1);
+}
+
+.VPFeature {
+  transition: border-color 0.25s, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.VPFeature.link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--vp-shadow-2);
+}
+
+/* "Works with": every integration, as in the sidebar. */
+.home-integrations {
+  padding: 48px 24px 96px;
+}
+
+@media (min-width: 640px) {
+  .home-integrations {
+    padding: 64px 48px 112px;
+  }
+}
+
+@media (min-width: 960px) {
+  .home-integrations {
+    padding: 64px 64px 128px;
+  }
+}
+
+.home-integrations-inner {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.home-integrations-title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+  color: var(--vp-c-text-1);
+}
+
+.home-integrations-lead {
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--vp-c-text-2);
+}
+
+.home-integrations-group {
+  margin-top: 32px;
+}
+
+.home-integrations-group-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--vp-c-text-2);
+}
+
+.home-integrations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.home-integration {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--vp-c-bg-soft);
+  border-radius: 12px;
+  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.25s ease, box-shadow 0.25s ease, color 0.25s;
+}
+
+.home-integration:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: var(--vp-shadow-2);
+}
+
+.home-integration-icon {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: transform 0.25s ease;
+}
+
+.home-integration-icon-lg {
+  transform: scale(1.2);
+}
+
+.home-integration:hover .home-integration-icon {
+  transform: scale(1.1);
+}
+
+.home-integration:hover .home-integration-icon-lg {
+  transform: scale(1.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .VPFeature,
+  .home-integration,
+  .home-integration-icon {
+    transition: none;
+  }
+
+  .VPFeature.link:hover,
+  .home-integration:hover {
+    transform: none;
+  }
 }
 
 /* ---- the home page slideshow ---------------------------------------------------------------- */

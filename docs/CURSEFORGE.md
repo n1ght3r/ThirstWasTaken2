@@ -128,7 +128,7 @@
   </tr>
   <tr>
     <td width="55%">
-      <img alt="Sophisticated Backpacks icon" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/icons/mods/sophisticated-backpacks.png" width="20" height="20" align="absmiddle"> <b><a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks</a></b><br>
+      <img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks</a></b><br>
       <i>NeoForge, every version but 26.3</i><br><br>
       Adds the Drinking Upgrade, which drinks from your backpack when you get thirsty, the cleanest water first. Water keeps its purity grade in the Tank and Pump Upgrades. Also works with <img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-storage">Sophisticated Storage</a>.
     </td>
@@ -180,8 +180,8 @@ Also works with:
   <tr>
     <td width="55%">
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
-      <i>Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://cdn.modrinth.com/data/7vxePowz/26e8448993e9bda4dba92b6e7a1a13d9c4333138.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
-      1.21.1 NeoForge and 1.20.1 Forge: <img alt="Farmer's Delight icon" src="https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/farmers-delight">Farmer's Delight</a></i><br><br>
+      <i>1.21.1 NeoForge and 1.20.1 Forge<br>
+      Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a></i><br><br>
       Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
     </td>
     <td width="45%">
@@ -237,13 +237,13 @@ Also works with:
     <th>Forge (1.20.1)</th>
   </tr>
   <tr>
-    <td><img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/appleskin">AppleSkin</a>, <img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/jade">Jade 🔍</a>, <img alt="Serene Seasons icon" src="https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/serene-seasons">Serene Seasons</a></td>
+    <td><img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/appleskin">AppleSkin</a><br><img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/jade">Jade 🔍</a><br><img alt="Serene Seasons icon" src="https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/serene-seasons">Serene Seasons</a></td>
     <td>every version</td>
     <td>every version</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><img alt="Farmer's Delight icon" src="https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></td>
+    <td><img alt="Farmer's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FR2OftAxM%2F8e7aa38ab94d94bb0a2894a218b69beb49002b34.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></td>
     <td>every version (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>
@@ -255,7 +255,7 @@ Also works with:
     <td>yes</td>
   </tr>
   <tr>
-    <td><img alt="Sophisticated Backpacks icon" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/icons/mods/sophisticated-backpacks.png" width="20" height="20" align="absmiddle"> <img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks / Storage</a></td>
+    <td><img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks</a><br><img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-storage">Sophisticated Storage</a></td>
     <td>–</td>
     <td>1.21.1, 1.21.11, 26.1.x, 26.2</td>
     <td>–</td>
@@ -267,25 +267,25 @@ Also works with:
     <td>yes</td>
   </tr>
   <tr>
-    <td><img alt="Rustic Delight icon" src="https://cdn.modrinth.com/data/foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png" width="20" height="16" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
+    <td><img alt="Rustic Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Ffoa4fGIH%2Feecc99e281522f2291081c48176f0faa84c107bc.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
     <td>1.21.1 and newer</td>
     <td>1.21.1</td>
     <td>–</td>
   </tr>
   <tr>
-    <td><img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a>, <img alt="Brewin' and Chewin' icon" src="https://cdn.modrinth.com/data/hIu9KJTT/f7c591a80046859d3d45c04ecbbc54d264483d5e.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a>, <img alt="Ocean's Delight icon" src="https://cdn.modrinth.com/data/DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
+    <td><img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a><br><img alt="Brewin' and Chewin' icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a><br><img alt="Ocean's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FDGiq4ZSW%2F949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
     <td>1.21.1</td>
     <td>1.21.1</td>
     <td>–</td>
   </tr>
   <tr>
-    <td><img alt="Fruits Delight icon" src="https://cdn.modrinth.com/data/g6sbyCTu/4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
+    <td><img alt="Fruits Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fg6sbyCTu%2F4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
     <td>–</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><img alt="Cold Sweat icon" src="https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a>, <img alt="Cultural Delights icon" src="https://cdn.modrinth.com/data/YttyNOFA/d857243f0e7dedd3d7f552c4371326773629e42e.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a>, <img alt="Expanded Delight icon" src="https://cdn.modrinth.com/data/e9V6wFcR/4cbbace573b20628290929948a77c74d95ed7a70.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
+    <td><img alt="Cold Sweat icon" src="https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a><br><img alt="Cultural Delights icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FYttyNOFA%2Fd857243f0e7dedd3d7f552c4371326773629e42e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a><br><img alt="Expanded Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fe9V6wFcR%2F4cbbace573b20628290929948a77c74d95ed7a70.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
     <td>–</td>
     <td>1.21.1</td>
     <td>–</td>
@@ -354,7 +354,7 @@ See the [data pack](https://n1ght3r.github.io/ThirstWasTaken2/docs/developers/da
 ## Quick FAQ
 
 **Does it work in Peaceful mode?**  
-Yes. Thirst refills on its own, unless [`thirstDepletionInPeaceful`](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration#thirstdepletioninpeaceful) is on. Pairs well with [Peaceful Hunger](https://modrinth.com/mod/peaceful-hunger).
+Yes. Thirst refills on its own, unless [`thirstDepletionInPeaceful`](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration#thirstdepletioninpeaceful) is on. Pairs well with <img alt="Peaceful Hunger icon" src="https://cdn.modrinth.com/data/NGEcCZ3C/4f2503680e564e8d2ad5e252993a44af2c61acc3_96.webp" width="20" height="20" align="absmiddle"> [Peaceful Hunger](https://modrinth.com/mod/peaceful-hunger).
 
 **Can I use this in a modpack?**  
 Yes. You are free to include Thirst Was Taken 2 in any public or private modpack.

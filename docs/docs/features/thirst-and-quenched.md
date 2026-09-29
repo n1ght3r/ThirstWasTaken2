@@ -41,7 +41,7 @@ Riding a horse, boat or minecart costs nothing. Creative and spectator players a
 - Parched adds extra drain while it lasts, and the droplets turn sandy. Sea water causes it.
 - On Peaceful the bar refills on its own, unless the server turns that off.
 
-Every rate is a setting. See [Configuration](/docs/configuration#thirst-depletion).
+Every rate is a setting. See [Configuration](/docs/configuration#thirst).
 
 ## Healing
 

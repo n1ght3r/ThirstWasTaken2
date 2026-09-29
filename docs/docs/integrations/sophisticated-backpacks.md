@@ -1,6 +1,6 @@
 # Sophisticated Backpacks
 
-With ![](/icons/mods/sophisticated-backpacks.png){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) installed, the mod
+With ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) installed, the mod
 adds the Drinking Upgrade, and water keeps its grade in the backpack's upgrades. The Drinking Upgrade
 also fits ![](https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png){.mod-icon} [Sophisticated Storage](https://modrinth.com/mod/sophisticated-storage) chests, barrels and
 shulker boxes.

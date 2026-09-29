@@ -7,8 +7,8 @@ title: "Farmer's Delight"
 With Farmer's Delight installed, its drinks and meals restore thirst, the Cooking Pot boils water
 Pure, and Nourishment stops thirst draining. Nothing needs to be set up.
 
-On Fabric this is ![](https://cdn.modrinth.com/data/7vxePowz/26e8448993e9bda4dba92b6e7a1a13d9c4333138.png){.mod-icon} [Farmer's Delight Refabricated](https://modrinth.com/mod/farmers-delight-refabricated).
-On NeoForge and Forge it is the original ![](https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png){.mod-icon} [Farmer's Delight](https://modrinth.com/mod/farmers-delight),
+On Fabric this is ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Farmer's Delight Refabricated](https://modrinth.com/mod/farmers-delight-refabricated).
+On NeoForge and Forge it is the original ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FR2OftAxM%2F8e7aa38ab94d94bb0a2894a218b69beb49002b34.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Farmer's Delight](https://modrinth.com/mod/farmers-delight),
 for Minecraft 1.21.1 on NeoForge and 1.20.1 on Forge.
 
 ## Drinks and meals

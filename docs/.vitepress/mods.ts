@@ -1,0 +1,84 @@
+// Other mods this one works with, and their icons, for the sidebar (config.mts) and the home page's
+// "Works with" grid (theme/HomeIntegrations.vue). Icons are linked from each mod's own page, never
+// copied into the repo.
+
+export interface Mod {
+  name: string
+  icon: string
+  link: string
+  // The wide crate icons of Farmer's Delight and its addons, shown a little bigger.
+  large?: boolean
+}
+
+// Farmer's Delight and its addons draw their icons inside a wide transparent margin; wsrv.nl crops
+// it and pads the icon square again.
+const trimmed = (url: string) =>
+  `https://wsrv.nl/?url=${encodeURIComponent(url)}&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png`
+
+// AppleSkin and Jade only show what is already there, so they have no page of their own.
+export const SHOWS_ONLY: Mod[] = [
+  {
+    name: 'AppleSkin',
+    icon: 'https://cdn.modrinth.com/data/EsAfCjCV/icon.png',
+    link: '/docs/features/thirst-and-quenched'
+  },
+  {
+    name: 'Jade',
+    icon: 'https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp',
+    link: '/docs/features/water-purity#checking-water-with-jade'
+  }
+]
+
+export const INTEGRATIONS: Mod[] = [
+  {
+    name: 'Create',
+    icon: 'https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp',
+    link: '/docs/integrations/create'
+  },
+  {
+    name: 'Sophisticated Backpacks',
+    icon: 'https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp',
+    link: '/docs/integrations/sophisticated-backpacks'
+  },
+  {
+    name: 'Supplementaries',
+    icon: 'https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp',
+    link: '/docs/integrations/supplementaries'
+  },
+  {
+    name: 'Kaleidoscope Cookery',
+    icon: 'https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png',
+    link: '/docs/integrations/kaleidoscope-cookery'
+  },
+  {
+    name: 'Cold Sweat',
+    icon: 'https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png',
+    link: '/docs/integrations/cold-sweat'
+  },
+  {
+    name: 'Serene Seasons',
+    icon: 'https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png',
+    link: '/docs/integrations/serene-seasons'
+  }
+]
+
+export const FARMERS_DELIGHT: Mod = {
+  name: "Farmer's Delight",
+  icon: trimmed('https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png'),
+  link: '/docs/integrations/farmers-delight/',
+  large: true
+}
+
+export const DELIGHT_ADDONS: Mod[] = [
+  ["Brewin' and Chewin'", 'hIu9KJTT/f7c591a80046859d3d45c04ecbbc54d264483d5e.png', 'brewin-and-chewin'],
+  ['Cultural Delights', 'YttyNOFA/d857243f0e7dedd3d7f552c4371326773629e42e.png', 'cultural-delights'],
+  ['Fruits Delight', 'g6sbyCTu/4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png', 'fruits-delight'],
+  ["Ocean's Delight", 'DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png', 'oceans-delight'],
+  ['Expanded Delight', 'e9V6wFcR/4cbbace573b20628290929948a77c74d95ed7a70.png', 'expanded-delight'],
+  ['Rustic Delight', 'foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png', 'rustic-delight']
+].map(([name, file, page]) => ({
+  name,
+  icon: trimmed(`https://cdn.modrinth.com/data/${file}`),
+  link: `/docs/integrations/farmers-delight/${page}`,
+  large: true
+}))
