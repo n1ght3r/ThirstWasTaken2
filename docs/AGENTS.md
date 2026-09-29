@@ -33,7 +33,11 @@ a `<details>` on Modrinth, a `<div class="spoiler">` on CurseForge, which strips
 which holds Farmer's Delight and every addon of it, in the same two kinds of table. CurseForge renders
 no Markdown inside an HTML block, so text inside a spoiler there is HTML (`<p>`, `<ul><li>`, `<a>`):
 a `- ` list comes out as one run-on paragraph. A banner is linked
-from the mod's own page or an image host, never committed, and scaled to about 74 px high. Versions
+from the mod's own page or an image host, never committed, and scaled to about 74 px high. A link to
+another mod's page (its Modrinth or CurseForge page, or our page about it) has the mod's icon before
+it, from the mod's own page: on the site `![](url){.mod-icon}`, on the store pages an `<img>` 20 px
+square with `align="absmiddle"`. A link that is a banner gets none. An icon with a solid background
+is cleared and committed to `public/icons/mods/` (Sophisticated Backpacks). Versions
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).
 

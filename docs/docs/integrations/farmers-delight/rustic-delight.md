@@ -8,7 +8,7 @@ With Rustic Delight installed, its coffees, soups, sweet salad and bell peppers 
 
 ::: warning Supported versions
 Everything on this page works on Fabric on every supported Minecraft version, and on NeoForge 1.21.1,
-with [Rustic Delight](https://modrinth.com/mod/rustic-delight) 1.7. On Fabric it needs Farmer's Delight
+with ![](https://cdn.modrinth.com/data/foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png){.mod-icon} [Rustic Delight](https://modrinth.com/mod/rustic-delight) 1.7. On Fabric it needs Farmer's Delight
 Refabricated.
 :::
 

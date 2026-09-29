@@ -9,7 +9,7 @@ the Keg.
 
 ::: warning Supported versions
 Everything on this page works on Fabric and NeoForge, Minecraft 1.21.1, with
-[Brewin' and Chewin'](https://modrinth.com/mod/brewin-and-chewin) 4.5.0. The mod has no build for a
+![](https://cdn.modrinth.com/data/hIu9KJTT/f7c591a80046859d3d45c04ecbbc54d264483d5e.png){.mod-icon} [Brewin' and Chewin'](https://modrinth.com/mod/brewin-and-chewin) 4.5.0. The mod has no build for a
 newer Minecraft version.
 :::
 

@@ -5,9 +5,9 @@ the Stockpot and the Teapot.
 
 ::: warning Supported versions
 Everything on this page works on NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with
-[Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) 1.5.1, and on Fabric, every
+![](https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png){.mod-icon} [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) 1.5.1, and on Fabric, every
 supported Minecraft version, with
-[Kaleidoscope Cookery Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated). The
+![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated). The
 official Fabric build stopped at 1.0.1 and has no Teapot: with it, only the teas and soups count.
 :::
 

@@ -8,7 +8,7 @@ With Ocean's Delight installed, its Guardian Soup and two of its bowls restore t
 
 ::: warning Supported versions
 Everything on this page works on Fabric and NeoForge, Minecraft 1.21.1, with
-[Ocean's Delight](https://modrinth.com/mod/oceans-delight) 1.0.3 on Fabric and 1.0.4 on NeoForge. On
+![](https://cdn.modrinth.com/data/DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png){.mod-icon} [Ocean's Delight](https://modrinth.com/mod/oceans-delight) 1.0.3 on Fabric and 1.0.4 on NeoForge. On
 Fabric it needs Farmer's Delight Refabricated. The mod has no build for a newer Minecraft version.
 :::
 

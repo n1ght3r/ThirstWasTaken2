@@ -30,7 +30,7 @@ uses [defaultPurity](/docs/configuration#defaultpurity).
 
 ![Jade showing Murky for the river water under the crosshair](/screenshots/water/jade-water.png)
 
-With [Jade](https://modrinth.com/mod/jade) installed, looking at water, a waterlogged block, a water
+With ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade](https://modrinth.com/mod/jade) installed, looking at water, a waterlogged block, a water
 cauldron or a hanging pot shows its grade, or Salty. It can be turned off in Jade's plugin settings.
 
 ## Salt water

@@ -8,7 +8,7 @@ With Serene Seasons installed, thirst follows the season: summer makes players t
 
 ::: tip Supported versions
 Works on Fabric, NeoForge and Forge, on every Minecraft version this mod supports, with
-[Serene Seasons](https://modrinth.com/mod/serene-seasons) and the GlitchCore it needs.
+![](https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png){.mod-icon} [Serene Seasons](https://modrinth.com/mod/serene-seasons) and the GlitchCore it needs.
 :::
 
 ## Thirst through the year

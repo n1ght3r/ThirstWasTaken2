@@ -103,7 +103,7 @@
 <table>
   <tr>
     <td width="55%">
-      <b><a href="https://modrinth.com/mod/appleskin">AppleSkin</a></b><br>
+      <img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <b><a href="https://modrinth.com/mod/appleskin">AppleSkin</a></b><br>
       <i>Fabric, NeoForge and Forge</i><br><br>
       Displays your Quenched reserve directly on the HUD, with multiple styles available to choose from. Tooltips show exact thirst values for food and drinks.
     </td>
@@ -113,7 +113,7 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://modrinth.com/mod/jade">Jade (WAILA)</a></b><br>
+      <img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://modrinth.com/mod/jade">Jade 🔍</a></b><br>
       <i>Fabric, NeoForge and Forge</i><br><br>
       Shows the purity grade of water sources, waterlogged blocks, and cauldrons directly under your crosshair.
     </td>
@@ -123,9 +123,9 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></b><br>
-      <i>26.1.2 and 26.2 Fabric: <a href="https://modrinth.com/mod/create-fly">Create Fly</a><br>
-      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://modrinth.com/mod/create">Create</a></i><br><br>
+      <img alt="Create icon" src="https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></b><br>
+      <i>1.21.1 NeoForge and 1.20.1 Forge<br>
+      26.1.2 and 26.2 Fabric: <img alt="Create Fly icon" src="https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/create-fly">Create Fly</a></i><br><br>
       Adds a Sand Filter to purify dirty water by one grade. Water also keeps its purity grade through pipes, pumps, tanks, drains, and spouts.
     </td>
     <td width="45%">
@@ -134,9 +134,9 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks</a></b><br>
+      <img alt="Sophisticated Backpacks icon" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/icons/mods/sophisticated-backpacks.png" width="20" height="20" align="absmiddle"> <b><a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks</a></b><br>
       <i>NeoForge, every version but 26.3</i><br><br>
-      Adds the Drinking Upgrade, which drinks from your backpack when you get thirsty, the cleanest water first. Water keeps its purity grade in the Tank and Pump Upgrades. Also works with <a href="https://modrinth.com/mod/sophisticated-storage">Sophisticated Storage</a>.
+      Adds the Drinking Upgrade, which drinks from your backpack when you get thirsty, the cleanest water first. Water keeps its purity grade in the Tank and Pump Upgrades. Also works with <img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/sophisticated-storage">Sophisticated Storage</a>.
     </td>
     <td width="45%">
       <img alt="A backpack of water with the Advanced Drinking Upgrade's settings open" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/sophisticated/sophisticated-drinking-upgrade.png" width="100%">
@@ -144,7 +144,7 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a></b><br>
+      <img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a></b><br>
       <i>1.21.1 Fabric and NeoForge</i><br><br>
       Water keeps its purity grade in Jars, Goblets and Faucets, and sea water stays sea water. A Jar or a Goblet of water can be drunk straight from the block. Faucets fill and empty hanging pots and grade the water they draw from a lake.
     </td>
@@ -154,9 +154,9 @@
   </tr>
   <tr>
     <td width="55%">
-      <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></b><br>
-      <i>Fabric: <a href="https://modrinth.com/mod/kaleidoscope-cookery-refabricated">Kaleidoscope Cookery Refabricated</a><br>
-      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://modrinth.com/mod/kaleidoscope-cookery">Kaleidoscope Cookery</a></i><br><br>
+      <img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></b><br>
+      <i>1.21.1 NeoForge and 1.20.1 Forge<br>
+      Fabric: <img alt="Kaleidoscope Cookery Refabricated icon" src="https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/kaleidoscope-cookery-refabricated">Kaleidoscope Cookery Refabricated</a></i><br><br>
       Teas, milk tea and soups restore thirst. Water keeps its purity grade in the Stockpot and the Teapot, and the Teapot brews nothing from sea water.
     </td>
     <td width="45%">
@@ -188,8 +188,8 @@ Also works with:
   <tr>
     <td width="55%">
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
-      <i>Fabric: <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
-      1.21.1 NeoForge and 1.20.1 Forge: <a href="https://modrinth.com/mod/farmers-delight">Farmer's Delight</a></i><br><br>
+      <i>Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://cdn.modrinth.com/data/7vxePowz/26e8448993e9bda4dba92b6e7a1a13d9c4333138.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a><br>
+      1.21.1 NeoForge and 1.20.1 Forge: <img alt="Farmer's Delight icon" src="https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight">Farmer's Delight</a></i><br><br>
       Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
     </td>
     <td width="45%">
@@ -246,55 +246,55 @@ Also works with:
     <th>Forge (1.20.1)</th>
   </tr>
   <tr>
-    <td><a href="https://modrinth.com/mod/appleskin">AppleSkin</a>, <a href="https://modrinth.com/mod/jade">Jade</a>, <a href="https://modrinth.com/mod/serene-seasons">Serene Seasons</a></td>
+    <td><img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/appleskin">AppleSkin</a>, <img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/jade">Jade 🔍</a>, <img alt="Serene Seasons icon" src="https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/serene-seasons">Serene Seasons</a></td>
     <td>every version</td>
     <td>every version</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></td>
+    <td><img alt="Farmer's Delight icon" src="https://cdn.modrinth.com/data/R2OftAxM/8e7aa38ab94d94bb0a2894a218b69beb49002b34.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></td>
     <td>every version (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></td>
+    <td><img alt="Create icon" src="https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></td>
     <td>26.1.x, 26.2 (Create Fly)</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks / Storage</a></td>
+    <td><img alt="Sophisticated Backpacks icon" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/icons/mods/sophisticated-backpacks.png" width="20" height="20" align="absmiddle"> <img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks / Storage</a></td>
     <td>–</td>
     <td>1.21.1, 1.21.11, 26.1.x, 26.2</td>
     <td>–</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></td>
+    <td><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></td>
     <td>every version (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
+    <td><img alt="Rustic Delight icon" src="https://cdn.modrinth.com/data/foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png" width="20" height="16" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight">Rustic Delight</a></td>
     <td>1.21.1 and newer</td>
     <td>1.21.1</td>
     <td>–</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
+    <td><img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a>, <img alt="Brewin' and Chewin' icon" src="https://cdn.modrinth.com/data/hIu9KJTT/f7c591a80046859d3d45c04ecbbc54d264483d5e.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a>, <img alt="Ocean's Delight icon" src="https://cdn.modrinth.com/data/DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a></td>
     <td>1.21.1</td>
     <td>1.21.1</td>
     <td>–</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
+    <td><img alt="Fruits Delight icon" src="https://cdn.modrinth.com/data/g6sbyCTu/4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight">Fruits Delight</a></td>
     <td>–</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>
   <tr>
-    <td><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a>, <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
+    <td><img alt="Cold Sweat icon" src="https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat">Cold Sweat</a>, <img alt="Cultural Delights icon" src="https://cdn.modrinth.com/data/YttyNOFA/d857243f0e7dedd3d7f552c4371326773629e42e.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a>, <img alt="Expanded Delight icon" src="https://cdn.modrinth.com/data/e9V6wFcR/4cbbace573b20628290929948a77c74d95ed7a70.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
     <td>–</td>
     <td>1.21.1</td>
     <td>–</td>
@@ -313,7 +313,7 @@ them, marked or not. What the table leaves out there, and why:
 </details>
 
 ## Settings Screen
-Change every setting in game, with a live preview of the thirst bar. Open it through <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
+Change every setting in game, with a live preview of the thirst bar. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 
 <p align="center">
   <img alt="The ThirstWasTaken2 settings screen, every page and tab: a slider and a switch on the Thirst page, the Water tabs, the Sickness tables for each difficulty, the AppleSkin preview changing outline and its tooltip droplets switched off and on, the item list scrolling to a modded group under its pinned heading, Mod Items and Containers" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">

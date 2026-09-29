@@ -4,7 +4,7 @@ With Supplementaries installed, water keeps its grade in Jars, Goblets and Fauce
 Goblet of water can be drunk.
 
 ::: warning Supported versions
-Fabric and NeoForge, Minecraft 1.21.1: [Supplementaries](https://modrinth.com/mod/supplementaries)
+Fabric and NeoForge, Minecraft 1.21.1: ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries)
 1.21.1-3.9.9. Other Minecraft versions ignore Supplementaries, which has no build for them.
 :::
 

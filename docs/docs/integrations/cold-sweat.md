@@ -9,7 +9,7 @@ Cold Sweat's own Waterskin carries a water grade and quenches thirst.
 
 ::: warning Supported versions
 Everything on this page works on NeoForge, Minecraft 1.21.1, with
-[Cold Sweat](https://modrinth.com/mod/cold-sweat) 2.4.3.1. Cold Sweat has no Fabric build and no build
+![](https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png){.mod-icon} [Cold Sweat](https://modrinth.com/mod/cold-sweat) 2.4.3.1. Cold Sweat has no Fabric build and no build
 for a newer Minecraft version.
 :::
 
