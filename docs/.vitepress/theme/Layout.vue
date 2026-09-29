@@ -2,7 +2,7 @@
 import { nextTick, onMounted, watch } from 'vue'
 import { useRoute } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import HeroSlideshow from './HeroSlideshow.vue'
+import HomeHero from './HomeHero.vue'
 import HomeIntegrations from './HomeIntegrations.vue'
 
 const { Layout } = DefaultTheme
@@ -27,8 +27,8 @@ watch(
 
 <template>
   <Layout>
-    <template #home-hero-image>
-      <HeroSlideshow />
+    <template #home-hero-before>
+      <HomeHero />
     </template>
     <template #home-features-after>
       <HomeIntegrations />

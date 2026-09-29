@@ -1,18 +1,21 @@
 ---
 layout: home
 
-hero:
+# The hero is theme/HomeHero.vue, not VitePress's own; it reads its words from here.
+thirstHero:
+  badge: Minecraft 1.20.1 to 26.3
   name: ThirstWasTaken2
   tagline: Adds a survival thirst bar, drinking, and water purity to Minecraft.
-  actions:
-    - theme: brand
-      text: Get Started
-      link: /docs/
-    - theme: alt
-      text: Download
-      link: https://modrinth.com/mod/thirst-was-taken-2
-      target: _blank
-      rel: external
+  start:
+    text: Get Started
+    link: /docs/
+  stats:
+    - value: 3 loaders
+      label: Fabric, NeoForge, Forge
+    - value: 9 languages
+      label: in game
+    - integrations: true
+      label: it works with
 
 features:
   - title: Thirst and Quenched

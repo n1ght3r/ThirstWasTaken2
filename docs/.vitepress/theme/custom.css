@@ -316,21 +316,354 @@ html {
   }
 }
 
-/* ---- the home page slideshow ---------------------------------------------------------------- */
+/* ---- the home page hero (theme/HomeHero.vue) -------------------------------------------------- */
 
-.hero-slideshow {
-  width: min(440px, calc(100vw - 48px));
+.th-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: calc(var(--vp-nav-height) * -1);
+  padding: calc(var(--vp-nav-height) + 48px) 24px 72px;
+}
+
+@media (min-width: 640px) {
+  .th-hero {
+    padding: calc(var(--vp-nav-height) + 64px) 48px 88px;
+  }
+}
+
+@media (min-width: 960px) {
+  .th-hero {
+    padding: calc(var(--vp-nav-height) + 80px) 64px 104px;
+  }
+}
+
+/* A faint block grid, lit from behind the slideshow, fading out towards the features. */
+.th-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 55% at 78% 42%, rgba(33, 139, 226, 0.22), transparent 70%),
+    radial-gradient(40% 40% at 12% 18%, rgba(113, 196, 249, 0.12), transparent 70%),
+    linear-gradient(var(--vp-c-divider) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, var(--vp-c-divider) 1px, transparent 1px) 0 0 / 32px 32px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+.th-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  max-width: 1152px;
   margin: 0 auto;
 }
 
-/*
- * VitePress sizes the hero image as a fixed square meant for a logo that floats over its glow. A 4:3
- * frame plus its dots is taller than that square, so the container takes the slideshow's own size and
- * the frame never spills up into the navbar.
- */
-.VPHero .image-container {
-  width: auto;
-  height: auto;
+@media (min-width: 960px) {
+  .th-hero-inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  }
+}
+
+.th-hero-text {
+  text-align: center;
+}
+
+.th-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.th-hero-badge-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  image-rendering: pixelated;
+}
+
+.th-hero-name {
+  margin: 0;
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  background: var(--vp-home-hero-name-background);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.th-hero-tagline {
+  max-width: 520px;
+  margin: 16px auto 0;
+  color: var(--vp-c-text-2);
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* The thirst bar: each droplet fills in turn, right to left, the way the in-game bar reads. */
+.th-hero-bar {
+  display: inline-flex;
+  gap: 2px;
+  margin-top: 28px;
+  padding: 8px 10px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+}
+
+.th-hero-droplet {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.th-hero-droplet img {
+  position: absolute;
+  inset: 0;
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+
+.th-hero-droplet .full {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.6);
+  animation: th-droplet-fill 0.35s ease-out forwards;
+  animation-delay: calc(0.5s + var(--i) * 0.09s);
+}
+
+@keyframes th-droplet-fill {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.th-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.th-hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.th-hero-button:hover {
+  transform: translateY(-2px);
+}
+
+.th-hero-button.brand {
+  background: var(--vp-button-brand-bg);
+  color: var(--vp-button-brand-text);
+  box-shadow: 0 8px 24px rgba(33, 139, 226, 0.3);
+}
+
+.th-hero-button.brand:hover {
+  background: var(--vp-button-brand-hover-bg);
+  box-shadow: 0 12px 30px rgba(33, 139, 226, 0.42);
+}
+
+.th-hero-button.alt {
+  border-color: var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+}
+
+.th-hero-button.alt:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.th-hero-button-icon,
+.th-hero-button-icon svg {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.th-hero-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s ease;
+}
+
+.th-hero-button.brand:hover .th-hero-arrow {
+  transform: translateX(3px);
+}
+
+.th-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 32px;
+  margin: 36px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.th-hero-stat dt {
+  color: var(--vp-c-text-1);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.th-hero-stat dd {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+@media (min-width: 960px) {
+  .th-hero-text {
+    text-align: left;
+  }
+
+  .th-hero-tagline {
+    margin-left: 0;
+  }
+
+  .th-hero-actions,
+  .th-hero-stats {
+    justify-content: flex-start;
+  }
+}
+
+/* The slideshow, tilted on a glow, with the mod's items drifting around it. */
+.th-hero-visual {
+  position: relative;
+  padding: 24px;
+}
+
+.th-hero-glow {
+  position: absolute;
+  inset: 12% 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(33, 139, 226, 0.45), rgba(113, 196, 249, 0.1) 55%, transparent 72%);
+  filter: blur(40px);
+}
+
+.th-hero-visual .hero-slideshow-frame {
+  transition: transform 0.6s ease;
+}
+
+@media (min-width: 960px) {
+  .th-hero-visual .hero-slideshow-frame {
+    transform: perspective(1400px) rotateY(-6deg) rotateX(2deg);
+  }
+
+  .th-hero-visual:hover .hero-slideshow-frame {
+    transform: none;
+  }
+}
+
+.th-hero-floater {
+  position: absolute;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 8px 14px rgba(5, 12, 20, 0.4));
+  animation: th-float 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.floater-a {
+  top: 0;
+  left: 2%;
+}
+
+.floater-b {
+  top: 6%;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  animation-delay: -1.2s;
+}
+
+.floater-c {
+  bottom: 18%;
+  left: -1%;
+  width: 40px;
+  height: 40px;
+  animation-delay: -2.5s;
+}
+
+.floater-d {
+  top: 48%;
+  right: -4px;
+  animation-delay: -3.7s;
+}
+
+@keyframes th-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(6deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .th-hero-floater {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .th-hero-droplet .full {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .th-hero-floater {
+    animation: none;
+  }
+
+  .th-hero-button,
+  .th-hero-arrow,
+  .th-hero-visual .hero-slideshow-frame {
+    transition: none;
+  }
+}
+
+/* ---- the home page slideshow ---------------------------------------------------------------- */
+
+.hero-slideshow {
+  position: relative;
+  width: min(500px, 100%);
+  margin: 0 auto;
 }
 
 .hero-slideshow-frame {
@@ -374,6 +707,17 @@ html {
   line-height: 1.2;
 }
 
+.hero-slideshow-label {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hero-slideshow-label.active {
+  opacity: 1;
+  transform: none;
+}
+
 .hero-slideshow-controls {
   display: flex;
   justify-content: center;
@@ -407,12 +751,6 @@ html {
   background: var(--vp-c-brand-1);
 }
 
-@media (max-width: 959px) {
-  .VPHero .image {
-    margin: 0 0 24px;
-  }
-}
-
 @media (max-width: 640px) {
   .hero-slideshow {
     width: min(360px, calc(100vw - 48px));
@@ -425,6 +763,7 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-slideshow-image,
+  .hero-slideshow-label,
   .hero-slideshow-controls button {
     transition: none;
   }

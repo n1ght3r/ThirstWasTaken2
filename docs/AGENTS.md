@@ -21,7 +21,7 @@ npm run docs:build    # must pass before you call a docs change done
 | `.vitepress/config.mts` | Nav, sidebar and the GitHub, Modrinth and CurseForge icons. |
 | `.vitepress/mods.ts` | Every other mod the site links to, with its icon: the sidebar's Integrations group and the home page's "Works with" grid both read it. A new integration is added here once. |
 | `.vitepress/theme/` | Default theme plus `custom.css` for the brand colour. |
-| `public/` | `logo.png` for the navbar and favicon, and `screenshots/`, by subject: `hud/`, `water/`, `recipes/`, `config/`, and `integrations/<mod>/` for each optional mod. A new image goes in the folder of what it shows. The home hero is a slideshow of three screenshots, in `.vitepress/theme/HeroSlideshow.vue`. |
+| `public/` | `logo.png` for the navbar and favicon, and `screenshots/`, by subject: `hud/`, `water/`, `recipes/`, `config/`, and `integrations/<mod>/` for each optional mod. A new image goes in the folder of what it shows. The home hero is `.vitepress/theme/HomeHero.vue` in place of VitePress's own, its words under `thirstHero` in `index.md` and its pixel art in `public/icons/hero/`; the slideshow of three screenshots inside it is `HeroSlideshow.vue`. |
 
 `docs/` contains all player and server documentation. Pages describing gameplay belong in
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
