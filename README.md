@@ -31,13 +31,13 @@ Every mechanic is explained on the [documentation site](https://n1ght3r.github.i
 
 | Minecraft | Java | Fabric Loader (min.) | Fabric API | NeoForge / Forge |
 | :--- | :---: | :--- | :--- | :--- |
-| 26.3 | 25 | 0.19.5 | 0.161.0+26.3 | 26.3.0.22-beta |
+| 26.3 | 25 | 0.19.5 | 0.161.0+26.3 | 26.3.0.39-beta |
 | 26.2 | 25 | 0.19.5 | 0.161.0+26.2 | 26.2.0.88 |
-| 26.1 – 26.1.2 | 25 | 0.19.5 | 0.155.3+26.1.2 | 26.1.2.109 |
+| 26.1 – 26.1.2 | 25 | 0.19.5 | 0.155.3+26.1.2 | 26.1.2.112 |
 | 1.21.11 | 21 | 0.19.5 | 0.141.6+1.21.11 | 21.11.45 |
-| 1.21.1 | 21 | 0.19.5 | 0.116.17+1.21.1 | 21.1.251 |
+| 1.21.1 | 21 | 0.19.5 | 0.116.17+1.21.1 | 21.1.252 |
 | 1.21 | 21 | 0.19.5 | 0.116.17+1.21.1 | – |
-| 1.20.1 | 17 | 0.19.5 | 0.92.12+1.20.1 | Forge 47.4.10 |
+| 1.20.1 | 17 | 0.19.5 | 0.92.12+1.20.1 | Forge 47.4.23 |
 
 Versions listed are minimums, except Forge, where any 47 build works. Install on the server **and** every client; NeoForge jars end in `-neoforge`, Forge jars in `-forge`.
 

@@ -28,11 +28,11 @@ Fabric API is required and must match the Minecraft version.
 
 | Minecraft | File suffix | NeoForge | Java |
 |---|---|---|---|
-| 26.3 | `+26.3-neoforge` | 26.3.0.22-beta or newer | 25 |
+| 26.3 | `+26.3-neoforge` | 26.3.0.39-beta or newer | 25 |
 | 26.2 | `+26.2-neoforge` | 26.2.0.88 or newer | 25 |
-| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.109 or newer | 25 |
+| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.112 or newer | 25 |
 | 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
-| 1.21.1 | `+1.21.1-neoforge` | 21.1.251 or newer | 21 |
+| 1.21.1 | `+1.21.1-neoforge` | 21.1.252 or newer | 21 |
 
 NeoForge needs nothing else. The 1.21.1 file does not run on 1.21. NeoForge has only beta builds for
 26.3 so far, so that file asks for one.
@@ -43,7 +43,7 @@ Minecraft 1.20.1 runs on Forge rather than NeoForge.
 
 | Minecraft | File suffix | Forge | Java |
 |---|---|---|---|
-| 1.20.1 | `+1.20.1-forge` | any 47 build, tested with 47.4.10 | 17 |
+| 1.20.1 | `+1.20.1-forge` | any 47 build, tested with 47.4.23 | 17 |
 
 Forge needs nothing else.
 
@@ -69,7 +69,7 @@ All optional except Fabric API. Versions are listed in the order 26.3, 26.2, 26.
 | ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly) | 26.2-rc-2-6.0.9-1, 26.1.2-6.0.9-4 | The [Sand Filter](/docs/integrations/create). 26.2 and 26.1.2 only. |
 | ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.1, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | [Water that keeps its grade](/docs/integrations/supplementaries) in Jars, Goblets and Faucets, and a Jar or Goblet of water that can be drunk. 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.5.1.1-fabric+mc26.3, 1.5.1.1-fabric+mc26.2, 1.5.1.1-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.5.1.1-fabric+mc1.21.1, 1.5.1.1-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
+| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0-fabric+mc26.3, 1.6.0-fabric+mc26.2, 1.6.0-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.6.0-fabric+mc1.21.1, 1.6.0-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
 | ![](https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png){.mod-icon} [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 26.1.2.0.7, 26.1.2.0.6, 21.11.0.4, 10.1.0.9, 9.1.0.3 | Thirst that [follows the season](/docs/integrations/serene-seasons). Needs GlitchCore. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Farmer's Delight<br>Refabricated](https://modrinth.com/mod/farmers-delight-refabricated) | 26.3-3.6.27, 26.2-3.6.26, 26.1-3.6.26, 1.21.11-3.6.16, 1.21.1-3.3.6, 1.20.1-2.5.7 | Thirst from its [drinks and meals](/docs/integrations/farmers-delight/), Pure water from the Cooking Pot, and no drain under Nourishment. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Brewin' and Chewin'](https://modrinth.com/mod/brewin-and-chewin) | v4.5.0+1.21.1-fabric | Thirst from its [brews and soups](/docs/integrations/farmers-delight/brewin-and-chewin), and water that keeps its grade in the Keg. 1.21.1 only. |
