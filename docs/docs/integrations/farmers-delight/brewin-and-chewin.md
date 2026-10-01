@@ -11,6 +11,9 @@ the Keg.
 Everything on this page works on Fabric and NeoForge, Minecraft 1.21.1, with
 ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Brewin' and Chewin'](https://modrinth.com/mod/brewin-and-chewin) 4.5.0. The mod has no build for a
 newer Minecraft version.
+
+On Minecraft 1.20.1, its brews and soups restore thirst too, but its Keg there is an older design, so
+water poured into it does not keep its grade.
 :::
 
 ![A Brewin' and Chewin' Keg beside barrels on a lakeshore, with Jade naming its water Dirty](/screenshots/integrations/brewin-and-chewin/brewin-keg.png)

@@ -333,8 +333,8 @@ the production Forge server above:
   the project configures, so `build.gradle.kts` unpacks nested jars lazily.
 
 **Delight addons on 1.20.1.** Their drinks and meals restore thirst there through data and config ids,
-with no code. The parts that need code are still missing, and the Versions section of `MODRINTH.md` and
-`CURSEFORGE.md` lists them for players:
+with no code. The parts that need code are still missing, and each addon's page under
+`docs/docs/integrations/farmers-delight/` tells players so in its Supported versions box:
 
 - **Brewin' and Chewin'**: its 1.20.1 Keg is an older design than the 1.21.1 one the mixins in
   `src/main/brewinandchewin` target, so water poured into it comes back without its grade. A port needs

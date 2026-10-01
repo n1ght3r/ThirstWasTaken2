@@ -11,6 +11,9 @@ from sea water.
 Everything on this page works on NeoForge, Minecraft 1.21.1, with
 ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FYttyNOFA%2Fd857243f0e7dedd3d7f552c4371326773629e42e.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Cultural Delights](https://modrinth.com/mod/cultural-delights) 0.18.1. Its Fabric build has not been
 updated since 0.17, so it has no Vat and no drinks. Its cucumbers and salad still restore thirst there.
+
+On Minecraft 1.20.1, its drinks and foods restore thirst too. Its build there has no Vat, so nothing
+else changes.
 :::
 
 ## Drinks and foods

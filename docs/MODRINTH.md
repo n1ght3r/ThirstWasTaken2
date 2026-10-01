@@ -100,6 +100,88 @@
 
 ## Mod Compatibility
 
+<details>
+<summary><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="204" align="absmiddle"> <b>and its addons</b>, click to expand</summary>
+<br>
+
+<table>
+  <tr>
+    <td width="55%">
+      <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
+      <i>1.21.1 NeoForge and 1.20.1 Forge<br>
+      Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a></i><br><br>
+      Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
+    </td>
+    <td width="45%">
+      <img alt="A Farmer's Delight Cooking Pot boiling water bottles to Pure" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farmers-delight/farmers-delight-cooking-pot.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin"><img alt="Brewin' and Chewin'" src="https://i.imgur.com/EFkjwBq.png" width="298"></a><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Brews and soups restore thirst, less the stronger the drink. Water keeps its purity grade in the Keg, and nothing ferments from sea water.
+    </td>
+    <td width="45%">
+      <img alt="A Brewin' and Chewin' Keg beside barrels on a lakeshore, with Jade naming its water Dirty" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/brewin-and-chewin/brewin-keg.png" width="100%">
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights"><img alt="Cultural Delights" src="https://cdn.modrinth.com/data/cached_images/d6a323ce1e69b76f2143b3c0e03bd9ce36fc69e1.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Its drinks, cucumbers and salads restore thirst, and the Vat brews nothing from sea water.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight"><img alt="Fruits Delight" src="https://media.forgecdn.net/attachments/765/821/logo2.png" width="272"></a><br><i>1.21.1 NeoForge, 1.20.1 Forge</i></td>
+    <td width="55%">Its juices, teas, jellos, popsicles and juicy fruits restore thirst, and sea water makes no juice.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight"><img alt="Ocean's Delight" src="https://i.imgur.com/OqgniyH.png" width="272"></a><br><i>1.21.1 Fabric and NeoForge</i></td>
+    <td width="55%">Its Guardian Soup, braised sea pickle and seagrass salad restore thirst.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight"><img alt="Expanded Delight" src="https://wsrv.nl/?url=https%3A%2F%2Fmedia.forgecdn.net%2Fattachments%2F1067%2F753%2Fsome-logo.png&amp;n=-1" width="272"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Its juices, goat milk, soups and salads restore thirst, and the Cooking Pot cooks nothing from sea water.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight"><img alt="Rustic Delight" src="https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png" width="242"></a><br><i>Fabric and 1.21.1 NeoForge</i></td>
+    <td width="55%">Its coffees, soups and bell peppers restore thirst.</td>
+  </tr>
+</table>
+
+</details>
+
+<details>
+<summary><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and its addon</b>, click to expand</summary>
+<br>
+
+<table>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.
+    </td>
+    <td width="45%">
+      <img alt="A Timber Well and a Water Trough, both full of water, on a sandy shore" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/farm-and-charm-well.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></b><br>
+      <i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i><br><br>
+      Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.
+    </td>
+    <td width="45%">
+      <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
+    </td>
+  </tr>
+</table>
+
+</details>
+
 <table>
   <tr>
     <td width="55%">
@@ -182,96 +264,26 @@ Also works with:
   </tr>
 </table>
 
-### Farmer's Delight
+## Settings Screen
+Change every setting in game, with a live preview of the thirst bar. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 
-<details>
-<summary><img alt="Farmer's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FR2OftAxM%2F8e7aa38ab94d94bb0a2894a218b69beb49002b34.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <b>Farmer's Delight and its addons</b>, click to expand</summary>
-<br>
+<p align="center">
+  <img alt="The ThirstWasTaken2 settings screen, every page and tab: a slider and a switch on the Thirst page, the Water tabs, the Sickness tables for each difficulty, the AppleSkin preview changing outline and its tooltip droplets switched off and on, the item list scrolling to a modded group under its pinned heading, Mod Items and Containers" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">
+</p>
 
-<table>
-  <tr>
-    <td width="55%">
-      <img alt="Farmer's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FR2OftAxM%2F8e7aa38ab94d94bb0a2894a218b69beb49002b34.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/">Farmer's Delight</a></b><br>
-      <i>1.21.1 NeoForge and 1.20.1 Forge<br>
-      Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a></i><br><br>
-      Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
-    </td>
-    <td width="45%">
-      <img alt="A Farmer's Delight Cooking Pot boiling water bottles to Pure" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farmers-delight/farmers-delight-cooking-pot.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Brewin' and Chewin' icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Brews and soups restore thirst, less the stronger the drink. Water keeps its purity grade in the Keg, and nothing ferments from sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Brewin' and Chewin' Keg beside barrels on a lakeshore, with Jade naming its water Dirty" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/brewin-and-chewin/brewin-keg.png" width="100%">
-    </td>
-  </tr>
-</table>
+## Version Support
 
-<table>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights"><img alt="Cultural Delights" src="https://cdn.modrinth.com/data/cached_images/d6a323ce1e69b76f2143b3c0e03bd9ce36fc69e1.png" width="272"></a><br><i>1.21.1 NeoForge</i></td>
-    <td width="55%">Its drinks, cucumbers and salads restore thirst, and the Vat brews nothing from sea water.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/fruits-delight"><img alt="Fruits Delight" src="https://media.forgecdn.net/attachments/765/821/logo2.png" width="272"></a><br><i>1.21.1 NeoForge, 1.20.1 Forge</i></td>
-    <td width="55%">Its juices, teas, jellos, popsicles and juicy fruits restore thirst, and sea water makes no juice.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight"><img alt="Ocean's Delight" src="https://i.imgur.com/OqgniyH.png" width="272"></a><br><i>1.21.1 Fabric and NeoForge</i></td>
-    <td width="55%">Its Guardian Soup, braised sea pickle and seagrass salad restore thirst.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight"><img alt="Expanded Delight" src="https://wsrv.nl/?url=https%3A%2F%2Fmedia.forgecdn.net%2Fattachments%2F1067%2F753%2Fsome-logo.png&amp;n=-1" width="272"></a><br><i>1.21.1 NeoForge</i></td>
-    <td width="55%">Its juices, goat milk, soups and salads restore thirst, and the Cooking Pot cooks nothing from sea water.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/rustic-delight"><img alt="Rustic Delight" src="https://cdn.modrinth.com/data/cached_images/6ecede4d7053895d6f424894b35007d35a5b883b.png" width="242"></a><br><i>Fabric and 1.21.1 NeoForge</i></td>
-    <td width="55%">Its coffees, soups and bell peppers restore thirst.</td>
-  </tr>
-</table>
+| Minecraft version | Mod version | Support status |
+|---|---|---|
+| 26.3 | Latest | Active |
+| 26.2 | Latest | Active |
+| 26.1.x | Latest | Active |
+| 1.21.11 | Latest | Active |
+| 1.21.1 | Latest | Active |
+| 1.21 (Fabric only) | Latest | Active |
+| 1.20.1 (Fabric and Forge) | Latest | Active |
 
-</details>
-
-### Let's Do
-
-<details>
-<summary><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and its addon</b>, click to expand</summary>
-<br>
-
-<table>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.
-    </td>
-    <td width="45%">
-      <img alt="A Timber Well and a Water Trough, both full of water, on a sandy shore" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/farm-and-charm-well.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></b><br>
-      <i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i><br><br>
-      Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
-    </td>
-  </tr>
-</table>
-
-</details>
-
-### Versions
-
-<details>
-<summary>Which integration works on which loader and version, click to expand</summary>
+### Mod Compatibility by Loader
 
 <table>
   <tr>
@@ -335,36 +347,6 @@ Also works with:
     <td>–</td>
   </tr>
 </table>
-
-On Minecraft 1.20.1, the drinks and meals of every addon above restore thirst wherever the addon has
-them, marked or not. What the table leaves out there, and why:
-
-- Brewin' and Chewin': its 1.20.1 Keg is an older design, so water poured into it does not keep its
-  grade.
-- Expanded Delight: its 1.20.1 build is Fabric only, and there the Cooking Pot still cooks its two soups
-  from sea water.
-- Cultural Delights: its 1.20.1 build has no Vat, so there is nothing to change.
-
-</details>
-
-## Settings Screen
-Change every setting in game, with a live preview of the thirst bar. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
-
-<p align="center">
-  <img alt="The ThirstWasTaken2 settings screen, every page and tab: a slider and a switch on the Thirst page, the Water tabs, the Sickness tables for each difficulty, the AppleSkin preview changing outline and its tooltip droplets switched off and on, the item list scrolling to a modded group under its pinned heading, Mod Items and Containers" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">
-</p>
-
-## Version Support
-
-| Minecraft version | Mod version | Support status |
-|---|---|---|
-| 26.3 | Latest | Active |
-| 26.2 | Latest | Active |
-| 26.1.x | Latest | Active |
-| 1.21.11 | Latest | Active |
-| 1.21.1 | Latest | Active |
-| 1.21 (Fabric only) | Latest | Active |
-| 1.20.1 (Fabric and Forge) | Latest | Active |
 
 ## For Developers
 

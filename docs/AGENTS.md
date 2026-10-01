@@ -27,13 +27,21 @@ npm run docs:build    # must pass before you call a docs change done
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
 sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.md` and
-`CURSEFORGE.md`. There, Mod Compatibility has four parts: the main table, a screenshot per mod beside
-its icon and name; the "Also works with" table, the mod's banner and versions beside one sentence, for a
-smaller integration (Cold Sweat, Serene Seasons, Terralith); and one collapsed section per family of
-mods, named after the family (`### Farmer's Delight`, `### Let's Do`): a `<details>` on Modrinth, whose
-summary is the main mod's icon and "<b>Name and its addons</b>, click to expand", and a
-`<div class="spoiler">` on CurseForge, which strips `<details>`. Each holds its main mod and its
-addons in the same two kinds of table. CurseForge renders
+`CURSEFORGE.md`. There, Mod Compatibility opens with one collapsed section per family of mods, with no
+heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm and its addon), then
+the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
+mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
+Terralith). A family is a `<details>` on Modrinth, whose summary is the main mod's icon and
+"<b>Name and its addons</b>, click to expand" (Farmer's Delight's is its banner at 204 px wide,
+unlinked so a click still opens it, then "<b>and its addons</b>, click to expand"), and on CurseForge,
+which strips `<details>` and ignores `align` and `vertical-align` on an image, the main mod's icon and
+"<b>Name and its addons</b>" in a `<p>` above a `<div class="spoiler">`, Farmer's Delight included,
+since text beside a banner there sits at its top edge. Each holds its main mod and its addons in the same two kinds of table. In the
+Farmer's Delight family, the rows with a screenshot (Farmer's Delight, Brewin' and Chewin') open with
+the mod's linked banner in place of its icon and name. The table of which integration works on which
+loader and version is not collapsed: it sits under `### Mod Compatibility by Loader`, below the
+Version Support table. Notes on one version of one addon go on that addon's page on the site, not
+here. CurseForge renders
 no Markdown inside an HTML block, so text inside a spoiler there is HTML (`<p>`, `<ul><li>`, `<a>`):
 a `- ` list comes out as one run-on paragraph. A banner is linked
 from the mod's own page or an image host, never committed, and scaled to about 74 px high. A link to
