@@ -25,7 +25,7 @@ public final class ThirstItems {
     public static final int WATERSKIN_MODEL_INDEX = 0;
     // Seconds a serving takes to boil over a campfire come from the config, per vessel: 3 s and 4 s by
     // default. Quicker than the hanging pots' 4 s and 6 s, because the player stands holding use the
-    // whole time. See docs/dev/mechanics/WATER-PURIFICATION-BALANCE.md. Capacity is the config's too.
+    // whole time. See docs/dev/mechanics/WATER-REFERENCE.md. Capacity is the config's too.
 
     public static final Item CLAY_BOWL = Vanilla.registerItem("clay_bowl", Item::new, new Item.Properties().stacksTo(64));
     public static final Item TERRACOTTA_BOWL = Vanilla.registerItem("terracotta_bowl", Item::new, new Item.Properties().stacksTo(64));

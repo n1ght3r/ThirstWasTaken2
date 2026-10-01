@@ -367,6 +367,15 @@ dependencies {
         runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"),
             "maven.modrinth:fruits-delight:$it") { isTransitive = false }
     }
+    findProperty("deps.cold_sweat")?.let { coldSweat ->
+        // Mixed into and read through its API, in SRG names, so remapped. See src/main/coldsweatforge/AGENTS.md.
+        modCompileOnly("maven.modrinth:cold-sweat:$coldSweat") { isTransitive = false }
+        // Off in runClient by default, for the reason build.neoforge.gradle.kts gives. Uncomment the line
+        // below only to work on the Cold Sweat integration.
+        // runClientMod(listOf("cold-sweat", "cold_sweat"), "maven.modrinth:cold-sweat:$coldSweat") { isTransitive = false }
+        // Keeps `-PwithoutOptional=cold-sweat` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("cold-sweat", "cold_sweat"))
+    }
     // Test the drinks and meals Farmer's Delight adds, and the Cooking Pot recipes. Reached by id only.
     findProperty("deps.farmersdelight")?.let {
         runClientMod(listOf("farmers-delight", "farmersdelight"), "maven.modrinth:farmers-delight:$it")

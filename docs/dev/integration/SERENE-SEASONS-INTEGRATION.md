@@ -268,7 +268,7 @@ through the year.
 - (b) In summer, a still water source in a swamp or a river-less biome samples one grade worse.
 
 **Recommended and decided (a).** Revisit only if players ask; it touches the purification balance in
-[WATER-PURIFICATION-BALANCE.md](../mechanics/WATER-PURIFICATION-BALANCE.md).
+[WATER-REFERENCE.md](../mechanics/WATER-REFERENCE.md).
 
 ## 6. Changelog and player docs
 

@@ -271,7 +271,8 @@ tasks.register("checkDataConditions") {
                 is Map<*, *> -> {
                     if (value["required"] == false) return
                     value.forEach { (key, child) ->
-                        if (key == "neoforge:conditions" || key == "fabric:load_conditions" || key == "conditions") return@forEach
+                        if (key == "neoforge:conditions" || key == "fabric:load_conditions" || key == "conditions" ||
+                            key == "forge:conditions") return@forEach
                         id.matchEntire(key.toString())?.let { into += it.groupValues[1] }
                         namespaces(child, into)
                     }
@@ -319,6 +320,9 @@ tasks.register("checkDataConditions") {
                 gated(json["neoforge:conditions"], it)
                 gated(json["fabric:load_conditions"], it)
                 gated(json["conditions"], it)
+                // Forge 47's key on a data pack registry entry, such as Cold Sweat's food data on 1.20.1:
+                // its RegistryDataLoader skips an entry whose `forge:conditions` fail before decoding it.
+                gated(json["forge:conditions"], it)
             }
             val ungated = named - required
             if (ungated.isEmpty()) null
@@ -327,7 +331,7 @@ tasks.register("checkDataConditions") {
         check(problems.isEmpty()) {
             "These data files name a mod's ids without a condition that the mod is loaded. Without it the " +
                 "file fails for everyone who lacks that mod, and in a registry read while opening a world, " +
-                "no world opens. Add neoforge:conditions (neoforge:mod_loaded), conditions (forge:mod_loaded) or fabric:load_conditions " +
+                "no world opens. Add neoforge:conditions (neoforge:mod_loaded), conditions (forge:mod_loaded; forge:conditions on a Forge 47 data pack registry entry) or fabric:load_conditions " +
                 "(fabric:all_mods_loaded) for each mod listed:\n" + problems.joinToString("\n")
         }
         logger.lifecycle("checkDataConditions: ${dataFiles.size} data files, every other mod's id gated")

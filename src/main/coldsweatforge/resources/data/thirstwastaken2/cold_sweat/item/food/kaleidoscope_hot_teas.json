@@ -1,0 +1,28 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cold_sweat"
+    },
+    {
+      "type": "forge:mod_loaded",
+      "modid": "kaleidoscope_cookery"
+    }
+  ],
+  "required_mods": [
+    "kaleidoscope_cookery"
+  ],
+  "item": {
+    "items": [
+      "kaleidoscope_cookery:barley_tea",
+      "kaleidoscope_cookery:tieguanyin",
+      "kaleidoscope_cookery:biluochun",
+      "kaleidoscope_cookery:oolong",
+      "kaleidoscope_cookery:flower_tea",
+      "kaleidoscope_cookery:butter_tea",
+      "kaleidoscope_cookery:clay_pot_milk_tea"
+    ]
+  },
+  "temperature": 10,
+  "duration": 1200
+}

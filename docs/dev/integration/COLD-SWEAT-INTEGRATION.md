@@ -24,7 +24,11 @@ Fabric build). So one node:
 | Node | Build | Modrinth id | Requires on `runClient` |
 |---|---|---|---|
 | `1.21.1-neoforge` | `2.4.3.1` | `r2cD4Llq` | nothing |
+| `1.20.1-forge` | `2.4.3.2` | `VCWBWOkR` | nothing |
 | every other node | none | — | — |
+
+`1.20.1-forge` was added on 2026-10-01, every step the same, in its own directory; see
+[src/main/coldsweatforge/AGENTS.md](../../../src/main/coldsweatforge/AGENTS.md).
 
 The row gets `loaders = setOf(Loader.NEOFORGE)`, like Create. On NeoForge 1.21.1 the jar is in
 Mojang names, so mixins name its members directly, with no `remap = false`.
@@ -223,7 +227,7 @@ Options:
 `#cold_sweat:boiler_valid` by a tag file in `src/main/coldsweat/resources`, and one mixin in
 `BoilerBlockEntity.tick` next to the `isThirstLoaded()` branch does the raise, through
 `WaterPurity.setQuality` so sprites and `water_salty: false` stay right. How fast it is compared with a
-furnace goes in [WATER-PURIFICATION-BALANCE.md](../mechanics/WATER-PURIFICATION-BALANCE.md).
+furnace goes in [WATER-REFERENCE.md](../mechanics/WATER-REFERENCE.md).
 
 Furnace and campfire recipes for Cold Sweat's waterskin, like `recipe/compat/thirst/*.json` but on
 our components, hand-written in the integration's resources with `neoforge:conditions`

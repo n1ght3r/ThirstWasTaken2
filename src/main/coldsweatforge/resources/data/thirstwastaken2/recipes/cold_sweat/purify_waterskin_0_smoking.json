@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cold_sweat"
+    }
+  ],
+  "type": "thirstwastaken2:smoking",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "type": "forge:partial_nbt",
+    "item": "cold_sweat:filled_waterskin",
+    "nbt": "{thirstwastaken2:{purity:0,salty:0b}}"
+  },
+  "result": {
+    "item": "cold_sweat:filled_waterskin",
+    "nbt": "{thirstwastaken2:{purity:2,salty:0b}}"
+  }
+}

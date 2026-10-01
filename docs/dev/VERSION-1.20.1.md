@@ -310,7 +310,8 @@ adds `Loader.FORGE` (or `FABRIC`) to its row, sets its deps key in the `1.20.1` 
 | Farmer's Delight | Forge original, Fabric Refabricated | A large share of 1.20.1 packs |
 | Create | Forge (Create 6 has a 1.20.1 Forge build) | Today only `1.21.1-neoforge` builds it |
 | Serene Seasons | Forge, Fabric to check | Already on every node |
-| Sophisticated, Supplementaries, Cold Sweat, Brewin' and Chewin' | Forge 1.20.1 builds exist | By demand |
+| Sophisticated, Supplementaries, Brewin' and Chewin' | Forge 1.20.1 builds exist | By demand |
+| Cold Sweat | Forge 2.4.3.2 | Done 2026-10-01, `src/main/coldsweatforge` |
 
 **Status (2026-09-28): done for the four the plan does not leave to demand.** AppleSkin, Jade and Mod
 Menu came with phases 1 and 2. Each of the others was checked in a dev client by an agent script, and in

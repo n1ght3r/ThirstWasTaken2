@@ -8,9 +8,11 @@ furnace and in a smoker, and hot drinks from two other mods warm the player. Why
 and what was found in game, is in
 [docs/dev/integration/COLD-SWEAT-INTEGRATION.md](../../../docs/dev/integration/COLD-SWEAT-INTEGRATION.md).
 
-This directory is **only compiled by nodes that set `deps.cold_sweat`** in
+This directory is **only compiled by NeoForge nodes that set `deps.cold_sweat`** in
 `stonecutter.properties.toml`. Today that is `1.21.1-neoforge`, with Cold Sweat 2.4.3.1: it has no
 Fabric build and nothing past 1.21.1. Its jar is in Mojang names, so the mixins need no `remap = false`.
+The same integration on Forge 1.20.1 is [src/main/coldsweatforge](../coldsweatforge/AGENTS.md); a
+change here goes there too.
 
 ```
 java/com/thirstwastaken2/coldsweat/

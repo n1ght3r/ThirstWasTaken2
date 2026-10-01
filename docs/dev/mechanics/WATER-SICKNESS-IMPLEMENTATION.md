@@ -178,4 +178,4 @@ and an action bar warning shortly before.
 
 Poisoning likelier from water sampled in the `stagnant_water` tag or hot biomes; boiling does not
 clear it, charcoal does. Touches the whole purification system: read
-[WATER-PURIFICATION-BALANCE.md](WATER-PURIFICATION-BALANCE.md) first.
+[WATER-REFERENCE.md](WATER-REFERENCE.md) first.

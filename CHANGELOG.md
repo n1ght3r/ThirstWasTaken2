@@ -2,6 +2,14 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Compatibility with Cold Sweat on Forge 1.20.1:
+  - Everything it does on NeoForge 1.21.1: thirst follows its temperature, its Waterskin carries a
+    purity grade and quenches thirst, the Boiler purifies water, and hot drinks warm.
+
 ## [1.5.0] - 2026-09-28
 
 ### Added

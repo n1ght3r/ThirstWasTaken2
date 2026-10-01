@@ -73,7 +73,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](do
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat, Cultural Delights, Fruits Delight and Expanded Delight mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight and Expanded Delight mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -193,7 +193,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
 | Brewin' and Chewin' | `deps.brewin_and_chewin`: both 1.21.1 nodes | [src/main/brewinandchewin/AGENTS.md](src/main/brewinandchewin/AGENTS.md) |
-| Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge` | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md) |
+| Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md), [src/main/coldsweatforge/AGENTS.md](src/main/coldsweatforge/AGENTS.md) |
 | Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge`, `1.20.1-forge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
 | Expanded Delight | `deps.expanded_delight`: `1.21.1-neoforge` | [src/main/expandeddelight/AGENTS.md](src/main/expandeddelight/AGENTS.md) |
 | Cultural Delights | `deps.cultural_delights`: `1.21.1-neoforge` (the Fabric port stopped at 0.17 and is not built against) | [src/main/culturaldelights/AGENTS.md](src/main/culturaldelights/AGENTS.md) |
@@ -233,7 +233,8 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Benchmark baseline per node | [docs/dev/benchmark/BENCHMARK-BASELINE.md](docs/dev/benchmark/BENCHMARK-BASELINE.md) |
 | Manual checks before a release | [docs/dev/MANUAL-TESTING.md](docs/dev/MANUAL-TESTING.md) |
 | The API and data pack format other mods use | the site's developer pages, [docs/docs/developers/](docs/docs/developers/java-api.md) |
-| Purification balance | [docs/dev/mechanics/WATER-PURIFICATION-BALANCE.md](docs/dev/mechanics/WATER-PURIFICATION-BALANCE.md) |
+| Water reference: sources, grades, sickness chances by difficulty, purification methods | [docs/dev/mechanics/WATER-REFERENCE.md](docs/dev/mechanics/WATER-REFERENCE.md) |
+| Purification rework (planned): plain heat stops at Clean, no campfire slots | [docs/dev/mechanics/PURIFICATION-REWORK.md](docs/dev/mechanics/PURIFICATION-REWORK.md) |
 | Sophisticated upgrades still to do | [docs/dev/integration/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/SOPHISTICATED-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md) |
 | Kaleidoscope Cookery work still to do | [docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md](docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md) |
@@ -242,6 +243,8 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md) |
 | Cultural Delights: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md](docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md) |
 | Serene Seasons: the plan, its decisions and what was found in game (every node) | [docs/dev/integration/SERENE-SEASONS-INTEGRATION.md](docs/dev/integration/SERENE-SEASONS-INTEGRATION.md) |
+| Let's Do: Farm & Charm (planned): wells, troughs, the Cooking Pot (both 1.21.1 nodes) | [docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md](docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md) |
+| Let's Do: Candlelight (planned), Farm & Charm's addon: kitchen sinks, dishes (both 1.21.1 nodes) | [docs/dev/integration/CANDLELIGHT-INTEGRATION.md](docs/dev/integration/CANDLELIGHT-INTEGRATION.md) |
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |
 | Copper Canteen and Iron Flask: capacity, boiling in hand, the flask's furnace recipes | [docs/dev/mechanics/CANTEEN-AND-FLASK.md](docs/dev/mechanics/CANTEEN-AND-FLASK.md) |

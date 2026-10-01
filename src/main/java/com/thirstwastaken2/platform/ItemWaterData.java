@@ -113,9 +113,13 @@ public final class ItemWaterData {
         stack.remove(ThirstComponents.WATER_PURITY);
         stack.remove(ThirstComponents.WATER_SALTY);
         //?} else {
-        /*net.minecraft.nbt.CompoundTag data = writable(stack);
+        /*net.minecraft.nbt.CompoundTag data = data(stack);
+        if (data == null) return;
         data.remove(PURITY);
         data.remove(SALTY);
+        // An empty compound left behind would keep the stack from matching, or stacking with, one that
+        // never held water, as a stack with neither component does from 1.20.5.
+        if (data.isEmpty()) stack.removeTagKey(TAG);
         *///?}
     }
 

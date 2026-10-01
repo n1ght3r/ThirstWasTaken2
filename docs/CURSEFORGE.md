@@ -163,7 +163,7 @@ Also works with:
 
 <table>
   <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat"><img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="180"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/cold-sweat"><img alt="Cold Sweat" src="https://i.imgur.com/N6amWeJ.png" width="180"></a><br><i>1.21.1 NeoForge, 1.20.1 Forge</i></td>
     <td width="55%">Thirst follows the temperature Cold Sweat shows around you, hearths and shade included. Its Waterskin carries a purity grade and quenches thirst, and the Boiler purifies water.</td>
   </tr>
   <tr>

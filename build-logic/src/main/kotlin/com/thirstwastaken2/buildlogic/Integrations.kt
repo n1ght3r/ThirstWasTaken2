@@ -213,8 +213,9 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.brewinandchewin.mixins.json",
         neoForgeDependencies = listOf("brewinandchewin"),
     ),
-    // NeoForge only: Cold Sweat has no Fabric build and nothing past 1.21.1, so only `1.21.1-neoforge`
-    // sets the key. See src/main/coldsweat/AGENTS.md.
+    // NeoForge only: Cold Sweat has no Fabric build and nothing past 1.21.1, so `1.21.1-neoforge` is the
+    // one NeoForge node that sets the key; `coldsweatforge` below is its Forge 1.20.1 build.
+    // See src/main/coldsweat/AGENTS.md.
     Integration(
         dir = "coldsweat",
         depsKey = "deps.cold_sweat",
@@ -264,6 +265,16 @@ val integrations: List<Integration> = listOf(
             "thirstwastaken2:integration" to listOf("com.thirstwastaken2.sereneseasons.SereneSeasonsEntrypoint"),
         ),
         neoForgeDependencies = listOf("sereneseasons"),
+    ),
+    // The same Cold Sweat integration on Forge 47, for Cold Sweat's 1.20.1 build: the same deps key, its
+    // own directory, since the waterskin's tank branch, the presence check and the recipes name the
+    // loader's fluid API, its mod list and its conditions. See src/main/coldsweatforge/AGENTS.md.
+    Integration(
+        dir = "coldsweatforge",
+        depsKey = "deps.cold_sweat",
+        loaders = setOf(Loader.FORGE),
+        mixinConfig = "thirstwastaken2.coldsweatforge.mixins.json",
+        neoForgeDependencies = listOf("cold_sweat"),
     ),
 )
 

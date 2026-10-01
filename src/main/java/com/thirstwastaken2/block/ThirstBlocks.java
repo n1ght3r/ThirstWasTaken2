@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.PushReaction;
 public final class ThirstBlocks {
     // Seconds a serving takes to boil pure in each pot come from the config, 4 for copper and 6 for
     // iron by default, so a full pot takes three times as long as a bottle. A furnace takes 10 seconds a
-    // bucket and raises it two grades; see docs/dev/mechanics/WATER-PURIFICATION-BALANCE.md for how the
+    // bucket and raises it two grades; see docs/dev/mechanics/WATER-REFERENCE.md for how the
     // numbers were chosen. Iron carries heat worse than copper.
 
     /**

@@ -219,7 +219,7 @@ Teacups are drunk through `TeacupItem.finishUsingItem`, which runs inside `ItemS
 where `ItemStackMixin` already hands out thirst. **No hook is needed.** Soups are `BowlFoodOnlyItem`,
 likewise.
 
-Suggested values (to be balanced against `../mechanics/WATER-PURIFICATION-BALANCE.md`; one bucket of water
+Suggested values (to be balanced against `../mechanics/WATER-REFERENCE.md`; one bucket of water
 makes 4 cups):
 
 | Item | Thirst | Quenched |
@@ -314,7 +314,7 @@ with no grade and reads as `defaultPurity`, the same limitation as everywhere el
 **Tea is made from boiled water, so it is always safe**: a teacup restores its fixed value from item 2
 whatever the water's grade. That makes the teapot a purifier of sorts (1 bucket of Dirty water + 1 tea
 bag + 240 ticks on heat = 4 safe cups). It is fair, since it costs a tea bag and a heat source, but it
-has to be written into `../mechanics/WATER-PURIFICATION-BALANCE.md`.
+has to be written into `../mechanics/WATER-REFERENCE.md`.
 
 **Checked with** the same script: a Dirty bucket in and out stays Dirty; break the teapot and place it
 again, and the water is still Dirty; on 1.21.1 dripstone gives `dripstonePurity`.

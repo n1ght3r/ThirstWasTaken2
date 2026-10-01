@@ -223,7 +223,7 @@ looks and sounds.
       data file only shows when a world loads. Add `-Pquickplay=<world>`; `boot.jsonl` then fails when
       the world never opened. 1.3.0 and 1.4.0 opened no world with Cold Sweat and without Farmer's
       Delight or Kaleidoscope Cookery.
-      - Cold Sweat on `1.21.1-neoforge` (uncomment its `runClientMod` line), with
+      - Cold Sweat on `1.21.1-neoforge` and `1.20.1-forge` (uncomment its `runClientMod` line), with
         `-PwithoutOptional=farmersdelight,kaleidoscope_cookery`
 
 `checkOptionalSeam` is the static half of these checks for classes, and `checkDataConditions` for data

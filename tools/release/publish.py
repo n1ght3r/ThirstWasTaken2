@@ -116,7 +116,7 @@ DEPENDENCIES = {
     "kaleidoscope_cookery": Dependency("kaleidoscope-cookery-refabricated", "Ct11Kuii", None),
     # One project for both loaders on both sites.
     "brewin_and_chewin": Dependency("brewin-and-chewin", "hIu9KJTT", "brewin-and-chewin"),
-    # NeoForge 1.21.1 only, so only that node's deps name them.
+    # NeoForge 1.21.1 only (and Cold Sweat and Fruits Delight on Forge 1.20.1), so only those nodes' deps name them.
     "cold_sweat": Dependency("cold-sweat", "uXhSmPjd", "cold-sweat"),
     "cultural_delights": Dependency("cultural-delights", "YttyNOFA", "cultural-delights"),
     "fruits_delight": Dependency("fruits-delight", "g6sbyCTu", "fruits-delight"),
