@@ -2,32 +2,32 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.6.0] - 2026-10-01
+
+This release is mostly about other mods. Farm & Charm and Candlelight join on 1.21.1, Terralith's
+swamps now count as swamps, and Cold Sweat finally reaches Forge 1.20.1. The Hanging Pot also got a
+proper stand.
 
 ### Added
 
-- Compatibility with Cold Sweat on Forge 1.20.1:
-  - Everything it does on NeoForge 1.21.1: thirst follows its temperature, its Waterskin carries a
-    purity grade and quenches thirst, the Boiler purifies water, and hot drinks warm.
-- Compatibility with Let's Do: Farm & Charm on Fabric and NeoForge 1.21.1:
-  - Its teas, soups, salads and juicy crops restore thirst.
-  - A bucket from the Timber Well gets the grade of the groundwater below it, sea water near the coast.
-  - Water from the Water Trough is Murky whatever was poured in, and the trough refuses sea water.
-  - The Cooking Pot, the Stove and the Crafting Bowl make nothing from sea water.
-- Compatibility with Let's Do: Candlelight on Fabric and NeoForge 1.21.1:
-  - Its soups, salads and chocolate mousse restore thirst.
-  - Kitchen sinks still fill on their own, but give Murky water, and refuse sea water.
-  - The Cooking Pot makes nothing from sea water.
-- Compatibility with Terralith on every version and loader:
-  - Water in its Orchid Swamp and Ice Marsh is graded like swamp water, Dirty instead of cleaner.
+- Let's Do: Farm & Charm, on Fabric and NeoForge 1.21.1:
+  - Teas, soups, salads and the juicier crops restore thirst.
+  - The Timber Well draws up whatever groundwater lies below it. Near the coast, that means sea water.
+  - The Water Trough gives Murky water and won't take sea water.
+  - The Cooking Pot, the Stove and the Crafting Bowl won't cook anything with sea water.
+- Let's Do: Candlelight, on Fabric and NeoForge 1.21.1:
+  - Soups, salads and the chocolate mousse restore thirst.
+  - Kitchen sinks give Murky water and won't accept sea water.
+  - Like Farm & Charm's, its Cooking Pot won't cook with sea water.
+- Terralith, on every version and loader: water in the Orchid Swamp and the Ice Marsh comes out Dirty,
+  the same as any other swamp.
+- Cold Sweat on Forge 1.20.1, with everything it already did on NeoForge 1.21.1. Temperature drives
+  thirst, the Waterskin keeps track of purity, the Boiler cleans water and hot drinks warm the player up.
 
 ### Changed
 
-- The Hanging Pot has a new stand: forked branches on braced feet, with the crossbar resting in the
-  forks. Its legs reach down around the campfire below.
-- A Hanging Pot placed on the ground stands a block up on its legs, leaving room for a campfire to go
-  under it later. Breaking the campfire leaves the pot standing; putting a solid block there knocks the
-  pot off.
+- The Hanging Pot has a new stand that looks a lot more like something built at a camp.
+- A Hanging Pot can now be placed before there is a campfire, with room underneath to add one later.
 
 ## [1.5.0] - 2026-09-28
 
