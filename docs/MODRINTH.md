@@ -163,26 +163,6 @@
       <img alt="A Teapot on a lit Stove among teacups in a cherry grove, with Jade naming its water Clean" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/kaleidoscope-cookery/kaleidoscope-teapot.png" width="100%">
     </td>
   </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.
-    </td>
-    <td width="45%">
-      <img alt="A Timber Well and a Water Trough, both full of water, on a sandy shore" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/farm-and-charm-well.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></b><br>
-      <i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i><br><br>
-      Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
-    </td>
-  </tr>
 </table>
 
 Also works with:
@@ -195,6 +175,10 @@ Also works with:
   <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/serene-seasons"><img alt="Serene Seasons" src="https://cdn.modrinth.com/data/cached_images/ba72bd7e14454054eda390d3a1e42c0be51a810e.png" width="200"></a><br><i>Fabric, NeoForge and Forge</i></td>
     <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
+  </tr>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#the-four-grades"><img alt="Terralith" src="https://wsrv.nl/?url=https%3A%2F%2Fuser-images.githubusercontent.com%2F63272345%2F224816673-7f074733-da85-4673-a7b0-3362651c4dbd.png&amp;w=600" width="300"></a><br><i>Fabric, NeoForge and Forge</i></td>
+    <td width="55%">Water in its Orchid Swamp and Ice Marsh is Dirty, the same as in a vanilla swamp.</td>
   </tr>
 </table>
 
@@ -253,6 +237,37 @@ Also works with:
 
 </details>
 
+### Let's Do
+
+<details>
+<summary><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and its addon</b>, click to expand</summary>
+<br>
+
+<table>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.
+    </td>
+    <td width="45%">
+      <img alt="A Timber Well and a Water Trough, both full of water, on a sandy shore" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/farm-and-charm-well.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></b><br>
+      <i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i><br><br>
+      Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.
+    </td>
+    <td width="45%">
+      <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
+    </td>
+  </tr>
+</table>
+
+</details>
+
 ### Versions
 
 <details>
@@ -266,7 +281,7 @@ Also works with:
     <th>Forge (1.20.1)</th>
   </tr>
   <tr>
-    <td><img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/appleskin">AppleSkin</a><br><img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/jade">Jade 🔍</a><br><img alt="Serene Seasons icon" src="https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/serene-seasons">Serene Seasons</a></td>
+    <td><img alt="AppleSkin icon" src="https://cdn.modrinth.com/data/EsAfCjCV/icon.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/appleskin">AppleSkin</a><br><img alt="Jade icon" src="https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/jade">Jade 🔍</a><br><img alt="Serene Seasons icon" src="https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/serene-seasons">Serene Seasons</a><br><img alt="Terralith icon" src="https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/terralith">Terralith</a></td>
     <td>every version</td>
     <td>every version</td>
     <td>yes</td>

@@ -27,11 +27,13 @@ npm run docs:build    # must pass before you call a docs change done
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
 sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.md` and
-`CURSEFORGE.md`. There, Mod Compatibility has three parts: the main table, a screenshot per mod; the
+`CURSEFORGE.md`. There, Mod Compatibility has four parts: the main table, a screenshot per mod; the
 "Also works with" table, the mod's banner and versions beside one sentence, for a smaller
 integration (Cold Sweat, Serene Seasons); and the Delight Ecosystem (collapsed:
 a `<details>` on Modrinth, a `<div class="spoiler">` on CurseForge, which strips `<details>`),
-which holds Farmer's Delight and every addon of it, in the same two kinds of table. CurseForge renders
+which holds Farmer's Delight and every addon of it, in the same two kinds of table. Let's Do: Farm &
+Charm and its addon Candlelight get a collapsed section of their own after it, `### Let's Do`, built
+the same way. CurseForge renders
 no Markdown inside an HTML block, so text inside a spoiler there is HTML (`<p>`, `<ul><li>`, `<a>`):
 a `- ` list comes out as one run-on paragraph. A banner is linked
 from the mod's own page or an image host, never committed, and scaled to about 74 px high. A link to
