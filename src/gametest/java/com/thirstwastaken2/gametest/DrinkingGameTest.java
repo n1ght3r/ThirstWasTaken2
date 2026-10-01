@@ -80,7 +80,10 @@ public final class DrinkingGameTest {
             for (int grade : new int[] {WaterPurity.MAX, 1}) {
                 ServerPlayer player = thirstyPlayer(helper);
                 ItemStack vessel = new ItemStack(item);
-                WaterskinItem.addWater(vessel, WaterQuality.fresh(grade), 2);
+                // Full, so it has no room: a vessel with room fills instead of drinking when the player
+                // happens to face water, and the mock player stands at world spawn, where other tests'
+                // water can be in reach. 1.20.1 on Forge failed this test that way now and then.
+                WaterskinItem.addWater(vessel, WaterQuality.fresh(grade), WaterskinItem.capacity(vessel));
 
                 startDrinking(player, vessel);
                 player.getUseItem().finishUsingItem(player.level(), player);
