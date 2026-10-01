@@ -2,7 +2,7 @@
 title: "Ocean's Delight"
 ---
 
-![Ocean's Delight](https://i.imgur.com/OqgniyH.png)
+![Ocean's Delight](https://i.imgur.com/OqgniyH.png){.mod-banner}
 
 With Ocean's Delight installed, its Guardian Soup and two of its bowls restore thirst.
 

@@ -50,6 +50,12 @@
   border-radius: 3px;
 }
 
+/* The banner an integration page opens with, in place of its heading: centred on the page. */
+.vp-doc img.mod-banner {
+  display: block;
+  margin-inline: auto;
+}
+
 /* A table cell that names a mod keeps its icon and name on one line; long version lists beside it
    wrap instead. */
 .vp-doc td:has(> img.mod-icon:first-child) {

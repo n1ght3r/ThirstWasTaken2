@@ -48,7 +48,8 @@ the rest a Lucide icon. Versions
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).
 
-An integration page that opens with the mod's banner has no `# Mod name` heading, since the banner
+An integration page that opens with the mod's banner (marked `{.mod-banner}`, or `class="mod-banner"` on an
+`<img>`, which centres it) has no `# Mod name` heading, since the banner
 already shows the name; it sets `title:` in frontmatter instead, for the browser tab. A page without a
 banner keeps its `#` heading.
 

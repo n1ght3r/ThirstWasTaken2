@@ -2,7 +2,7 @@
 title: "Let's Do: Candlelight"
 ---
 
-![Let's Do: Candlelight](https://lets-do.ch/assets/mod-logos/candlelight.webp)
+![Let's Do: Candlelight](https://lets-do.ch/assets/mod-logos/candlelight.webp){.mod-banner}
 
 With Candlelight installed, its soups, salads and chocolate mousse restore thirst, and its kitchen
 sinks give water that still needs boiling.

@@ -2,7 +2,7 @@
 title: "Brewin' and Chewin'"
 ---
 
-![Brewin' and Chewin'](https://i.imgur.com/EFkjwBq.png)
+![Brewin' and Chewin'](https://i.imgur.com/EFkjwBq.png){.mod-banner}
 
 With Brewin' and Chewin' installed, its brews and soups restore thirst, and water keeps its grade in
 the Keg.

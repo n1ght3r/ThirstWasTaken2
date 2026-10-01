@@ -2,7 +2,7 @@
 title: "Let's Do: Farm & Charm"
 ---
 
-![Let's Do: Farm & Charm](https://lets-do.ch/assets/mod-logos/farm_and_charm.webp)
+![Let's Do: Farm & Charm](https://lets-do.ch/assets/mod-logos/farm_and_charm.webp){.mod-banner}
 
 With Farm & Charm installed, its teas and soups restore thirst, and water from its Timber Well and
 Water Trough carries an honest grade. Its kitchen addon has [a page of its own](./candlelight).
