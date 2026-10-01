@@ -97,7 +97,8 @@ class Dependency:
 # `fabric_loader`, `neoforge`, `forge` and `loomx.loom_version` are the platform rather than a mod,
 # `mixinextras` is nested in the Forge jar, and
 # `cloth_config` is only on the dev client's runtime classpath -- no code in the mod names it -- so an
-# upload must not tell players to install it.
+# upload must not tell players to install it. `architectury`, `glitchcore`, `forge_config_api_port` and
+# `cooks_collection` are libraries or runtime companions of the mods below, which pull them in themselves.
 DEPENDENCIES = {
     "fabric_api": Dependency("fabric-api", "P7dR8mSH", "fabric-api", required=True),
     "modmenu": Dependency("modmenu", "mOgUt4GM", "modmenu"),
@@ -120,6 +121,11 @@ DEPENDENCIES = {
     "cold_sweat": Dependency("cold-sweat", "uXhSmPjd", "cold-sweat"),
     "cultural_delights": Dependency("cultural-delights", "YttyNOFA", "cultural-delights"),
     "fruits_delight": Dependency("fruits-delight", "g6sbyCTu", "fruits-delight"),
+    "expanded_delight": Dependency("expanded-delight", "e9V6wFcR", None),
+    "serene_seasons": Dependency("serene-seasons", "e0bNACJD", "serene-seasons"),
+    # Farm & Charm and Candlelight: their CurseForge slugs are unverified, so they are listed there by hand.
+    "farm_and_charm": Dependency("lets-do-farm-charm", "HJetCzWo", None),
+    "candlelight": Dependency("lets-do-candlelight-farmcharm-compat", "qwbArkQk", None),
 }
 # The same keys where a NeoForge or Forge node's dependency is a different project: Farmer's Delight
 # Refabricated and Kaleidoscope Cookery Refabricated are Fabric ports, and the other loaders use the originals.
