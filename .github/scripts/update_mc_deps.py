@@ -34,12 +34,14 @@ Rules:
 - README.md, docs/docs/installation.md and docs/dev/VERSION-DIFFERENCES.md print the same versions for
   people to read, so a bump rewrites them too, and only there: CHANGELOG.md says what a past release was
   built against and has to keep saying it. All three print Fabric API and NeoForge; the first two print
-  Fabric Loader; only the installation page prints the optional mods, and only their Fabric builds.
+  Fabric Loader; only the installation page prints the optional mods, in one table per loader.
   An integration's own page under docs/dev/integration may print its pins too, ids included, as the
   Kaleidoscope Cookery one does; a dependency lists every such page in `mirrors` (Fabric nodes) and
-  `neoforge_mirrors` (NeoForge nodes), and a bump rewrites the number and, when pinned by id, the id.
-  Pages that say what a version was written or tested against (`Written on ... from ...`, manual test
-  logs) are records like CHANGELOG.md and stay out of those lists.
+  `neoforge_mirrors` (NeoForge and Forge nodes), and a bump rewrites the number and, when pinned by id,
+  the id. Pages that say what a version was written or tested against (`Written on ... from ...`,
+  manual test logs) are records like CHANGELOG.md and stay out of those lists.
+- The pull request lists the other tracked files that still name an old version, for a person to
+  judge, except those in `RECORDS`, whose every mention is a record and is meant to stay.
 - `--check` goes the other way: it reports a version the properties file pins that those pages do
   not name, which is what a bump made by hand leaves behind. It reads the properties file and those
   pages and nothing else, so it needs no network and gates a pull request in well under a second. What lets it work
@@ -81,10 +83,23 @@ DOC_MIRRORS = (README, INSTALLATION, VERSION_DIFFERENCES)
 KALEIDOSCOPE_DOC = ROOT / "docs" / "dev" / "integration" / "KALEIDOSCOPE-COOKERY-INTEGRATION.md"
 # Every page some dependency mirrors, in the order they are rewritten and reported.
 ALL_MIRRORS = DOC_MIRRORS + (KALEIDOSCOPE_DOC,)
+# Files that name a version only as a record of what something was built, written or tested against,
+# so they keep the old number on purpose and the pull request does not ask anyone to update them. A
+# file goes here only when every version it names is such a record; one that also states a current
+# pin belongs in a dependency's mirrors, or should say it without the number.
+RECORDS = (
+    ROOT / "CHANGELOG.md",
+    ROOT / ".github" / "scripts" / "update_mc_deps.py",
+    ROOT / "docs" / "dev" / "MANUAL-TESTING.md",
+    ROOT / "docs" / "dev" / "VERSION-1.20.1.md",
+    ROOT / "docs" / "dev" / "integration" / "SOPHISTICATED-INTEGRATION.md",
+    ROOT / "src" / "main" / "createforge" / "AGENTS.md",
+    ROOT / "src" / "main" / "sereneseasons" / "AGENTS.md",
+)
 # The pages that print Fabric Loader. VERSION-DIFFERENCES.md lists each node's loader API only.
 LOADER_MIRRORS = (README, INSTALLATION)
-# Modrinth puts the loader on some version numbers. The docs leave it off.
-LOADER_SUFFIXES = ("+fabric", "+neoforge", "+forge")
+# Modrinth puts the loader on some version numbers, after a `+` or a `-`. The docs leave it off.
+LOADER_SUFFIXES = ("+fabric", "+neoforge", "+forge", "-fabric", "-neoforge", "-forge")
 
 MODRINTH = "https://api.modrinth.com/v2"
 FABRIC_META = "https://meta.fabricmc.net/v2/versions/loader"
@@ -109,8 +124,8 @@ class ModrinthDep:
     """Pinned by Modrinth version id instead of version number."""
     mirrors: tuple[Path, ...] = (INSTALLATION,)
     """The doc mirrors that print this dependency's version on the Fabric nodes."""
-    neoforge_mirrors: tuple[Path, ...] = ()
-    """The doc mirrors that print its version on the NeoForge and Forge nodes. No user page names their builds."""
+    neoforge_mirrors: tuple[Path, ...] = (INSTALLATION,)
+    """The doc mirrors that print its version on the NeoForge and Forge nodes."""
     neoforge_project: str | None = None
     """Modrinth project slug on the NeoForge and Forge nodes, when their build is a different project."""
     frozen: tuple[str, ...] = ()
@@ -123,10 +138,16 @@ class ModrinthDep:
         return self.neoforge_mirrors if loader_of(node) != "fabric" else self.mirrors
 
 
+# What a dependency passes when no page prints it on any loader.
+NO_PAGE = {"mirrors": (), "neoforge_mirrors": ()}
+
+
 # Every per-node dependency the build resolves from Modrinth or from a Maven that publishes the same
 # version numbers (Fabric API). Add a line here when build.gradle.kts gains a `deps.*` property.
 MODRINTH_DEPS = [
-    # Every page prints Fabric API; the optional mods are on the installation page only.
+    # Every page prints Fabric API. The optional mods are on the installation page only, in its table for
+    # each loader, which the defaults of `mirrors` and `neoforge_mirrors` point at; a dependency that page
+    # does not print passes `NO_PAGE` for both.
     ModrinthDep("fabric_api", "fabric-api", mirrors=DOC_MIRRORS),
     ModrinthDep("modmenu", "modmenu"),
     # AppleSkin shares one version number between its Fabric and NeoForge uploads.
@@ -138,43 +159,42 @@ MODRINTH_DEPS = [
     ModrinthDep("create_fly", "create-fly"),
     # Create's version numbers are not spelled alike from one upload to the next, so it is pinned by id.
     ModrinthDep("create", "create", by_id=True),
-    # Pinned by id like Create, and printed on no page.
-    ModrinthDep("sophisticated_core", "sophisticated-core", by_id=True, mirrors=()),
-    ModrinthDep("sophisticated_backpacks", "sophisticated-backpacks", by_id=True, mirrors=()),
-    ModrinthDep("sophisticated_storage", "sophisticated-storage", by_id=True, mirrors=()),
+    # Pinned by id like Create. The installation page prints Core under Sophisticated Backpacks, and
+    # neither Backpacks nor Storage, which are only on the runClient classpath.
+    ModrinthDep("sophisticated_core", "sophisticated-core", by_id=True),
+    ModrinthDep("sophisticated_backpacks", "sophisticated-backpacks", by_id=True, **NO_PAGE),
+    ModrinthDep("sophisticated_storage", "sophisticated-storage", by_id=True, **NO_PAGE),
     # Supplementaries and the Moonlight Lib it needs share one version number between their Fabric and
-    # NeoForge uploads, like AppleSkin, so both are pinned by id.
-    ModrinthDep("supplementaries", "supplementaries", by_id=True, mirrors=()),
-    ModrinthDep("moonlight", "moonlight", by_id=True, mirrors=()),
+    # NeoForge uploads, like AppleSkin, so both are pinned by id. Only Supplementaries is printed.
+    ModrinthDep("supplementaries", "supplementaries", by_id=True),
+    ModrinthDep("moonlight", "moonlight", by_id=True, **NO_PAGE),
     # Refabricated is the Fabric port and the official mod is the NeoForge build, under one mod id. Its
     # Fabric uploads of different Minecraft versions share one version number, so it is pinned by id.
-    # 1.21.11 is frozen upstream at 1.3.0.9. The installation page prints the Fabric builds; the
-    # integration page's table prints every build and its id.
+    # 1.21.11 is frozen upstream at 1.3.0.9. The installation page prints every build, and so does the
+    # integration page's table, with its id.
     ModrinthDep("kaleidoscope_cookery", "kaleidoscope-cookery-refabricated", by_id=True,
-                mirrors=(INSTALLATION, KALEIDOSCOPE_DOC), neoforge_mirrors=(KALEIDOSCOPE_DOC,),
+                mirrors=(INSTALLATION, KALEIDOSCOPE_DOC), neoforge_mirrors=(INSTALLATION, KALEIDOSCOPE_DOC),
                 neoforge_project="kaleidoscope-cookery", frozen=("1.21.11",)),
     # Kaleidoscope Cookery's required library on the Fabric 1.21.x nodes, runClient only.
-    ModrinthDep("forge_config_api_port", "forge-config-api-port", by_id=True, mirrors=()),
+    ModrinthDep("forge_config_api_port", "forge-config-api-port", by_id=True, **NO_PAGE),
     # Brewin' and Chewin' shares one version number between its Fabric and NeoForge uploads, so it is
     # pinned by id. Both 1.21.1 nodes only; its Greenhouse Config is nested in its jar.
-    ModrinthDep("brewin_and_chewin", "brewin-and-chewin", by_id=True, mirrors=()),
-    # Cold Sweat, NeoForge 1.21.1 only. Pinned by id like the others printed on no page.
-    ModrinthDep("cold_sweat", "cold-sweat", by_id=True, mirrors=()),
+    ModrinthDep("brewin_and_chewin", "brewin-and-chewin", by_id=True),
+    # Cold Sweat, pinned by id like the others.
+    ModrinthDep("cold_sweat", "cold-sweat", by_id=True),
     # Cultural Delights and the Cook's Collection it requires, NeoForge 1.21.1 only, pinned by id. Its
     # uploads for different Minecraft versions put the version in the number in no fixed place.
-    ModrinthDep("cultural_delights", "cultural-delights", by_id=True, mirrors=()),
-    ModrinthDep("cooks_collection", "cooks-collection", by_id=True, mirrors=()),
+    ModrinthDep("cultural_delights", "cultural-delights", by_id=True),
+    ModrinthDep("cooks_collection", "cooks-collection", by_id=True, **NO_PAGE),
     # Serene Seasons, every node, and the GlitchCore it requires, runClient only. Both share version
     # numbers across loaders and across Minecraft versions (Serene's 26.2 and 26.3 uploads are both
     # 26.1.2.0.x), so both are pinned by id.
-    ModrinthDep("serene_seasons", "serene-seasons", by_id=True, mirrors=()),
-    ModrinthDep("glitchcore", "glitchcore", by_id=True, mirrors=()),
-    # Fruits Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others printed on
-    # no page.
-    ModrinthDep("fruits_delight", "fruits-delight", by_id=True, mirrors=()),
-    # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others printed on
-    # no page.
-    ModrinthDep("expanded_delight", "expanded-delight", by_id=True, mirrors=()),
+    ModrinthDep("serene_seasons", "serene-seasons", by_id=True),
+    ModrinthDep("glitchcore", "glitchcore", by_id=True, **NO_PAGE),
+    # Fruits Delight, 1.21.1 NeoForge and 1.20.1 Forge, runClient only, pinned by id like the others.
+    ModrinthDep("fruits_delight", "fruits-delight", by_id=True),
+    # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others.
+    ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
 ]
 
 
@@ -477,10 +497,13 @@ def check_mixinextras(props: Properties, node: str, changes: list[Change]) -> No
 def forms(version: str) -> list[str]:
     """A version as the docs may print it: the way Modrinth numbers it, and, for the numbers that carry
     a loader suffix, without it, since that is the form the pages use. The same for a Minecraft prefix,
-    `mc1.20.1-6.0.8` printed as `6.0.8`."""
+    `mc1.20.1-6.0.8` printed as `6.0.8`, and a Minecraft suffix, `6.0.10+mc1.21.1` printed as `6.0.10`."""
     prefixed = re.match(r"^mc\d[\d.]*-(\d.*)$", version)
     if prefixed:
         return [version, prefixed.group(1)]
+    suffixed = re.match(r"^(\d.*)\+mc\d[\d.]*$", version)
+    if suffixed:
+        return [version, suffixed.group(1)]
     for suffix in LOADER_SUFFIXES:
         if version.endswith(suffix):
             return [version, version[: -len(suffix)]]
@@ -490,9 +513,11 @@ def forms(version: str) -> list[str]:
 def version_pattern(*versions: str) -> re.Pattern[str]:
     """Matches any of `versions`, but only where a whole version stands: the characters a version is made
     of are what bound it, so `26.2.11` is not found inside `26.2.110`, `1.26.2.11` or `26.2.11+fabric`.
-    Longest first, so the alternation prefers the fuller number where two of them start alike."""
+    A period after it only continues the version when more of one follows, so `26.2.11.` ending a
+    sentence still names `26.2.11`. Longest first, so the alternation prefers the fuller number where two
+    of them start alike."""
     longest = sorted(versions, key=len, reverse=True)
-    return re.compile(r"(?<![\w.+-])(" + "|".join(re.escape(v) for v in longest) + r")(?![\w.+-])")
+    return re.compile(r"(?<![\w.+-])(" + "|".join(re.escape(v) for v in longest) + r")(?![\w+-]|\.\w)")
 
 
 def read(path: Path) -> str:
@@ -593,9 +618,11 @@ def check_docs(props: Properties) -> list[str]:
 
 
 def files_mentioning(value: str) -> list[str]:
-    """Tracked files other than the properties file that still name an old version, for the PR body."""
+    """Tracked files other than the properties file and `RECORDS` that still name an old version, for
+    the PR body."""
+    records = [f":!{path.relative_to(ROOT).as_posix()}" for path in RECORDS]
     result = subprocess.run(["git", "grep", "-l", "-w", "-F", value, "--", ".", f":!{PROPERTIES.name}",
-                             ":!**/package-lock.json"],
+                             ":!**/package-lock.json", *records],
                             cwd=ROOT, capture_output=True, text=True)
     return [line for line in result.stdout.splitlines() if line]
 

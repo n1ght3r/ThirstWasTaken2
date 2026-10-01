@@ -230,7 +230,7 @@ the plan below did not foresee:
   `src/main/forge/resources` fills them from `#forge:ingots/*`.
 - Player data is one capability for every value (`ForgeNetworking`), payloads a `SimpleChannel` each.
   Forge negotiates channels at login, so nothing waits the way `fabric-legacypayload` does.
-- `mods.toml` asks for Forge `[47,)`, as Forge's template does, not the 47.4.10 it is built against, so
+- `mods.toml` asks for Forge `[47,)`, as Forge's template does, not the 47 build it is built against, so
   `update_mc_deps.py` (which now bumps `deps.forge` from the promotions and `deps.mixinextras` from Maven
   Central) never raises what players need. The dev tools on Forge have no loading-error screen hook.
 - Whatever the two ModDevGradle scripts share has not been moved into `gradle/` yet; they share the

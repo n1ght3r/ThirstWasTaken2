@@ -18,7 +18,7 @@ Written on 2026-09-26 from:
 
 | Node | Build | Modrinth id | Requires on `runClient` |
 |---|---|---|---|
-| `1.21.1-neoforge` | `0.18.1-1.21.1` | `jL5hP1qm` | Farmer's Delight `[1.3.0,)` (we pin `1.21.1-1.3.4`), **Cook's Collection** `[0.5.0,)` (`z1YUDQXH`, 0.6.1, NeoForge only), NeoForge `[21.1.247,)` (we have 21.1.251). Supplementaries is optional |
+| `1.21.1-neoforge` | `0.18.1-1.21.1` | `jL5hP1qm` | Farmer's Delight `[1.3.0,)` (we pin `1.21.1-1.3.4`), **Cook's Collection** `[0.5.0,)` (`z1YUDQXH`, 0.6.1, NeoForge only), NeoForge `[21.1.247,)` (we pin a later build). Supplementaries is optional |
 | `1.21.1` (Fabric) | `0.17.7` | `O8lDk3qa` | Farmer's Delight Refabricated (`*`), Fabric API. No vat and no drinks: foods only |
 | every other node | none | — | — |
 
