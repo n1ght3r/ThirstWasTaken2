@@ -12,7 +12,7 @@ collected and keeps it.
 
 | Where the water comes from | Usual grade |
 |---|---|
-| Swamp or mangrove swamp | Dirty |
+| Swamp or mangrove swamp, and ![](https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp){.mod-icon} [Terralith](https://modrinth.com/mod/terralith)'s Orchid Swamp and Ice Marsh | Dirty |
 | Jungle, savanna or badlands | Dirty |
 | Most other biomes | Murky |
 | River | Murky |

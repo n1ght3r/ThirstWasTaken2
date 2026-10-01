@@ -46,7 +46,7 @@ All integrations are soft dependencies: nothing is required, and nothing is load
 
 | Mod | Fabric | NeoForge | Forge (1.20.1) |
 | :--- | :--- | :--- | :---: |
-| [AppleSkin](https://modrinth.com/mod/appleskin), [Jade](https://modrinth.com/mod/jade), [Serene Seasons](https://modrinth.com/mod/serene-seasons) | every version | every version | yes |
+| [AppleSkin](https://modrinth.com/mod/appleskin), [Jade](https://modrinth.com/mod/jade), [Serene Seasons](https://modrinth.com/mod/serene-seasons), [Terralith](https://modrinth.com/mod/terralith) | every version | every version | yes |
 | [Farmer's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/) | every version (Refabricated) | 1.21.1 | yes |
 | [Create](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create) | 26.1.x, 26.2 (Create Fly) | 1.21.1 | yes |
 | [Sophisticated Backpacks / Storage](https://modrinth.com/mod/sophisticated-backpacks) | – | 1.21.1, 1.21.11, 26.1.x, 26.2 | – |

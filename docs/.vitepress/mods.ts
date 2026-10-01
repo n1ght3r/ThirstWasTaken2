@@ -15,7 +15,8 @@ export interface Mod {
 const trimmed = (url: string) =>
   `https://wsrv.nl/?url=${encodeURIComponent(url)}&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png`
 
-// AppleSkin and Jade only show what is already there, so they have no page of their own.
+// AppleSkin and Jade only show what is already there, and Terralith only adds two swamps to the
+// water grade table, so none of them has a page of its own.
 export const SHOWS_ONLY: Mod[] = [
   {
     name: 'AppleSkin',
@@ -26,6 +27,11 @@ export const SHOWS_ONLY: Mod[] = [
     name: 'Jade',
     icon: 'https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp',
     link: '/docs/features/water-purity#checking-water-with-jade'
+  },
+  {
+    name: 'Terralith',
+    icon: 'https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp',
+    link: '/docs/features/water-purity#the-four-grades'
   }
 ]
 

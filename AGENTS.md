@@ -186,6 +186,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 |---|---|---|
 | AppleSkin, Jade, Mod Menu, Farmer's Delight, loot | all | [compat/AGENTS.md](src/main/java/com/thirstwastaken2/compat/AGENTS.md) |
 | Drinks from other mods | all | their own data pack files (`data/<ns>/thirstwastaken2/drinks/`), the `c:drinks` tag, and registry ids in `ThirstConfig`; no class references. See [docs/docs/developers/data-packs.md](docs/docs/developers/data-packs.md) |
+| Terralith | all | two optional entries in the `stagnant_water` biome tag, from `ThirstBiomeTagProvider` in `src/datagen`; no class references, no deps key
 | Create Fly | `deps.create_fly`: Fabric 26.1.x, 26.2.x (no 26.3 build) | [src/main/createfly/AGENTS.md](src/main/createfly/AGENTS.md) |
 | Farmer's Delight Refabricated's Cooking Pot | `deps.farmersdelight`, Fabric nodes | [src/main/farmersdelight/AGENTS.md](src/main/farmersdelight/AGENTS.md) |
 | Create | `deps.create`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/create/AGENTS.md](src/main/create/AGENTS.md), [src/main/createforge/AGENTS.md](src/main/createforge/AGENTS.md) |

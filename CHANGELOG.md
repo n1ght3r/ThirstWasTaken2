@@ -18,6 +18,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - Its soups, salads and chocolate mousse restore thirst.
   - Kitchen sinks still fill on their own, but give Murky water, and refuse sea water.
   - The Cooking Pot makes nothing from sea water.
+- Compatibility with Terralith on every version and loader:
+  - Water in its Orchid Swamp and Ice Marsh is graded like swamp water, Dirty instead of cleaner.
 
 ## [1.5.0] - 2026-09-28
 
