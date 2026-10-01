@@ -142,7 +142,7 @@ with Farm & Charm still loaded, and so does `-PwithoutOptional=farm-and-charm`, 
 
 ## 7. Docs (done)
 
-One site page for both mods, [integrations/farm-and-charm](../../docs/integrations/farm-and-charm.md),
+An addon page under Farm & Charm's, as Farmer's Delight's addons have, [integrations/farm-and-charm/candlelight](../../docs/integrations/farm-and-charm/candlelight.md),
 with a picture of a kitchen sink between a stove and counters; a changelog entry of its own; rows in
 `docs/docs/installation.md`; Candlelight named in Farm & Charm's row on the Modrinth and CurseForge
 pages and in their versions tables.

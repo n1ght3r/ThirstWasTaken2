@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { CURSEFORGE, CURSEFORGE_ICON, MODRINTH, MODRINTH_ICON, REPO } from './links'
-import { DELIGHT_ADDONS, FARMERS_DELIGHT, INTEGRATIONS, type Mod } from './mods'
+import { DELIGHT_ADDONS, FARM_AND_CHARM, FARM_AND_CHARM_ADDONS, FARMERS_DELIGHT, INTEGRATIONS, type Mod } from './mods'
 
 const BASE = process.env.VITEPRESS_BASE || '/'
 
@@ -58,6 +58,12 @@ const manualSidebar = [
         ...sidebarMod(FARMERS_DELIGHT),
         collapsed: true,
         items: DELIGHT_ADDONS.map(sidebarMod)
+      },
+      {
+        // Let's Do: Farm & Charm and its addons, the same way.
+        ...sidebarMod(FARM_AND_CHARM),
+        collapsed: true,
+        items: FARM_AND_CHARM_ADDONS.map(sidebarMod)
       }
     ]
   },

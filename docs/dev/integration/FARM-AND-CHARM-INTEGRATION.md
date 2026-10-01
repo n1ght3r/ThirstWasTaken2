@@ -163,7 +163,7 @@ both nodes. `tools/agent/smoke/boot.jsonl` comes up and stays up on both nodes w
 ## 8. Docs (done)
 
 `CHANGELOG.md` (Unreleased), the site's page
-[integrations/farm-and-charm](../../docs/integrations/farm-and-charm.md) for both mods, with four pictures (two scenes, and two first-person shots of a bucket and a bottle just drawn, their grade in the tooltip)
+[integrations/farm-and-charm](../../docs/integrations/farm-and-charm/index.md) and its addon page [candlelight](../../docs/integrations/farm-and-charm/candlelight.md), with four pictures (two scenes, and two first-person shots of a bucket and a bottle just drawn, their grade in the tooltip)
 taken on a lakeshore in `ShotsAgent` (Fabric 1.21.1), its sidebar entry through `.vitepress/mods.ts`,
 rows in `docs/docs/installation.md`, a row with the well picture in the Modrinth and CurseForge main
 tables and a line in their versions tables, the root `AGENTS.md`, `WATER-REFERENCE.md` and

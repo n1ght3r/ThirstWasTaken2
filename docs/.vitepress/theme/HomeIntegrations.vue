@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { withBase } from 'vitepress'
-import { DELIGHT_ADDONS, FARMERS_DELIGHT, INTEGRATIONS, SHOWS_ONLY, type Mod } from '../mods'
+import { DELIGHT_ADDONS, FARM_AND_CHARM, FARM_AND_CHARM_ADDONS, FARMERS_DELIGHT, INTEGRATIONS, SHOWS_ONLY, type Mod } from '../mods'
 
 // The same mods and icons as the sidebar's Integrations group, plus AppleSkin and Jade.
 const groups: { title: string; mods: Mod[] }[] = [
   { title: 'Integrations', mods: [...SHOWS_ONLY, ...INTEGRATIONS] },
-  { title: "Farmer's Delight and its addons", mods: [FARMERS_DELIGHT, ...DELIGHT_ADDONS] }
+  { title: "Farmer's Delight and its addons", mods: [FARMERS_DELIGHT, ...DELIGHT_ADDONS] },
+  { title: "Let's Do: Farm & Charm and its addons", mods: [FARM_AND_CHARM, ...FARM_AND_CHARM_ADDONS] }
 ]
 </script>
 

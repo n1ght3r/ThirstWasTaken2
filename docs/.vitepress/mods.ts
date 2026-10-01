@@ -59,12 +59,6 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Serene Seasons',
     icon: 'https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png',
     link: '/docs/integrations/serene-seasons'
-  },
-  {
-    // Candlelight, its kitchen addon, is on the same page: players meet the two together.
-    name: "Let's Do: Farm & Charm",
-    icon: 'https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp',
-    link: '/docs/integrations/farm-and-charm'
   }
 ]
 
@@ -88,3 +82,18 @@ export const DELIGHT_ADDONS: Mod[] = [
   link: `/docs/integrations/farmers-delight/${page}`,
   large: true
 }))
+
+// Let's Do: Farm & Charm and its addons, grouped the same way as Farmer's Delight's.
+export const FARM_AND_CHARM: Mod = {
+  name: "Let's Do: Farm & Charm",
+  icon: 'https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp',
+  link: '/docs/integrations/farm-and-charm/'
+}
+
+export const FARM_AND_CHARM_ADDONS: Mod[] = [
+  {
+    name: "Let's Do: Candlelight",
+    icon: 'https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp',
+    link: '/docs/integrations/farm-and-charm/candlelight'
+  }
+]
