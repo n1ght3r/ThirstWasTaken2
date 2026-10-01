@@ -53,9 +53,9 @@ public final class ThirstItems {
                     () -> ThirstConfig.get().ironFlaskBoilSeconds * 20, false),
             ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
     public static final Item COPPER_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.COPPER_HANGING_POT,
-            new Item.Properties());
+            properties -> new HangingPotItem(ThirstBlocks.COPPER_HANGING_POT, properties), new Item.Properties());
     public static final Item IRON_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.IRON_HANGING_POT,
-            new Item.Properties());
+            properties -> new HangingPotItem(ThirstBlocks.IRON_HANGING_POT, properties), new Item.Properties());
     public static final ResourceKey<CreativeModeTab> CREATIVE_TAB_KEY = ResourceKey.create(
             Registries.CREATIVE_MODE_TAB, ThirstWasTaken2.id("thirstwastaken2"));
 

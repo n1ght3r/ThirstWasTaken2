@@ -5,8 +5,7 @@
         "model": "thirstwastaken2:block/iron_hanging_pot_frame"
       },
       "when": {
-        "axis": "z",
-        "hanging": "true"
+        "axis": "z"
       }
     },
     {
@@ -23,8 +22,7 @@
         "y": 90
       },
       "when": {
-        "axis": "x",
-        "hanging": "true"
+        "axis": "x"
       }
     },
     {

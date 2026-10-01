@@ -162,8 +162,11 @@ Pure.
 
 ![A Copper Hanging Pot of water boiling over a campfire](/screenshots/water/copper-hanging-pot.png)
 
-Placed on a lit campfire or soul campfire, it boils water into Pure water. It can also stand on any
-solid block, but only boils over a fire.
+Placed on a lit campfire or soul campfire, it boils water into Pure water. Placed on the ground, it
+stands a block up on its legs, so a campfire can go under it later. Putting any other solid block
+under it knocks the pot off.
+
+![A Copper Hanging Pot standing on the grass on its own legs, with room for a campfire under it](/screenshots/water/copper-hanging-pot-ground.png)
 
 ![Two sticks and a chain across the top, five copper ingots in a U below, make a Copper Hanging Pot](/screenshots/recipes/copper-hanging-pot-recipe.png)
 

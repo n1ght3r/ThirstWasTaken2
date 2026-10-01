@@ -22,6 +22,10 @@ the EULA prompt, never opens a window, places each test in its own patch of a sc
 exits non-zero if any required test failed and writes a JUnit XML report to
 `versions/<version>/build/gametest/report.xml`.
 
+The scratch world, `run/<node>/gametest/world`, is reopened rather than made anew, so it grows by a
+player file per test on every run and passes 500 MB a node. Nothing reads it afterwards:
+`python tools/agent/clean.py <node>` deletes it, see [tools/agent/AGENTS.md](../../../tools/agent/AGENTS.md#cleaning-up).
+
 This is an ordinary Gradle source set, not part of the mod. `thirstwastaken2_gametest` is its own
 small mod declared in `src/gametest/resources/fabric.mod.json`, and on NeoForge and Forge also in
 `src/gametest/neoforge/resources/META-INF/neoforge.mods.toml` and `src/gametest/forge/resources/META-INF/mods.toml`, so none of it can reach a published

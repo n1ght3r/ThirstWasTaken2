@@ -1,0 +1,55 @@
+// The hanging pot docs images: docs/public/screenshots/water/copper-hanging-pot.png and
+// iron-hanging-pot.png, each boiling over a campfire, and copper-hanging-pot-ground.png, the pot standing
+// on its legs on the grass with no campfire under it. Shot on 26.2 on the plains at -256 73 192, in a
+// copy of the dev world's seed, so the scene is the same every time and the dev world is left alone:
+//     python tools/agent/new_world.py 26.2.x PotShots --from "New World"
+//     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/hanging-pot.jsonl -Pquickplay=PotShots
+// -Pdriven opens the window maximised, which is what makes the capture big enough to crop. Each scene
+// is captured three times a second and a half apart, since campfire smoke drifts across the pot: keep
+// the one where it hides least, and crop (584, 155, 1464, 1035) of a 2048x1191 frame, the pot in its middle; the
+// camera looks at the pot's centre from 2.6 blocks. The "*Pot" checks have to say "Test passed".
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "quiet", "command": "server.command", "args": {"command": "gamerule sendCommandFeedback false"}}
+{"id": "spectator", "command": "server.command", "args": {"command": "gamemode spectator @p"}}
+{"id": "scene", "command": "server.command", "args": {"command": "tp @p -253.24 72.53 191.36 58 22"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set day"}}
+{"id": "hold", "command": "server.command", "args": {"command": "gamerule advance_time false"}}
+{"id": "clear", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "hud", "command": "client.hud.toggle"}
+
+// The grass and flowers in the pot's block and the one below it would hide the legs and the fire.
+{"id": "space", "command": "server.command", "args": {"command": "fill -257 72 191 -255 74 193 minecraft:air"}}
+
+// Copper, boiling over a campfire.
+{"id": "fire", "command": "server.command", "args": {"command": "setblock -256 72 192 minecraft:campfire"}}
+{"id": "copper", "command": "server.command", "args": {"command": "setblock -256 73 192 thirstwastaken2:copper_hanging_pot[hanging=true,axis=z,level=3,purity=2]"}}
+{"id": "copperPot", "command": "server.command", "args": {"command": "execute if block -256 73 192 thirstwastaken2:copper_hanging_pot"}}
+{"id": "settle1", "command": "wait", "args": {"ticks": 60}}
+{"id": "copper1", "command": "client.capture", "args": {"name": "copper-hanging-pot-1"}}
+{"id": "gap1a", "command": "wait", "args": {"ticks": 30}}
+{"id": "copper2", "command": "client.capture", "args": {"name": "copper-hanging-pot-2"}}
+{"id": "gap1b", "command": "wait", "args": {"ticks": 30}}
+{"id": "copper3", "command": "client.capture", "args": {"name": "copper-hanging-pot-3"}}
+
+// Iron, the same scene.
+{"id": "iron", "command": "server.command", "args": {"command": "setblock -256 73 192 thirstwastaken2:iron_hanging_pot[hanging=true,axis=z,level=3,purity=2]"}}
+{"id": "ironPot", "command": "server.command", "args": {"command": "execute if block -256 73 192 thirstwastaken2:iron_hanging_pot"}}
+{"id": "settle2", "command": "wait", "args": {"ticks": 60}}
+{"id": "iron1", "command": "client.capture", "args": {"name": "iron-hanging-pot-1"}}
+{"id": "gap2a", "command": "wait", "args": {"ticks": 30}}
+{"id": "iron2", "command": "client.capture", "args": {"name": "iron-hanging-pot-2"}}
+{"id": "gap2b", "command": "wait", "args": {"ticks": 30}}
+{"id": "iron3", "command": "client.capture", "args": {"name": "iron-hanging-pot-3"}}
+
+// Copper on the grass with no campfire: it stands a block up on its legs, the block below left for a
+// fire. One capture, once the campfire's last smoke has drifted off; the pot is placed with nothing under
+// it rather than left over from the campfire, the way a player puts it down.
+{"id": "noFire", "command": "server.command", "args": {"command": "setblock -256 73 192 minecraft:air"}}
+{"id": "noFire2", "command": "server.command", "args": {"command": "setblock -256 72 192 minecraft:air"}}
+{"id": "ground", "command": "server.command", "args": {"command": "setblock -256 73 192 thirstwastaken2:copper_hanging_pot[hanging=false,axis=z,level=3,purity=4]"}}
+{"id": "groundPot", "command": "server.command", "args": {"command": "execute if block -256 73 192 thirstwastaken2:copper_hanging_pot"}}
+{"id": "settle3", "command": "wait", "args": {"ticks": 300}}
+{"id": "ground1", "command": "client.capture", "args": {"name": "copper-hanging-pot-ground"}}

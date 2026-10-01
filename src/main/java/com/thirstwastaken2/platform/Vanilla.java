@@ -241,11 +241,17 @@ public final class Vanilla {
      * itself after its own id unless told to use the block's name, which a block item always wants.
      */
     public static Item registerBlockItem(Block block, Item.Properties properties) {
+        return registerBlockItem(block, props -> new BlockItem(block, props), properties);
+    }
+
+    /** {@link #registerBlockItem(Block, Item.Properties)} for a block item class of the mod's own. */
+    public static Item registerBlockItem(Block block, Function<Item.Properties, ? extends BlockItem> factory,
+                                         Item.Properties properties) {
         String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
         //? if >=1.21.2 {
-        return registerItem(name, props -> new BlockItem(block, props), properties.useBlockDescriptionPrefix());
+        return registerItem(name, factory::apply, properties.useBlockDescriptionPrefix());
         //?} else
-        //return registerItem(name, props -> new BlockItem(block, props), properties);
+        //return registerItem(name, factory::apply, properties);
     }
 
     /**

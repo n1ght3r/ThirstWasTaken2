@@ -23,10 +23,12 @@ world it needs and how to read the result; read it before running one.
 | `drive.py` | Sends a file or standard input to a queue, waits for the answers, and `--verify`s a finished run |
 | `make_gif.py` | Turns a `client.record` folder into a GIF or WebP, drawing the virtual pointer as a cursor. Options in its docstring |
 | `new_world.py`, `nbt.py` | Makes the throwaway world a script runs in. See [A world for a script](#a-world-for-a-script) |
+| `clean.py` | Deletes the worlds and captures a run left behind and the next run makes again. See [Cleaning up](#cleaning-up) |
 | `smoke/` | Checks with no gameplay: `boot.jsonl` (a client comes up and stays up, with `-PwithoutOptional`) and `server-probe.jsonl` (a dedicated server's queue answers with nobody online) |
 | `ui/` | The client's own drawing and screens: `hud-layout.jsonl` (thirst against food and air), `hud-hidden.jsonl` (F1), `hud-death-screen.jsonl`, `config-screen.jsonl`, and `config-showcase.jsonl`, which records the config screen for a GIF rather than checking it |
 | `gameplay/` | The mod's own mechanics in a real client: `client-sync.jsonl`, `parched.jsonl`, `loot-and-boil.jsonl`, `waterskin-stack.jsonl`, `hanging-pot.jsonl`, `canteen.jsonl` |
 | `integrations/` | One script per optional mod: `create-water.jsonl` (and `-1.20.1` for Forge), `createfly-waterskin.jsonl`, `farmers-delight.jsonl` (and `-1.20.1`, in NBT), `kaleidoscope-cookery.jsonl`, `supplementaries.jsonl`, `brewin-and-chewin.jsonl`, `cold-sweat.jsonl`, `cultural-delights.jsonl`, `fruits-delight.jsonl`, `expanded-delight.jsonl`, `serene-seasons.jsonl`, `farm-and-charm.jsonl` (Candlelight too) |
+| `shots/` | Scenes for the docs images rather than checks: `hanging-pot.jsonl`. The capture-screenshots skill says which image each one makes |
 | `integrations/sophisticated/` | Sophisticated Backpacks and Storage, one script per upgrade, and `sophisticated-pack/`, the data pack of backpack templates those scripts give out |
 
 ## A world for a script
@@ -46,6 +48,47 @@ dependency.
 
 So a script needs no `kill` and `client.respawn` at the start; `client.state` expecting
 `result.alive` is enough to show the world came up.
+
+Use the world name the script's header gives, every time. A new name for each attempt (`PotAgentTest`,
+`PotAgentTest2`) leaves one more 20 MB world per attempt that nothing ever opens again. A world made by
+hand, or copied, instead of through `new_world.py` has no `.agent-world` file, so `clean.py` will not
+know it is throwaway.
+
+## Cleaning up
+
+`run/` grew to 6 GB once, nearly all of it worlds and frames nobody would open again. A world is
+throwaway when a run makes it again; delete those, keep the rest.
+
+```bash
+python tools/agent/clean.py 26.3.x --world ParchedAgent
+```
+
+once a script has run and its result has been read: `--verify` passed, or the captures you needed were
+copied out. The world goes; the queue's `out.jsonl` stays as the record.
+
+```bash
+python tools/agent/clean.py --dry-run
+```
+
+for a sweep of every node, or name the nodes. `--screenshots` adds the queues' `screenshots/` folders.
+The script's docstring says what it touches.
+
+| Delete | Why it is safe |
+|---|---|
+| A world in `saves/` holding `.agent-world` | `new_world.py` made it and makes it again from nothing on the next run |
+| `run/<node>/gametest/world` | `runGametest` only ever adds to it: a player file per test per run (36,000 on one node) and chunks around each structure, over 500 MB a node |
+| `agent/<queue>/screenshots/`, `client.record` frames | Once the keepers are copied to `docs/public/screenshots/` or a GIF is made, the next capture writes them again. A recording is hundreds of PNGs |
+
+| Keep | Why |
+|---|---|
+| `New World`, and any world without `.agent-world` | `new_world.py` copies its seed and spawn point, so deleting the last one of a node stops every script there |
+| A world staged by hand for a docs screenshot (`Sand Filter Test`, `RecipeShot`) | Building the scene again is the expensive part. Name it for what it shows, not `…Agent`, so it is not taken for a throwaway. A scene a script builds with commands in a `new_world.py` world (`PotShots`) is throwaway like any other |
+| The queue's `in.jsonl`, `out.jsonl`, `previous-*` | Small, and the only record of what the last run did |
+| A world a person is testing in | Ask before deleting a world you did not make in this session |
+
+`clean.py` lists the unmarked worlds it kept, with their size. Some are throwaway worlds from before
+`new_world.py` marked them (`ParchedAgent` on several nodes): delete one only after checking that the
+script that uses it calls `new_world.py`, or ask.
 
 ## Adding a script
 

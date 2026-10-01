@@ -21,6 +21,14 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Compatibility with Terralith on every version and loader:
   - Water in its Orchid Swamp and Ice Marsh is graded like swamp water, Dirty instead of cleaner.
 
+### Changed
+
+- The Hanging Pot has a new stand: forked branches on braced feet, with the crossbar resting in the
+  forks. Its legs reach down around the campfire below.
+- A Hanging Pot placed on the ground stands a block up on its legs, leaving room for a campfire to go
+  under it later. Breaking the campfire leaves the pot standing; putting a solid block there knocks the
+  pot off.
+
 ## [1.5.0] - 2026-09-28
 
 ### Added

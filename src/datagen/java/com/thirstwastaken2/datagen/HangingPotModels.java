@@ -18,12 +18,14 @@ import java.util.Map;
 /**
  * The hanging pots' blockstates and the models they assemble.
  *
- * <p>A pot is a multipart of three pieces. The copper pot itself, {@code models/block/copper_hanging_pot},
- * and the frame template it hangs from are Blockbench models and stay hand-written in
- * {@code src/main/resources}, as does the item's template, which is both of them in one model with its
- * own display transforms. What is written here is what differs by version or is repetitive: the frame
- * and the item, which name vanilla's chain texture, renamed in 1.21.9, and one flat water surface per
- * fill level and water quality, each with its own texture from {@code tools/generate_pot_water.py}.
+ * <p>A pot is a multipart of three pieces: the stand, the pot and its water. The copper pot itself,
+ * {@code models/block/copper_hanging_pot}, is a Blockbench model, and the stand it hangs from and the
+ * item's template are written from it by {@code tools/generate_hanging_pot_models.py}; all of them are
+ * committed in {@code src/main/resources}. The stand's legs reach a block below the pot, to the floor
+ * under its campfire, whether the campfire is there or not, so the models never change with what is
+ * below. What is written here is what differs by version or is repetitive: the stand and the item,
+ * which name vanilla's chain texture, renamed in 1.21.9, and one flat water surface per fill level and
+ * water quality, each with its own texture from {@code tools/generate_pot_water.py}.
  *
  * <p>The iron pot is the copper one retextured: its texture keeps the copper one's layout, so each of
  * its models is a child of the copper model that only swaps the texture. Both pots share the water
@@ -67,7 +69,7 @@ final class HangingPotModels {
         pot(generators, ThirstBlocks.IRON_HANGING_POT, IRON, model(IRON));
     }
 
-    /** One pot's frame and blockstate, hanging {@code pot} from the frame and filling it with water. */
+    /** One pot's stand and blockstate, hanging {@code pot} from the stand and filling it with water. */
     private static void pot(BlockModelGenerators generators, Block block, String name, Identifier pot) {
         Identifier frame = model(name + "_frame");
         JsonObject frameJson = withChain(FRAME_TEMPLATE, name);
@@ -77,9 +79,7 @@ final class HangingPotModels {
         for (Direction.Axis axis : new Direction.Axis[] { Direction.Axis.Z, Direction.Axis.X }) {
             // The models are drawn with the crossbar along Z.
             int rotation = axis == Direction.Axis.X ? 90 : 0;
-            JsonObject hanging = when(HangingPotBlock.AXIS.getName(), axis.getSerializedName());
-            hanging.addProperty(HangingPotBlock.HANGING.getName(), "true");
-            parts.add(part(hanging, frame, rotation));
+            parts.add(part(when(HangingPotBlock.AXIS.getName(), axis.getSerializedName()), frame, rotation));
             parts.add(part(when(HangingPotBlock.AXIS.getName(), axis.getSerializedName()), pot, rotation));
         }
 

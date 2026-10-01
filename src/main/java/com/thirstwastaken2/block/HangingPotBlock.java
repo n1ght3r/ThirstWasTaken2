@@ -41,10 +41,14 @@ import java.util.function.IntSupplier;
  *
  * <p>It holds {@link #CAPACITY} servings of water, a bucket's worth like a cauldron, since the pot is no
  * bigger than one, and keeps their quality the way a cauldron does, in {@link WaterPurity#BLOCK_PURITY}.
- * It stands on any solid floor, but only boils over a lit campfire, where it hangs from a frame. Boiling
- * takes {@link #secondsPerServing} for each serving in the pot, the way a furnace takes its time per
- * item, and leaves fresh water pure in one go. That time is the one thing the two pots differ in: copper
- * carries heat better, so it boils faster. Salt water is not boiled: taking the salt out is
+ * It hangs a block above the floor, from a stand whose legs reach down past the block between, which is
+ * where its campfire goes; {@code HangingPotItem} places it there. It stands over that block empty, and
+ * only boils once a lit campfire is in it; taking the campfire away leaves it standing, and putting
+ * anything else solid there knocks it off. The pot and its
+ * stand never change shape, and the pot is in its own block, so its shape is where it is drawn.
+ * Boiling takes {@link #secondsPerServing} for each
+ * serving in the pot, the way a furnace takes its time per item, and leaves fresh water pure in one go.
+ * That time is the one thing the two pots differ in: copper carries heat better, so it boils faster. Salt water is not boiled: taking the salt out is
  * distillation, which is a separate idea on the roadmap.
  *
  * <p>Boiling runs on scheduled ticks rather than a block entity. {@link #BOIL} counts the steps done,
@@ -60,7 +64,10 @@ public final class HangingPotBlock extends SupportedBlock {
     public static final int CAPACITY = 3;
     public static final int BUCKET = 3;
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", 0, CAPACITY);
-    /** Whether a campfire is below, which is what puts the pot on its frame. */
+    /**
+     * Whether a campfire is below. Nothing in the mod reads it; it is kept up to date for a resource pack
+     * that draws the pot differently over a fire, and it was in the blockstate before.
+     */
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
     /** The axis the frame's crossbar runs along, across the placing player's view. */
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
@@ -185,7 +192,12 @@ public final class HangingPotBlock extends SupportedBlock {
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
-        return level.getBlockState(below).is(BlockTags.CAMPFIRES) || canSupportCenter(level, below, Direction.UP);
+        BlockState under = level.getBlockState(below);
+        if (under.is(BlockTags.CAMPFIRES)) return true;
+        // Otherwise the block its campfire goes in has to stay clear, grass and flowers aside, with the floor
+        // under it for the legs. Anything solid put there would bury the legs, so it knocks the pot off
+        // instead, the way a torch drops when its wall goes.
+        return under.getCollisionShape(level, below).isEmpty() && canSupportCenter(level, below.below(), Direction.UP);
     }
 
     @Override
@@ -257,7 +269,6 @@ public final class HangingPotBlock extends SupportedBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        if (!state.getValue(HANGING)) return POT;
         return state.getValue(AXIS) == Direction.Axis.Z ? FRAME_ALONG_Z : FRAME_ALONG_X;
     }
 

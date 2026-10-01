@@ -3,6 +3,7 @@ package com.thirstwastaken2.gametest;
 import com.thirstwastaken2.block.HangingPotBlock;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.item.HangingPotItem;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.purity.WaterPurity;
@@ -26,14 +27,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The copper hanging pot: filling and drawing through the real use path, the frame following the
- * campfire, and boiling. The iron pot is the same block class, so it is only checked for taking part in
+ * The copper hanging pot: filling and drawing through the real use path, where it is placed and what
+ * holds it up, and boiling. The iron pot is the same block class, so it is only checked for taking part in
  * the use path and the boil at all.
  *
  * <p>Boiling is driven by calling the block's tick directly rather than waiting for it, because a
  * default boil outlasts a test's time limit. What the scheduler is asked to do is checked separately.
  */
 public final class HangingPotGameTest {
+    /** The ground the stand's legs reach when they reach past {@link #FLOOR}. */
+    private static final BlockPos GROUND = new BlockPos(2, 0, 2);
     private static final BlockPos FLOOR = new BlockPos(2, 1, 2);
     private static final BlockPos POT = new BlockPos(2, 2, 2);
 
@@ -134,21 +137,64 @@ public final class HangingPotGameTest {
     }
 
     @GameTest
-    public void theFrameFollowsTheCampfire(GameTestHelper helper) {
-        BlockPos pos = pot(helper, Blocks.CAMPFIRE.defaultBlockState(), 0, null);
+    public void aPotPlacedOnTheFloorHangsABlockUp(GameTestHelper helper) {
+        pot(helper, Blocks.STONE.defaultBlockState(), 0, null);
+        helper.setBlock(POT, Blocks.AIR);
+        TestFixtures.check(helper, placedAt(helper).equals(helper.absolutePos(POT.above())),
+                "a pot placed on the floor should go a block up, leaving room for its campfire, got "
+                        + placedAt(helper));
+
+        helper.setBlock(FLOOR, Blocks.CAMPFIRE);
+        TestFixtures.check(helper, placedAt(helper).equals(helper.absolutePos(POT)),
+                "a pot placed on a campfire should go right on top of it, got " + placedAt(helper));
+        TestFixtures.check(helper, placed(helper).getValue(HangingPotBlock.HANGING),
+                "a pot placed on a campfire should know it stands on it");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aCampfireComesAndGoesUnderAPot(GameTestHelper helper) {
+        BlockPos pos = pot(helper, Blocks.AIR.defaultBlockState(), 0, null);
         ServerLevel level = helper.getLevel();
-        BlockState placed = ThirstBlocks.COPPER_HANGING_POT.getStateForPlacement(
-                new net.minecraft.world.item.context.BlockPlaceContext(TestFixtures.mockPlayer(helper),
-                        InteractionHand.MAIN_HAND, new ItemStack(ThirstItems.COPPER_HANGING_POT),
-                        aimAt(helper.absolutePos(FLOOR))));
-        TestFixtures.check(helper, placed != null && placed.getValue(HangingPotBlock.HANGING),
-                "a pot placed on a campfire should hang, got " + placed);
         TestFixtures.check(helper, level.getBlockState(pos).canSurvive(level, pos),
-                "a pot should stand on a campfire");
+                "a pot should stand over the empty block its campfire goes in");
+
+        helper.setBlock(FLOOR, Blocks.CAMPFIRE);
+        TestFixtures.check(helper, level.getBlockState(pos).getValue(HangingPotBlock.HANGING),
+                "a campfire put under a pot should be what it stands on, got " + level.getBlockState(pos));
 
         helper.setBlock(FLOOR, Blocks.AIR);
+        TestFixtures.check(helper, level.getBlockState(pos).is(ThirstBlocks.COPPER_HANGING_POT)
+                        && !level.getBlockState(pos).getValue(HangingPotBlock.HANGING),
+                "breaking the campfire should leave the pot standing on its legs, got " + level.getBlockState(pos));
+
+        helper.setBlock(FLOOR, Blocks.DANDELION);
+        TestFixtures.check(helper, level.getBlockState(pos).is(ThirstBlocks.COPPER_HANGING_POT),
+                "a flower under a pot should leave it standing, got " + level.getBlockState(pos));
+
+        helper.setBlock(FLOOR, Blocks.STONE);
         TestFixtures.check(helper, level.getBlockState(pos).isAir(),
-                "a pot whose campfire is gone should break, got " + level.getBlockState(pos));
+                "a solid block put under a pot should knock it off, got " + level.getBlockState(pos));
+
+        pot(helper, Blocks.AIR.defaultBlockState(), 0, null);
+
+        helper.setBlock(GROUND, Blocks.AIR);
+        helper.setBlock(FLOOR, Blocks.CAMPFIRE);
+        helper.setBlock(FLOOR, Blocks.AIR);
+        TestFixtures.check(helper, level.getBlockState(pos).isAir(),
+                "a pot with no ground under its legs should break, got " + level.getBlockState(pos));
+        helper.succeed();
+    }
+
+    @GameTest
+    public void magmaDoesNotBoil(GameTestHelper helper) {
+        BlockPos pos = pot(helper, Blocks.MAGMA_BLOCK.defaultBlockState(), 3, WaterQuality.fresh(0));
+        ServerLevel level = helper.getLevel();
+        for (int step = 0; step < HangingPotBlock.boilSteps(3); step++) {
+            level.getBlockState(pos).tick(level, pos, level.getRandom());
+        }
+        TestFixtures.check(helper, WaterQuality.fresh(0).equals(HangingPotBlock.quality(level.getBlockState(pos))),
+                "only a lit campfire should boil the pot");
         helper.succeed();
     }
 
@@ -337,13 +383,34 @@ public final class HangingPotGameTest {
         helper.succeed();
     }
 
-    /** Places {@code floor}, and a pot on it holding {@code level} servings of {@code quality}. */
+    /** What a player placing a pot on {@link #FLOOR} would place. */
+    private static BlockState placed(GameTestHelper helper) {
+        BlockState placed = ThirstBlocks.COPPER_HANGING_POT.getStateForPlacement(
+                new net.minecraft.world.item.context.BlockPlaceContext(TestFixtures.mockPlayer(helper),
+                        InteractionHand.MAIN_HAND, new ItemStack(ThirstItems.COPPER_HANGING_POT),
+                        aimAt(helper.absolutePos(FLOOR))));
+        if (placed == null) throw new IllegalStateException("the pot should be placeable on " + FLOOR);
+        return placed;
+    }
+
+    /** Where the pot's item would put a pot when the player clicks the top of {@link #FLOOR}. */
+    private static BlockPos placedAt(GameTestHelper helper) {
+        net.minecraft.world.item.context.BlockPlaceContext context = ((HangingPotItem) ThirstItems.COPPER_HANGING_POT)
+                .updatePlacementContext(new net.minecraft.world.item.context.BlockPlaceContext(
+                        TestFixtures.mockPlayer(helper), InteractionHand.MAIN_HAND,
+                        new ItemStack(ThirstItems.COPPER_HANGING_POT), aimAt(helper.absolutePos(FLOOR))));
+        if (context == null) throw new IllegalStateException("the pot should be placeable on " + FLOOR);
+        return context.getClickedPos();
+    }
+
+    /** Places {@code floor} on stone, and a pot on it holding {@code level} servings of {@code quality}. */
     private static BlockPos pot(GameTestHelper helper, BlockState floor, int level, WaterQuality quality) {
         return pot(helper, ThirstBlocks.COPPER_HANGING_POT, floor, level, quality);
     }
 
     private static BlockPos pot(GameTestHelper helper, HangingPotBlock block, BlockState floor, int level,
                                 WaterQuality quality) {
+        helper.setBlock(GROUND, Blocks.STONE);
         helper.setBlock(FLOOR, floor);
         BlockState pot = block.defaultBlockState()
                 .setValue(HangingPotBlock.HANGING, floor.is(Blocks.CAMPFIRE));
