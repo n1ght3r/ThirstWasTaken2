@@ -195,6 +195,11 @@ MODRINTH_DEPS = [
     ModrinthDep("fruits_delight", "fruits-delight", by_id=True),
     # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others.
     ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
+    # Let's Do: Farm & Charm and Candlelight, its addon, both 1.21.1 nodes, pinned by id: their Fabric and
+    # NeoForge uploads share a version number. Architectury API, which both require, runClient only.
+    ModrinthDep("farm_and_charm", "lets-do-farm-charm", by_id=True),
+    ModrinthDep("candlelight", "lets-do-candlelight-farmcharm-compat", by_id=True),
+    ModrinthDep("architectury", "architectury-api", by_id=True, **NO_PAGE),
 ]
 
 

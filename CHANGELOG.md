@@ -9,6 +9,15 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Compatibility with Cold Sweat on Forge 1.20.1:
   - Everything it does on NeoForge 1.21.1: thirst follows its temperature, its Waterskin carries a
     purity grade and quenches thirst, the Boiler purifies water, and hot drinks warm.
+- Compatibility with Let's Do: Farm & Charm on Fabric and NeoForge 1.21.1:
+  - Its teas, soups, salads and juicy crops restore thirst.
+  - A bucket from the Timber Well gets the grade of the groundwater below it, sea water near the coast.
+  - Water from the Water Trough is Murky whatever was poured in, and the trough refuses sea water.
+  - The Cooking Pot, the Stove and the Crafting Bowl make nothing from sea water.
+- Compatibility with Let's Do: Candlelight on Fabric and NeoForge 1.21.1:
+  - Its soups, salads and chocolate mousse restore thirst.
+  - Kitchen sinks still fill on their own, but give Murky water, and refuse sea water.
+  - The Cooking Pot makes nothing from sea water.
 
 ## [1.5.0] - 2026-09-28
 

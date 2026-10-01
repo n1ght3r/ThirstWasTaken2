@@ -257,6 +257,12 @@ val kaleidoscopeCookery = findProperty("deps.kaleidoscope_cookery") as String?
 val brewinAndChewin = findProperty("deps.brewin_and_chewin") as String?
 
 /**
+ * Let's Do: Farm & Charm's Modrinth version id, and Candlelight's, its addon, set on `1.21.1` and
+ * `1.21.1-neoforge` only. See docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md.
+ */
+val farmAndCharm = findProperty("deps.farm_and_charm") as String?
+
+/**
  * Serene Seasons' Modrinth version id, on every node. See docs/dev/integration/SERENE-SEASONS-INTEGRATION.md.
  */
 val sereneSeasons = findProperty("deps.serene_seasons") as String?
@@ -511,6 +517,21 @@ dependencies {
         val names = listOf("brewin-and-chewin", "brewinandchewin", "farmers-delight-refabricated", "farmersdelight")
         runClientMod(names, "maven.modrinth:brewin-and-chewin:$brewinAndChewin")
         runClientMod(names, files(nestedMods("brewin-and-chewin", brewinAndChewin)))
+    }
+
+    if (farmAndCharm != null) {
+        // Mixed into, so it has to be a remapped mod rather than a plain library, as Brewin' and Chewin' is.
+        "modCompileOnly"("maven.modrinth:lets-do-farm-charm:$farmAndCharm") { isTransitive = false }
+        // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
+        // gametests and runServer run without them, which is what proves the mod is unchanged when they are
+        // absent. Both require Architectury API. Leaving Farm & Charm out leaves all three out; leaving
+        // Candlelight out keeps the other two.
+        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm")
+        runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharm")
+        runClientMod(names + listOf("candlelight"),
+            "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}")
+        runClientMod(names + listOf("architectury"),
+            "maven.modrinth:architectury-api:${property("deps.architectury")}")
     }
 
     if (sereneSeasons != null) {

@@ -276,6 +276,17 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.coldsweatforge.mixins.json",
         neoForgeDependencies = listOf("cold_sweat"),
     ),
+    // Both loaders: everything it touches is in Farm & Charm's Architectury common module, which names
+    // neither. Only the two 1.21.1 nodes set the key; the mod's 1.20.1 line is no longer updated and
+    // there is nothing newer. Candlelight, its addon, needs no row: its kitchen sinks are Farm & Charm's
+    // sink block, and its cooking runs on Farm & Charm's recipes. See src/main/farmandcharm/AGENTS.md.
+    Integration(
+        dir = "farmandcharm",
+        depsKey = "deps.farm_and_charm",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.farmandcharm.mixins.json",
+        neoForgeDependencies = listOf("farm_and_charm"),
+    ),
 )
 
 /**

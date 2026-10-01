@@ -95,6 +95,16 @@ None of these are in the config; they are constants in `WaterPurity`.
 Both keep the worse of what the cauldron held and what fell in. A cauldron always keeps the worse of
 two waters mixed; a carried vessel averages them.
 
+### Other mods' water blocks
+
+| Block | Grade drawn | Notes |
+|---|---|---|
+| Timber Well (Farm & Charm) | the groundwater it pumps, sampled at the source block | rain only: `rainwaterPurity`; a beach well gives sea water |
+| Water Trough (Farm & Charm) | Murky | whatever was poured in; sea water refused |
+| Kitchen sink (Candlelight) | Murky | fills from nothing; sea water refused |
+
+See [src/main/farmandcharm/AGENTS.md](../../../src/main/farmandcharm/AGENTS.md).
+
 ### Loot
 
 A water bottle in a pool added to mineshaft, bastion, Nether fortress, shipwreck supply and dungeon
@@ -123,6 +133,7 @@ become Pure. Nothing takes the salt out of sea water; distillation is on the [ro
 | Cold Sweat's Waterskin, furnace or smoker | 10 s / 5 s | 1 | up two grades | yes | hand-written recipes in `src/main/coldsweat` |
 | Cold Sweat's Waterskin, campfire | 60 s | 1 | up two grades | no | Cold Sweat's own recipe; `CampfireWaterskinMixin` stamps the grade |
 | Teapot (Kaleidoscope Cookery) | 12 s | 4 teacups | safe tea, not water | heat below, a tea bag | a teacup restores its fixed value whatever the grade; sea water refused |
+| Cooking Pot (Farm & Charm, and Candlelight's) | 45 s | 1 jug of tea | safe tea, not water | heat below, a glass bottle | takes a water bucket of any grade; sea water refused |
 
 The Waterskin cannot be boiled at all. Clean water gets into it only from something already clean: a
 hanging pot, a cauldron, or bottles and buckets boiled elsewhere.

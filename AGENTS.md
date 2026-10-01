@@ -73,7 +73,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](do
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight and Expanded Delight mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight and Farm & Charm mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -198,6 +198,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Expanded Delight | `deps.expanded_delight`: `1.21.1-neoforge` | [src/main/expandeddelight/AGENTS.md](src/main/expandeddelight/AGENTS.md) |
 | Cultural Delights | `deps.cultural_delights`: `1.21.1-neoforge` (the Fabric port stopped at 0.17 and is not built against) | [src/main/culturaldelights/AGENTS.md](src/main/culturaldelights/AGENTS.md) |
 | Serene Seasons | `deps.serene_seasons`: every node, every loader | [src/main/sereneseasons/AGENTS.md](src/main/sereneseasons/AGENTS.md) |
+| Let's Do: Farm & Charm, and Candlelight, its addon, with no code of its own | `deps.farm_and_charm`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/farmandcharm/AGENTS.md](src/main/farmandcharm/AGENTS.md) |
 
 ### Adding an integration
 
@@ -234,6 +235,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Manual checks before a release | [docs/dev/MANUAL-TESTING.md](docs/dev/MANUAL-TESTING.md) |
 | The API and data pack format other mods use | the site's developer pages, [docs/docs/developers/](docs/docs/developers/java-api.md) |
 | Water reference: sources, grades, sickness chances by difficulty, purification methods | [docs/dev/mechanics/WATER-REFERENCE.md](docs/dev/mechanics/WATER-REFERENCE.md) |
+| Where sea water is refused, kept salty, or mixed in (hanging pot) | [docs/dev/mechanics/SALT-WATER-REFUSALS.md](docs/dev/mechanics/SALT-WATER-REFUSALS.md) |
 | Purification rework (planned): plain heat stops at Clean, no campfire slots | [docs/dev/mechanics/PURIFICATION-REWORK.md](docs/dev/mechanics/PURIFICATION-REWORK.md) |
 | Sophisticated upgrades still to do | [docs/dev/integration/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/SOPHISTICATED-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md) |
@@ -243,8 +245,8 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md) |
 | Cultural Delights: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md](docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md) |
 | Serene Seasons: the plan, its decisions and what was found in game (every node) | [docs/dev/integration/SERENE-SEASONS-INTEGRATION.md](docs/dev/integration/SERENE-SEASONS-INTEGRATION.md) |
-| Let's Do: Farm & Charm (planned): wells, troughs, the Cooking Pot (both 1.21.1 nodes) | [docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md](docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md) |
-| Let's Do: Candlelight (planned), Farm & Charm's addon: kitchen sinks, dishes (both 1.21.1 nodes) | [docs/dev/integration/CANDLELIGHT-INTEGRATION.md](docs/dev/integration/CANDLELIGHT-INTEGRATION.md) |
+| Let's Do: Farm & Charm: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md](docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md) |
+| Let's Do: Candlelight, Farm & Charm's addon: the plan, its decisions and what was found in game | [docs/dev/integration/CANDLELIGHT-INTEGRATION.md](docs/dev/integration/CANDLELIGHT-INTEGRATION.md) |
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |
 | Copper Canteen and Iron Flask: capacity, boiling in hand, the flask's furnace recipes | [docs/dev/mechanics/CANTEEN-AND-FLASK.md](docs/dev/mechanics/CANTEEN-AND-FLASK.md) |

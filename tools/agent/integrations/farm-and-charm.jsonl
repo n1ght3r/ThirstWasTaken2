@@ -1,0 +1,320 @@
+// Let's Do: Farm & Charm and Candlelight in a real client: the investigation and the check of both
+// integration plans (docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md, CANDLELIGHT-INTEGRATION.md).
+// What it proves: every id ThirstConfig lists for the two mods exists; a bucket drawn from a Timber Well
+// carries the grade of the groundwater under it (swamp Dirty, plains Murky, beach sea water) or of rain
+// when there is none; a Water Trough refuses sea water and gives Murky water whatever went in; a
+// Candlelight kitchen sink refuses sea water and gives Murky bottles and buckets; the Cooking Pot,
+// Candlelight's Large Cooking Pot and the Stove cook with a plain water bucket and not with a salty one;
+// and the teas and dishes restore what ThirstConfig says. Runs on both 1.21.1 nodes. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/farm-and-charm.jsonl -Pquickplay=FarmCharmAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/farm-and-charm.jsonl -Pquickplay=FarmCharmAgent -PwithoutOptional=cold-sweat
+// FarmCharmAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> FarmCharmAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/farm-and-charm.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199 over a stone box down to y 194, where one water source
+// block is the groundwater. The player stands at 0.5 200 0.5 looking south at pitch 30, at the block on
+// 0 200 2. Biomes are set with /fillbiome, which the well's sample reads on the server.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+
+// Every id ThirstConfig lists, and the blocks the script uses: /give refuses an unknown item.
+{"id": "id_farm_and_charm_strawberry_tea_cup", "command": "server.command", "args": {"command": "give @p farm_and_charm:strawberry_tea_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_nettle_tea_cup", "command": "server.command", "args": {"command": "give @p farm_and_charm:nettle_tea_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_ribwort_tea_cup", "command": "server.command", "args": {"command": "give @p farm_and_charm:ribwort_tea_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_strawberry_tea", "command": "server.command", "args": {"command": "give @p farm_and_charm:strawberry_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_nettle_tea", "command": "server.command", "args": {"command": "give @p farm_and_charm:nettle_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_ribwort_tea", "command": "server.command", "args": {"command": "give @p farm_and_charm:ribwort_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_barley_soup", "command": "server.command", "args": {"command": "give @p farm_and_charm:barley_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_onion_soup", "command": "server.command", "args": {"command": "give @p farm_and_charm:onion_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_potato_soup", "command": "server.command", "args": {"command": "give @p farm_and_charm:potato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_simple_tomato_soup", "command": "server.command", "args": {"command": "give @p farm_and_charm:simple_tomato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_goulash", "command": "server.command", "args": {"command": "give @p farm_and_charm:goulash"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_farmer_salad", "command": "server.command", "args": {"command": "give @p farm_and_charm:farmer_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_corn_grits", "command": "server.command", "args": {"command": "give @p farm_and_charm:corn_grits"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_tomato", "command": "server.command", "args": {"command": "give @p farm_and_charm:tomato"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_lettuce", "command": "server.command", "args": {"command": "give @p farm_and_charm:lettuce"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_strawberry", "command": "server.command", "args": {"command": "give @p farm_and_charm:strawberry"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_timber_well", "command": "server.command", "args": {"command": "give @p farm_and_charm:timber_well"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_water_trough", "command": "server.command", "args": {"command": "give @p farm_and_charm:water_trough"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_cooking_pot", "command": "server.command", "args": {"command": "give @p farm_and_charm:cooking_pot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_stove", "command": "server.command", "args": {"command": "give @p farm_and_charm:stove"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_farm_and_charm_crafting_bowl", "command": "server.command", "args": {"command": "give @p farm_and_charm:crafting_bowl"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_tomato_soup", "command": "server.command", "args": {"command": "give @p candlelight:tomato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_mushroom_soup", "command": "server.command", "args": {"command": "give @p candlelight:mushroom_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_salad", "command": "server.command", "args": {"command": "give @p candlelight:salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_beetroot_salad", "command": "server.command", "args": {"command": "give @p candlelight:beetroot_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_fresh_garden_salad", "command": "server.command", "args": {"command": "give @p candlelight:fresh_garden_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_tomato_mozzarella_salad", "command": "server.command", "args": {"command": "give @p candlelight:tomato_mozzarella_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_chocolate_mousse", "command": "server.command", "args": {"command": "give @p candlelight:chocolate_mousse"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_cooking_pot", "command": "server.command", "args": {"command": "give @p candlelight:cooking_pot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_cobblestone_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:cobblestone_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_sandstone_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:sandstone_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_stone_bricks_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:stone_bricks_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_deepslate_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:deepslate_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_granite_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:granite_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_end_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:end_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_mud_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:mud_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_quartz_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:quartz_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_red_nether_bricks_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:red_nether_bricks_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_basalt_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:basalt_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_candlelight_bamboo_kitchen_sink", "command": "server.command", "args": {"command": "give @p candlelight:bamboo_kitchen_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+// Farm & Charm itself registers no sink.
+{"id": "id_no_fac_sink", "command": "server.command", "args": {"command": "give @p farm_and_charm:sink"}, "checks": [{"left": "result.messages.0", "op": "not_contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Timber Well. Foot on 0 200 2 facing east, head on 1 200 2, top on 1 201 2, set full (level 3) so no
+// pumping is needed. The groundwater is the source on 0 197 2, inside the box the well scans.
+{"id": "groundwater", "command": "server.command", "args": {"command": "setblock 0 197 2 minecraft:water"}}
+// Swamp: stagnant water, Dirty.
+{"id": "well_swamp_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:swamp"}}
+{"id": "well_swamp_well_foot", "command": "server.command", "args": {"command": "setblock 0 200 2 farm_and_charm:timber_well[facing=east,part=foot,level=3]"}}
+{"id": "well_swamp_well_head", "command": "server.command", "args": {"command": "setblock 1 200 2 farm_and_charm:timber_well[facing=east,part=head,level=3]"}}
+{"id": "well_swamp_well_top", "command": "server.command", "args": {"command": "setblock 1 201 2 farm_and_charm:timber_well[facing=east,part=top,level=3]"}}
+{"id": "well_swamp_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "well_swamp_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "well_swamp_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "well_swamp_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_swamp_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "well_swamp_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_swamp_bucket", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+// The level went down by one: the draw went through the well's own code.
+{"id": "well_swamp_level", "command": "server.command", "args": {"command": "execute if block 0 200 2 farm_and_charm:timber_well[level=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+// Plains: Murky at this height.
+{"id": "well_plains_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+{"id": "well_plains_well_foot", "command": "server.command", "args": {"command": "setblock 0 200 2 farm_and_charm:timber_well[facing=east,part=foot,level=3]"}}
+{"id": "well_plains_well_head", "command": "server.command", "args": {"command": "setblock 1 200 2 farm_and_charm:timber_well[facing=east,part=head,level=3]"}}
+{"id": "well_plains_well_top", "command": "server.command", "args": {"command": "setblock 1 201 2 farm_and_charm:timber_well[facing=east,part=top,level=3]"}}
+{"id": "well_plains_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "well_plains_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "well_plains_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "well_plains_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_plains_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "well_plains_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_plains_bucket", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+// Beach: the groundwater is sea water.
+{"id": "well_beach_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:beach"}}
+{"id": "well_beach_well_foot", "command": "server.command", "args": {"command": "setblock 0 200 2 farm_and_charm:timber_well[facing=east,part=foot,level=3]"}}
+{"id": "well_beach_well_head", "command": "server.command", "args": {"command": "setblock 1 200 2 farm_and_charm:timber_well[facing=east,part=head,level=3]"}}
+{"id": "well_beach_well_top", "command": "server.command", "args": {"command": "setblock 1 201 2 farm_and_charm:timber_well[facing=east,part=top,level=3]"}}
+{"id": "well_beach_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "well_beach_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "well_beach_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "well_beach_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_beach_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "well_beach_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_beach_bucket", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+// No groundwater: the well was filled by rain, Clean by default (rainwaterPurity).
+{"id": "noGroundwater", "command": "server.command", "args": {"command": "setblock 0 197 2 minecraft:stone"}}
+{"id": "well_rain_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+{"id": "well_rain_well_foot", "command": "server.command", "args": {"command": "setblock 0 200 2 farm_and_charm:timber_well[facing=east,part=foot,level=3]"}}
+{"id": "well_rain_well_head", "command": "server.command", "args": {"command": "setblock 1 200 2 farm_and_charm:timber_well[facing=east,part=head,level=3]"}}
+{"id": "well_rain_well_top", "command": "server.command", "args": {"command": "setblock 1 201 2 farm_and_charm:timber_well[facing=east,part=top,level=3]"}}
+{"id": "well_rain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "well_rain_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "well_rain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "well_rain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_rain_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "well_rain_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "well_rain_bucket", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "wellGone", "command": "server.command", "args": {"command": "fill 0 200 2 1 201 2 minecraft:air"}}
+
+// Water Trough, a single one on 0 200 2. A salty bucket is refused: the trough stays empty and the
+// bucket stays in hand. A Pure bucket fills it; the water drawn back is Murky.
+{"id": "trough", "command": "server.command", "args": {"command": "setblock 0 200 2 farm_and_charm:water_trough[facing=east,level=0]"}}
+{"id": "trough_salt_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "trough_salt_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "trough_salt_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "trough_salt_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_salt_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "trough_salt_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_salt_level", "command": "server.command", "args": {"command": "execute if block 0 200 2 farm_and_charm:water_trough[level=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "trough_salt_kept", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "trough_pure_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "trough_pure_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=3,thirstwastaken2:water_salty=false]"}}
+{"id": "trough_pure_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "trough_pure_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_pure_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "trough_pure_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_pure_level", "command": "server.command", "args": {"command": "execute if block 0 200 2 farm_and_charm:water_trough[level=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "trough_pure_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "trough_draw_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_draw_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "trough_draw_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "trough_draw_bucket", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "troughGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// Candlelight's cobblestone kitchen sink, Farm & Charm's sink block: lower half on 0 200 2. A salty
+// bucket is refused. An empty hand fills it from nothing; a glass bottle and a bucket draw Murky water,
+// handed over through addItem, so they are looked for anywhere in the inventory.
+{"id": "sink_upper_air", "command": "server.command", "args": {"command": "setblock 0 201 2 minecraft:air"}}
+{"id": "sink_lower", "command": "server.command", "args": {"command": "setblock 0 200 2 candlelight:cobblestone_kitchen_sink[half=lower,facing=north,filled=false]"}}
+{"id": "sink_upper", "command": "server.command", "args": {"command": "setblock 0 201 2 candlelight:cobblestone_kitchen_sink[half=upper,facing=north,filled=false]"}}
+{"id": "sink_salt_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sink_salt_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "sink_salt_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "sink_salt_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_salt_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sink_salt_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_salt_empty", "command": "server.command", "args": {"command": "execute if block 0 200 2 candlelight:cobblestone_kitchen_sink[filled=false]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sink_salt_kept", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sink_hand_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sink_hand_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_hand_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sink_hand_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_hand_filled", "command": "server.command", "args": {"command": "execute if block 0 200 2 candlelight:cobblestone_kitchen_sink[filled=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sink_bottle_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sink_bottle_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_bottle_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sink_bottle_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_bottle_drawn", "command": "server.command", "args": {"command": "execute if block 0 200 2 candlelight:cobblestone_kitchen_sink[filled=false]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sink_bottle_murky", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sink_bucket_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sink_refill_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_refill_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sink_refill_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_bucket_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "sink_bucket_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_bucket_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sink_bucket_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sink_bucket_murky", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:water_bucket[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sinkGone", "command": "server.command", "args": {"command": "fill 0 200 2 0 201 2 minecraft:air"}}
+
+// Cooking. Four pots on lit campfires and two stoves, filled through their containers, all cooking at
+// once: nettle tea (a water bucket, two wild nettles, a glass bottle as the container, slot 6) in
+// Farm & Charm's Cooking Pot and in Candlelight's Large Cooking Pot, and farmers bread (dough and a water
+// bucket, coal in slot 4) in the Stove. One of each with a plain bucket, one with a salty bucket. A pot
+// takes 900 ticks.
+{"id": "fac_plain_fire", "command": "server.command", "args": {"command": "setblock 0 199 4 minecraft:campfire"}}
+{"id": "fac_plain_pot", "command": "server.command", "args": {"command": "setblock 0 200 4 farm_and_charm:cooking_pot"}}
+{"id": "fac_plain_water", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.0 with minecraft:water_bucket"}}
+{"id": "fac_plain_nettle", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.1 with farm_and_charm:wild_nettle 2"}}
+{"id": "fac_plain_bottle", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.6 with minecraft:glass_bottle"}}
+{"id": "fac_salty_fire", "command": "server.command", "args": {"command": "setblock 2 199 4 minecraft:campfire"}}
+{"id": "fac_salty_pot", "command": "server.command", "args": {"command": "setblock 2 200 4 farm_and_charm:cooking_pot"}}
+{"id": "fac_salty_water", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "fac_salty_nettle", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.1 with farm_and_charm:wild_nettle 2"}}
+{"id": "fac_salty_bottle", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.6 with minecraft:glass_bottle"}}
+{"id": "cl_plain_fire", "command": "server.command", "args": {"command": "setblock 4 199 4 minecraft:campfire"}}
+{"id": "cl_plain_pot", "command": "server.command", "args": {"command": "setblock 4 200 4 candlelight:cooking_pot"}}
+{"id": "cl_plain_water", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.0 with minecraft:water_bucket"}}
+{"id": "cl_plain_nettle", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.1 with farm_and_charm:wild_nettle 2"}}
+{"id": "cl_plain_bottle", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.6 with minecraft:glass_bottle"}}
+{"id": "cl_salty_fire", "command": "server.command", "args": {"command": "setblock 6 199 4 minecraft:campfire"}}
+{"id": "cl_salty_pot", "command": "server.command", "args": {"command": "setblock 6 200 4 candlelight:cooking_pot"}}
+{"id": "cl_salty_water", "command": "server.command", "args": {"command": "item replace block 6 200 4 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "cl_salty_nettle", "command": "server.command", "args": {"command": "item replace block 6 200 4 container.1 with farm_and_charm:wild_nettle 2"}}
+{"id": "cl_salty_bottle", "command": "server.command", "args": {"command": "item replace block 6 200 4 container.6 with minecraft:glass_bottle"}}
+{"id": "stove_plain_block", "command": "server.command", "args": {"command": "setblock 0 200 6 farm_and_charm:stove"}}
+{"id": "stove_plain_fuel", "command": "server.command", "args": {"command": "item replace block 0 200 6 container.4 with minecraft:coal 4"}}
+{"id": "stove_plain_dough", "command": "server.command", "args": {"command": "item replace block 0 200 6 container.1 with farm_and_charm:dough"}}
+{"id": "stove_plain_water", "command": "server.command", "args": {"command": "item replace block 0 200 6 container.2 with minecraft:water_bucket"}}
+{"id": "stove_salty_block", "command": "server.command", "args": {"command": "setblock 2 200 6 farm_and_charm:stove"}}
+{"id": "stove_salty_fuel", "command": "server.command", "args": {"command": "item replace block 2 200 6 container.4 with minecraft:coal 4"}}
+{"id": "stove_salty_dough", "command": "server.command", "args": {"command": "item replace block 2 200 6 container.1 with farm_and_charm:dough"}}
+{"id": "stove_salty_water", "command": "server.command", "args": {"command": "item replace block 2 200 6 container.2 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "cook", "command": "wait", "args": {"ticks": 1000}}
+{"id": "fac_plain_tea", "command": "server.command", "args": {"command": "execute if items block 0 200 4 container.* farm_and_charm:nettle_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "fac_salty_tea", "command": "server.command", "args": {"command": "execute if items block 2 200 4 container.* farm_and_charm:nettle_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "fac_salty_kept", "command": "server.command", "args": {"command": "execute if items block 2 200 4 container.* minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "cl_plain_tea", "command": "server.command", "args": {"command": "execute if items block 4 200 4 container.* farm_and_charm:nettle_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "cl_salty_tea", "command": "server.command", "args": {"command": "execute if items block 6 200 4 container.* farm_and_charm:nettle_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "stove_plain_bread", "command": "server.command", "args": {"command": "execute if items block 0 200 6 container.* farm_and_charm:farmers_bread"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "stove_salty_bread", "command": "server.command", "args": {"command": "execute if items block 2 200 6 container.* farm_and_charm:farmers_bread"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "kitchenGone", "command": "server.command", "args": {"command": "fill 0 199 4 6 200 6 minecraft:stone"}}
+{"id": "kitchenAir", "command": "server.command", "args": {"command": "fill 0 200 4 6 200 6 minecraft:air"}}
+
+// Drinking and eating from thirst 4, quenched 0, looking up so nothing is placed: a tea cup and a tea
+// jug restore 6, Farm & Charm's barley soup 4, its tomato 2, Candlelight's tomato soup 4, its fresh
+// garden salad 4 and its chocolate mousse 2.
+{"id": "drink_nettle_tea_cup_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_nettle_tea_cup_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_nettle_tea_cup_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_nettle_tea_cup_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_nettle_tea_cup_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_nettle_tea_cup_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with farm_and_charm:nettle_tea_cup"}}
+{"id": "drink_nettle_tea_cup_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_nettle_tea_cup_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_nettle_tea_cup_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_nettle_tea_cup_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_nettle_tea_cup_state", "command": "client.state", "expect": {"result.thirst": 10}}
+{"id": "drink_strawberry_tea_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_strawberry_tea_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_strawberry_tea_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_strawberry_tea_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_strawberry_tea_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_strawberry_tea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with farm_and_charm:strawberry_tea"}}
+{"id": "drink_strawberry_tea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_strawberry_tea_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_strawberry_tea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_strawberry_tea_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_strawberry_tea_state", "command": "client.state", "expect": {"result.thirst": 10}}
+{"id": "drink_barley_soup_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_barley_soup_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_barley_soup_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_barley_soup_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_barley_soup_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_barley_soup_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with farm_and_charm:barley_soup"}}
+{"id": "drink_barley_soup_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_barley_soup_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_barley_soup_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_barley_soup_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_barley_soup_state", "command": "client.state", "expect": {"result.thirst": 8}}
+{"id": "drink_tomato_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_tomato_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_tomato_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_tomato_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_tomato_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_tomato_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with farm_and_charm:tomato"}}
+{"id": "drink_tomato_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tomato_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_tomato_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_tomato_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tomato_state", "command": "client.state", "expect": {"result.thirst": 6}}
+{"id": "drink_tomato_soup_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_tomato_soup_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_tomato_soup_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_tomato_soup_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_tomato_soup_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_tomato_soup_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with candlelight:tomato_soup"}}
+{"id": "drink_tomato_soup_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tomato_soup_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_tomato_soup_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_tomato_soup_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tomato_soup_state", "command": "client.state", "expect": {"result.thirst": 8}}
+{"id": "drink_fresh_garden_salad_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_fresh_garden_salad_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_fresh_garden_salad_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_fresh_garden_salad_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_fresh_garden_salad_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_fresh_garden_salad_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with candlelight:fresh_garden_salad"}}
+{"id": "drink_fresh_garden_salad_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_fresh_garden_salad_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_fresh_garden_salad_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_fresh_garden_salad_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_fresh_garden_salad_state", "command": "client.state", "expect": {"result.thirst": 8}}
+{"id": "drink_chocolate_mousse_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_chocolate_mousse_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_chocolate_mousse_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_chocolate_mousse_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_chocolate_mousse_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_chocolate_mousse_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with candlelight:chocolate_mousse"}}
+{"id": "drink_chocolate_mousse_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_chocolate_mousse_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_chocolate_mousse_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_chocolate_mousse_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_chocolate_mousse_state", "command": "client.state", "expect": {"result.thirst": 6}}
+
+{"id": "done", "command": "client.state"}

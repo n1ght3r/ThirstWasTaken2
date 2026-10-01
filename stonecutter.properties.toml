@@ -107,6 +107,18 @@ deps.forge_config_api_port = "N5qzq0XV"
 # docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md.
 # v4.5.0+1.21.1-fabric, the Fabric upload.
 deps.brewin_and_chewin = "O3PobqCR"
+# Let's Do: Farm & Charm, whose Timber Well, Water Trough and Cooking Pot hold water, and Candlelight,
+# its addon, whose kitchen sinks are Farm & Charm's sink block. Both 1.21.1 nodes build it, and only
+# they: neither has a newer build, and their 1.20.1 line is no longer updated. Pinned by Modrinth
+# version id, since the Fabric and NeoForge uploads share a version number. Candlelight has no code of
+# its own here, only runClient. See src/main/farmandcharm/AGENTS.md.
+# 1.1.26, the Fabric upload.
+deps.farm_and_charm = "isj5qmqa"
+# 2.1.13, the Fabric upload.
+deps.candlelight = "DEKqjSw9"
+# Architectury API, which both require, only on the runClient classpath.
+# 13.0.11+fabric, the Fabric upload.
+deps.architectury = "Pzc2FP5K"
 # Serene Seasons, whose calendar speeds the thirst drain up in summer and slows it in winter. Every
 # node builds it, on both loaders. Pinned by Modrinth version id, since its uploads for different
 # loaders and Minecraft versions share version numbers. See src/main/sereneseasons/AGENTS.md.
@@ -156,6 +168,13 @@ deps.kaleidoscope_cookery = "7vH6mhde"
 # Brewin' and Chewin', the same integration the Fabric table builds; see there.
 # v4.5.0+1.21.1-neoforge, the NeoForge upload.
 deps.brewin_and_chewin = "MbcR48Ou"
+# Farm & Charm, Candlelight and Architectury, the same integration the Fabric table builds; see there.
+# 1.1.26, the NeoForge upload.
+deps.farm_and_charm = "Y8Uh3mlO"
+# 2.1.13, the NeoForge upload.
+deps.candlelight = "Cxu0FvZB"
+# 13.0.11+neoforge, the NeoForge upload.
+deps.architectury = "1IiqEQGl"
 # Cold Sweat, whose temperature drives the thirst drain and whose waterskin carries a grade. NeoForge
 # only, and nothing past 1.21.1, so no other table sets it. See src/main/coldsweat/AGENTS.md.
 # 2.4.3.1, the NeoForge upload.

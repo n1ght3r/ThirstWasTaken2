@@ -59,6 +59,12 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Serene Seasons',
     icon: 'https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png',
     link: '/docs/integrations/serene-seasons'
+  },
+  {
+    // Candlelight, its kitchen addon, is on the same page: players meet the two together.
+    name: "Let's Do: Farm & Charm",
+    icon: 'https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp',
+    link: '/docs/integrations/farm-and-charm'
   }
 ]
 

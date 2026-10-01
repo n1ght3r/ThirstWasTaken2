@@ -290,6 +290,10 @@ public final class ThirstConfig {
         expandedDelightFoods(foods);
         rusticDelightDrinks(drinks);
         rusticDelightFoods(foods);
+        // And for Farm & Charm and Candlelight, added after that.
+        farmAndCharmDrinks(drinks);
+        farmAndCharmFoods(foods);
+        candlelightFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -408,6 +412,7 @@ public final class ThirstConfig {
         fruitsDelightDrinks(values);
         expandedDelightDrinks(values);
         rusticDelightDrinks(values);
+        farmAndCharmDrinks(values);
         return values;
     }
 
@@ -434,6 +439,8 @@ public final class ThirstConfig {
         oceansDelightFoods(values);
         expandedDelightFoods(values);
         rusticDelightFoods(values);
+        farmAndCharmFoods(values);
+        candlelightFoods(values);
         return values;
     }
 
@@ -659,6 +666,46 @@ public final class ThirstConfig {
                 "rusticdelight:bell_pepper_slice_white", "rusticdelight:bell_pepper_slice_pink",
                 "rusticdelight:bell_pepper_slice_blue", "rusticdelight:bell_pepper_slice_purple",
                 "rusticdelight:bell_pepper_slice_black");
+    }
+
+    /**
+     * Let's Do: Farm & Charm's herbal teas, by id alone, like the Farmer's Delight addons: reaches every
+     * node and matches nothing where the mod is absent. The mod names no thirst mod and fills no
+     * {@code c:drinks}. A cup is a cup of tea, as Kaleidoscope Cookery's; the jug drunk from the hand is
+     * one serving too, though placed it pours two cups, so drinking it whole is the wasteful way. Tea is
+     * boiled in the Cooking Pot, so it is safe whatever water went in.
+     */
+    private static void farmAndCharmDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 6, 9, "farm_and_charm:strawberry_tea_cup", "farm_and_charm:nettle_tea_cup",
+                "farm_and_charm:ribwort_tea_cup", "farm_and_charm:strawberry_tea", "farm_and_charm:nettle_tea",
+                "farm_and_charm:ribwort_tea");
+    }
+
+    /**
+     * Farm & Charm's soups, salad and the wetter crops; see {@link #farmAndCharmDrinks}. Soups and stews
+     * follow Farmer's Delight's, the tomato Farmer's Delight's tomato, lettuce a cabbage leaf, a strawberry
+     * a sweet berry. Corn grits are a porridge. Oatmeal is dry oats with no water in the recipe, and the
+     * roasts, patties, breads and cakes are solid food; they are left out.
+     */
+    private static void farmAndCharmFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "farm_and_charm:barley_soup", "farm_and_charm:onion_soup",
+                "farm_and_charm:potato_soup", "farm_and_charm:simple_tomato_soup", "farm_and_charm:goulash",
+                "farm_and_charm:farmer_salad");
+        putMissing(foods, 3, 4, "farm_and_charm:corn_grits");
+        putMissing(foods, 2, 3, "farm_and_charm:tomato");
+        putMissing(foods, 1, 2, "farm_and_charm:lettuce", "farm_and_charm:strawberry");
+    }
+
+    /**
+     * Candlelight's wetter dishes. Candlelight is Farm & Charm's dining addon and has no drinks: its wine
+     * glass is empty glassware. Soups and salads follow Farmer's Delight's, the mousse its glow berry
+     * custard. Pasta, roasts, steaks, mozzarella and the dishes cooked in wine are solid food.
+     */
+    private static void candlelightFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "candlelight:tomato_soup", "candlelight:mushroom_soup", "candlelight:salad",
+                "candlelight:beetroot_salad", "candlelight:fresh_garden_salad");
+        putMissing(foods, 3, 4, "candlelight:tomato_mozzarella_salad");
+        putMissing(foods, 2, 3, "candlelight:chocolate_mousse");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

@@ -166,6 +166,12 @@ val kaleidoscopeCookeryVersion = findProperty("deps.kaleidoscope_cookery") as St
  */
 val brewinAndChewinVersion = findProperty("deps.brewin_and_chewin") as String?
 
+/**
+ * Let's Do: Farm & Charm's Modrinth version id, and Candlelight's, its addon, set on `1.21.1-neoforge`
+ * and nowhere else among the NeoForge nodes. See docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md.
+ */
+val farmAndCharmVersion = findProperty("deps.farm_and_charm") as String?
+
 /** Cold Sweat's Modrinth version id, on `1.21.1-neoforge` only. See src/main/coldsweat/AGENTS.md. */
 val coldSweatVersion = findProperty("deps.cold_sweat") as String?
 
@@ -474,6 +480,20 @@ dependencies {
         // Farmer's Delight is already above, and leaving it out leaves this out.
         runClientMod(listOf("brewin-and-chewin", "brewinandchewin", "farmers-delight", "farmersdelight"),
             "maven.modrinth:brewin-and-chewin:$brewinAndChewinVersion") { isTransitive = false }
+    }
+
+    if (farmAndCharmVersion != null) {
+        compileOnly("maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
+        // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
+        // gametests and runServer run without them, which is what proves the mod is unchanged when they are
+        // absent. Both require Architectury API. Leaving Farm & Charm out leaves all three out; leaving
+        // Candlelight out keeps the other two.
+        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm")
+        runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
+        runClientMod(names + listOf("candlelight"),
+            "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}") { isTransitive = false }
+        runClientMod(names + listOf("architectury"),
+            "maven.modrinth:architectury-api:${property("deps.architectury")}") { isTransitive = false }
     }
 
     if (coldSweatVersion != null) {

@@ -351,6 +351,52 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Farm & Charm and Candlelight are never installed here either; see the Kaleidoscope Cookery test
+     * above. One test for both, since Candlelight is Farm & Charm's addon and merges in the same pass.
+     */
+    @GameTest
+    public void farmAndCharmDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"farm_and_charm:nettle_tea_cup", "farm_and_charm:strawberry_tea"};
+        String[] foods = {"farm_and_charm:barley_soup", "farm_and_charm:corn_grits", "farm_and_charm:tomato",
+                "candlelight:tomato_soup", "candlelight:chocolate_mousse"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey(drink), "the default drinks should list " + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey(food), "the default foods should list " + food);
+        }
+        for (String dry : new String[]{"farm_and_charm:oatmeal_with_strawberries", "farm_and_charm:corn",
+                "farm_and_charm:farmers_bread", "candlelight:mozzarella", "candlelight:lasagne",
+                "candlelight:wine_glass"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey(dry) && !defaults.drinks.containsKey(dry),
+                    dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove(drink);
+            for (String food : foods) config.foods.remove(food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("farm_and_charm:nettle_tea_cup", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            String id = "farm_and_charm:strawberry_tea";
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                    id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                            + ", got " + Arrays.toString(config.drinks.get(id)));
+            for (String food : foods) {
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(food), defaults.foods.get(food)),
+                        food + " should be merged back as " + Arrays.toString(defaults.foods.get(food))
+                                + ", got " + Arrays.toString(config.foods.get(food)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("farm_and_charm:nettle_tea_cup"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("farm_and_charm:nettle_tea_cup")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {
