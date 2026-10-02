@@ -156,21 +156,28 @@ val supplementariesVersion = findProperty("deps.supplementaries") as String?
 
 /**
  * Kaleidoscope Cookery's Modrinth version id, set on `1.21.1-neoforge` and nowhere else: the official
- * mod has no NeoForge build past 1.21.1. See docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
+ * mod has no NeoForge build past 1.21.1. See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
  */
 val kaleidoscopeCookeryVersion = findProperty("deps.kaleidoscope_cookery") as String?
 
 /**
  * Brewin' and Chewin's Modrinth version id, set on `1.21.1-neoforge` and nowhere else among the NeoForge
- * nodes. See docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md.
+ * nodes. See docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
  */
 val brewinAndChewinVersion = findProperty("deps.brewin_and_chewin") as String?
 
 /**
  * Let's Do: Farm & Charm's Modrinth version id, and Candlelight's, its addon, set on `1.21.1-neoforge`
- * and nowhere else among the NeoForge nodes. See docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md.
+ * and nowhere else among the NeoForge nodes. See docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md.
  */
 val farmAndCharmVersion = findProperty("deps.farm_and_charm") as String?
+
+/**
+ * Let's Do: HerbalBrews' and Beachparty's Modrinth version ids, on `1.21.1-neoforge` and nowhere else
+ * among the NeoForge nodes, like Farm & Charm. See docs/dev/integration/lets-do/.
+ */
+val herbalBrewsVersion = findProperty("deps.herbalbrews") as String?
+val beachpartyVersion = findProperty("deps.beachparty") as String?
 
 /** Cold Sweat's Modrinth version id, on `1.21.1-neoforge` only. See src/main/coldsweat/AGENTS.md. */
 val coldSweatVersion = findProperty("deps.cold_sweat") as String?
@@ -246,6 +253,9 @@ val clientRunMods: Configuration = configurations.create("clientRunMods")
 val optionalRunMods = OptionalRunMods(providers.gradleProperty("withoutOptional").orNull)
 
 /** Adds a mod to the clients' run only, unless `-PwithoutOptional` names it or one of the libraries it lists. */
+/** Architectury API's names, which every Let's Do mod lists among its own since it cannot load without it. */
+val architecturyNames = listOf("architectury", "architectury-api")
+
 fun runClientMod(names: List<String>, notation: String, configure: ExternalModuleDependency.() -> Unit = {}) {
     if (optionalRunMods.include(names)) dependencies.add(clientRunMods.name, notation, configure)
 }
@@ -486,13 +496,35 @@ dependencies {
         compileOnly("maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
-        // absent. Both require Architectury API. Leaving Farm & Charm out leaves all three out; leaving
-        // Candlelight out keeps the other two.
-        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm")
+        // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight
+        // out too; leaving Candlelight out keeps Farm & Charm.
+        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm") + architecturyNames
         runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
         runClientMod(names + listOf("candlelight"),
             "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}") { isTransitive = false }
-        runClientMod(names + listOf("architectury"),
+    }
+
+    if (herbalBrewsVersion != null) {
+        compileOnly("maven.modrinth:lets-do-herbalbrews:$herbalBrewsVersion") { isTransitive = false }
+        // The Tea Kettle and the Jug in runClient only.
+        runClientMod(listOf("herbalbrews", "lets-do-herbalbrews") + architecturyNames,
+            "maven.modrinth:lets-do-herbalbrews:$herbalBrewsVersion") { isTransitive = false }
+    }
+
+    if (beachpartyVersion != null) {
+        compileOnly("maven.modrinth:lets-do-beachparty:$beachpartyVersion") { isTransitive = false }
+        // The cocktails in runClient only. Its manifest asks for nothing but Architectury, yet its items
+        // implement Curios' ICurioItem, so a game without Curios fails to load. Leaving Curios out leaves
+        // Beachparty out.
+        val names = listOf("beachparty", "lets-do-beachparty", "curios") + architecturyNames
+        runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachpartyVersion") { isTransitive = false }
+        runClientMod(names, "maven.modrinth:curios:${property("deps.curios")}") { isTransitive = false }
+    }
+
+    // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
+    // names, so leaving it out leaves them out; leaving one of them out keeps it for the others.
+    if (farmAndCharmVersion != null || herbalBrewsVersion != null || beachpartyVersion != null) {
+        runClientMod(architecturyNames,
             "maven.modrinth:architectury-api:${property("deps.architectury")}") { isTransitive = false }
     }
 

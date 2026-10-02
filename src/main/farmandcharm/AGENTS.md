@@ -7,8 +7,8 @@
 stoves extend Farm & Charm's, and its Large Cooking Pot runs Farm & Charm's recipes. So this one
 directory serves both, gated on Farm & Charm, and Candlelight has no row in the integration table. The
 plans and their decisions are
-[docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md](../../../docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md)
-and [CANDLELIGHT-INTEGRATION.md](../../../docs/dev/integration/CANDLELIGHT-INTEGRATION.md).
+[docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md](../../../docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md)
+and [CANDLELIGHT-INTEGRATION.md](../../../docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md).
 
 **Built on `1.21.1` and `1.21.1-neoforge`**, both mods' only builds for a version this mod supports
 (Farm & Charm 1.1.26, Candlelight 2.1.13). Their 1.20.1 line is no longer updated and is not built
@@ -75,8 +75,10 @@ loader's jar, so a block's mixin asks only that its class is there.
    append the mixin config to the built manifest (on NeoForge with `farm_and_charm` as an optional
    dependency), from [its row in the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt).
    Farm & Charm, Candlelight and Architectury API are on `runClient` only, so `runServer` and the
-   gametests run without them. `-PwithoutOptional=farm-and-charm` leaves all three out;
-   `-PwithoutOptional=candlelight` leaves Candlelight out and keeps Farm & Charm.
+   gametests run without them. `-PwithoutOptional=farm-and-charm` leaves both mods out and
+   keeps Architectury, which HerbalBrews and Beachparty need too (`-PwithoutOptional=architectury` leaves
+   every Let's Do mod out); `-PwithoutOptional=candlelight`
+   leaves Candlelight out and keeps Farm & Charm.
 2. **Runtime gate.** `FarmAndCharmPresence` answers with resource lookups and class file reads, never
    loading a class, and names no class of either mod, no Minecraft class and no loader.
 3. **Mixin plugin.** `shouldApplyMixin` asks the gate for each target, so without Candlelight the

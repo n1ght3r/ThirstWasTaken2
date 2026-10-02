@@ -29,7 +29,7 @@ and shows the grade wherever a player would look for it:
   water in a placed jar or goblet, and in Jade's overlay.
 
 What is still to do is in
-[docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md](../../../docs/dev/integration/SUPPLEMENTARIES-INTEGRATION.md).
+[docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](../../../docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md).
 
 This directory is **only compiled by nodes that set `deps.supplementaries`** in
 `stonecutter.properties.toml`, which is `1.21.1` and `1.21.1-neoforge` and nothing else:

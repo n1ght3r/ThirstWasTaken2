@@ -4,7 +4,7 @@
 (mod id `sereneseasons`, package `sereneseasons`). With it installed, the thirst drain follows the
 season: a temperate biome drains faster in summer and slower in winter, and a tropical biome's dry
 season counts as dry. Why each choice was made, and what was found in game, is in
-[docs/dev/integration/SERENE-SEASONS-INTEGRATION.md](../../../docs/dev/integration/SERENE-SEASONS-INTEGRATION.md).
+[docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md](../../../docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md).
 
 This directory is **compiled by every node, on every loader**: Serene Seasons ships them all, Forge 47
 on 1.20.1 included, and each table of `stonecutter.properties.toml` sets `deps.serene_seasons`. So nothing

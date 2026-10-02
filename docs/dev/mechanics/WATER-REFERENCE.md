@@ -1,7 +1,7 @@
 # Water reference
 
 Every way to get water, what each grade of water does when drunk, by difficulty, and how the ways of
-cleaning it compare. This replaces `WATER-PURIFICATION-BALANCE.md`.
+cleaning it compare.
 
 **It describes the game as the code stands today.** The planned rework (plain heat stops at Clean, no
 campfire slots, lower Clean sickness) is in [PURIFICATION-REWORK.md](PURIFICATION-REWORK.md); update
@@ -134,6 +134,7 @@ become Pure. Nothing takes the salt out of sea water; distillation is on the [ro
 | Cold Sweat's Waterskin, campfire | 60 s | 1 | up two grades | no | Cold Sweat's own recipe; `CampfireWaterskinMixin` stamps the grade |
 | Teapot (Kaleidoscope Cookery) | 12 s | 4 teacups | safe tea, not water | heat below, a tea bag | a teacup restores its fixed value whatever the grade; sea water refused |
 | Cooking Pot (Farm & Charm, and Candlelight's) | 45 s | 1 jug of tea | safe tea, not water | heat below, a glass bottle | takes a water bucket of any grade; sea water refused |
+| Tea Kettle (HerbalBrews) | 25 ticks a tea | 1 cup | safe tea, not water | a stove below, blaze powder for heat, a glass bottle | takes a water bucket or any bottle of any grade; sea water refused |
 
 The Waterskin cannot be boiled at all. Clean water gets into it only from something already clean: a
 hanging pot, a cauldron, or bottles and buckets boiled elsewhere.

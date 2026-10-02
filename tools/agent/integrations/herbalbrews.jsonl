@@ -1,0 +1,115 @@
+// Let's Do: HerbalBrews in a real client: the check of its integration plan
+// (docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md). What it proves: every id ThirstConfig lists for the mod exists;
+// a Tea Kettle on a stove brews green tea from a plain water bucket and not from a salty one, which stays
+// in its water slot; a tea and a coffee restore what ThirstConfig says; and a placed Jug of three green
+// teas, drunk with an empty hand, restores three teas' worth.
+// Runs on both 1.21.1 nodes. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/herbalbrews.jsonl -Pquickplay=LetsDoAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/herbalbrews.jsonl -Pquickplay=LetsDoAgent -PwithoutOptional=cold-sweat
+// LetsDoAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> LetsDoAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/herbalbrews.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199, biome plains. The player stands at 0.5 200 0.5.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+
+// Every id ThirstConfig lists, and the blocks the script uses: /give refuses an unknown item.
+{"id": "id_herbalbrews_green_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:green_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_black_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:black_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_lavender_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:lavender_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_yerba_mate_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:yerba_mate_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_oolong_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:oolong_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_rooibos_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:rooibos_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_hibiscus_tea", "command": "server.command", "args": {"command": "give @p herbalbrews:hibiscus_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_coffee", "command": "server.command", "args": {"command": "give @p herbalbrews:coffee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_milk_coffee", "command": "server.command", "args": {"command": "give @p herbalbrews:milk_coffee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_tea_kettle", "command": "server.command", "args": {"command": "give @p herbalbrews:tea_kettle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_copper_tea_kettle", "command": "server.command", "args": {"command": "give @p herbalbrews:copper_tea_kettle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_jug", "command": "server.command", "args": {"command": "give @p herbalbrews:jug"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_stove", "command": "server.command", "args": {"command": "give @p herbalbrews:stove"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_cauldron", "command": "server.command", "args": {"command": "give @p herbalbrews:cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_herbalbrews_flask", "command": "server.command", "args": {"command": "give @p herbalbrews:flask"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Tea Kettles on HerbalBrews stoves, filled through their slots: dried green tea (1), a glass bottle
+// (2), water (6), blaze powder (7) to lift the heat from 30 past the recipe's 40.
+{"id": "kettle_plain_stove", "command": "server.command", "args": {"command": "setblock 0 200 4 herbalbrews:stove"}}
+{"id": "kettle_plain_kettle", "command": "server.command", "args": {"command": "setblock 0 201 4 herbalbrews:tea_kettle"}}
+{"id": "kettle_plain_leaves", "command": "server.command", "args": {"command": "item replace block 0 201 4 container.1 with herbalbrews:dried_green_tea"}}
+{"id": "kettle_plain_bottle", "command": "server.command", "args": {"command": "item replace block 0 201 4 container.2 with minecraft:glass_bottle"}}
+{"id": "kettle_plain_heat", "command": "server.command", "args": {"command": "item replace block 0 201 4 container.7 with minecraft:blaze_powder"}}
+{"id": "kettle_plain_water", "command": "server.command", "args": {"command": "item replace block 0 201 4 container.6 with minecraft:water_bucket"}}
+{"id": "kettle_salty_stove", "command": "server.command", "args": {"command": "setblock 2 200 4 herbalbrews:stove"}}
+{"id": "kettle_salty_kettle", "command": "server.command", "args": {"command": "setblock 2 201 4 herbalbrews:tea_kettle"}}
+{"id": "kettle_salty_leaves", "command": "server.command", "args": {"command": "item replace block 2 201 4 container.1 with herbalbrews:dried_green_tea"}}
+{"id": "kettle_salty_bottle", "command": "server.command", "args": {"command": "item replace block 2 201 4 container.2 with minecraft:glass_bottle"}}
+{"id": "kettle_salty_heat", "command": "server.command", "args": {"command": "item replace block 2 201 4 container.7 with minecraft:blaze_powder"}}
+{"id": "kettle_salty_water", "command": "server.command", "args": {"command": "item replace block 2 201 4 container.6 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "brew", "command": "wait", "args": {"ticks": 200}}
+{"id": "kettle_plain_tea", "command": "server.command", "args": {"command": "execute if items block 0 201 4 container.0 herbalbrews:green_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kettle_plain_bucket_back", "command": "server.command", "args": {"command": "execute if items block 0 201 4 container.6 minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kettle_salty_tea", "command": "server.command", "args": {"command": "execute if items block 2 201 4 container.0 herbalbrews:green_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "kettle_salty_kept", "command": "server.command", "args": {"command": "execute if items block 2 201 4 container.6 minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kettle_clear", "command": "server.command", "args": {"command": "fill -8 200 -8 8 202 8 minecraft:air"}}
+
+// Drinking from thirst 4, quenched 0, looking up so nothing is placed: a tea is 6, 9, coffee 5, 8.
+{"id": "drink_green_tea_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_green_tea_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_green_tea_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_green_tea_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_green_tea_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_green_tea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with herbalbrews:green_tea"}}
+{"id": "drink_green_tea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_green_tea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_green_tea_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_green_tea_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 9}}
+{"id": "drink_coffee_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_coffee_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_coffee_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_coffee_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_coffee_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_coffee_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with herbalbrews:coffee"}}
+{"id": "drink_coffee_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coffee_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_coffee_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coffee_state", "command": "client.state", "expect": {"result.thirst": 9, "result.quenched": 8}}
+
+// A placed Jug, filled with three green teas by hand, drunk with an empty hand from thirst 4: three
+// teas are 18, 27, so thirst lands on the cap of 20 and quenched on its own cap.
+{"id": "jug_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "jug_place", "command": "server.command", "args": {"command": "setblock 0 200 2 herbalbrews:jug"}}
+{"id": "jug_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "jug_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with herbalbrews:green_tea 3"}}
+{"id": "jug_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_fill_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_fill_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_fill_use1", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_fill_used1", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_fill_use2", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_fill_used2", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_full", "command": "server.command", "args": {"command": "execute if block 0 200 2 herbalbrews:jug[fill_stage=3]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jug_empty_hand", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "jug_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "jug_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "jug_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "jug_set_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_drink_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_drink_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_drunk", "command": "server.command", "args": {"command": "execute if block 0 200 2 herbalbrews:jug[fill_stage=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jug_state", "command": "client.state", "expect": {"result.thirst": 20}}
+
+{"id": "done", "command": "wait", "args": {"ticks": 20}}

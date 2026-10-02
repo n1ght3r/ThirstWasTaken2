@@ -95,7 +95,7 @@ deps.moonlight = "FrIMIBv6"
 # the official Fabric build stopped at 1.0.1, before the teapot. Same mod id and package as the NeoForge
 # original, so one integration serves both. Pinned by Modrinth version id, since the Fabric uploads of
 # different Minecraft versions share one version number. See
-# docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
+# docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
 # 1.6.0-fabric+mc1.21.1, the Fabric upload.
 deps.kaleidoscope_cookery = "RAJn1Abk"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
@@ -104,7 +104,7 @@ deps.forge_config_api_port = "N5qzq0XV"
 # Brewin' and Chewin', whose keg holds water. Both 1.21.1 nodes build it, and only they: it has no
 # release for a newer Minecraft version. Pinned by Modrinth version id, since its Fabric and NeoForge
 # uploads share a version number. Its Greenhouse Config is nested in its jar. See
-# docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md.
+# docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
 # v4.5.0+1.21.1-fabric, the Fabric upload.
 deps.brewin_and_chewin = "O3PobqCR"
 # Let's Do: Farm & Charm, whose Timber Well, Water Trough and Cooking Pot hold water, and Candlelight,
@@ -116,7 +116,18 @@ deps.brewin_and_chewin = "O3PobqCR"
 deps.farm_and_charm = "isj5qmqa"
 # 2.1.13, the Fabric upload.
 deps.candlelight = "DEKqjSw9"
-# Architectury API, which both require, only on the runClient classpath.
+# Let's Do: HerbalBrews, whose Tea Kettle takes no sea water and whose placed Jug is drunk as its teas,
+# and Let's Do: Beachparty, whose placed cocktails are sipped. Same versions story as Farm & Charm: both
+# 1.21.1 nodes, and only they. See docs/dev/integration/lets-do/.
+# 1.1.4, the Fabric upload.
+deps.herbalbrews = "43g8sVYA"
+# 2.1.5, the Fabric upload.
+deps.beachparty = "jeZE0Qav"
+# Trinkets, which Beachparty's Fabric client entrypoint names whatever its manifest says, only on the
+# runClient classpath. Its Cardinal Components are nested in its jar.
+# 3.10.0, the Fabric upload.
+deps.trinkets = "JagCscwi"
+# Architectury API, which every Let's Do mod requires, only on the runClient classpath.
 # 13.0.11+fabric, the Fabric upload.
 deps.architectury = "Pzc2FP5K"
 # Serene Seasons, whose calendar speeds the thirst drain up in summer and slows it in winter. Every
@@ -173,6 +184,15 @@ deps.brewin_and_chewin = "MbcR48Ou"
 deps.farm_and_charm = "Y8Uh3mlO"
 # 2.1.13, the NeoForge upload.
 deps.candlelight = "Cxu0FvZB"
+# HerbalBrews and Beachparty, the same integrations the Fabric table builds; see there.
+# 1.1.4, the NeoForge upload.
+deps.herbalbrews = "kGYbyn9P"
+# 2.1.5, the NeoForge upload.
+deps.beachparty = "HN4rzKRl"
+# Curios API, which Beachparty's items implement whatever its manifest says, only on the runClient
+# classpath.
+# 9.5.1+1.21.1, the NeoForge upload.
+deps.curios = "yohfFbgD"
 # 13.0.11+neoforge, the NeoForge upload.
 deps.architectury = "1IiqEQGl"
 # Cold Sweat, whose temperature drives the thirst drain and whose waterskin carries a grade. NeoForge

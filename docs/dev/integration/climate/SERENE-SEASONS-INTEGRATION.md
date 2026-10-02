@@ -14,7 +14,7 @@ Written on 2026-09-26 from:
 - Cold Sweat `2.4.3.1` sources, for what it already does with seasons.
 
 Every step is done (2026-09-26), each with the recommended option (3c, 4a, 5a); how the code works is
-in [src/main/sereneseasons/AGENTS.md](../../../src/main/sereneseasons/AGENTS.md). Where the work parted
+in [src/main/sereneseasons/AGENTS.md](../../../../src/main/sereneseasons/AGENTS.md). Where the work parted
 from the plan below, the step says so.
 
 ## Which build for which node
@@ -103,7 +103,7 @@ count the season a second time there.
 
 ## 1. Build dependency and gate
 
-- A row in [the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
+- A row in [the integration table](../../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
   `dir = "sereneseasons"`, `depsKey = "deps.serene_seasons"`, `loaders = setOf(Loader.FABRIC,
   Loader.NEOFORGE)`, mixin config `thirstwastaken2.sereneseasons.mixins.json` (empty unless step 4b
   needs one; if nothing needs a mixin, check whether the row can go without, rather than ship an empty
@@ -200,7 +200,7 @@ the curve and is the easiest for a modpack maker to reason about.
 so (b) would have needed every summer offset at or below 0. The factor defaults to 1.0, 1.15, 1.0, 0.9
 and applies where Serene Seasons' own temperature shifts; deserts, badlands, jungles and savannas never
 take it. The tropical humidity follows Serene's rain exactly: dry at `MID_DRY`, wet at `MID_WET`.
-Measured by [tools/agent/integrations/serene-seasons.jsonl](../../../tools/agent/integrations/serene-seasons.jsonl)
+Measured by [tools/agent/integrations/serene-seasons.jsonl](../../../../tools/agent/integrations/serene-seasons.jsonl)
 on `26.3.x` and `1.21.1-neoforge`, the same on both, at the default `thirstDepletionModifier` 1.2:
 
 | Where, when | Modifier | Without the mod (computed) |
@@ -268,7 +268,7 @@ through the year.
 - (b) In summer, a still water source in a swamp or a river-less biome samples one grade worse.
 
 **Recommended and decided (a).** Revisit only if players ask; it touches the purification balance in
-[WATER-REFERENCE.md](../mechanics/WATER-REFERENCE.md).
+[WATER-REFERENCE.md](../../mechanics/WATER-REFERENCE.md).
 
 ## 6. Changelog and player docs
 

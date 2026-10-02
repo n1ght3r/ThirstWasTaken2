@@ -92,7 +92,7 @@ The ids come from Candlelight's `ObjectRegistry`. Step 3 confirms each one resol
 | 6 | Nothing crashes without the mod | test | both 1.21.1 | **Done** (2026-10-01) |
 | 7 | Changelog, player docs, store pages | docs | — | **Done** (2026-10-01) |
 
-How it works now is in [src/main/farmandcharm/AGENTS.md](../../../src/main/farmandcharm/AGENTS.md).
+How it works now is in [src/main/farmandcharm/AGENTS.md](../../../../src/main/farmandcharm/AGENTS.md).
 
 ## 1. The mod on the `runClient` classpath (done)
 
@@ -108,7 +108,7 @@ Farm & Charm's. `fresh_garden_salad` is eaten from the hand like the others: fro
 
 ## 3. Investigation (done)
 
-In [tools/agent/integrations/farm-and-charm.jsonl](../../../tools/agent/integrations/farm-and-charm.jsonl),
+In [tools/agent/integrations/farm-and-charm.jsonl](../../../../tools/agent/integrations/farm-and-charm.jsonl),
 passed whole on both nodes on 2026-10-01:
 
 | Case | Found |
@@ -142,7 +142,7 @@ with Farm & Charm still loaded, and so does `-PwithoutOptional=farm-and-charm`, 
 
 ## 7. Docs (done)
 
-An addon page under Farm & Charm's, as Farmer's Delight's addons have, [integrations/farm-and-charm/candlelight](../../docs/integrations/farm-and-charm/candlelight.md),
+An addon page under Farm & Charm's, as Farmer's Delight's addons have, [integrations/farm-and-charm/candlelight](../../../docs/integrations/farm-and-charm/candlelight.md),
 with a picture of a kitchen sink between a stove and counters; a changelog entry of its own; rows in
 `docs/docs/installation.md`; Candlelight named in Farm & Charm's row on the Modrinth and CurseForge
 pages and in their versions tables.

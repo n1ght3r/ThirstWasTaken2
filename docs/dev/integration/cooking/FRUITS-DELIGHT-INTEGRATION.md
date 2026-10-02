@@ -116,7 +116,7 @@ foods are left out, and that a merge keeps a player's value. `runGametest` passe
 
 ## 3. Investigation (done)
 
-[tools/agent/integrations/fruits-delight.jsonl](../../../tools/agent/integrations/fruits-delight.jsonl),
+[tools/agent/integrations/fruits-delight.jsonl](../../../../tools/agent/integrations/fruits-delight.jsonl),
 run on 2026-09-26 on `1.21.1-neoforge` with Cold Sweat left out, passes whole:
 
 | Case | Found |
@@ -131,7 +131,7 @@ run on 2026-09-26 on `1.21.1-neoforge` with Cold Sweat left out, passes whole:
 
 First chosen (a), then changed on 2026-09-26 to **(b)**, so that the three Farmer's Delight addons agree:
 sea water makes no safe drink through Brewin' and Chewin's keg, Cultural Delights' vat, or Fruits
-Delight. Built as described in [src/main/fruitsdelight/AGENTS.md](../../../src/main/fruitsdelight/AGENTS.md):
+Delight. Built as described in [src/main/fruitsdelight/AGENTS.md](../../../../src/main/fruitsdelight/AGENTS.md):
 
 - `WaterBottleIngredientMixin` on L2 Core's `PotionIngredient.test`: a salty bottle is not a water
   bottle, which also reaches other L2 mods' water bottle recipes;
@@ -148,12 +148,12 @@ sea water one stays.
 
 Fruits Delight lists Thirst Was Taken as an optional dependency on Modrinth. A data pack file in its
 own jar (`data/fruitsdelight/thirstwastaken2/drinks/fruitsdelight.json`, see
-[data-packs.md](../../docs/developers/data-packs.md)) would give its values with no class reference
+[data-packs.md](../../../docs/developers/data-packs.md)) would give its values with no class reference
 either way. Our config still wins over it. Not needed for anything above.
 
 ## 6. Docs (done)
 
-`CHANGELOG.md` (Unreleased), [the site's page](../../docs/integrations/farmers-delight/fruits-delight.md) and its sidebar
+`CHANGELOG.md` (Unreleased), [the site's page](../../../docs/integrations/farmers-delight/fruits-delight.md) and its sidebar
 entry, the NeoForge row in `docs/docs/installation.md`, and a line under the Modrinth and CurseForge
 compatibility tables. A picture of an orange tree in a village was taken and later dropped as showing
 only the mod's own blocks, so neither the site nor the store pages have one.

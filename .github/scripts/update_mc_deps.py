@@ -80,7 +80,7 @@ VERSION_DIFFERENCES = ROOT / "docs" / "dev" / "VERSION-DIFFERENCES.md"
 # because most other mentions must not move: CHANGELOG.md records what a past release was built against
 # and has to keep saying so, and docs/dev names versions inside prose no rewrite can follow.
 DOC_MIRRORS = (README, INSTALLATION, VERSION_DIFFERENCES)
-KALEIDOSCOPE_DOC = ROOT / "docs" / "dev" / "integration" / "KALEIDOSCOPE-COOKERY-INTEGRATION.md"
+KALEIDOSCOPE_DOC = ROOT / "docs" / "dev" / "integration" / "cooking" / "KALEIDOSCOPE-COOKERY-INTEGRATION.md"
 # Every page some dependency mirrors, in the order they are rewritten and reported.
 ALL_MIRRORS = DOC_MIRRORS + (KALEIDOSCOPE_DOC,)
 # Files that name a version only as a record of what something was built, written or tested against,
@@ -92,7 +92,7 @@ RECORDS = (
     ROOT / ".github" / "scripts" / "update_mc_deps.py",
     ROOT / "docs" / "dev" / "MANUAL-TESTING.md",
     ROOT / "docs" / "dev" / "VERSION-1.20.1.md",
-    ROOT / "docs" / "dev" / "integration" / "SOPHISTICATED-INTEGRATION.md",
+    ROOT / "docs" / "dev" / "integration" / "storage" / "SOPHISTICATED-INTEGRATION.md",
     ROOT / "src" / "main" / "createforge" / "AGENTS.md",
     ROOT / "src" / "main" / "sereneseasons" / "AGENTS.md",
 )
@@ -195,10 +195,16 @@ MODRINTH_DEPS = [
     ModrinthDep("fruits_delight", "fruits-delight", by_id=True),
     # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others.
     ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
-    # Let's Do: Farm & Charm and Candlelight, its addon, both 1.21.1 nodes, pinned by id: their Fabric and
-    # NeoForge uploads share a version number. Architectury API, which both require, runClient only.
+    # Let's Do: Farm & Charm and Candlelight, its addon, HerbalBrews and Beachparty, both 1.21.1 nodes,
+    # pinned by id: their Fabric and NeoForge uploads share a version number. Architectury API, which
+    # all of them require, runClient only.
     ModrinthDep("farm_and_charm", "lets-do-farm-charm", by_id=True),
     ModrinthDep("candlelight", "lets-do-candlelight-farmcharm-compat", by_id=True),
+    ModrinthDep("herbalbrews", "lets-do-herbalbrews", by_id=True),
+    ModrinthDep("beachparty", "lets-do-beachparty", by_id=True),
+    # Trinkets and Curios, which Beachparty needs on Fabric and NeoForge, runClient only.
+    ModrinthDep("trinkets", "trinkets", by_id=True, **NO_PAGE),
+    ModrinthDep("curios", "curios", by_id=True, **NO_PAGE),
     ModrinthDep("architectury", "architectury-api", by_id=True, **NO_PAGE),
 ]
 

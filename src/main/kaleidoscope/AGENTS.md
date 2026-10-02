@@ -4,7 +4,7 @@
 keeps water in two blocks, the stockpot and the teapot, and both keep only a fluid id, so the grade a
 bucket had is lost on the way in. This directory is where that gets fixed. The plan, the order of work
 and what is still to do are in
-[docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md](../../../docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md).
+[docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md](../../../docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md).
 
 **Built on the eight nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and the six Fabric
 nodes. What it does there:

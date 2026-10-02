@@ -13,7 +13,7 @@ Written on 2026-09-25 from:
   2026-09-15). It has **no required dependency**.
 
 Every step is done (2026-09-26), each with the recommended option (2a, 6a, 7a, 8a); how the code
-works is in [src/main/coldsweat/AGENTS.md](../../../src/main/coldsweat/AGENTS.md), and what was found in
+works is in [src/main/coldsweat/AGENTS.md](../../../../src/main/coldsweat/AGENTS.md), and what was found in
 game is under each step. Where the work parted from the plan below, the step says so.
 
 ## Which build for which node
@@ -28,7 +28,7 @@ Fabric build). So one node:
 | every other node | none | — | — |
 
 `1.20.1-forge` was added on 2026-10-01, every step the same, in its own directory; see
-[src/main/coldsweatforge/AGENTS.md](../../../src/main/coldsweatforge/AGENTS.md).
+[src/main/coldsweatforge/AGENTS.md](../../../../src/main/coldsweatforge/AGENTS.md).
 
 The row gets `loaders = setOf(Loader.NEOFORGE)`, like Create. On NeoForge 1.21.1 the jar is in
 Mojang names, so mixins name its members directly, with no `remap = false`.
@@ -92,7 +92,7 @@ Mixins that meet ours:
 
 ## 1. Build dependency and gate
 
-- A row at the end of [the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
+- A row at the end of [the integration table](../../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
   `dir = "coldsweat"`, `depsKey = "deps.cold_sweat"`, `loaders = setOf(Loader.NEOFORGE)`, mixin config
   `thirstwastaken2.coldsweat.mixins.json`, `neoForgeDependencies = listOf("cold_sweat")`. No client
   directory until a step needs one.
@@ -162,7 +162,7 @@ Brewin' and Chewin' plan did, in a table:
 | HUD at each `hudPosition` | overlap with the temperature gauge |
 
 Found on 2026-09-26, with the integration already in, by
-[tools/agent/integrations/cold-sweat.jsonl](../../../tools/agent/integrations/cold-sweat.jsonl):
+[tools/agent/integrations/cold-sweat.jsonl](../../../../tools/agent/integrations/cold-sweat.jsonl):
 
 - Cold Sweat's `Waterskin Uses` defaults to **1** and the skin holds 250 mB, so one sip is one bottle
   and step 5 keeps a bottle's values, 6 and 8.
@@ -227,7 +227,7 @@ Options:
 `#cold_sweat:boiler_valid` by a tag file in `src/main/coldsweat/resources`, and one mixin in
 `BoilerBlockEntity.tick` next to the `isThirstLoaded()` branch does the raise, through
 `WaterPurity.setQuality` so sprites and `water_salty: false` stay right. How fast it is compared with a
-furnace goes in [WATER-REFERENCE.md](../mechanics/WATER-REFERENCE.md).
+furnace goes in [WATER-REFERENCE.md](../../mechanics/WATER-REFERENCE.md).
 
 Furnace and campfire recipes for Cold Sweat's waterskin, like `recipe/compat/thirst/*.json` but on
 our components, hand-written in the integration's resources with `neoforge:conditions`
@@ -291,7 +291,7 @@ Should a parched player tolerate heat worse, as in Tough As Nails?
 
 A CHANGELOG entry and the supported mods page, through the `write-docs` skill: water from Cold
 Sweat's waterskin is graded, drinking it quenches, the Boiler purifies, and thirst follows the
-temperature Cold Sweat shows. A line in [MANUAL-TESTING.md](../MANUAL-TESTING.md) for the HUD overlap.
+temperature Cold Sweat shows. A line in [MANUAL-TESTING.md](../../MANUAL-TESTING.md) for the HUD overlap.
 
 **Done**: the CHANGELOG, `docs/docs/integrations/cold-sweat.md`, the installation table, the Modrinth and
 CurseForge pages, and the manual check.

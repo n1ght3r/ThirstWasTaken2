@@ -90,7 +90,7 @@ The ids come from the mod's `en_us.json` and `ObjectRegistry`. Step 3 confirms e
 | 7 | Nothing crashes without the mod | test | both 1.21.1 | **Done** (2026-10-01) |
 | 8 | Changelog, player docs, store pages | docs | — | **Done** (2026-10-01) |
 
-How it works now is in [src/main/farmandcharm/AGENTS.md](../../../src/main/farmandcharm/AGENTS.md); what
+How it works now is in [src/main/farmandcharm/AGENTS.md](../../../../src/main/farmandcharm/AGENTS.md); what
 follows is what each step did and found.
 
 ## 1. The mod on the `runClient` classpath (done)
@@ -112,7 +112,7 @@ crashed NeoForge on Farm & Charm's missing dependency; the boot smoke found it.
 
 ## 3. Investigation (done)
 
-[tools/agent/integrations/farm-and-charm.jsonl](../../../tools/agent/integrations/farm-and-charm.jsonl)
+[tools/agent/integrations/farm-and-charm.jsonl](../../../../tools/agent/integrations/farm-and-charm.jsonl)
 passed whole on `1.21.1` and `1.21.1-neoforge` (Cold Sweat left out) on 2026-10-01, after steps 4 to 6,
 so its cases are written for the finished behaviour:
 
@@ -163,7 +163,7 @@ both nodes. `tools/agent/smoke/boot.jsonl` comes up and stays up on both nodes w
 ## 8. Docs (done)
 
 `CHANGELOG.md` (Unreleased), the site's page
-[integrations/farm-and-charm](../../docs/integrations/farm-and-charm/index.md) and its addon page [candlelight](../../docs/integrations/farm-and-charm/candlelight.md), with four pictures (two scenes, and two first-person shots of a bucket and a bottle just drawn, their grade in the tooltip)
+[integrations/farm-and-charm](../../../docs/integrations/farm-and-charm/index.md) and its addon page [candlelight](../../../docs/integrations/farm-and-charm/candlelight.md), with four pictures (two scenes, and two first-person shots of a bucket and a bottle just drawn, their grade in the tooltip)
 taken on a lakeshore in `ShotsAgent` (Fabric 1.21.1), its sidebar entry through `.vitepress/mods.ts`,
 rows in `docs/docs/installation.md`, a row with the well picture in the Modrinth and CurseForge main
 tables and a line in their versions tables, the root `AGENTS.md`, `WATER-REFERENCE.md` and

@@ -2,6 +2,18 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Let's Do: HerbalBrews, on Fabric and NeoForge 1.21.1:
+  - Teas and coffees restore thirst.
+  - Drinking from a placed Jug counts every cup in it.
+  - The Tea Kettle won't brew with sea water.
+- Let's Do: Beachparty, on Fabric and NeoForge 1.21.1:
+  - Cocktails and open coconuts restore thirst.
+  - A placed cocktail gives three sips, each worth a third of the glass.
+
 ## [1.6.0] - 2026-10-01
 
 This release is mostly about other mods. Farm & Charm and Candlelight join on 1.21.1, Terralith's

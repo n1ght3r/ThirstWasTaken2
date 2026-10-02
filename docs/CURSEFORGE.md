@@ -246,6 +246,26 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
       <img alt="A Teapot on a lit Stove among teacups in a cherry grove, with Jade naming its water Clean" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/kaleidoscope-cookery/kaleidoscope-teapot.png" width="100%">
     </td>
   </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Teas and coffees restore thirst, also when drunk from a placed Jug. The Tea Kettle brews nothing from sea water.
+    </td>
+    <td width="45%">
+      <img alt="A Tea Kettle on a stove in a meadow, beside a Jug and cups of tea on barrels and a row of tea bushes" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/herbalbrews/herbalbrews-tea-garden.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Cocktails and open coconuts restore thirst. A placed cocktail gives three sips, each a third of the glass.
+    </td>
+    <td width="45%">
+      <img alt="A palm bar with cocktails on a beach, deck chairs and a parasol, the sea and palm trees behind" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/beachparty/beachparty-bar.png" width="100%">
+    </td>
+  </tr>
 </table>
 
 Also works with:
@@ -323,7 +343,7 @@ Also works with:
     <td>–</td>
   </tr>
   <tr>
-    <td><img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a><br><img alt="Brewin' and Chewin' icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a><br><img alt="Ocean's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FDGiq4ZSW%2F949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a><br><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a><br><img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></td>
+    <td><img alt="Supplementaries icon" src="https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/supplementaries">Supplementaries</a><br><img alt="Brewin' and Chewin' icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FhIu9KJTT%2Ff7c591a80046859d3d45c04ecbbc54d264483d5e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/brewin-and-chewin">Brewin' and Chewin'</a><br><img alt="Ocean's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FDGiq4ZSW%2F949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/oceans-delight">Ocean's Delight</a><br><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a><br><img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a><br><img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a><br><img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a></td>
     <td>1.21.1</td>
     <td>1.21.1</td>
     <td>–</td>

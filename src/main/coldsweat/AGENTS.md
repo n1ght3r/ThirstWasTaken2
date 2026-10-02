@@ -6,7 +6,7 @@ temperature Cold Sweat measures around the player, and Cold Sweat's own waterski
 quenches when drunk. Cold Sweat's Boiler purifies water, its Waterskin purifies on a campfire, in a
 furnace and in a smoker, and hot drinks from two other mods warm the player. Why each choice was made,
 and what was found in game, is in
-[docs/dev/integration/COLD-SWEAT-INTEGRATION.md](../../../docs/dev/integration/COLD-SWEAT-INTEGRATION.md).
+[docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](../../../docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md).
 
 This directory is **only compiled by NeoForge nodes that set `deps.cold_sweat`** in
 `stonecutter.properties.toml`. Today that is `1.21.1-neoforge`, with Cold Sweat 2.4.3.1: it has no

@@ -397,6 +397,50 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * HerbalBrews and Beachparty, two more Let's Do mods, are never installed here either. One test for
+     * both, since they were added in the same pass.
+     */
+    @GameTest
+    public void herbalBrewsAndBeachpartyDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"herbalbrews:green_tea", "herbalbrews:coffee", "herbalbrews:milk_coffee",
+                "beachparty:coconut_cocktail", "beachparty:melon_cocktail"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey(drink), "the default drinks should list " + drink);
+        }
+        TestFixtures.check(helper, defaults.foods.containsKey("beachparty:coconut_open"),
+                "the default foods should list beachparty:coconut_open");
+        for (String dry : new String[]{"herbalbrews:flask", "herbalbrews:dried_green_tea", "herbalbrews:coffee_beans",
+                "beachparty:coconut", "beachparty:cooked_mussel_meat"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey(dry) && !defaults.drinks.containsKey(dry),
+                    dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove(drink);
+            config.foods.remove("beachparty:coconut_open");
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("herbalbrews:green_tea", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String id : new String[]{"herbalbrews:coffee", "herbalbrews:milk_coffee",
+                    "beachparty:coconut_cocktail", "beachparty:melon_cocktail"}) {
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            String food = "beachparty:coconut_open";
+            TestFixtures.check(helper, Arrays.equals(config.foods.get(food), defaults.foods.get(food)),
+                    food + " should be merged back as " + Arrays.toString(defaults.foods.get(food))
+                            + ", got " + Arrays.toString(config.foods.get(food)));
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("herbalbrews:green_tea"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("herbalbrews:green_tea")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {

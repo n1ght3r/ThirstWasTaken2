@@ -287,6 +287,25 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.farmandcharm.mixins.json",
         neoForgeDependencies = listOf("farm_and_charm"),
     ),
+    // Let's Do: HerbalBrews: its Tea Kettle refuses sea water, and a placed Jug is drunk as the teas in
+    // it. Written once in Architectury's common module like Farm & Charm, so one directory serves both
+    // loaders, on the two 1.21.1 nodes only. See src/main/herbalbrews/AGENTS.md.
+    Integration(
+        dir = "herbalbrews",
+        depsKey = "deps.herbalbrews",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.herbalbrews.mixins.json",
+        neoForgeDependencies = listOf("herbalbrews"),
+    ),
+    // Let's Do: Beachparty: a placed cocktail's sips restore a third of the glass each. Same nodes and
+    // shape as HerbalBrews. See src/main/beachparty/AGENTS.md.
+    Integration(
+        dir = "beachparty",
+        depsKey = "deps.beachparty",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.beachparty.mixins.json",
+        neoForgeDependencies = listOf("beachparty"),
+    ),
 )
 
 /**

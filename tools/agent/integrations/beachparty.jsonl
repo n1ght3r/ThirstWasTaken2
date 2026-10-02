@@ -1,0 +1,100 @@
+// Let's Do: Beachparty in a real client: the check of its integration plan
+// (docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md). What it proves: every id ThirstConfig lists for the mod exists;
+// a cocktail and an opened coconut restore what ThirstConfig says; a placed cocktail gives three sips of
+// a third of a glass each and then breaks; and a water bottle with our grade on it still turns sand into
+// sand waves through Beachparty's own mixin.
+// Runs on both 1.21.1 nodes. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/beachparty.jsonl -Pquickplay=LetsDoAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/beachparty.jsonl -Pquickplay=LetsDoAgent -PwithoutOptional=cold-sweat
+// LetsDoAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> LetsDoAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/beachparty.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199, biome plains. The player stands at 0.5 200 0.5.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+
+// Every id ThirstConfig lists, and the blocks the script uses: /give refuses an unknown item.
+{"id": "id_beachparty_coconut_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:coconut_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_sweetberries_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:sweetberries_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_cocoa_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:cocoa_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_pumpkin_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:pumpkin_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_honey_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:honey_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_melon_cocktail", "command": "server.command", "args": {"command": "give @p beachparty:melon_cocktail"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_coconut_open", "command": "server.command", "args": {"command": "give @p beachparty:coconut_open"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_palm_bar", "command": "server.command", "args": {"command": "give @p beachparty:palm_bar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_beachparty_mini_fridge", "command": "server.command", "args": {"command": "give @p beachparty:mini_fridge"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Drinking and eating from thirst 4, quenched 0, looking up so nothing is placed: a cocktail is 7, 10,
+// an opened coconut 4, 5.
+{"id": "drink_coconut_cocktail_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_coconut_cocktail_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_coconut_cocktail_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_coconut_cocktail_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_coconut_cocktail_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_coconut_cocktail_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with beachparty:coconut_cocktail"}}
+{"id": "drink_coconut_cocktail_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coconut_cocktail_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_coconut_cocktail_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coconut_cocktail_state", "command": "client.state", "expect": {"result.thirst": 11, "result.quenched": 10}}
+{"id": "drink_coconut_open_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_coconut_open_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_coconut_open_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_coconut_open_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_coconut_open_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_coconut_open_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with beachparty:coconut_open"}}
+{"id": "drink_coconut_open_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coconut_open_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_coconut_open_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coconut_open_state", "command": "client.state", "expect": {"result.thirst": 8, "result.quenched": 5}}
+
+// A placed melon cocktail, stage 3, sipped with an empty hand from thirst 4: each sip is 2, 3 (a third
+// of 7, 10, rounded), so three sips land on 10, 9. A fourth click breaks the empty glass and gives nothing.
+{"id": "sip_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sip_place", "command": "server.command", "args": {"command": "setblock 0 200 2 beachparty:melon_cocktail"}}
+{"id": "sip_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "sip_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "sip_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "sip_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "sip_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sip_one_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sip_one_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "sip_one_state", "command": "client.state", "expect": {"result.thirst": 6, "result.quenched": 3}}
+{"id": "sip_one_stage", "command": "server.command", "args": {"command": "execute if block 0 200 2 beachparty:melon_cocktail[stage=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sip_rest_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sip_rest_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "sip_rest_use1", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sip_rest_used1", "command": "wait", "args": {"ticks": 10}}
+{"id": "sip_three_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 9}}
+{"id": "sip_three_stage", "command": "server.command", "args": {"command": "execute if block 0 200 2 beachparty:melon_cocktail[stage=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sip_break_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sip_break_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "sip_break_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 9}}
+{"id": "sip_broken", "command": "server.command", "args": {"command": "execute if block 0 200 2 minecraft:air"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// Beachparty's own PotionItem mixin: a Murky water bottle on sand makes sand waves and an empty bottle.
+{"id": "sand_place", "command": "server.command", "args": {"command": "setblock 0 199 2 minecraft:sand"}}
+{"id": "sand_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sand_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=1]"}}
+{"id": "sand_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sand_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sand_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sand_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "sand_waves", "command": "server.command", "args": {"command": "execute if block 0 199 2 beachparty:sandwaves"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sand_bottle", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:glass_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+{"id": "done", "command": "wait", "args": {"ticks": 20}}

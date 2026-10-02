@@ -4,7 +4,7 @@ What ThirstWasTaken2 does and still has to do with
 [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) on NeoForge. Almost every
 upgrade that matters lives in Sophisticated Core, which Sophisticated Storage shares, so the work
 targets Core and covers both. How the finished parts work is in
-[src/main/sophisticated/AGENTS.md](../../../src/main/sophisticated/AGENTS.md); this file is the order of
+[src/main/sophisticated/AGENTS.md](../../../../src/main/sophisticated/AGENTS.md); this file is the order of
 work and what each step needs.
 
 Written on 2026-09-19 from Sophisticated Core `1.21.1-1.5.1.2341` and Sophisticated Backpacks
@@ -41,9 +41,9 @@ The Tank upgrade moved water through handlers that know nothing of quality, so e
 plain water and read as `defaultPurity`: a dirty bucket went in and Clean bottles came out, and sea
 water bottles were refused outright. `TankUpgradeWrapperMixin` wraps the one method the tank finds
 container handlers through, and `WaterQualityFluidHandler` carries the grade across. `WaterFluids`
-moved to `../../../src/main/neoforge` so Create and Sophisticated share it.
+moved to `../../../../src/main/neoforge` so Create and Sophisticated share it.
 
-Checked in a real client with `../../../tools/agent/integrations/sophisticated/sophisticated-tank.jsonl`, and once with the mixin off to
+Checked in a real client with `../../../../tools/agent/integrations/sophisticated/sophisticated-tank.jsonl`, and once with the mixin off to
 confirm the bug. The first version duplicated water (the last sea-water bottle was poured in forever);
 the salt case now watches for that.
 
@@ -51,7 +51,7 @@ the salt case now watches for that.
 
 The Feeding upgrade finishes eating with `Item.finishUsingItem`, past the mod's hook on
 `ItemStack.finishUsingItem`, so fed food never restored thirst. `FeedingUpgradeWrapperMixin` calls
-`ThirstManager.drinkItem` on that one call. Checked with `../../../tools/agent/integrations/sophisticated/sophisticated-feeding.jsonl`:
+`ThirstManager.drinkItem` on that one call. Checked with `../../../../tools/agent/integrations/sophisticated/sophisticated-feeding.jsonl`:
 seven melon slices took thirst from 4 to 20, and with the mixin off it stayed at 4.
 
 ### 2. Alchemy upgrade
@@ -67,7 +67,7 @@ said a water bottle in its filter was drunk for free; that was wrong. Sophistica
 definition skips any potion without effects, water included. The mixin refuses plain water at the
 condition check anyway, so a definition another mod adds cannot drink it either.
 
-Checked with `../../../tools/agent/integrations/sophisticated/sophisticated-alchemy.jsonl`: a Fire Resistance potion took thirst from 4 to
+Checked with `../../../../tools/agent/integrations/sophisticated/sophisticated-alchemy.jsonl`: a Fire Resistance potion took thirst from 4 to
 10, and dirty water was left alone. With the mixin off the potion was drunk and thirst stayed at 4.
 
 ### 4. Pump upgrade
@@ -82,11 +82,11 @@ Three problems, one of them caused by item 3:
   backpack for a stack with no components, and the backpack only hands out matching ones.
 
 `PumpUpgradeWrapperMixin` samples world water at the source (through `SampledWater`, moved to
-`../../../src/main/neoforge` and shared with Create, and only once the tanks have room), wraps buckets in hand,
+`../../../../src/main/neoforge` and shared with Create, and only once the tanks have room), wraps buckets in hand,
 and builds the pump-out request from the water in the tank. A pump filter set to water now takes water
 of any grade (`FluidFilterLogicMixin`), since a filter made from a plain bucket refused graded water.
 
-Checked with `../../../tools/agent/integrations/sophisticated/sophisticated-pump.jsonl`: a plains pool gave the same grade as a bottle
+Checked with `../../../../tools/agent/integrations/sophisticated/sophisticated-pump.jsonl`: a plains pool gave the same grade as a bottle
 filled from it by hand, an ocean pool gave salt water, a filtered pump still collected, and buckets
 went in and out with their grades. Without the mixins every case lost its grade or, pumping out,
 moved nothing. The neighbouring-block path, through a Create Fluid Tank next to the player, was run
@@ -101,7 +101,7 @@ the smelting ones, at 100 ticks, half a furnace, as a smoker is for food. They c
 `PurificationGameTest` checks them, salt water included. This is plain data, so it covers every
 version and both loaders, not just the nodes with Sophisticated.
 
-Checked with `../../../tools/agent/integrations/sophisticated/sophisticated-cooking.jsonl`: a purity-0 bottle came out of both the
+Checked with `../../../../tools/agent/integrations/sophisticated/sophisticated-cooking.jsonl`: a purity-0 bottle came out of both the
 Smoking and the Smelting upgrade with `water_purity: 2`.
 
 ### 6. Waterskin and bowl as fluid containers
@@ -142,7 +142,7 @@ drunk but not milk or potions, water before honey), `sophisticated-drinking-craf
 recipes in a crafting table, the upgrade in a Sophisticated Storage chest) and
 `sophisticated-drinking-tab.jsonl` (the buttons clicked, the tab in all nine languages). The agent client
 gained `client.click`, `client.slot(s)`, `client.language` and `client.textWidth` for them. The details
-are in `../../../src/main/sophisticated/AGENTS.md`.
+are in `../../../../src/main/sophisticated/AGENTS.md`.
 
 ### 8. Newer NeoForge nodes
 
@@ -151,7 +151,7 @@ From 1.21.11 Sophisticated Core's tanks move fluid through NeoForge's transfer A
 newer nodes now set `deps.sophisticated_core` and `deps.sophisticated_backpacks`, and
 `deps.sophisticated_storage` for runClient.
 
-- **Split by generation, not by upgrade.** `../../../src/main/sophisticated` holds what does not touch fluid:
+- **Split by generation, not by upgrade.** `../../../../src/main/sophisticated` holds what does not touch fluid:
   the gate, the Feeding and Alchemy mixins and the Drinking upgrade. The tank and pump code lives in
   `src/main/sophisticated-fluidhandler` (1.21.1) and `src/main/sophisticated-transfer` (1.21.11 and
   later), with the same class names, so the mixin config is shared. `build.neoforge.gradle.kts`
@@ -194,23 +194,23 @@ again afterwards to check nothing moved there. Every case gave the result 1.21.1
 26.1 compiles and passes its gametests, and its Core is the same code as 26.2's for everything the
 integration touches, but it was not run in a client.
 
-The scripts needed changes to run on the newer versions; `../../../src/main/sophisticated/AGENTS.md` lists them.
+The scripts needed changes to run on the newer versions; `../../../../src/main/sophisticated/AGENTS.md` lists them.
 Two are Sophisticated's own quirks: from 1.21.11 a data-pack template given twice comes with what the
 first backpack from it ended up holding, and on 26.2 templates only load their items after a
 `/reload`.
 
 ### 9. Changelog and player docs
 
-- `../../../CHANGELOG.md`, under `[Unreleased]`: the Drinking upgrade, the four upgrades that keep water's grade
+- `../../../../CHANGELOG.md`, under `[Unreleased]`: the Drinking upgrade, the four upgrades that keep water's grade
   or restore thirst, smokers purifying water, and waterskins and bowls as fluid containers, with a note
   that it is every NeoForge version and no Fabric one.
-- A new page, `../../docs/integrations/sophisticated-backpacks.md`, in the Features sidebar, with the
+- A new page, `../../../docs/integrations/sophisticated-backpacks.md`, in the Features sidebar, with the
   Drinking upgrade's tab (`sophisticated-drinking-upgrade.png`) and its recipe
   (`drinking-upgrade-recipe.png`). Only the basic recipe is shot; the page names the Advanced one's
   ingredients.
 - A row in the installation page's NeoForge table, listing Core's versions, since that is what the mod
   is built against; the overview's list of supported mods; and a row in the NeoForge table of
-  `../../MODRINTH.md` and `docs/CURSEFORGE.md`.
+  `../../../MODRINTH.md` and `docs/CURSEFORGE.md`.
 
 The item tooltips were shortened for it, in all nine languages: "Auto-drinks when thirsty", and "Choose
 when and what to drink" on the Advanced tier. The recipe was shot on 26.2 with the grid filled through
@@ -224,7 +224,7 @@ Nothing is left to do.
 - The gametests run without Sophisticated. They prove the node still loads without it, and must keep
   passing on every NeoForge node: `./gradlew ":<node>-neoforge:runGametest"`.
 - Everything that needs Sophisticated is checked in a real client with an agent script and a backpack
-  template from `../../../tools/agent/integrations/sophisticated/sophisticated-pack`. `/sophisticatedbackpacks template give` builds the
+  template from `../../../../tools/agent/integrations/sophisticated/sophisticated-pack`. `/sophisticatedbackpacks template give` builds the
   backpack (the short `/sbp` is `/sb` from 1.21.11), opening it once unpacks the template, and
   `template create <name> true` plus `export` write what is left as SNBT under the world's
   `datapacks/`, so the result is read as text.

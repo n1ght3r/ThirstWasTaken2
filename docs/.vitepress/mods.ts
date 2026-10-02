@@ -65,6 +65,16 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Serene Seasons',
     icon: 'https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png',
     link: '/docs/integrations/serene-seasons'
+  },
+  {
+    name: "Let's Do: HerbalBrews",
+    icon: 'https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp',
+    link: '/docs/integrations/herbalbrews'
+  },
+  {
+    name: "Let's Do: Beachparty",
+    icon: 'https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp',
+    link: '/docs/integrations/beachparty'
   }
 ]
 

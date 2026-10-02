@@ -81,7 +81,7 @@ public final class ThirstConfig {
 
     // ---- water balance ----------------------------------------------------
     // The numbers WaterPurity used to hold as constants. Each is read as a drink or a fill happens, never
-    // cached, so a change applies at once. See docs/dev/MODPACK-CONFIG.md, step 3.
+    // cached, so a change applies at once.
     /** Percent of a drink's quenched that water of each grade gives, Dirty first. */
     public int[] quenchedPercent = {0, 50, 100, 100};
     /** Off, ocean and beach water is graded like any other water instead of being sea water. */
@@ -294,6 +294,10 @@ public final class ThirstConfig {
         farmAndCharmDrinks(drinks);
         farmAndCharmFoods(foods);
         candlelightFoods(foods);
+        // And for HerbalBrews and Beachparty, added after that.
+        herbalBrewsDrinks(drinks);
+        beachpartyDrinks(drinks);
+        beachpartyFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -413,6 +417,8 @@ public final class ThirstConfig {
         expandedDelightDrinks(values);
         rusticDelightDrinks(values);
         farmAndCharmDrinks(values);
+        herbalBrewsDrinks(values);
+        beachpartyDrinks(values);
         return values;
     }
 
@@ -441,6 +447,7 @@ public final class ThirstConfig {
         rusticDelightFoods(values);
         farmAndCharmFoods(values);
         candlelightFoods(values);
+        beachpartyFoods(values);
         return values;
     }
 
@@ -706,6 +713,38 @@ public final class ThirstConfig {
                 "candlelight:beetroot_salad", "candlelight:fresh_garden_salad");
         putMissing(foods, 3, 4, "candlelight:tomato_mozzarella_salad");
         putMissing(foods, 2, 3, "candlelight:chocolate_mousse");
+    }
+
+    /**
+     * Let's Do: HerbalBrews' teas and coffees, by id alone like Farm & Charm's. Each is brewed in the Tea
+     * Kettle, which boils, so it is safe whatever fresh water went in; sea water brews nothing (see
+     * {@code src/main/herbalbrews}). A tea is Farm & Charm's tea cup, the coffees Rustic Delight's. The
+     * Flask, a mix of three potions, and the dried leaves are left out.
+     */
+    private static void herbalBrewsDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 6, 9, "herbalbrews:green_tea", "herbalbrews:black_tea", "herbalbrews:lavender_tea",
+                "herbalbrews:yerba_mate_tea", "herbalbrews:oolong_tea", "herbalbrews:rooibos_tea",
+                "herbalbrews:hibiscus_tea");
+        putMissing(drinks, 5, 8, "herbalbrews:coffee");
+        putMissing(drinks, 6, 10, "herbalbrews:milk_coffee");
+    }
+
+    /**
+     * Let's Do: Beachparty's cocktails: fruit and ice in a glass, a little under Farmer's Delight's juices.
+     * Placed, a glass is sipped three times, each sip a third of this (see {@code src/main/beachparty}).
+     */
+    private static void beachpartyDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 7, 10, "beachparty:coconut_cocktail", "beachparty:sweetberries_cocktail",
+                "beachparty:cocoa_cocktail", "beachparty:pumpkin_cocktail", "beachparty:honey_cocktail",
+                "beachparty:melon_cocktail");
+    }
+
+    /**
+     * Beachparty's opened coconut, half a coconut with its water in it, a melon slice's value. The whole
+     * coconut is thrown rather than eaten, and the mussels are solid food.
+     */
+    private static void beachpartyFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "beachparty:coconut_open");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

@@ -93,14 +93,14 @@ and still match the port's foods where a player installs it; nothing else reache
 
 ## 1. Build dependency and gate (done)
 
-- A row in [the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
+- A row in [the integration table](../../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
   `dir = "culturaldelights"`, `depsKey = "deps.cultural_delights"`, NeoForge only, mixin config
   `thirstwastaken2.culturaldelights.mixins.json`, `neoForgeDependencies = listOf("culturaldelights")`.
 - `deps.cultural_delights = "jL5hP1qm"` and `deps.cooks_collection = "z1YUDQXH"` in
   `[neoforge."1.21.1"]`, both in `MODRINTH_DEPS` pinned by id. No Fabric table sets either.
 - `compileOnly` and two `runClientMod` lines in `build.neoforge.gradle.kts`.
 - `CulturalDelightsPresence` and `CulturalDelightsMixinPlugin`, as in
-  [src/main/culturaldelights/AGENTS.md](../../../src/main/culturaldelights/AGENTS.md). The gate looks
+  [src/main/culturaldelights/AGENTS.md](../../../../src/main/culturaldelights/AGENTS.md). The gate looks
   for the vat's class in the mod's jar, so a 0.17 under the same id turns the integration off.
 
 ## 2. Thirst values (done)
@@ -117,14 +117,14 @@ at its head while any slot holds a salty stack. The tick resets the progress on 
 brewing stops. `VatWater` reads the vat as a vanilla `Container`, so it names nothing of the mod's.
 `milk_from_beans` and `corn_dough` are left alone.
 
-**Checked** with [tools/agent/integrations/cultural-delights.jsonl](../../../tools/agent/integrations/cultural-delights.jsonl)
+**Checked** with [tools/agent/integrations/cultural-delights.jsonl](../../../../tools/agent/integrations/cultural-delights.jsonl)
 on `1.21.1-neoforge`: beer brews from a plain and from a Dirty bucket, with no grade on the beer;
 nothing brews from a sea water bucket, which stays in its slot; swapped for a plain bucket, the same vat
 brews.
 
 ## 5. Docs (done)
 
-`CHANGELOG.md` (Unreleased), [the site's page](../../docs/integrations/farmers-delight/cultural-delights.md) and its
+`CHANGELOG.md` (Unreleased), [the site's page](../../../docs/integrations/farmers-delight/cultural-delights.md) and its
 sidebar entry, the NeoForge row in `docs/docs/installation.md`, and a line under the Modrinth and
 CurseForge compatibility tables. A picture of the Vat in a village was taken and later dropped as
 showing only the mod's own blocks; the site's page opens with Cultural Delights' own banner, linked

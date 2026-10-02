@@ -4,7 +4,7 @@ What ThirstWasTaken2 does and still has to do with
 [Supplementaries](https://modrinth.com/mod/supplementaries) on **both loaders, on Minecraft 1.21.1
 only**. This file is the order of work, what each step needs and what it is checked with; how the
 finished parts work is in
-[src/main/supplementaries/AGENTS.md](../../../src/main/supplementaries/AGENTS.md).
+[src/main/supplementaries/AGENTS.md](../../../../src/main/supplementaries/AGENTS.md).
 
 Written on 2026-09-20 from Supplementaries `1.21.1-3.9.9` and Moonlight Lib `1.21.1-3.6.5`, read from
 the `1.21.1` branch of [Supplementaries](https://github.com/MehVahdJukaar/Supplementaries) and the
@@ -77,7 +77,7 @@ of most of them, then the cheapest feature, then the rest. Item 8 runs in parall
 Item 9 last.
 
 Everything is in, on both 1.21.1 nodes. How it works is in
-[src/main/supplementaries/AGENTS.md](../../../src/main/supplementaries/AGENTS.md); what each one turned
+[src/main/supplementaries/AGENTS.md](../../../../src/main/supplementaries/AGENTS.md); what each one turned
 out to need is below. Item 10 was found while building items 1 to 4 and is a bug of the same family,
 so it sits with them. Item 8 is a change to somebody else's repository and is only done when they
 merge it; nothing here waits on that.
@@ -85,7 +85,7 @@ merge it; nothing here waits on that.
 ## The bugs, and the one cause under them
 
 The seven finished items were checked in a real client on both 1.21.1 nodes with
-[tools/agent/integrations/supplementaries.jsonl](../../../tools/agent/integrations/supplementaries.jsonl), which pours a dirty
+[tools/agent/integrations/supplementaries.jsonl](../../../../tools/agent/integrations/supplementaries.jsonl), which pours a dirty
 bottle, a salty one and a terracotta bowl through a jar and draws each back, pours a pure bottle into a
 goblet and drinks it, and runs five faucets: two between cauldrons, one over a pool, one draining a
 hanging pot and one filling another. Both nodes answer the same. The gametests, which run without
@@ -145,7 +145,7 @@ back, the way `WaterFluids` is for NeoForge `FluidStack`s.
 mix grades, because it compares components. A jar holding Murky water will not take Clean water. That
 is the same rule the NeoForge containers already keep, and the same rule pouring by hand keeps.
 
-Checked with `../../../tools/agent/integrations/supplementaries.jsonl` on both nodes: after a dirty bottle is poured in, the
+Checked with `../../../../tools/agent/integrations/supplementaries.jsonl` on both nodes: after a dirty bottle is poured in, the
 jar's own block data reads `{components: {"thirstwastaken2:water_purity": 0}, id: "moonlight:water"}`,
 and the bottle drawn back out of it is `water_purity 0, water_salty false`.
 
@@ -360,7 +360,7 @@ released version depend on a Moonlight release that does not exist yet.
 
 A CHANGELOG entry, the installation page's compatible-mods list, a section on the feature page that
 explains where water keeps its grade, and the Modrinth and CurseForge pages, in the plain style
-`../../AGENTS.md` and the `write-docs` skill ask for.
+`../../../AGENTS.md` and the `write-docs` skill ask for.
 
 The line in the 2026-09 changelog listing Supplementaries among the integrations awaiting a compatible
 release is left as it was: it was true of that release, and a changelog is what happened rather than
@@ -370,7 +370,7 @@ what is true now.
 
 ### Dependencies
 
-Two new keys, in **both** 1.21.1 tables of `../../../stonecutter.properties.toml`, since the whole integration is
+Two new keys, in **both** 1.21.1 tables of `../../../../stonecutter.properties.toml`, since the whole integration is
 gated on `deps.supplementaries` being set:
 
 ```toml
@@ -382,7 +382,7 @@ Both are **pinned by Modrinth version id, not version number**, for the reason A
 and NeoForge uploads share one version number. For `1.21.1-3.9.9` and `1.21.1-3.6.5` those are
 `h8FyJ2as` and `Grv7RNwq` on Fabric, `WrZWfRjP` and `yYx5Qs1i` on NeoForge, each with the version number
 written in the comment above it, which `update_mc_deps.py` reads back. Both need adding to
-`MODRINTH_DEPS` in `../../../.github/scripts/update_mc_deps.py` with `by_id=True`, or the daily dependency PR
+`MODRINTH_DEPS` in `../../../../.github/scripts/update_mc_deps.py` with `by_id=True`, or the daily dependency PR
 will never offer them.
 
 Moonlight is named separately because Supplementaries' jar does not contain it, and every class this
@@ -421,7 +421,7 @@ src/main/supplementaries/resources/
 src/client/supplementaries/java/...     item 7 only: tooltip lines and the fluid tint
 ```
 
-`../../../build.gradle.kts` and `build.neoforge.gradle.kts` each add these directories and append the mixin
+`../../../../build.gradle.kts` and `build.neoforge.gradle.kts` each add these directories and append the mixin
 config to the built manifest when `deps.supplementaries` is set, the way both already do for Create Fly
 and Sophisticated. The Fabric side also needs the mods on the `runClient` classpath; the NeoForge side
 the same through `clientRunMods`.
@@ -430,7 +430,7 @@ the same through `clientRunMods`.
 
 A Fabric entrypoint class must implement `ModInitializer` and a NeoForge one must be annotated `@Mod`,
 and both name their loader, so neither can live in a directory both loaders compile. Nor can
-`../../../src/main/java` call into this directory, since the nodes without Supplementaries would then not
+`../../../../src/main/java` call into this directory, since the nodes without Supplementaries would then not
 compile.
 
 **Everything that changes what water does is mixins only**, reached through the mixin config and the
@@ -440,14 +440,14 @@ faucet, and it would have cost two one-class directories, `src/main/supplementar
 the place Supplementaries builds that list costs nothing and happens at the same moment, so it did not.
 
 Item 7's Jade half does need one, and borrows Jade's: `SupplementariesJade` in
-`../../../src/client/supplementaries`, named in the Fabric manifest's `jade` entrypoint and found by its
+`../../../../src/client/supplementaries`, named in the Fabric manifest's `jade` entrypoint and found by its
 annotation on NeoForge. Both happen whether or not Supplementaries is installed, so it asks the gate
 before it loads anything of Moonlight's. Jade is a client-only dependency, which is why that one class
 compiles with the client rather than with `main` like the rest of the integration.
 
 ### How it stays optional
 
-The same three layers as `../../../src/main/create` and `src/main/sophisticated`:
+The same three layers as `../../../../src/main/create` and `src/main/sophisticated`:
 
 1. **Build.** Nothing is compiled and no mixin config is named unless `deps.supplementaries` is set, so
    the other eight nodes are untouched.
@@ -502,7 +502,7 @@ No hard dependency, ever, and the two 1.21.1 jars must behave identically with n
   a value in `ThirstConfig`.
 - **Purifying water inside a jar.** Purification is 27 cooking recipes over item stacks. A jar over a
   campfire is a different mechanism and would need its own balance pass; the distillation idea in
-  `../mechanics/ROADMAP.md` is where that conversation belongs.
+  `../../mechanics/ROADMAP.md` is where that conversation belongs.
 - **Lumisene and Supplementaries' other fluids.** Not water, no grade, nothing to keep.
 - **Forge.** Supplementaries still publishes a Forge 1.21.1 jar. This mod does not, and that does not
   change.

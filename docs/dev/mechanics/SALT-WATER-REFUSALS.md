@@ -34,6 +34,7 @@ A check that keeps sea water out reads `WaterPurity.isSalty(stack)` on a stack,
 | Farm & Charm | [SeaWaterIngredientMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/SeaWaterIngredientMixin.java) | A sea water bucket in a recipe of the Cooking Pot, the Stove, the Crafting Bowl, or Candlelight's Large Cooking Pot. The bucket sits in its slot and nothing cooks | both 1.21.1 nodes |
 | Farm & Charm | [WaterTroughMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/WaterTroughMixin.java) | A sea water bucket poured into a Water Trough, which would hand it back fresh | both 1.21.1 nodes |
 | Candlelight | [SinkMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/SinkMixin.java) | A sea water bucket poured into a kitchen sink, Farm & Charm's sink block, which would hand it back fresh | both 1.21.1 nodes |
+| HerbalBrews | [TeaKettleMixin.java](../../../src/main/herbalbrews/java/com/thirstwastaken2/herbalbrews/mixin/TeaKettleMixin.java) | A sea water bucket or bottle in the Tea Kettle's water slot. It sits in the slot and fills nothing | both 1.21.1 nodes |
 | Sophisticated Backpacks | [DrinkingUpgradeWrapper.java](../../../src/main/sophisticated/java/com/thirstwastaken2/sophisticated/drinking/DrinkingUpgradeWrapper.java) | The Drinking Upgrade drinking sea water on its own | NeoForge nodes but `26.3.x-neoforge` |
 
 ## Refused by mixing rules, not by salt

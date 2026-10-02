@@ -1,5 +1,5 @@
 // Let's Do: Farm & Charm and Candlelight in a real client: the investigation and the check of both
-// integration plans (docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md, CANDLELIGHT-INTEGRATION.md).
+// integration plans (docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md, CANDLELIGHT-INTEGRATION.md).
 // What it proves: every id ThirstConfig lists for the two mods exists; a bucket drawn from a Timber Well
 // carries the grade of the groundwater under it (swamp Dirty, plains Murky, beach sea water) or of rain
 // when there is none; a Water Trough refuses sea water and gives Murky water whatever went in; a

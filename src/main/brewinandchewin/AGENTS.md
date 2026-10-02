@@ -5,7 +5,7 @@
 pouring recipes, which build the water from the recipe rather than from the bucket or bottle. So the
 grade a bucket had was lost on the way in and on the way out. This directory is where that gets fixed.
 The plan, the order of work and what is still to do are in
-[docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md](../../../docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md).
+[docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](../../../docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md).
 
 **Built on the two nodes that set the key**, `1.21.1` and `1.21.1-neoforge`: the mod publishes both
 loaders, for 1.21.1 only. What it does there:

@@ -5,7 +5,7 @@
 turns a full water cauldron into a lemonade or fruit cauldron whose chain ends in jello, which restores
 thirst. Both took sea water. This directory refuses it, as Brewin' and Chewin's keg and Cultural
 Delights' vat brew nothing from it. The plan and its decisions are in
-[docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md](../../../docs/dev/integration/FRUITS-DELIGHT-INTEGRATION.md).
+[docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](../../../docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md).
 
 **Built on `1.21.1-neoforge` and `1.20.1-forge`**, the mod's two builds for a version this mod supports
 (1.2.14 and 1.1.3). What it does:

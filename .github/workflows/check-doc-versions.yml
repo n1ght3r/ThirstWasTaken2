@@ -19,7 +19,7 @@ on:
       - README.md
       - docs/docs/installation.md
       - docs/dev/VERSION-DIFFERENCES.md
-      - docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md
+      - docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md
       - .github/scripts/update_mc_deps.py
       - .github/workflows/check-doc-versions.yml
   pull_request:
@@ -28,7 +28,7 @@ on:
       - README.md
       - docs/docs/installation.md
       - docs/dev/VERSION-DIFFERENCES.md
-      - docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md
+      - docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md
       - .github/scripts/update_mc_deps.py
       - .github/workflows/check-doc-versions.yml
   workflow_dispatch:

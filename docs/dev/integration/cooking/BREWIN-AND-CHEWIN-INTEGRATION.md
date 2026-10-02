@@ -50,7 +50,7 @@ Water gets in and out of the tank through `KegBlockEntity.fluidExtract`, by one 
 
 | Path | Used for | In | Out | What happens to the grade |
 |---|---|---|---|---|
-| **Pouring recipe** (`brewinandchewin:keg_pouring`) | a water bucket (`pouring/water_bucket.json`), a water bottle (`pouring/potion.json`, `strict`) | fills the tank from the **recipe's** fluid, `recipe.getFluid(slot)`, whose components are the recipe's, not the item's | `recipe.assemble` builds a brand-new result item | **lost both ways.** A Dirty bucket in, a plain bucket out. The bottle that comes out lacks `water_salty: false` too, so it is not cookable (see [purity/AGENTS.md](../../../src/main/java/com/thirstwastaken2/purity/AGENTS.md)) |
+| **Pouring recipe** (`brewinandchewin:keg_pouring`) | a water bucket (`pouring/water_bucket.json`), a water bottle (`pouring/potion.json`, `strict`) | fills the tank from the **recipe's** fluid, `recipe.getFluid(slot)`, whose components are the recipe's, not the item's | `recipe.assemble` builds a brand-new result item | **lost both ways.** A Dirty bucket in, a plain bucket out. The bottle that comes out lacks `water_salty: false` too, so it is not cookable (see [purity/AGENTS.md](../../../../src/main/java/com/thirstwastaken2/purity/AGENTS.md)) |
 | **Generic fluid container**, when no pouring recipe matches | anything with the loader's item fluid capability: our waterskin, canteen, flask and terracotta bowls, other mods' tanks | `fluidTank.fill(itemFluidContainer.drain(...))`, the item's own fluid stack, but only if some pouring recipe's fluid matches the tank's | `itemFluidContainer.fill(fluidTank.drain(...))` | kept, but **an empty keg refuses a canteen**: no recipe's fluid matches an empty tank. See step 3 |
 
 Two more consequences followed from the code; step 3 confirmed them:
@@ -63,7 +63,7 @@ Two more consequences followed from the code; step 3 confirmed them:
 - **The tank does not mix fluids with different components**
   (`fluidTank.getAbstractedFluid().matches(...)`). Once the grade rides on the fluid, a keg holding
   Clean water refuses a Dirty canteen, which is the rule every tank already follows
-  ([purity/AGENTS.md](../../../src/main/java/com/thirstwastaken2/purity/AGENTS.md), "The carried
+  ([purity/AGENTS.md](../../../../src/main/java/com/thirstwastaken2/purity/AGENTS.md), "The carried
   containers"). Water poured from a plain bucket today and from a canteen do not mix either.
 
 The keg picked up keeps its tank in `BLOCK_ENTITY_DATA` (`writeDrink` writes `FluidTank`), so once the
@@ -113,14 +113,14 @@ Milk from the keg comes out as `farmersdelight:milk_bottle`, which already has a
 
 ## 1. Build dependency and gate (done)
 
-- A row in [the integration table](../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
+- A row in [the integration table](../../../../build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt):
   `dir = "brewinandchewin"`, `depsKey = "deps.brewin_and_chewin"`, both loaders, mixin config
   `thirstwastaken2.brewinandchewin.mixins.json`, `neoForgeDependencies = listOf("brewinandchewin")`.
   Step 8 added the client directory, with `client = true` and a Fabric `jade` entrypoint.
 - `deps.brewin_and_chewin` pinned by Modrinth version id in `[fabric."1.21.1"]` and
   `[neoforge."1.21.1"]`, and in `MODRINTH_DEPS`. Greenhouse Config needs no key: see above.
 - `BrewinAndChewinPresence` and `BrewinAndChewinMixinPlugin`, as in
-  [src/main/brewinandchewin/AGENTS.md](../../../src/main/brewinandchewin/AGENTS.md).
+  [src/main/brewinandchewin/AGENTS.md](../../../../src/main/brewinandchewin/AGENTS.md).
 - **Names on Fabric**: the 4.5.0 Fabric jar is in intermediary for Minecraft's names, as
   Refabricated's is, so the mod's own names are matched with `remap = false` and no descriptor.
 
@@ -153,13 +153,13 @@ ignores components, so any grade and sea water ferment. That is decisions 6 and 
 ## 4. The keg keeps the grade (done)
 
 The grade lives on the keg's fluid, as one component. Two mixins, described in
-[src/main/brewinandchewin/AGENTS.md](../../../src/main/brewinandchewin/AGENTS.md):
+[src/main/brewinandchewin/AGENTS.md](../../../../src/main/brewinandchewin/AGENTS.md):
 `KegPouringRecipeMixin` makes a pouring recipe's fluid carry the grade of the container pouring it,
 which fills, matches and picks the recipe by the grade at once; `KegBlockEntityMixin` stamps the
 container `fluidExtract` hands back with the tank's grade. Simpler than planned: no wrap of the fill
 call, since the fill already reads the recipe's fluid.
 
-**Checked** with [tools/agent/integrations/brewin-and-chewin.jsonl](../../../tools/agent/integrations/brewin-and-chewin.jsonl),
+**Checked** with [tools/agent/integrations/brewin-and-chewin.jsonl](../../../../tools/agent/integrations/brewin-and-chewin.jsonl),
 passed whole on both nodes: a Dirty bucket in and out, a drawn bottle Dirty, a Clean bucket refused by a
 Dirty keg with room and a Dirty one taken, a plain bucket and a plain bottle still working with a plain
 keg and the drawn bottle cookable, sea water in and out salty, and a broken keg's item keeping the grade.
@@ -222,7 +222,7 @@ docs image `docs/public/screenshots/integrations/brewin-and-chewin/brewin-keg.pn
 
 ## 9. Docs (done)
 
-`CHANGELOG.md` (Unreleased), [the site's page](../../docs/integrations/farmers-delight/brewin-and-chewin.md) and its sidebar
+`CHANGELOG.md` (Unreleased), [the site's page](../../../docs/integrations/farmers-delight/brewin-and-chewin.md) and its sidebar
 entry, the Fabric and NeoForge rows in `docs/docs/installation.md`, and the Modrinth and CurseForge
 pages. The root `AGENTS.md` already had the row.
 

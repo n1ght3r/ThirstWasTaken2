@@ -5,7 +5,7 @@
 bucket as an item, matched by the tag `c:buckets/water`, and a bucket of sea water is still a
 `minecraft:water_bucket`. This directory stops the vat brewing from sea water. The plan and what is
 still to do are in
-[docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md](../../../docs/dev/integration/CULTURAL-DELIGHTS-INTEGRATION.md).
+[docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md](../../../docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md).
 
 **Built on `1.21.1-neoforge` only.** The vat is 0.18, which is NeoForge only; the Fabric port stopped at
 0.17, has no vat, and is not built against. What it does:

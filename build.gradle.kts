@@ -246,24 +246,31 @@ val supplementaries = findProperty("deps.supplementaries") as String?
 
 /**
  * Kaleidoscope Cookery's Modrinth version id: Refabricated, the Fabric port, on every Fabric node.
- * See docs/dev/integration/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
+ * See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
  */
 val kaleidoscopeCookery = findProperty("deps.kaleidoscope_cookery") as String?
 
 /**
  * Brewin' and Chewin's Modrinth version id, set on `1.21.1` and `1.21.1-neoforge` only: it has no
- * release for a newer Minecraft version. See docs/dev/integration/BREWIN-AND-CHEWIN-INTEGRATION.md.
+ * release for a newer Minecraft version. See docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
  */
 val brewinAndChewin = findProperty("deps.brewin_and_chewin") as String?
 
 /**
  * Let's Do: Farm & Charm's Modrinth version id, and Candlelight's, its addon, set on `1.21.1` and
- * `1.21.1-neoforge` only. See docs/dev/integration/FARM-AND-CHARM-INTEGRATION.md.
+ * `1.21.1-neoforge` only. See docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md.
  */
 val farmAndCharm = findProperty("deps.farm_and_charm") as String?
 
 /**
- * Serene Seasons' Modrinth version id, on every node. See docs/dev/integration/SERENE-SEASONS-INTEGRATION.md.
+ * Let's Do: HerbalBrews' and Beachparty's Modrinth version ids, on `1.21.1` and `1.21.1-neoforge` only,
+ * like Farm & Charm. See docs/dev/integration/lets-do/.
+ */
+val herbalBrews = findProperty("deps.herbalbrews") as String?
+val beachparty = findProperty("deps.beachparty") as String?
+
+/**
+ * Serene Seasons' Modrinth version id, on every node. See docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md.
  */
 val sereneSeasons = findProperty("deps.serene_seasons") as String?
 
@@ -424,6 +431,9 @@ fun clientMod(configuration: String, notation: Any) {
 val optionalRunMods = OptionalRunMods(providers.gradleProperty("withoutOptional").orNull)
 
 /** Adds a mod to runClient only, unless `-PwithoutOptional` names it or one of the libraries it lists. */
+/** Architectury API's names, which every Let's Do mod lists among its own since it cannot load without it. */
+val architecturyNames = listOf("architectury", "architectury-api")
+
 fun runClientMod(names: List<String>, notation: Any) {
     if (optionalRunMods.include(names)) clientMod("clientRuntimeOnly", notation)
 }
@@ -524,14 +534,38 @@ dependencies {
         "modCompileOnly"("maven.modrinth:lets-do-farm-charm:$farmAndCharm") { isTransitive = false }
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
-        // absent. Both require Architectury API. Leaving Farm & Charm out leaves all three out; leaving
-        // Candlelight out keeps the other two.
-        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm")
+        // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight
+        // out too; leaving Candlelight out keeps Farm & Charm.
+        val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm") + architecturyNames
         runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharm")
         runClientMod(names + listOf("candlelight"),
             "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}")
-        runClientMod(names + listOf("architectury"),
-            "maven.modrinth:architectury-api:${property("deps.architectury")}")
+    }
+
+    if (herbalBrews != null) {
+        // Mixed into, like Farm & Charm. The Tea Kettle and the Jug in runClient only.
+        "modCompileOnly"("maven.modrinth:lets-do-herbalbrews:$herbalBrews") { isTransitive = false }
+        runClientMod(listOf("herbalbrews", "lets-do-herbalbrews") + architecturyNames,
+            "maven.modrinth:lets-do-herbalbrews:$herbalBrews")
+    }
+
+    if (beachparty != null) {
+        // Mixed into, like Farm & Charm. The cocktails in runClient only. Its manifest asks for nothing
+        // but Architectury, yet its client entrypoint names Trinkets' renderer unconditionally, so a
+        // client without Trinkets fails to start. Trinkets nests its Cardinal Components, which Loom
+        // leaves packed. Leaving Trinkets out leaves Beachparty out.
+        val trinkets = property("deps.trinkets").toString()
+        val names = listOf("beachparty", "lets-do-beachparty", "trinkets") + architecturyNames
+        "modCompileOnly"("maven.modrinth:lets-do-beachparty:$beachparty") { isTransitive = false }
+        runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachparty")
+        runClientMod(names, "maven.modrinth:trinkets:$trinkets")
+        runClientMod(names, files(nestedMods("trinkets", trinkets)))
+    }
+
+    // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
+    // names, so leaving it out leaves them out; leaving one of them out keeps it for the others.
+    if (farmAndCharm != null || herbalBrews != null || beachparty != null) {
+        runClientMod(architecturyNames, "maven.modrinth:architectury-api:${property("deps.architectury")}")
     }
 
     if (sereneSeasons != null) {

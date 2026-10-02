@@ -17,7 +17,7 @@ both. Today it fixes four of Sophisticated's upgrades and adds one of its own:
   cleanest water first, bottles and other drinks as well as water from a Tank upgrade.
 
 What is still to do across Sophisticated's upgrades is in
-[docs/dev/integration/SOPHISTICATED-INTEGRATION.md](../../../docs/dev/integration/SOPHISTICATED-INTEGRATION.md).
+[docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md](../../../docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md).
 
 This directory is **only compiled by nodes that set `deps.sophisticated_core`** in
 `stonecutter.properties.toml`: every NeoForge node but `26.3.x-neoforge`, which has no Sophisticated
