@@ -47,6 +47,6 @@ the four season speeds.
 
 ![The Thirst settings page on its Seasons tab: Serene Seasons Climate on, and the Spring, Summer, Autumn and Winter Drain sliders at 100%, 115%, 100% and 90%](/screenshots/config/config-seasons.png)
 
-With [Cold Sweat](/docs/integrations/cold-sweat) on NeoForge 1.21.1, thirst already follows the
+With [Cold Sweat](/docs/integrations/cold-sweat) on NeoForge 1.21.1 or Forge 1.20.1, thirst already follows the
 temperature Cold Sweat shows, and that temperature follows the season. The season speeds are not
 applied a second time. The wet and dry seasons still count.
