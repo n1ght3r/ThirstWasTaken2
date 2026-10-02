@@ -28,7 +28,7 @@ Fabric API is required and must match the Minecraft version.
 
 | Minecraft | File suffix | NeoForge | Java |
 |---|---|---|---|
-| 26.3 | `+26.3-neoforge` | 26.3.0.39-beta or newer | 25 |
+| 26.3 | `+26.3-neoforge` | 26.3.0.40-beta or newer | 25 |
 | 26.2 | `+26.2-neoforge` | 26.2.0.88 or newer | 25 |
 | 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.112 or newer | 25 |
 | 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
@@ -67,7 +67,7 @@ All optional except Fabric API. Versions are listed in the order 26.3, 26.2, 26.
 | ![](https://cdn.modrinth.com/data/EsAfCjCV/icon.png){.mod-icon} [AppleSkin](https://modrinth.com/mod/appleskin) | 3.0.10+mc26.3, 3.0.10+mc26.2, 3.0.10+mc26.1.2, 3.0.8+mc1.21.11, 3.0.6+mc1.21, 2.5.2+mc1.20.1 | The quenched outline on the thirst bar, droplet rows in tooltips, and the exhaustion strip. |
 | ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.3.159, 26.2.155, 26.1.154, 21.11.153, 15.0.140, 11.1.136+fabric | AppleSkin's own settings screen. |
 | ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly) | 26.2-rc-2-6.0.9-1, 26.1.2-6.0.9-4 | The [Sand Filter](/docs/integrations/create). 26.2 and 26.1.2 only. |
-| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.1, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
+| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.4, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | [Water that keeps its grade](/docs/integrations/supplementaries) in Jars, Goblets and Faucets, and a Jar or Goblet of water that can be drunk. 1.21.1 only. |
 | ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0-fabric+mc26.3, 1.6.0-fabric+mc26.2, 1.6.0-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.6.0-fabric+mc1.21.1, 1.6.0-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
 | ![](https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png){.mod-icon} [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 26.1.2.0.7, 26.1.2.0.6, 21.11.0.4, 10.1.0.9, 9.1.0.3 | Thirst that [follows the season](/docs/integrations/serene-seasons). Needs GlitchCore. |
@@ -88,7 +88,7 @@ The settings screen opens from the Config button in NeoForge's Mods list, with n
 |---|---|---|
 | ![](https://cdn.modrinth.com/data/EsAfCjCV/icon.png){.mod-icon} [AppleSkin](https://modrinth.com/mod/appleskin) | 3.0.10+mc26.3, 3.0.10+mc26.2, 3.0.9+mc26.1, 3.0.8+mc1.21.11, 3.0.9+mc1.21 | The same as on Fabric. |
 | ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.2.155, 26.1.154, 21.11.153, 15.0.140 | AppleSkin's own settings screen. Not on 26.3 yet. |
-| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.1, 26.2.10, 26.1.10, 21.1.7, 15.10.6 | The same as on Fabric. Client only. |
+| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.4, 26.2.10, 26.1.10, 21.1.7, 15.10.6 | The same as on Fabric. Client only. |
 | ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) | 6.0.10 | The [Sand Filter](/docs/integrations/create). 1.21.1 only. |
 | ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) | Core 26.2-1.5.1.2353, 26.1.2-1.5.3.2352, 1.21.11-1.5.2.2348, 1.21.1-1.5.2.2343. Not on 26.3 yet. | The [Drinking Upgrade](/docs/integrations/sophisticated-backpacks), and water that keeps its grade in the Tank and Pump Upgrades. Sophisticated Storage takes the Drinking Upgrade too. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | The same as on Fabric. 1.21.1 only. |
