@@ -32,7 +32,7 @@ heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm
 the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
 mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
 Terralith). A family is a `<details>` on Modrinth, whose summary is the main mod's icon and
-"<b>Name and its addons</b>, click to expand" (Farmer's Delight's is its banner at 204 px wide,
+"<b>Name and its addons</b>, click to expand" (the Let's Do family's is just "<b>Let's Do mods</b>") (Farmer's Delight's is its banner at 204 px wide,
 unlinked so a click still opens it, then "<b>and its addons</b>, click to expand"), and on CurseForge,
 which strips `<details>` and ignores `align` and `vertical-align` on an image, the main mod's icon and
 "<b>Name and its addons</b>" in a `<p>` above a `<div class="spoiler">`, Farmer's Delight included,

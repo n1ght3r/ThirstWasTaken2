@@ -161,7 +161,7 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 </details>
 
 <details>
-<summary><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and the other Let's Do mods</b>, click to expand</summary>
+<summary><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do mods</b>, click to expand</summary>
 <br>
 
 <table>
