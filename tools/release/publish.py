@@ -98,7 +98,8 @@ class Dependency:
 # `mixinextras` is nested in the Forge jar, and
 # `cloth_config` is only on the dev client's runtime classpath -- no code in the mod names it -- so an
 # upload must not tell players to install it. `architectury`, `glitchcore`, `forge_config_api_port` and
-# `cooks_collection` are libraries or runtime companions of the mods below, which pull them in themselves.
+# `cooks_collection` are libraries or runtime companions of the mods below, which pull them in themselves,
+# and so are `trinkets` and `curios`, which Beachparty needs.
 DEPENDENCIES = {
     "fabric_api": Dependency("fabric-api", "P7dR8mSH", "fabric-api", required=True),
     "modmenu": Dependency("modmenu", "mOgUt4GM", "modmenu"),
@@ -126,6 +127,9 @@ DEPENDENCIES = {
     # Farm & Charm and Candlelight: their CurseForge slugs are unverified, so they are listed there by hand.
     "farm_and_charm": Dependency("lets-do-farm-charm", "HJetCzWo", None),
     "candlelight": Dependency("lets-do-candlelight-farmcharm-compat", "qwbArkQk", None),
+    # HerbalBrews and Beachparty, likewise listed by hand on CurseForge.
+    "herbalbrews": Dependency("lets-do-herbalbrews", "Eh11TaTm", None),
+    "beachparty": Dependency("lets-do-beachparty", "GyKzAh3l", None),
 }
 # The same keys where a NeoForge or Forge node's dependency is a different project: Farmer's Delight
 # Refabricated and Kaleidoscope Cookery Refabricated are Fabric ports, and the other loaders use the originals.

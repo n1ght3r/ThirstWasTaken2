@@ -28,7 +28,7 @@ npm run docs:build    # must pass before you call a docs change done
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
 sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.md` and
 `CURSEFORGE.md`. There, Mod Compatibility opens with one collapsed section per family of mods, with no
-heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm and its addon), then
+heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews and Beachparty), then
 the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
 mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
 Terralith). A family is a `<details>` on Modrinth, whose summary is the main mod's icon and

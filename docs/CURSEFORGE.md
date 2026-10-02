@@ -154,7 +154,7 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 
 </div>
 
-<p><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and its addon</b></p>
+<p><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b>Let's Do: Farm &amp; Charm and the other Let's Do mods</b></p>
 
 <div class="spoiler">
 
@@ -177,6 +177,26 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
     </td>
     <td width="45%">
       <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Teas and coffees restore thirst, also when drunk from a placed Jug. The Tea Kettle brews nothing from sea water.
+    </td>
+    <td width="45%">
+      <img alt="A Tea Kettle on a stove in a meadow, beside a Jug and cups of tea on barrels and a row of tea bushes" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/herbalbrews/herbalbrews-tea-garden.png" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td width="55%">
+      <img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a></b><br>
+      <i>1.21.1 Fabric and NeoForge</i><br><br>
+      Cocktails and open coconuts restore thirst. A placed cocktail gives three sips, each a third of the glass.
+    </td>
+    <td width="45%">
+      <img alt="A palm bar with cocktails on a beach, deck chairs and a parasol, the sea and palm trees behind" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/beachparty/beachparty-bar.png" width="100%">
     </td>
   </tr>
 </table>
@@ -244,26 +264,6 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
     </td>
     <td width="45%">
       <img alt="A Teapot on a lit Stove among teacups in a cherry grove, with Jade naming its water Clean" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/kaleidoscope-cookery/kaleidoscope-teapot.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Teas and coffees restore thirst, also when drunk from a placed Jug. The Tea Kettle brews nothing from sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Tea Kettle on a stove in a meadow, beside a Jug and cups of tea on barrels and a row of tea bushes" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/herbalbrews/herbalbrews-tea-garden.png" width="100%">
-    </td>
-  </tr>
-  <tr>
-    <td width="55%">
-      <img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Cocktails and open coconuts restore thirst. A placed cocktail gives three sips, each a third of the glass.
-    </td>
-    <td width="45%">
-      <img alt="A palm bar with cocktails on a beach, deck chairs and a parasol, the sea and palm trees behind" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/beachparty/beachparty-bar.png" width="100%">
     </td>
   </tr>
 </table>

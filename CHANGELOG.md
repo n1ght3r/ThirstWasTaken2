@@ -2,7 +2,9 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.6.1] - 2026-10-02
+
+Two more Let's Do mods join on 1.21.1: HerbalBrews and Beachparty.
 
 ### Added
 
