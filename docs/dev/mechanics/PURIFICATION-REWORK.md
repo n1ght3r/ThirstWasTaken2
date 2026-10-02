@@ -193,7 +193,6 @@ every other container.
   flask in a furnace), `drinking.md` (bowls stack to 4, found in village chests),
   `integrations/cold-sweat.md`.
 - CHANGELOG through the `write-docs` skill, as a balance change: water already Pure stays Pure.
-- Fix the dead link in `AGENTS.md` to `docs/dev/mechanics/CANTEEN-AND-FLASK.md`, which does not exist.
 
 ## Known limit
 
