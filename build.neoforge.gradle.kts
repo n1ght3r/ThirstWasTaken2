@@ -46,6 +46,11 @@ repositories {
         forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
         filter { includeGroup("maven.modrinth") }
     }
+    // CurseMaven, for the mods published on CurseForge alone (Croptopia and its EpheroLib), by file id.
+    exclusiveContent {
+        forRepository { maven("https://cursemaven.com") { name = "CurseMaven" } }
+        filter { includeGroup("curse.maven") }
+    }
 }
 
 /**
@@ -174,6 +179,12 @@ val farmAndCharmVersion = findProperty("deps.farm_and_charm") as String?
 val herbalBrewsVersion = findProperty("deps.herbalbrews") as String?
 val beachpartyVersion = findProperty("deps.beachparty") as String?
 val vineryVersion = findProperty("deps.vinery") as String?
+
+/**
+ * Croptopia's CurseForge file id, and the EpheroLib it requires, on every NeoForge node it has a build
+ * for. See src/main/croptopia/AGENTS.md.
+ */
+val croptopiaVersion = findProperty("deps.croptopia") as String?
 
 /** Cold Sweat's Modrinth version id, on `1.21.1-neoforge` only. See src/main/coldsweat/AGENTS.md. */
 val coldSweatVersion = findProperty("deps.cold_sweat") as String?
@@ -377,6 +388,16 @@ dependencies {
         val names = listOf("vinery", "lets-do-vinery") + architecturyNames
         // runClientMod(names, "maven.modrinth:lets-do-vinery:$vineryVersion") { isTransitive = false }
         // Keeps its `-PwithoutOptional` names known while the line above is off.
+        optionalRunMods.include(names)
+    }
+
+    if (croptopiaVersion != null) {
+        // Nothing of Croptopia's is compiled against, as on Fabric; see build.gradle.kts. Off by default:
+        // uncomment the two lines below only to work on it.
+        val names = listOf("croptopia", "epherolib")
+        // runClientMod(names, "curse.maven:croptopia-415438:$croptopiaVersion") { isTransitive = false }
+        // runClientMod(names, "curse.maven:epherolib-885449:${property("deps.epherolib")}") { isTransitive = false }
+        // Keeps its `-PwithoutOptional` names known while the lines above are off.
         optionalRunMods.include(names)
     }
 

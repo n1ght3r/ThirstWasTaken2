@@ -352,6 +352,16 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.hearthandharvestforge.mixins.json",
         neoForgeDependencies = listOf("hearthandharvest"),
     ),
+    // Every loader: Croptopia's crafting recipes take no sea water. Nothing of the mod is compiled
+    // against; the mixin targets Minecraft's crafting recipes. Croptopia has no build for 26.3 or 1.21.11,
+    // so those nodes do not set the key. See src/main/croptopia/AGENTS.md.
+    Integration(
+        dir = "croptopia",
+        depsKey = "deps.croptopia",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE, Loader.FORGE),
+        mixinConfig = "thirstwastaken2.croptopia.mixins.json",
+        neoForgeDependencies = listOf("croptopia"),
+    ),
 )
 
 /**

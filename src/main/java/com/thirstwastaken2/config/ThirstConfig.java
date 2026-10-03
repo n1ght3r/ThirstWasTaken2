@@ -307,6 +307,9 @@ public final class ThirstConfig {
         // And for Vinery, added after that.
         vineryDrinks(drinks);
         vineryFoods(foods);
+        // And for Croptopia, added after that.
+        croptopiaDrinks(drinks);
+        croptopiaFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -431,6 +434,7 @@ public final class ThirstConfig {
         hearthAndHarvestDrinks(values);
         noMansLandDrinks(values);
         vineryDrinks(values);
+        croptopiaDrinks(values);
         return values;
     }
 
@@ -463,6 +467,7 @@ public final class ThirstConfig {
         hearthAndHarvestFoods(values);
         noMansLandFoods(values);
         vineryFoods(values);
+        croptopiaFoods(values);
         return values;
     }
 
@@ -849,6 +854,64 @@ public final class ThirstConfig {
         putMissing(foods, 1, 2, "vinery:red_grape", "vinery:white_grape", "vinery:savanna_grapes_red",
                 "vinery:savanna_grapes_white", "vinery:taiga_grapes_red", "vinery:taiga_grapes_white",
                 "vinery:jungle_grapes_red", "vinery:jungle_grapes_white", "vinery:cherry");
+    }
+
+    /**
+     * Croptopia's drinks, by id alone: its builds share one mod id on every version and loader, so these
+     * reach every node, one with no integration included, and match nothing where the mod is absent. None
+     * is tagged {@code c:drinks}. Juices and lemonade are Farmer's Delight's juice, smoothies Beachparty's
+     * cocktails, the milkshake Fruits Delight's, coffee, the latte and tea HerbalBrews', soy milk and
+     * horchata a bottle of milk, beer, mead and wine Brewin' and Chewin's, rum its saccharine rum. Tea is
+     * crafted cold from a water bottle, but it is its own item and safe, as every other mod's is; sea water
+     * crafts nothing (see {@code src/main/croptopia}). Croptopia's water bottle and milk bottle are
+     * ingredients that cannot be drunk, so they are left out.
+     */
+    private static void croptopiaDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 8, 13, "croptopia:apple_juice", "croptopia:cranberry_juice", "croptopia:grape_juice",
+                "croptopia:melon_juice", "croptopia:orange_juice", "croptopia:pineapple_juice",
+                "croptopia:saguaro_juice", "croptopia:tomato_juice", "croptopia:lemonade", "croptopia:limeade");
+        putMissing(drinks, 7, 10, "croptopia:banana_smoothie", "croptopia:strawberry_smoothie",
+                "croptopia:fruit_smoothie", "croptopia:kale_smoothie");
+        putMissing(drinks, 8, 12, "croptopia:chocolate_milkshake");
+        putMissing(drinks, 6, 9, "croptopia:tea");
+        putMissing(drinks, 5, 8, "croptopia:coffee");
+        putMissing(drinks, 6, 10, "croptopia:pumpkin_spice_latte");
+        putMissing(drinks, 6, 8, "croptopia:soy_milk", "croptopia:horchata");
+        putMissing(drinks, 5, 6, "croptopia:beer", "croptopia:mead");
+        putMissing(drinks, 3, 4, "croptopia:wine");
+        putMissing(drinks, 2, 2, "croptopia:rum");
+    }
+
+    /**
+     * Croptopia's soups, salads and wetter fruit; see {@link #croptopiaDrinks}. Soups and stews are
+     * Farmer's Delight's, the fruit salad its fruit salad, the others its mixed salad, a sorbet its melon
+     * popsicle, ice cream and yoghurt its custard. Cantaloupe and honeydew are a melon slice, the cucumber
+     * Cultural Delights', the tomato Farmer's Delight's, the tree fruit an apple, berries, cherries,
+     * kumquats, lemons and limes a sweet berry, lettuce and celery a cabbage leaf.
+     * {@code bibim_naengmyeon}, a cold noodle soup, is in the 26.x builds
+     * only. Pickles are salty, and the roasts, breads, pies and jams are solid food; they are left out.
+     */
+    private static void croptopiaFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "croptopia:leek_soup", "croptopia:pumpkin_soup", "croptopia:potato_soup",
+                "croptopia:beef_stew", "croptopia:nether_wart_stew", "croptopia:borscht", "croptopia:goulash",
+                "croptopia:chicken_and_dumplings", "croptopia:tofu_and_dumplings", "croptopia:chicken_and_noodles",
+                "croptopia:bibim_naengmyeon", "croptopia:cucumber_salad", "croptopia:caesar_salad",
+                "croptopia:leafy_salad", "croptopia:veggie_salad", "croptopia:beetroot_salad");
+        putMissing(foods, 6, 8, "croptopia:fruit_salad");
+        putMissing(foods, 7, 9, "croptopia:kiwi_sorbet");
+        putMissing(foods, 2, 3, "croptopia:vanilla_ice_cream", "croptopia:strawberry_ice_cream",
+                "croptopia:mango_ice_cream", "croptopia:pecan_ice_cream", "croptopia:chocolate_ice_cream",
+                "croptopia:rum_raisin_ice_cream", "croptopia:yoghurt");
+        putMissing(foods, 4, 5, "croptopia:cantaloupe", "croptopia:honeydew");
+        putMissing(foods, 3, 4, "croptopia:cucumber");
+        putMissing(foods, 2, 3, "croptopia:tomato", "croptopia:orange", "croptopia:grapefruit", "croptopia:peach",
+                "croptopia:pear", "croptopia:plum", "croptopia:nectarine", "croptopia:apricot", "croptopia:mango",
+                "croptopia:pineapple", "croptopia:kiwi", "croptopia:starfruit", "croptopia:dragonfruit",
+                "croptopia:persimmon");
+        putMissing(foods, 1, 2, "croptopia:grape", "croptopia:strawberry", "croptopia:blueberry",
+                "croptopia:blackberry", "croptopia:raspberry", "croptopia:cranberry", "croptopia:currant",
+                "croptopia:elderberry", "croptopia:cherry", "croptopia:kumquat", "croptopia:lemon",
+                "croptopia:lime", "croptopia:lettuce", "croptopia:celery");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

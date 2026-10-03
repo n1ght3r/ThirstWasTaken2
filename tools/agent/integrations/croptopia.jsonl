@@ -1,0 +1,139 @@
+// Croptopia in a real client: the check of its integration plan
+// (docs/dev/integration/cooking/CROPTOPIA-INTEGRATION.md). What it proves: the ids ThirstConfig and the
+// recipes below use exist; a fresh water bucket of any grade still crafts sixteen water bottles, and a
+// sea water bucket crafts none; tea crafts from Croptopia's water bottle but not from a sea water bucket;
+// and a juice, tea, wine, a soup and a cucumber restore what ThirstConfig says.
+// Crafting goes through a Crafter, which asks the same recipe matcher a crafting table does, so it needs
+// 1.21 or later: it runs on 1.21.1, 26.1.x and 26.2.x, either loader, with Croptopia's two runClientMod
+// lines uncommented. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/croptopia.jsonl -Pquickplay=CroptopiaAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/croptopia.jsonl -Pquickplay=CroptopiaAgent -PwithoutOptional=cold-sweat
+// CroptopiaAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> CroptopiaAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/croptopia.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199, biome plains. The player stands at 0.5 200 0.5.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+
+// The ids used below: /give refuses an unknown item.
+{"id": "id_water_bottle", "command": "server.command", "args": {"command": "give @p croptopia:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tea_leaves", "command": "server.command", "args": {"command": "give @p croptopia:tea_leaves"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tea", "command": "server.command", "args": {"command": "give @p croptopia:tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_juice", "command": "server.command", "args": {"command": "give @p croptopia:orange_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_wine", "command": "server.command", "args": {"command": "give @p croptopia:wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_leek_soup", "command": "server.command", "args": {"command": "give @p croptopia:leek_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cucumber", "command": "server.command", "args": {"command": "give @p croptopia:cucumber"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// One Crafter a case, each facing north into a chest, fired by a redstone block set on top of it.
+// The water bottle is glass either side of the bucket with one more glass under it; tea is the
+// leaves over the water. A Crafter that makes nothing leaves the chest empty.
+{"id": "clean_bottles_crafter", "command": "server.command", "args": {"command": "setblock 0 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "clean_bottles_chest", "command": "server.command", "args": {"command": "setblock 0 200 3 minecraft:chest[facing=south]"}}
+{"id": "clean_bottles_slot3", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.3 with minecraft:glass 1"}}
+{"id": "clean_bottles_slot4", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.4 with minecraft:water_bucket[thirstwastaken2:water_purity=2,thirstwastaken2:water_salty=false] 1"}}
+{"id": "clean_bottles_slot5", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.5 with minecraft:glass 1"}}
+{"id": "clean_bottles_slot7", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.7 with minecraft:glass 1"}}
+{"id": "clean_bottles_fire", "command": "server.command", "args": {"command": "setblock 0 201 4 minecraft:redstone_block"}}
+{"id": "clean_bottles_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "clean_bottles_result", "command": "server.command", "args": {"command": "execute if items block 0 200 3 container.* croptopia:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "dirty_bottles_crafter", "command": "server.command", "args": {"command": "setblock 2 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "dirty_bottles_chest", "command": "server.command", "args": {"command": "setblock 2 200 3 minecraft:chest[facing=south]"}}
+{"id": "dirty_bottles_slot3", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.3 with minecraft:glass 1"}}
+{"id": "dirty_bottles_slot4", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.4 with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false] 1"}}
+{"id": "dirty_bottles_slot5", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.5 with minecraft:glass 1"}}
+{"id": "dirty_bottles_slot7", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.7 with minecraft:glass 1"}}
+{"id": "dirty_bottles_fire", "command": "server.command", "args": {"command": "setblock 2 201 4 minecraft:redstone_block"}}
+{"id": "dirty_bottles_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "dirty_bottles_result", "command": "server.command", "args": {"command": "execute if items block 2 200 3 container.* croptopia:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sea_bottles_crafter", "command": "server.command", "args": {"command": "setblock 4 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "sea_bottles_chest", "command": "server.command", "args": {"command": "setblock 4 200 3 minecraft:chest[facing=south]"}}
+{"id": "sea_bottles_slot3", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.3 with minecraft:glass 1"}}
+{"id": "sea_bottles_slot4", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.4 with minecraft:water_bucket[thirstwastaken2:water_salty=true] 1"}}
+{"id": "sea_bottles_slot5", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.5 with minecraft:glass 1"}}
+{"id": "sea_bottles_slot7", "command": "server.command", "args": {"command": "item replace block 4 200 4 container.7 with minecraft:glass 1"}}
+{"id": "sea_bottles_fire", "command": "server.command", "args": {"command": "setblock 4 201 4 minecraft:redstone_block"}}
+{"id": "sea_bottles_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "sea_bottles_result", "command": "server.command", "args": {"command": "execute if items block 4 200 3 container.* croptopia:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "sea_tea_crafter", "command": "server.command", "args": {"command": "setblock 6 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "sea_tea_chest", "command": "server.command", "args": {"command": "setblock 6 200 3 minecraft:chest[facing=south]"}}
+{"id": "sea_tea_slot4", "command": "server.command", "args": {"command": "item replace block 6 200 4 container.4 with croptopia:tea_leaves 1"}}
+{"id": "sea_tea_slot7", "command": "server.command", "args": {"command": "item replace block 6 200 4 container.7 with minecraft:water_bucket[thirstwastaken2:water_salty=true] 1"}}
+{"id": "sea_tea_fire", "command": "server.command", "args": {"command": "setblock 6 201 4 minecraft:redstone_block"}}
+{"id": "sea_tea_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "sea_tea_result", "command": "server.command", "args": {"command": "execute if items block 6 200 3 container.* croptopia:tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "bottle_tea_crafter", "command": "server.command", "args": {"command": "setblock -2 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "bottle_tea_chest", "command": "server.command", "args": {"command": "setblock -2 200 3 minecraft:chest[facing=south]"}}
+{"id": "bottle_tea_slot4", "command": "server.command", "args": {"command": "item replace block -2 200 4 container.4 with croptopia:tea_leaves 1"}}
+{"id": "bottle_tea_slot7", "command": "server.command", "args": {"command": "item replace block -2 200 4 container.7 with croptopia:water_bottle 1"}}
+{"id": "bottle_tea_fire", "command": "server.command", "args": {"command": "setblock -2 201 4 minecraft:redstone_block"}}
+{"id": "bottle_tea_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "bottle_tea_result", "command": "server.command", "args": {"command": "execute if items block -2 200 3 container.* croptopia:tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// Drinking and eating from thirst 4, quenched 0. Quenched never passes thirst.
+{"id": "drink_orange_juice_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_orange_juice_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 180 -30"}}
+{"id": "drink_orange_juice_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "drink_orange_juice_hungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "drink_orange_juice_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_orange_juice_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with croptopia:orange_juice"}}
+{"id": "drink_orange_juice_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_orange_juice_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_orange_juice_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_orange_juice_state", "command": "client.state", "expect": {"result.thirst": 12, "result.quenched": 12}}
+{"id": "drink_tea_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_tea_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 180 -30"}}
+{"id": "drink_tea_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "drink_tea_hungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "drink_tea_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_tea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with croptopia:tea"}}
+{"id": "drink_tea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_tea_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 9}}
+{"id": "drink_wine_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_wine_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 180 -30"}}
+{"id": "drink_wine_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "drink_wine_hungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "drink_wine_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_wine_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with croptopia:wine"}}
+{"id": "drink_wine_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_wine_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_wine_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_wine_state", "command": "client.state", "expect": {"result.thirst": 7, "result.quenched": 4}}
+{"id": "drink_leek_soup_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_leek_soup_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 180 -30"}}
+{"id": "drink_leek_soup_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "drink_leek_soup_hungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "drink_leek_soup_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_leek_soup_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with croptopia:leek_soup"}}
+{"id": "drink_leek_soup_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_leek_soup_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_leek_soup_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_leek_soup_state", "command": "client.state", "expect": {"result.thirst": 8, "result.quenched": 5}}
+{"id": "drink_cucumber_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_cucumber_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 180 -30"}}
+{"id": "drink_cucumber_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "drink_cucumber_hungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "drink_cucumber_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_cucumber_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with croptopia:cucumber"}}
+{"id": "drink_cucumber_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_cucumber_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_cucumber_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_cucumber_state", "command": "client.state", "expect": {"result.thirst": 7, "result.quenched": 4}}
+
+{"id": "done", "command": "wait", "args": {"ticks": 20}}

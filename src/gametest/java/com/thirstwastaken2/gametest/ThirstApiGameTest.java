@@ -584,6 +584,57 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Croptopia is never installed here either. Alcohol restores less than juice, and its water bottle and
+     * milk bottle, which cannot be drunk, are not listed.
+     */
+    @GameTest
+    public void croptopiaDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"orange_juice", "lemonade", "banana_smoothie", "tea", "coffee", "wine"};
+        String[] foods = {"leek_soup", "fruit_salad", "cucumber", "strawberry"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("croptopia:" + drink),
+                    "the default drinks should list croptopia:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("croptopia:" + food),
+                    "the default foods should list croptopia:" + food);
+        }
+        TestFixtures.check(helper, defaults.drinks.get("croptopia:wine")[0] < defaults.drinks.get("croptopia:grape_juice")[0],
+                "wine should restore less than the juice it is made from");
+        for (String dry : new String[]{"water_bottle", "milk_bottle", "salt", "pickled_cucumber"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("croptopia:" + dry)
+                            && !defaults.drinks.containsKey("croptopia:" + dry),
+                    "croptopia:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("croptopia:" + drink);
+            for (String food : foods) config.foods.remove("croptopia:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("croptopia:beer", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "croptopia:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "croptopia:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("croptopia:beer"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("croptopia:beer")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {

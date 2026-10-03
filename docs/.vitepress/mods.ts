@@ -75,6 +75,11 @@ export const INTEGRATIONS: Mod[] = [
     name: "No Man's Land",
     icon: 'https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp',
     link: '/docs/integrations/no-mans-land'
+  },
+  {
+    name: 'Croptopia',
+    icon: 'https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png',
+    link: '/docs/integrations/croptopia'
   }
 ]
 

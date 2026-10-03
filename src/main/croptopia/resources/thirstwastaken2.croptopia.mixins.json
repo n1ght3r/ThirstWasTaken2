@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.thirstwastaken2.croptopia.mixin",
+  "plugin": "com.thirstwastaken2.croptopia.CroptopiaMixinPlugin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "ShapedRecipeMixin",
+    "ShapelessRecipeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

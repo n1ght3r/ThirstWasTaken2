@@ -40,6 +40,11 @@ repositories {
         forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
         filter { includeGroup("maven.modrinth") }
     }
+    // CurseMaven, for the mods published on CurseForge alone (Croptopia and its EpheroLib), by file id.
+    exclusiveContent {
+        forRepository { maven("https://cursemaven.com") { name = "CurseMaven" } }
+        filter { includeGroup("curse.maven") }
+    }
 }
 
 // Server-side gametests. They are their own source set and their own small mod, so none of it can
@@ -269,6 +274,12 @@ val farmAndCharm = findProperty("deps.farm_and_charm") as String?
 val herbalBrews = findProperty("deps.herbalbrews") as String?
 val beachparty = findProperty("deps.beachparty") as String?
 val vinery = findProperty("deps.vinery") as String?
+
+/**
+ * Croptopia's CurseForge file id, and the EpheroLib it requires, on every Fabric node it has a build for.
+ * See src/main/croptopia/AGENTS.md.
+ */
+val croptopia = findProperty("deps.croptopia") as String?
 
 /**
  * Spelunkery's Modrinth version id, on `1.21.1` and `1.21.1-neoforge` only. Nothing is compiled against
@@ -603,6 +614,17 @@ dependencies {
         val names = listOf("vinery", "lets-do-vinery") + architecturyNames
         // runClientMod(names, "maven.modrinth:lets-do-vinery:$vinery")
         // Keeps its `-PwithoutOptional` names known while the line above is off.
+        optionalRunMods.include(names)
+    }
+
+    if (croptopia != null) {
+        // Nothing of Croptopia's is compiled against: its drinks are ThirstConfig ids and the mixin targets
+        // Minecraft's crafting recipes. On runClient only, through CurseMaven. Off by default: its dozens
+        // of crops and fruit trees slow every client start. Uncomment the two lines below only to work on it.
+        val names = listOf("croptopia", "epherolib")
+        // runClientMod(names, "curse.maven:croptopia-415438:$croptopia")
+        // runClientMod(names, "curse.maven:epherolib-885449:${property("deps.epherolib")}")
+        // Keeps its `-PwithoutOptional` names known while the lines above are off.
         optionalRunMods.include(names)
     }
 

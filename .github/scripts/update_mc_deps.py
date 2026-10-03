@@ -213,6 +213,8 @@ MODRINTH_DEPS = [
     # No Man's Land, NeoForge 1.21.1 only, pinned by id like the others. The Biolith and Mixed Litter it
     # requires are nested in its jar.
     ModrinthDep("nomansland", "no-mans-land", by_id=True),
+    # Not here: `croptopia` and `epherolib`, which are on CurseForge alone and pinned by CurseForge file
+    # id, resolved through CurseMaven. Nothing here can read CurseForge, so they are bumped by hand.
 ]
 
 

@@ -25,6 +25,9 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - Each sip from a milk cauldron restores a quarter of a milk bucket.
 - Let's Do: Vinery, on Fabric and NeoForge 1.21.1: juices, wines, grapes and cherries restore thirst.
   Wine restores less than the juice it's made from.
+- Croptopia, on Fabric and NeoForge 26.2, 26.1 and 1.21.1, and on Fabric and Forge 1.20.1:
+  - Juices, smoothies, teas, coffees, soups, salads and the juicier fruit restore thirst.
+  - A bucket of sea water won't craft its water bottles, tea or anything else that takes water.
 
 ## [1.6.1] - 2026-10-02
 

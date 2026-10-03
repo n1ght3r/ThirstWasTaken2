@@ -56,6 +56,11 @@ repositories {
         forRepository { maven("https://maven.tterrag.com") { name = "tterrag" } }
         filter { includeGroup("com.tterrag.registrate") }
     }
+    // CurseMaven, for the mods published on CurseForge alone (Croptopia and its EpheroLib), by file id.
+    exclusiveContent {
+        forRepository { maven("https://cursemaven.com") { name = "CurseMaven" } }
+        filter { includeGroup("curse.maven") }
+    }
 }
 
 /** See build.neoforge.gradle.kts: the loader this node builds for, by its source directory name. */
@@ -244,6 +249,15 @@ dependencies {
         // runClientMod(listOf("cold-sweat", "cold_sweat"), "maven.modrinth:cold-sweat:$coldSweat") { isTransitive = false }
         // Keeps `-PwithoutOptional=cold-sweat` in the agent scripts a known name while the line above is off.
         optionalRunMods.include(listOf("cold-sweat", "cold_sweat"))
+    }
+    // Croptopia: nothing compiles against it, as on Fabric; see build.gradle.kts. In SRG names, so remapped.
+    // Off in runClient by default; uncomment the two lines below only to work on it.
+    findProperty("deps.croptopia")?.let {
+        val names = listOf("croptopia", "epherolib")
+        // runClientMod(names, "curse.maven:croptopia-415438:$it") { isTransitive = false }
+        // runClientMod(names, "curse.maven:epherolib-885449:${property("deps.epherolib")}") { isTransitive = false }
+        // Keeps its `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(names)
     }
     // Test the drinks and meals Farmer's Delight adds, and the Cooking Pot recipes. Reached by id only.
     findProperty("deps.farmersdelight")?.let {

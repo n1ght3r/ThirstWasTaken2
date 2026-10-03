@@ -307,6 +307,10 @@ Also works with:
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/no-mans-land"><img alt="No Man's Land" src="https://cdn.modrinth.com/data/cached_images/527cfcbdc05088cfec1c032302d336faf9106621.png" width="300"></a><br><i>1.21.1 NeoForge</i></td>
     <td width="55%">Water in its Bog, Bayou, Dark Swamp and Blackwater River is Dirty, and the sea at its Mud Beach is salty. Its drinks restore thirst, and so does sipping from its milk cauldron.</td>
   </tr>
+  <tr>
+    <td width="45%"><img alt="Croptopia icon" src="https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia">Croptopia</a><br><i>Fabric, NeoForge and Forge</i></td>
+    <td width="55%">Its juices, teas, soups and fruit restore thirst, and sea water crafts nothing of it.</td>
+  </tr>
 </table>
 
 ## Version Support
@@ -358,6 +362,12 @@ Also works with:
     <td><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery">Kaleidoscope Cookery</a></td>
     <td>every version (Refabricated)</td>
     <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><img alt="Croptopia icon" src="https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia">Croptopia</a></td>
+    <td>1.20.1, 1.21.1, 26.1.x, 26.2</td>
+    <td>1.21.1, 26.1.x, 26.2</td>
     <td>yes</td>
   </tr>
   <tr>
