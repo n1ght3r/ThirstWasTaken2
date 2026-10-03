@@ -10,15 +10,17 @@ thirst. Every container shows which one it holds in its tooltip.
 From worst to best: **Dirty**, **Murky**, **Clean**, **Pure**. Water gets its grade where it is
 collected and keeps it.
 
-| Where the water comes from | Usual grade |
-|---|---|
-| Swamp or mangrove swamp, and ![](https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp){.mod-icon} [Terralith](https://modrinth.com/mod/terralith)'s Orchid Swamp and Ice Marsh, and ![](https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp){.mod-icon} [No Man's Land](/docs/integrations/no-mans-land)'s Bog, Bayou, Dark Swamp and Blackwater River | Dirty |
-| Jungle, savanna or badlands | Dirty |
-| Most other biomes | Murky |
-| River | Murky |
-| Mountain | Clean |
-| Cold peaks | Pure |
-| ![](https://cdn.modrinth.com/data/krskFMfA/465cfcd453c22ee5a09884ede98a0442e97658c5.png){.mod-icon} [Spelunkery](/docs/integrations/spelunkery)'s Spring Water, anywhere | Pure |
+| Grade | Usually found in | Drinking it |
+|---|---|---|
+| **Dirty** | Swamps, jungles, savannas, badlands | Often makes you ill, no quenched |
+| **Murky** | Rivers and most other biomes | Can make you ill, half quenched |
+| **Clean** | Mountains | Rarely makes you ill |
+| **Pure** | Cold peaks | Always safe |
+| **Salty** | Oceans and beaches | Never quenches thirst, gives [Parched](#parched) |
+
+How likely each grade is to make you ill is under [Drinking bad water](#drinking-bad-water).
+
+![](https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp){.mod-icon} [Terralith](https://modrinth.com/mod/terralith)'s Orchid Swamp and Ice Marsh count as swamps, so their water is Dirty.
 
 - Hot biomes make water worse, cold biomes make it better.
 - Water above y 100 or below y 32 is a little cleaner. So is flowing water.
@@ -38,7 +40,7 @@ cauldron or a hanging pot shows its grade, or Salty. It can be turned off in Jad
 
 ## Salt water
 
-Oceans and beaches give salt water, and so does No Man's Land's Mud Beach. It has its own icon and tooltip line. On Minecraft 1.21 and
+Oceans and beaches give salt water. It has its own icon and tooltip line. On Minecraft 1.21 and
 1.21.1 only the bowl has its own icon.
 
 - Drinking it costs thirst, causes eight seconds of Nausea and 30 seconds of Parched II.
