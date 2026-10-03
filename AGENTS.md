@@ -56,10 +56,13 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
   versions, compat ranges) live only in `stonecutter.properties.toml`; there is no version catalog.
   `stonecutter.gradle.kts` is the controller, `build.gradle.kts` is the Fabric script (Loom),
   `build.neoforge.gradle.kts` the NeoForge one (ModDevGradle), `build.forge.gradle.kts` the Forge one
-  (ModDevGradle Legacy), `gradle/shared.gradle.kts` the tasks all three share. `build-logic` is an included build of plain Kotlin both scripts call: the integration table,
-  `-PwithoutOptional`, the JFR arguments. It is data and pure functions only and never depends on Loom,
-  ModDevGradle or Stonecutter; the loader scripts make every `sourceSets`, `loom` and `neoForge` call
-  themselves. `./gradlew -p build-logic test` runs its tests.
+  (ModDevGradle Legacy), `gradle/moddev.gradle.kts` what the two ModDevGradle scripts share (source
+  sets, mods and runs, the resource translation), `gradle/shared.gradle.kts` the tasks all three share.
+  `build-logic` is an included build of plain Kotlin the scripts call: the integration table,
+  `-PwithoutOptional`, the JFR arguments, the Fabric-to-NeoForge and Fabric-to-Forge JSON translation.
+  It is data and pure functions only and never depends on Loom, ModDevGradle or Stonecutter; the
+  scripts make every `sourceSets`, `loom`, `neoForge` and `legacyForge` call themselves, and hand
+  `gradle/moddev.gradle.kts` what it needs from build-logic as extra properties. `./gradlew -p build-logic test` runs its tests.
 - **Split source sets.** Anything touching `net.minecraft.client` goes in `src/client/java`, never
   `src/main/java`. NeoForge compiles both together, so only the Fabric nodes catch a mistake.
 - **Common code never names a mod loader.** `src/main/java` and `src/client/java` call

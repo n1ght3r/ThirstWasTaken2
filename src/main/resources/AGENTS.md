@@ -60,9 +60,9 @@ Purity 3 has no recipe because it is already clean.
 - Smelting is `cookingtime` 200, campfire 600, both `experience` 0.35.
 - Matching on a component uses Fabric's ingredient type:
   `{"fabric:type": "fabric:components", "base": …, "components": {"thirstwastaken2:water_purity": N}}`.
-  Datagen only writes Fabric's spelling; the NeoForge node translates it, `fabric:any` and
-  `fabric:load_conditions` as it copies resources, in `build.neoforge.gradle.kts`, and
-  `checkNeoForgeResources` fails if a `fabric:` key survives. A new Fabric-only shape in a generator
+  Datagen only writes Fabric's spelling; the NeoForge and Forge nodes translate it, `fabric:any` and
+  `fabric:load_conditions` as they copy resources, in build-logic's `ResourceTranslation.kt`, and
+  `checkNeoForgeResources` and `checkForgeResources` fail if a `fabric:` key survives. A new Fabric-only shape in a generator
   needs a translation there too.
   Water bottles must also match `"minecraft:potion_contents": "minecraft:water"` on top of the
   `minecraft:potion` base.

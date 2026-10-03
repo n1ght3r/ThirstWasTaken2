@@ -172,7 +172,7 @@ difference is a version conditional inside the NeoForge loader directories:
 | `ClientLoader.addRightStatusBar` | before 26.2 | `Gui.rightHeight`; 26.2 moved it to `Hud` |
 | `onServerDataReload` | 1.21.1 | `AddReloadListenerEvent`, which takes a listener without an id |
 
-The resource translation in `build.neoforge.gradle.kts` also differs on 1.21.1: the ingredient type
+The resource translation (`neoForgeJson` in build-logic's `ResourceTranslation.kt`) also differs on 1.21.1: the ingredient type
 goes under vanilla's `type` key, and the components ingredient's `base`, a whole ingredient there, is
 turned into the `items` holder set. From 1.21.11 on it is `neoforge:ingredient_type` and the holder set.
 
@@ -238,9 +238,9 @@ Rules:
 
 `src/dev` and `src/datagen` are Fabric only, each its own small Fabric mod. They sit outside the seam
 on purpose: neither ships, and datagen output is shared by every loader on a Minecraft version.
-Datagen writes Fabric's spellings once, and the NeoForge node translates the three Fabric-only JSON
-shapes as it copies resources (`build.neoforge.gradle.kts`), rather than datagen writing a second
-copy; see [src/main/resources/AGENTS.md](../../../../resources/AGENTS.md).
+Datagen writes Fabric's spellings once, and the NeoForge and Forge nodes translate the Fabric-only JSON
+shapes as they copy resources (build-logic's `ResourceTranslation.kt`, applied by
+`gradle/moddev.gradle.kts`), rather than datagen writing a second copy; see [src/main/resources/AGENTS.md](../../../../resources/AGENTS.md).
 
 `src/gametest` runs on every loader. Its test classes are shared; the NeoForge and Forge nodes swap one
 import and add a harness of their own in `src/gametest/neoforge` and `src/gametest/forge`, which is test

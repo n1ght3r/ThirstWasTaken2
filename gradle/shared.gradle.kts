@@ -14,7 +14,7 @@
  *
  * - **The source directory wiring.** Loom splits `main` and `client`; ModDevGradle has no split, so
  *   the NeoForge node compiles the client sources into `main`. The two scripts wire their source
- *   sets differently on purpose, as build.neoforge.gradle.kts explains. Which directories an
+ *   sets differently on purpose, as gradle/moddev.gradle.kts explains. Which directories an
  *   integration adds is the table's to say, in build-logic; each script makes the calls itself.
  * - **What `buildAndCollect` copies.** The jar a node ships is Loom's remapped jar on Fabric and the
  *   plain `jar` on NeoForge, so each script adds its own inputs to the task registered below.
@@ -105,7 +105,7 @@ tasks.register("benchmarkRunDirectory") {
 tasks.matching { it.name == "runBenchmark" }.configureEach { dependsOn("benchmarkRunDirectory") }
 
 // The NeoForge and Forge nodes have a third check, `checkNeoForgeResources` and `checkForgeResources`, in
-// their own scripts beside the translation of datagen's Fabric-only JSON it guards.
+// gradle/moddev.gradle.kts beside the translation of datagen's Fabric-only JSON it guards.
 
 /**
  * The integration directories both loaders compile, which must not name a loader any more than core

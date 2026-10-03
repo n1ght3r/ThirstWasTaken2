@@ -228,7 +228,7 @@ already has by default. The stack the furnace hands out is the same; see
 | `Registry#get` became `getValue` | replacement |
 | `Registry#get(id)` returns a holder, where `getHolder` did | `Vanilla.mobEffect` |
 | Every `Ingredient` became non-empty, so the codec lost its `CODEC_NONEMPTY` twin | `FarmersDelightRecipeProvider` |
-| A components ingredient's `base` became a holder set rather than a whole ingredient | `build.neoforge.gradle.kts`, translating Fabric's JSON as it copies it |
+| A components ingredient's `base` became a holder set rather than a whole ingredient | `neoForgeJson` in build-logic's `ResourceTranslation.kt`, translating Fabric's JSON as it is copied |
 | GUI draw calls take a render pipeline | the dev-only `GuiDrawMixin`, which records vanilla's food and air sprite rectangles |
 | A potion's crafting remainder is a glass bottle, so the Cooking Pot serves boiled water into one | `FarmersDelightRecipeProvider` names no container either way (visible in game only) |
 | Recipes are registry entries with keys, built by a separate recipe provider | `ThirstRecipeProvider`, `ThirstAdvancementProvider`, `AdvancementGameTest` |
