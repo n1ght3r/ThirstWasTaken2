@@ -483,8 +483,11 @@ dependencies {
         // The Sand Filter extends Create classes on both sides, so both source sets compile against it.
         compileOnly(files(createFlyClasses))
         "clientCompileOnly"(files(createFlyClasses))
-        // Test the Sand Filter with pipes, pumps and spouts in runClient.
-        runClientMod(listOf("create-fly", "create"), "maven.modrinth:create-fly:$createFly")
+        // Off in runClient by default: Create is the heaviest mod here and slows every client start.
+        // Uncomment the line below only to test the Sand Filter with pipes, pumps and spouts.
+        // runClientMod(listOf("create-fly", "create"), "maven.modrinth:create-fly:$createFly")
+        // Keeps `-PwithoutOptional=create` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("create-fly", "create"))
         // `-Pcreate` puts Create Fly on runServer and runBenchmark too, to benchmark the mod with it
         // installed. Off by default, so the usual benchmark measures the mod alone.
         if (providers.gradleProperty("create").isPresent) {
@@ -498,24 +501,30 @@ dependencies {
         // soft fluid system, Supplementaries for its faucet's cauldron behaviour.
         "modCompileOnly"("maven.modrinth:supplementaries:$supplementaries") { isTransitive = false }
         "modCompileOnly"("maven.modrinth:moonlight:$moonlight") { isTransitive = false }
-        // Test jars, goblets and faucets in runClient. The gametests and runServer run without them, which
-        // is what proves the mod is unchanged when they are absent. Moonlight itself is added below.
-        runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementaries")
+        // Off in runClient by default, with Spelunkery and Moonlight below: Moonlight builds its dynamic
+        // resources at every start, and Spelunkery adds world generation. Uncomment the line below, and
+        // Moonlight's, only to test jars, goblets and faucets. The gametests and runServer run without
+        // them, which is what proves the mod is unchanged when they are absent.
+        // runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementaries")
+        // Keeps `-PwithoutOptional=supplementaries` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("supplementaries", "moonlight"))
     }
 
     if (spelunkery != null) {
         // Its salt bucket recipe in runClient only. The mixin targets Minecraft's cooking recipe and names
-        // nothing of the mod, so nothing is compiled against it.
-        runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkery")
+        // nothing of the mod, so nothing is compiled against it. Off by default, see Supplementaries.
+        // runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkery")
+        optionalRunMods.include(listOf("spelunkery", "moonlight"))
     }
 
     // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out
     // leaves them out. CodecUI comes out of Moonlight's own jar, since Loom leaves a dependency's nested
-    // mods packed.
+    // mods packed. Off by default with them; uncomment along with either.
     if (supplementaries != null || spelunkery != null) {
         val moonlight = property("deps.moonlight").toString()
-        runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:$moonlight")
-        runClientMod(listOf("moonlight"), files(nestedMods("moonlight", moonlight)))
+        // runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:$moonlight")
+        // runClientMod(listOf("moonlight"), files(nestedMods("moonlight", moonlight)))
+        optionalRunMods.include(listOf("moonlight"))
     }
 
     if (kaleidoscopeCookery != null) {
@@ -553,11 +562,14 @@ dependencies {
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
         // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight
-        // out too; leaving Candlelight out keeps Farm & Charm.
+        // out too; leaving Candlelight out keeps Farm & Charm. Off by default: its crops and world
+        // generation slow every client start. Uncomment the two lines below only to work on them.
         val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm") + architecturyNames
-        runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharm")
-        runClientMod(names + listOf("candlelight"),
-            "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}")
+        // runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharm")
+        // runClientMod(names + listOf("candlelight"),
+        //     "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}")
+        // Keeps their `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(names + listOf("candlelight"))
     }
 
     if (herbalBrews != null) {
@@ -571,13 +583,16 @@ dependencies {
         // Mixed into, like Farm & Charm. The cocktails in runClient only. Its manifest asks for nothing
         // but Architectury, yet its client entrypoint names Trinkets' renderer unconditionally, so a
         // client without Trinkets fails to start. Trinkets nests its Cardinal Components, which Loom
-        // leaves packed. Leaving Trinkets out leaves Beachparty out.
+        // leaves packed. Leaving Trinkets out leaves Beachparty out. Off by default: its world generation
+        // and Trinkets slow every client start. Uncomment the three lines below only to work on it.
         val trinkets = property("deps.trinkets").toString()
         val names = listOf("beachparty", "lets-do-beachparty", "trinkets") + architecturyNames
         "modCompileOnly"("maven.modrinth:lets-do-beachparty:$beachparty") { isTransitive = false }
-        runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachparty")
-        runClientMod(names, "maven.modrinth:trinkets:$trinkets")
-        runClientMod(names, files(nestedMods("trinkets", trinkets)))
+        // runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachparty")
+        // runClientMod(names, "maven.modrinth:trinkets:$trinkets")
+        // runClientMod(names, files(nestedMods("trinkets", trinkets)))
+        // Keeps their `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(names)
     }
 
     // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its

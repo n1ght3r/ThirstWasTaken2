@@ -226,8 +226,12 @@ dependencies {
     // Fruits Delight, on the node that sets it. Nothing compiles against it: its drinks are reached by
     // registry id, and src/main/fruitsdelight's mixins name their targets by string. Only here to test
     // them. Its L2 libraries are nested in its jar, which NeoForge loads itself.
+    // Off by default: the L2 libraries and fruit trees slow every client start. Uncomment the line below
+    // only to work on it.
     findProperty("deps.fruits_delight")?.let {
-        runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"), "maven.modrinth:fruits-delight:$it") { isTransitive = false }
+        // runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"), "maven.modrinth:fruits-delight:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=fruits-delight` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
 
     // Expanded Delight, on the node that sets it. Nothing compiles against it: its foods are reached by
@@ -240,8 +244,11 @@ dependencies {
         compileOnly("maven.modrinth:create:$createVersion") { isTransitive = false }
         compileOnly(files(createLibraries.map { it.destinationDir.listFiles().orEmpty().toList() })
             .builtBy(createLibraries))
-        // Test the Sand Filter with pipes, pumps and spouts in runClient.
-        runClientMod(listOf("create"), "maven.modrinth:create:$createVersion") { isTransitive = false }
+        // Off in runClient by default: Create is the heaviest mod here and slows every client start.
+        // Uncomment the line below only to test the Sand Filter with pipes, pumps and spouts.
+        // runClientMod(listOf("create"), "maven.modrinth:create:$createVersion") { isTransitive = false }
+        // Keeps `-PwithoutOptional=create` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("create"))
     }
 
     if (sophisticatedCoreVersion != null) {
@@ -253,9 +260,13 @@ dependencies {
             runClientMod(listOf("sophisticated-backpacks", "sophisticatedbackpacks", "sophisticated-core", "sophisticatedcore"),
                 "maven.modrinth:sophisticated-backpacks:$it") { isTransitive = false }
         }
+        // Off by default: its many block variants slow every client start, and the backpack is enough to
+        // test the upgrades. Uncomment the lines below only to test them in a chest or barrel.
         findProperty("deps.sophisticated_storage")?.let {
-            runClientMod(listOf("sophisticated-storage", "sophisticatedstorage", "sophisticated-core", "sophisticatedcore"),
-                "maven.modrinth:sophisticated-storage:$it") { isTransitive = false }
+            // runClientMod(listOf("sophisticated-storage", "sophisticatedstorage", "sophisticated-core", "sophisticatedcore"),
+            //     "maven.modrinth:sophisticated-storage:$it") { isTransitive = false }
+            // Keeps its `-PwithoutOptional` name known while the lines above are off.
+            optionalRunMods.include(listOf("sophisticated-storage", "sophisticatedstorage", "sophisticated-core", "sophisticatedcore"))
         }
     }
 
@@ -264,21 +275,27 @@ dependencies {
         // the faucet's cauldron behaviour.
         compileOnly("maven.modrinth:supplementaries:$supplementariesVersion") { isTransitive = false }
         compileOnly("maven.modrinth:moonlight:${property("deps.moonlight")}") { isTransitive = false }
-        // Test jars, goblets and faucets in runClient. The gametests and runServer run without them, which
-        // is what proves the mod is unchanged when they are absent.
-        runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementariesVersion") { isTransitive = false }
+        // Off in runClient by default, with Spelunkery and Moonlight below, for the reason build.gradle.kts
+        // gives. Uncomment the line below, and Moonlight's, only to test jars, goblets and faucets. The
+        // gametests and runServer run without them, which is what proves the mod is unchanged when they
+        // are absent.
+        // runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementariesVersion") { isTransitive = false }
+        // Keeps `-PwithoutOptional=supplementaries` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("supplementaries", "moonlight"))
     }
 
     if (spelunkeryVersion != null) {
         // Its salt bucket recipe in runClient only. The mixin targets Minecraft's cooking recipe and names
-        // nothing of the mod, so nothing is compiled against it.
-        runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkeryVersion") { isTransitive = false }
+        // nothing of the mod, so nothing is compiled against it. Off by default, see Supplementaries.
+        // runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkeryVersion") { isTransitive = false }
+        optionalRunMods.include(listOf("spelunkery", "moonlight"))
     }
 
     // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out
-    // leaves them out.
+    // leaves them out. Off by default with them; uncomment along with either.
     if (supplementariesVersion != null || spelunkeryVersion != null) {
-        runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:${property("deps.moonlight")}") { isTransitive = false }
+        // runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:${property("deps.moonlight")}") { isTransitive = false }
+        optionalRunMods.include(listOf("moonlight"))
     }
 
     if (kaleidoscopeCookeryVersion != null) {
@@ -303,11 +320,14 @@ dependencies {
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
         // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight
-        // out too; leaving Candlelight out keeps Farm & Charm.
+        // out too; leaving Candlelight out keeps Farm & Charm. Off by default: its crops and world
+        // generation slow every client start. Uncomment the two lines below only to work on them.
         val names = listOf("farm-and-charm", "farm_and_charm", "lets-do-farm-charm") + architecturyNames
-        runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
-        runClientMod(names + listOf("candlelight"),
-            "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}") { isTransitive = false }
+        // runClientMod(names, "maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
+        // runClientMod(names + listOf("candlelight"),
+        //     "maven.modrinth:lets-do-candlelight-farmcharm-compat:${property("deps.candlelight")}") { isTransitive = false }
+        // Keeps their `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(names + listOf("candlelight"))
     }
 
     if (herbalBrewsVersion != null) {
@@ -321,10 +341,13 @@ dependencies {
         compileOnly("maven.modrinth:lets-do-beachparty:$beachpartyVersion") { isTransitive = false }
         // The cocktails in runClient only. Its manifest asks for nothing but Architectury, yet its items
         // implement Curios' ICurioItem, so a game without Curios fails to load. Leaving Curios out leaves
-        // Beachparty out.
+        // Beachparty out. Off by default: its world generation and Curios slow every client start.
+        // Uncomment the two lines below only to work on it.
         val names = listOf("beachparty", "lets-do-beachparty", "curios") + architecturyNames
-        runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachpartyVersion") { isTransitive = false }
-        runClientMod(names, "maven.modrinth:curios:${property("deps.curios")}") { isTransitive = false }
+        // runClientMod(names, "maven.modrinth:lets-do-beachparty:$beachpartyVersion") { isTransitive = false }
+        // runClientMod(names, "maven.modrinth:curios:${property("deps.curios")}") { isTransitive = false }
+        // Keeps their `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(names)
     }
 
     // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
@@ -349,12 +372,16 @@ dependencies {
         compileOnly("maven.modrinth:cultural-delights:$culturalDelightsVersion") { isTransitive = false }
         // Test the vat in runClient. The gametests and runServer run without it, which is what proves the
         // mod is unchanged when it is absent. It requires Cook's Collection; Farmer's Delight is above, and
-        // leaving it out leaves both out.
-        runClientMod(listOf("cultural-delights", "culturaldelights", "cooks-collection", "cookscollection",
-            "farmers-delight", "farmersdelight"),
-            "maven.modrinth:cultural-delights:$culturalDelightsVersion") { isTransitive = false }
-        runClientMod(listOf("cooks-collection", "cookscollection", "cultural-delights", "culturaldelights", "farmers-delight", "farmersdelight"),
-            "maven.modrinth:cooks-collection:${property("deps.cooks_collection")}") { isTransitive = false }
+        // leaving it out leaves both out. Off by default: its trees, wild crops and Cook's Collection slow
+        // every client start. Uncomment the lines below only to work on it.
+        // runClientMod(listOf("cultural-delights", "culturaldelights", "cooks-collection", "cookscollection",
+        //     "farmers-delight", "farmersdelight"),
+        //     "maven.modrinth:cultural-delights:$culturalDelightsVersion") { isTransitive = false }
+        // runClientMod(listOf("cooks-collection", "cookscollection", "cultural-delights", "culturaldelights", "farmers-delight", "farmersdelight"),
+        //     "maven.modrinth:cooks-collection:${property("deps.cooks_collection")}") { isTransitive = false }
+        // Keeps their `-PwithoutOptional` names known while the lines above are off.
+        optionalRunMods.include(listOf("cultural-delights", "culturaldelights", "cooks-collection", "cookscollection",
+            "farmers-delight", "farmersdelight"))
     }
 
     if (sereneSeasonsVersion != null) {

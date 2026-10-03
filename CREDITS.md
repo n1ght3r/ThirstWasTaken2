@@ -1,42 +1,27 @@
-# Credits and Licensing
+# Credits
 
-## ThirstWasTaken
+ThirstWasTaken2 is licensed under the GNU General Public License v3.0 only (GPL-3.0-only) from
+version 1.0.7. Earlier versions were released under the MIT License.
 
-ThirstWasTaken2 is based on [ThirstWasTaken](https://github.com/ghen-git/Thirst-Mod) by ghen,
-originally licensed under the MIT License.
+## Thirst Was Taken
 
-Copyright and license notices from the original project are retained in
-[licenses/ThirstWasTaken-MIT.txt](licenses/ThirstWasTaken-MIT.txt), as required by the MIT License.
+ThirstWasTaken2 began as a port of [Thirst Was Taken](https://github.com/ghen-git/Thirst-Mod) by ghen
+(MIT License). Its copyright and license notice is kept in
+[licenses/ThirstWasTaken-MIT.txt](licenses/ThirstWasTaken-MIT.txt).
 
 ## Dehydration
 
-The Copper and Iron Hanging Pot models and textures in ThirstWasTaken2 are derived from the campfire
-cauldron in Dehydration by Globox1997, and have been modified for use in this project.
-
-Dehydration is licensed under the GNU General Public License v3.0.
-
-Original project:
-https://github.com/Globox1997/Dehydration
+The Copper and Iron Hanging Pot models and textures are adapted from the campfire cauldron in
+[Dehydration](https://github.com/Globox1997/Dehydration) by Globox1997 (GPL-3.0).
 
 Changes made:
-- Split the original model into separate pot, frame and item models.
-- Recoloured the copper texture to dark iron for the Iron Hanging Pot.
+- Rebuilt the stand: the pot now hangs a block above the floor from a two-block frame with feet,
+  braces and forked uprights holding the crossbar.
+- Split it into separate pot, frame and item models, and gave the item its own 3D model.
+- Recoloured the copper texture to cast iron for the Iron Hanging Pot.
 
 ## Yet Another Thirst
 
-The Parched effect icon in ThirstWasTaken2 is inspired by the Thirsty effect icon in Yet Another
-Thirst by minhnh303. The icon was redrawn from scratch; no pixels were copied.
-
-Yet Another Thirst is licensed under the MIT License.
-
-Original project:
-https://github.com/minhnh303/Yet-Another-Thirst
-
-## ThirstWasTaken2
-
-Earlier versions of ThirstWasTaken2 were released under the MIT License.
-
-Starting with version 1.0.7, ThirstWasTaken2 is distributed under the GNU General Public License v3.0
-only (GPL-3.0-only).
-
-The current project supports both Fabric and NeoForge.
+The Parched effect icon is inspired by the Thirsty icon in
+[Yet Another Thirst](https://github.com/minhnh303/Yet-Another-Thirst) by minhnh303 (MIT License).
+It was redrawn from scratch; no pixels were copied.

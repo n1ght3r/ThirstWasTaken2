@@ -194,7 +194,11 @@ dependencies {
         // runtime FML reads the libraries out of Create's jar itself. See src/main/createforge/AGENTS.md.
         modCompileOnly("maven.modrinth:create:$create") { isTransitive = false }
         createLibraries.forEach { modCompileOnly(it) { isTransitive = false } }
-        runClientMod(listOf("create"), "maven.modrinth:create:$create") { isTransitive = false }
+        // Off in runClient by default, for the reason build.neoforge.gradle.kts gives. Uncomment the line
+        // below only to test the Sand Filter.
+        // runClientMod(listOf("create"), "maven.modrinth:create:$create") { isTransitive = false }
+        // Keeps `-PwithoutOptional=create` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("create"))
     }
     findProperty("deps.serene_seasons")?.let { sereneSeasons ->
         val glitchCore = property("deps.glitchcore").toString()
@@ -218,10 +222,13 @@ dependencies {
             "maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
     }
     // Fruits Delight: nothing compiles against it, its mixins name their targets by string. Only here to
-    // test them. Its L2 libraries are nested in its jar, which Forge loads itself.
+    // test them. Its L2 libraries are nested in its jar, which Forge loads itself. Off in runClient by
+    // default, for the reason build.neoforge.gradle.kts gives; uncomment the lines below to work on it.
     findProperty("deps.fruits_delight")?.let {
-        runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"),
-            "maven.modrinth:fruits-delight:$it") { isTransitive = false }
+        // runClientMod(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"),
+        //     "maven.modrinth:fruits-delight:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=fruits-delight` in the agent scripts a known name while the lines above are off.
+        optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
     findProperty("deps.cold_sweat")?.let { coldSweat ->
         // Mixed into and read through its API, in SRG names, so remapped. See src/main/coldsweatforge/AGENTS.md.
