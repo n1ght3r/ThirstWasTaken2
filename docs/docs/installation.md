@@ -28,9 +28,9 @@ Fabric API is required and must match the Minecraft version.
 
 | Minecraft | File suffix | NeoForge | Java |
 |---|---|---|---|
-| 26.3 | `+26.3-neoforge` | 26.3.0.40-beta or newer | 25 |
+| 26.3 | `+26.3-neoforge` | 26.3.0.45-beta or newer | 25 |
 | 26.2 | `+26.2-neoforge` | 26.2.0.88 or newer | 25 |
-| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.112 or newer | 25 |
+| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.114 or newer | 25 |
 | 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
 | 1.21.1 | `+1.21.1-neoforge` | 21.1.252 or newer | 21 |
 
@@ -43,7 +43,7 @@ Minecraft 1.20.1 runs on Forge rather than NeoForge.
 
 | Minecraft | File suffix | Forge | Java |
 |---|---|---|---|
-| 1.20.1 | `+1.20.1-forge` | any 47 build, tested with 47.4.23 | 17 |
+| 1.20.1 | `+1.20.1-forge` | any 47 build, tested with 47.4.26 | 17 |
 
 Forge needs nothing else.
 
@@ -69,7 +69,7 @@ All optional except Fabric API. Versions are listed in the order 26.3, 26.2, 26.
 | ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly) | 26.2-rc-2-6.0.9-1, 26.1.2-6.0.9-4 | The [Sand Filter](/docs/integrations/create). 26.2 and 26.1.2 only. |
 | ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.5, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | [Water that keeps its grade](/docs/integrations/supplementaries) in Jars, Goblets and Faucets, and a Jar or Goblet of water that can be drunk. 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0-fabric+mc26.3, 1.6.0-fabric+mc26.2, 1.6.0-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.6.0-fabric+mc1.21.1, 1.6.0-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
+| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0.1-fabric+mc26.3, 1.6.0.1-fabric+mc26.2, 1.6.0.1-fabric+mc26.1.2, 1.3.0.9-fabric+mc1.21.11, 1.6.0.1-fabric+mc1.21.1, 1.6.0.1-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
 | ![](https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png){.mod-icon} [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 26.1.2.0.7, 26.1.2.0.6, 21.11.0.4, 10.1.0.9, 9.1.0.3 | Thirst that [follows the season](/docs/integrations/serene-seasons). Needs GlitchCore. |
 | ![](https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp){.mod-icon} [Let's Do: Farm & Charm](https://modrinth.com/mod/lets-do-farm-charm) | 1.1.26 | Thirst from its [teas and soups](/docs/integrations/farm-and-charm/), graded water from the Timber Well, and no clean water from the Water Trough. Needs Architectury API. 1.21.1 only. |
 | ![](https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp){.mod-icon} [Let's Do: Candlelight](https://modrinth.com/mod/lets-do-candlelight-farmcharm-compat) | 2.1.13 | Thirst from its [soups and salads](/docs/integrations/farm-and-charm/candlelight), and kitchen sinks that give water to boil. Needs Farm & Charm. 1.21.1 only. |
@@ -91,7 +91,7 @@ The settings screen opens from the Config button in NeoForge's Mods list, with n
 | ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.2.155, 26.1.154, 21.11.153, 15.0.140 | AppleSkin's own settings screen. Not on 26.3 yet. |
 | ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.5, 26.2.10, 26.1.10, 21.1.7, 15.10.6 | The same as on Fabric. Client only. |
 | ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) | 6.0.10 | The [Sand Filter](/docs/integrations/create). 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) | Core 26.2-1.5.1.2353, 26.1.2-1.5.3.2352, 1.21.11-1.5.2.2348, 1.21.1-1.5.2.2343. Not on 26.3 yet. | The [Drinking Upgrade](/docs/integrations/sophisticated-backpacks), and water that keeps its grade in the Tank and Pump Upgrades. Sophisticated Storage takes the Drinking Upgrade too. |
+| ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) | Core 26.2-1.5.3.2361, 26.1.2-1.5.5.2364, 1.21.11-1.5.2.2348, 1.21.1-1.5.5.2363. Not on 26.3 yet. | The [Drinking Upgrade](/docs/integrations/sophisticated-backpacks), and water that keeps its grade in the Tank and Pump Upgrades. Sophisticated Storage takes the Drinking Upgrade too. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-3.9.9 | The same as on Fabric. 1.21.1 only. |
 | ![](https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png){.mod-icon} [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) | 1.6.0-neoforge+mc1.21.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery), and water that keeps its grade in the Stockpot and the Teapot. 1.21.1 only. |
 | ![](https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png){.mod-icon} [Cold Sweat](https://modrinth.com/mod/cold-sweat) | 2.4.3.1 | Thirst that follows [its temperature](/docs/integrations/cold-sweat), a graded Waterskin, and a Boiler that purifies water. |
