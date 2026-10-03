@@ -1,0 +1,176 @@
+// No Man's Land in a real client: the check of its integration plan
+// (docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md). What it proves: every id ThirstConfig lists
+// for the mod exists; its drinks restore what ThirstConfig says; water in its Bog, Bayou, Dark Swamp and
+// Blackwater River grades Dirty like a vanilla swamp's, where plains water is Murky; the sea at its Mud
+// Beach is salty; and a milk cauldron gives four sips of a quarter of a milk bucket each.
+// Runs on 1.21.1-neoforge only, with the runClientMod line for No Man's Land uncommented in
+// build.neoforge.gradle.kts. Run it unattended:
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/no-mans-land.jsonl -Pquickplay=NoMansLandAgent -PwithoutOptional=cold-sweat
+// NoMansLandAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py 1.21.1-neoforge NoMansLandAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/1.21.1-neoforge/agent/client tools/agent/integrations/no-mans-land.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199. The player stands at 0.5 200 0.5. At y 199 a still
+// source scores its biome's base less 5: a swamp's 85 is Dirty, plains' 55 Murky.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+
+// Every id ThirstConfig lists, and the milk cauldron: /give and /setblock refuse an unknown id. The juice,
+// the pesto and the witch stew need Farmer's Delight, which runClient has.
+{"id": "id_pear_juice", "command": "server.command", "args": {"command": "give @p nomansland:pear_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_maple_syrup_bottle", "command": "server.command", "args": {"command": "give @p nomansland:maple_syrup_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pesto_bottle", "command": "server.command", "args": {"command": "give @p nomansland:pesto_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_witch_stew", "command": "server.command", "args": {"command": "give @p nomansland:witch_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pear", "command": "server.command", "args": {"command": "give @p nomansland:pear"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_syruped_pear", "command": "server.command", "args": {"command": "give @p nomansland:syruped_pear"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honeyed_apple", "command": "server.command", "args": {"command": "give @p nomansland:honeyed_apple"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_milk_cauldron", "command": "server.command", "args": {"command": "setblock 4 200 4 nomansland:milk_cauldron[level=4]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Changed the block"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "clearCauldron", "command": "server.command", "args": {"command": "setblock 4 200 4 minecraft:air"}}
+
+// Drinking from thirst 4, quenched 0, looking up so nothing is placed: the juice is 8, 13 (quenched
+// stops at thirst), the syrup 4, 6 and the pesto 1, 2, not the c:drinks tag's 6, 8.
+{"id": "drink_pear_juice_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_pear_juice_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_pear_juice_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_pear_juice_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_pear_juice_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_pear_juice_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with nomansland:pear_juice"}}
+{"id": "drink_pear_juice_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_pear_juice_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_pear_juice_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_pear_juice_state", "command": "client.state", "expect": {"result.thirst": 12, "result.quenched": 12}}
+{"id": "drink_maple_syrup_bottle_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_maple_syrup_bottle_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_maple_syrup_bottle_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_maple_syrup_bottle_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_maple_syrup_bottle_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_maple_syrup_bottle_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with nomansland:maple_syrup_bottle"}}
+{"id": "drink_maple_syrup_bottle_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_maple_syrup_bottle_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_maple_syrup_bottle_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_maple_syrup_bottle_state", "command": "client.state", "expect": {"result.thirst": 8, "result.quenched": 6}}
+{"id": "drink_pesto_bottle_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_pesto_bottle_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_pesto_bottle_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_pesto_bottle_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_pesto_bottle_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_pesto_bottle_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with nomansland:pesto_bottle"}}
+{"id": "drink_pesto_bottle_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_pesto_bottle_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_pesto_bottle_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_pesto_bottle_state", "command": "client.state", "expect": {"result.thirst": 5, "result.quenched": 2}}
+
+// A water source at 0 199 2, filled from with a glass bottle, its biome changed between fills. Vanilla
+// plains and swamp first, as the two grades the others are compared with.
+{"id": "waterBlock", "command": "server.command", "args": {"command": "setblock 0 199 2 minecraft:water"}}
+{"id": "sample_plains_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+{"id": "sample_plains_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_plains_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_plains_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_plains_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_plains_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_plains_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_plains_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_swamp_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:swamp"}}
+{"id": "sample_swamp_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_swamp_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_swamp_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_swamp_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_swamp_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_swamp_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_swamp_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_bog_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:bog"}}
+{"id": "sample_bog_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_bog_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_bog_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_bog_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_bog_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_bog_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_bog_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_bayou_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:bayou"}}
+{"id": "sample_bayou_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_bayou_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_bayou_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_bayou_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_bayou_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_bayou_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_bayou_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_dark_swamp_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:dark_swamp"}}
+{"id": "sample_dark_swamp_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_dark_swamp_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_dark_swamp_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_dark_swamp_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_dark_swamp_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_dark_swamp_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_dark_swamp_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_blackwater_river_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:blackwater_river"}}
+{"id": "sample_blackwater_river_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_blackwater_river_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_blackwater_river_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_blackwater_river_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_blackwater_river_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_blackwater_river_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_blackwater_river_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_lush_river_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:lush_river"}}
+{"id": "sample_lush_river_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_lush_river_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_lush_river_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_lush_river_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_lush_river_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_lush_river_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_lush_river_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_tropical_beach_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:tropical_beach"}}
+{"id": "sample_tropical_beach_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_tropical_beach_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_tropical_beach_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_tropical_beach_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_tropical_beach_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_tropical_beach_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_tropical_beach_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sample_mud_beach_biome", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 nomansland:mud_beach"}}
+{"id": "sample_mud_beach_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "sample_mud_beach_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 40"}}
+{"id": "sample_mud_beach_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "sample_mud_beach_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_mud_beach_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "sample_mud_beach_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "sample_mud_beach_grade", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "plainsAgain", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+{"id": "waterGone", "command": "server.command", "args": {"command": "setblock 0 199 2 minecraft:stone"}}
+
+// A full milk cauldron sipped with an empty hand from thirst 4: each sip is 2, 2 (a quarter of the milk
+// bucket's 6, 8), so four sips land on 12, 8 and leave an empty cauldron.
+{"id": "milk_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "milk_place", "command": "server.command", "args": {"command": "setblock 0 200 2 nomansland:milk_cauldron[level=4]"}}
+{"id": "milk_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "milk_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "milk_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "milk_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "milk_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "milk_one_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "milk_one_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "milk_one_state", "command": "client.state", "expect": {"result.thirst": 6, "result.quenched": 2}}
+{"id": "milk_one_level", "command": "server.command", "args": {"command": "execute if block 0 200 2 nomansland:milk_cauldron[level=3]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "milk_rest_use0", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "milk_rest_used0", "command": "wait", "args": {"ticks": 10}}
+{"id": "milk_rest_use1", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "milk_rest_used1", "command": "wait", "args": {"ticks": 10}}
+{"id": "milk_rest_use2", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "milk_rest_used2", "command": "wait", "args": {"ticks": 10}}
+{"id": "milk_four_state", "command": "client.state", "expect": {"result.thirst": 12, "result.quenched": 8}}
+{"id": "milk_empty", "command": "server.command", "args": {"command": "execute if block 0 200 2 minecraft:cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "done", "command": "wait", "args": {"ticks": 20}}

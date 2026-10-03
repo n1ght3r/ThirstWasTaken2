@@ -17,6 +17,12 @@ All notable changes to ThirstWasTaken2 are documented in this file.
     1.21.1, so do Troughs, the Sprinkler and the Stomping Basin.
   - A Jug filled from the sea holds sea water, and the Sink's endless water is Murky. 1.21.1 only.
   - The Cask won't age drinks from sea water. 1.21.1 only.
+- No Man's Land, on NeoForge 1.21.1:
+  - Water in the Bog, Bayou, Dark Swamp and Blackwater River comes out Dirty, the same as any other
+    swamp.
+  - The sea at the Mud Beach is salty, like at any other beach.
+  - Pear juice, maple syrup, pesto, witch stew and pears restore thirst.
+  - Each sip from a milk cauldron restores a quarter of a milk bucket.
 
 ## [1.6.1] - 2026-10-02
 

@@ -55,6 +55,13 @@ public final class WaterPurity {
     private static final TagKey<Biome> STAGNANT_WATER = TagKey.create(
             Registries.BIOME, ThirstWasTaken2.id("stagnant_water"));
     /**
+     * Biomes whose water is the sea's besides {@code is_ocean} and {@code is_beach}, such as No Man's
+     * Land's Mud Beach, which replaces part of a beach without that tag. Ours, so a coastal biome joins
+     * without changing a vanilla tag other mods place structures by.
+     */
+    private static final TagKey<Biome> SEA_WATER = TagKey.create(
+            Registries.BIOME, ThirstWasTaken2.id("sea_water"));
+    /**
      * Water that is Pure wherever it lies, such as Spelunkery's mountain Spring Water. A tag, so a data
      * pack can add another mod's fluid.
      */
@@ -185,7 +192,8 @@ public final class WaterPurity {
         var biome = level.getBiome(pos);
         // The sea is not a grade of fresh water, so it never reaches the scoring below. This also
         // spares the neighbourhood scan on every coastline.
-        if (config.enableSeaWater && (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_BEACH))) {
+        if (config.enableSeaWater && (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_BEACH)
+                || biome.is(SEA_WATER))) {
             return WaterQuality.SALT;
         }
 

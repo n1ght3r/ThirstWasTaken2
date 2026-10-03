@@ -53,7 +53,7 @@ class BuildLogicTest {
         val everything: (String) -> Boolean = { true }
         assertEquals(listOf("createfly", "farmersdelight", "supplementaries", "kaleidoscope", "brewinandchewin", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery"),
             integrationsFor(Loader.FABRIC, everything).map { it.dir })
-        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest"),
+        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest", "nomansland"),
             integrationsFor(Loader.NEOFORGE, everything).map { it.dir })
         assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery"), integrations.filter { it.loaderIndependent }.map { it.dir })
     }

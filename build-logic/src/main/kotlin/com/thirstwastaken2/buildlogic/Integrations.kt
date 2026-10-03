@@ -333,6 +333,15 @@ val integrations: List<Integration> = listOf(
         neoForgeDependencies = listOf("hearthandharvest"),
         loadAfter = setOf("hearthandharvest"),
     ),
+    // NeoForge only: No Man's Land's only build is NeoForge 1.21.1. Its milk cauldron's sips restore a
+    // quarter of a milk bucket each. See src/main/nomansland/AGENTS.md.
+    Integration(
+        dir = "nomansland",
+        depsKey = "deps.nomansland",
+        loaders = setOf(Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.nomansland.mixins.json",
+        neoForgeDependencies = listOf("nomansland"),
+    ),
     // Its 1.20.1 build on Forge 47, the early mod, has no tank that needs code; its one mixin makes the
     // same salt recipe take only sea water, since on Forge the mod's own file wins over a replacement.
     // See src/main/hearthandharvestforge/AGENTS.md.

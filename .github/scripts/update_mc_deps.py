@@ -209,6 +209,9 @@ MODRINTH_DEPS = [
     ModrinthDep("architectury", "architectury-api", by_id=True, **NO_PAGE),
     # Spelunkery, both 1.21.1 nodes, pinned by id like the Let's Do mods. It requires Moonlight, above.
     ModrinthDep("spelunkery", "spelunkery", by_id=True),
+    # No Man's Land, NeoForge 1.21.1 only, pinned by id like the others. The Biolith and Mixed Litter it
+    # requires are nested in its jar.
+    ModrinthDep("nomansland", "no-mans-land", by_id=True),
 ]
 
 

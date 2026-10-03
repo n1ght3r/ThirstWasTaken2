@@ -70,6 +70,11 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Spelunkery',
     icon: 'https://cdn.modrinth.com/data/krskFMfA/465cfcd453c22ee5a09884ede98a0442e97658c5.png',
     link: '/docs/integrations/spelunkery'
+  },
+  {
+    name: "No Man's Land",
+    icon: 'https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp',
+    link: '/docs/integrations/no-mans-land'
   }
 ]
 

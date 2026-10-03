@@ -248,6 +248,17 @@ dependencies {
             "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
     }
 
+    // No Man's Land, on the node that sets it. src/main/nomansland's mixin names its milk cauldron, so it
+    // compiles against it. NeoForge loads the Biolith and Mixed Litter nested in its jar itself. Off by
+    // default: it rewrites the whole Overworld, which slows every client start and needs a new world.
+    // Uncomment the line below only to work on it.
+    findProperty("deps.nomansland")?.let {
+        compileOnly("maven.modrinth:no-mans-land:$it") { isTransitive = false }
+        // runClientMod(listOf("no-mans-land", "nomansland"), "maven.modrinth:no-mans-land:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=nomansland` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("no-mans-land", "nomansland"))
+    }
+
     if (createVersion != null && createLibraries != null) {
         compileOnly("maven.modrinth:create:$createVersion") { isTransitive = false }
         compileOnly(files(createLibraries.map { it.destinationDir.listFiles().orEmpty().toList() })

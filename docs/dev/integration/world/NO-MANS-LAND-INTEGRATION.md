@@ -66,14 +66,19 @@ plated meals) exist only when Farmer's Delight is loaded; an id that is absent m
 
 | # | Item | Kind | Nodes | Status |
 |---|---|---|---|---|
-| 1 | The mod on the `runClient` classpath | build | `1.21.1-neoforge` | not started |
-| 2 | Thirst values for the drinks, stew and fruit | data | all (config) | not started |
-| 3 | Bog, Bayou, Dark Swamp in `stagnant_water`; Blackwater River | decision, then data | all (data) | **to decide** |
-| 4 | Sea water at the Mud Beach | decision, then code | all | **to decide** |
-| 5 | Sipping from a milk cauldron restores thirst | decision, then code | `1.21.1-neoforge` | **to decide** |
-| 6 | What happens, per path, in game | investigation | `1.21.1-neoforge` | not started |
-| 7 | Nothing crashes without the mod | test | `1.21.1-neoforge` | not started |
-| 8 | Changelog, player docs, store pages | docs | — | not started |
+| 1 | The mod on the `runClient` classpath | build | `1.21.1-neoforge` | done: `compileOnly`, and a `runClientMod` line off by default |
+| 2 | Thirst values for the drinks, stew and fruit | data | all (config) | done |
+| 3 | Bog, Bayou, Dark Swamp in `stagnant_water`; Blackwater River | decision, then data | all (data) | done: (a), Blackwater River in too |
+| 4 | Sea water at the Mud Beach | decision, then code | all | done: (a), `thirstwastaken2:sea_water` |
+| 5 | Sipping from a milk cauldron restores thirst | decision, then code | `1.21.1-neoforge` | done: (a), `src/main/nomansland` |
+| 6 | What happens, per path, in game | investigation | `1.21.1-neoforge` | passed 2026-10-03: `tools/agent/integrations/no-mans-land.jsonl` (ids, drinks, sampling, milk cauldron). The tap, Awkward Residue and the dream were not scripted: none of them touches code of ours |
+| 7 | Nothing crashes without the mod | test | `1.21.1-neoforge` | `checkOptionalSeam` and gametests pass; the default `runClient` has no No Man's Land |
+| 8 | Changelog, player docs, store pages | docs | — | done |
+
+Decided on 2026-10-03: the three recommendations, 3 (a), 4 (a) and 5 (a). Step 1 found Biolith 3.0.11
+and Mixed Litter 1.2.2 nested in the `1.5.12` jar, so neither is a separate `runClient` line, and every
+id in step 2 and biome in steps 3 and 4 in it. How it works now is in
+[src/main/nomansland/AGENTS.md](../../../../src/main/nomansland/AGENTS.md).
 
 ## 1. The mod on the `runClient` classpath
 

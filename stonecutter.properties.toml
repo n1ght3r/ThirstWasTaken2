@@ -238,6 +238,12 @@ deps.hearth_and_harvest = "7nTyt27O"
 # Serene Seasons and GlitchCore, the same integration the Fabric table builds; see there.
 # 10.1.0.9, the NeoForge upload.
 deps.serene_seasons = "pHEgQQUE"
+# No Man's Land, an Overworld overhaul whose milk cauldron is sipped from. NeoForge 1.21.1 is its only
+# build. Biolith and Mixed Litter, which it requires, are nested in its jar. Its drinks are ids in
+# ThirstConfig and its biomes optional entries in our biome tags, on every node.
+# See src/main/nomansland/AGENTS.md.
+# 1.5.12, the NeoForge upload.
+deps.nomansland = "bcszfrVc"
 # 2.1.0.2, the NeoForge upload.
 deps.glitchcore = "S2TfWrZR"
 

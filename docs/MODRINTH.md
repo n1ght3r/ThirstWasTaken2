@@ -296,6 +296,9 @@ Also works with:
   <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/spelunkery"><img alt="Spelunkery" src="https://cdn-raw.modrinth.com/data/krskFMfA/images/3334d4f848d7b094895130da48ed04b15862fb52.png" width="200"></a><br><i>1.21.1 Fabric and NeoForge</i></td>
     <td width="55%">Its Spring Water is always Pure, and only sea water boils down to salt in a furnace.</td>
+  <tr>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/no-mans-land"><img alt="No Man's Land" src="https://cdn.modrinth.com/data/cached_images/527cfcbdc05088cfec1c032302d336faf9106621.png" width="300"></a><br><i>1.21.1 NeoForge</i></td>
+    <td width="55%">Water in its Bog, Bayou, Dark Swamp and Blackwater River is Dirty, and the sea at its Mud Beach is salty. Its drinks restore thirst, and so does sipping from its milk cauldron.</td>
   </tr>
 </table>
 
@@ -369,7 +372,7 @@ Also works with:
     <td>yes</td>
   </tr>
   <tr>
-    <td><img alt="Cultural Delights icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FYttyNOFA%2Fd857243f0e7dedd3d7f552c4371326773629e42e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a><br><img alt="Expanded Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fe9V6wFcR%2F4cbbace573b20628290929948a77c74d95ed7a70.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a></td>
+    <td><img alt="Cultural Delights icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FYttyNOFA%2Fd857243f0e7dedd3d7f552c4371326773629e42e.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/cultural-delights">Cultural Delights</a><br><img alt="Expanded Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fe9V6wFcR%2F4cbbace573b20628290929948a77c74d95ed7a70.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/expanded-delight">Expanded Delight</a><br><img alt="No Man's Land icon" src="https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/no-mans-land">No Man's Land</a></td>
     <td>–</td>
     <td>1.21.1</td>
     <td>–</td>

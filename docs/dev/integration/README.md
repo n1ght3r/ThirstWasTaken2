@@ -28,7 +28,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Cold Sweat | [climate/COLD-SWEAT](climate/COLD-SWEAT-INTEGRATION.md) | `src/main/coldsweat`, `coldsweatforge` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
 | Serene Seasons | [climate/SERENE-SEASONS](climate/SERENE-SEASONS-INTEGRATION.md) | `src/main/sereneseasons` | every node | see plan |
 | Spelunkery | [world/SPELUNKERY](world/SPELUNKERY-INTEGRATION.md) | `src/main/spelunkery` | both 1.21.1 | see plan |
-| No Man's Land | [world/NO-MANS-LAND](world/NO-MANS-LAND-INTEGRATION.md) | none yet | `1.21.1-neoforge` | planned |
+| No Man's Land | [world/NO-MANS-LAND](world/NO-MANS-LAND-INTEGRATION.md) | `src/main/nomansland` | `1.21.1-neoforge` | built |
 
 On 1.20.1, Sophisticated, Supplementaries and Brewin' and Chewin' have Forge builds but are not
 integrated there: they wait for someone to ask.

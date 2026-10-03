@@ -52,12 +52,12 @@ It is sampled only when water is collected, drunk or looked at with Jade.
 
 | Biome | Base score |
 |---|---|
-| Swamp, Mangrove Swamp (`thirstwastaken2:stagnant_water`) | 85 |
+| Swamp, Mangrove Swamp, and modded swamps such as Terralith's and No Man's Land's (`thirstwastaken2:stagnant_water`, checked before river) | 85 |
 | Jungle, Savanna, Badlands | 70 |
 | Anything else | 55 |
 | River | 42 |
 | Mountain (`#is_mountain`) | 28 |
-| Ocean, Beach | sea water, not scored (`enableSeaWater`) |
+| Ocean, Beach, and `thirstwastaken2:sea_water` (No Man's Land's Mud Beach) | sea water, not scored (`enableSeaWater`) |
 
 A fluid in `thirstwastaken2:pure_water` is Pure wherever it lies, before the sea check and the score:
 Spelunkery's Spring Water, as optional entries. See [src/main/spelunkery/AGENTS.md](../../../src/main/spelunkery/AGENTS.md).

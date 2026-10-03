@@ -301,6 +301,9 @@ public final class ThirstConfig {
         // And for Hearth and Harvest, added after that.
         hearthAndHarvestDrinks(drinks);
         hearthAndHarvestFoods(foods);
+        // And for No Man's Land, added after that.
+        noMansLandDrinks(drinks);
+        noMansLandFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -423,6 +426,7 @@ public final class ThirstConfig {
         herbalBrewsDrinks(values);
         beachpartyDrinks(values);
         hearthAndHarvestDrinks(values);
+        noMansLandDrinks(values);
         return values;
     }
 
@@ -453,6 +457,7 @@ public final class ThirstConfig {
         candlelightFoods(values);
         beachpartyFoods(values);
         hearthAndHarvestFoods(values);
+        noMansLandFoods(values);
         return values;
     }
 
@@ -784,6 +789,28 @@ public final class ThirstConfig {
         putMissing(foods, 1, 2, "hearthandharvest:blueberries", "hearthandharvest:raspberry",
                 "hearthandharvest:cherry", "hearthandharvest:red_grapes", "hearthandharvest:green_grapes");
         putMissing(foods, 2, 3, "hearthandharvest:baked_apple", "hearthandharvest:caramel_apple");
+    }
+
+    /**
+     * No Man's Land's drinks, by id alone. It tags all three {@code c:drinks}, which would give each
+     * {@link #drinkTagValue}; these entries win over the tag. The pear juice is Farmer's Delight's juices,
+     * the maple syrup the honey bottle, and the pesto, a sauce of oil and basil drunk from its bottle, less
+     * than Farmer's Delight's tomato sauce. The juice and the pesto exist only with Farmer's Delight.
+     * Sipping from its milk cauldron is a quarter of a milk bucket (see {@code src/main/nomansland}).
+     */
+    private static void noMansLandDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 8, 13, "nomansland:pear_juice");
+        putMissing(drinks, 4, 6, "nomansland:maple_syrup_bottle");
+        putMissing(drinks, 1, 2, "nomansland:pesto_bottle");
+    }
+
+    /**
+     * No Man's Land's stew, Farmer's Delight's stews, and its pears, the apple's. The witch stew exists only
+     * with Farmer's Delight. Meats, fish, nuts, breads, pastas, tarts and cakes are solid food.
+     */
+    private static void noMansLandFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "nomansland:witch_stew");
+        putMissing(foods, 2, 3, "nomansland:pear", "nomansland:syruped_pear", "nomansland:honeyed_apple");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

@@ -10,6 +10,22 @@
     {
       "id": "terralith:ice_marsh",
       "required": false
+    },
+    {
+      "id": "nomansland:bog",
+      "required": false
+    },
+    {
+      "id": "nomansland:bayou",
+      "required": false
+    },
+    {
+      "id": "nomansland:dark_swamp",
+      "required": false
+    },
+    {
+      "id": "nomansland:blackwater_river",
+      "required": false
     }
   ]
 }

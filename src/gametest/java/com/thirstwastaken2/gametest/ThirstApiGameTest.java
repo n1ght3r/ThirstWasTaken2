@@ -482,6 +482,57 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * No Man's Land is never installed here either. Its own {@code c:drinks} tag would give the syrup and
+     * the pesto the tag's value; the explicit entries are what take them off it.
+     */
+    @GameTest
+    public void noMansLandDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"pear_juice", "maple_syrup_bottle", "pesto_bottle"};
+        String[] foods = {"witch_stew", "pear", "syruped_pear", "honeyed_apple"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("nomansland:" + drink),
+                    "the default drinks should list nomansland:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("nomansland:" + food),
+                    "the default foods should list nomansland:" + food);
+        }
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("nomansland:pesto_bottle"), new int[]{1, 2}),
+                "the pesto should restore 1, 2, got " + Arrays.toString(defaults.drinks.get("nomansland:pesto_bottle")));
+        for (String dry : new String[]{"resin_oil_bottle", "awkward_residue", "trail_mix", "pear_cobbler_slice"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("nomansland:" + dry)
+                            && !defaults.drinks.containsKey("nomansland:" + dry),
+                    "nomansland:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("nomansland:" + drink);
+            for (String food : foods) config.foods.remove("nomansland:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("nomansland:maple_syrup_bottle", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : new String[]{"pear_juice", "pesto_bottle"}) {
+                String id = "nomansland:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "nomansland:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("nomansland:maple_syrup_bottle"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("nomansland:maple_syrup_bottle")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {
