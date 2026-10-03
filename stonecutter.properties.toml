@@ -14,8 +14,8 @@ deps.fabric_loader = "0.19.5"
 loomx.loom_version = "1.17.21"
 
 [fabric."1.20.1"]
-# The node older than data components, payload types and Fabric's attachment API; see
-# docs/dev/VERSION-1.20.1.md. Integrations come one at a time, in its phase 3.
+# The node older than data components, payload types and Fabric's attachment sync; see
+# docs/dev/VERSION-DIFFERENCES.md. An integration is added here once it is built and tested on it.
 mod.mc_compat = "1.20.1"
 mod.mc_releases = ["1.20.1"]
 
@@ -39,7 +39,7 @@ deps.forge_config_api_port = "HvR3IdRE"
 
 [forge."1.20.1"]
 # MinecraftForge 47, built with ModDevGradle Legacy; see build.forge.gradle.kts and
-# docs/dev/VERSION-1.20.1.md. Integrations come one at a time, the same as the Fabric table above.
+# docs/dev/VERSION-DIFFERENCES.md. Integrations are added the same way as in the Fabric table above.
 mod.mc_compat = "[1.20.1,1.20.2)"
 mod.mc_releases = ["1.20.1"]
 
@@ -127,6 +127,12 @@ deps.beachparty = "jeZE0Qav"
 # runClient classpath. Its Cardinal Components are nested in its jar.
 # 3.10.0, the Fabric upload.
 deps.trinkets = "JagCscwi"
+# Spelunkery, whose Spring Water is Pure and whose furnace recipe boils only sea water into salt. Both
+# 1.21.1 nodes build it, and only they: no newer build, and the 1.20.1 line is no longer updated. Pinned
+# by Modrinth version id, since the Fabric and NeoForge uploads share a version number. It requires
+# Moonlight Lib, pinned above for Supplementaries. See src/main/spelunkery/AGENTS.md.
+# 1.21.1-0.4.4, the Fabric upload.
+deps.spelunkery = "V5n3AoVN"
 # Architectury API, which every Let's Do mod requires, only on the runClient classpath.
 # 13.0.11+fabric, the Fabric upload.
 deps.architectury = "Pzc2FP5K"
@@ -193,6 +199,9 @@ deps.beachparty = "HN4rzKRl"
 # classpath.
 # 9.5.1+1.21.1, the NeoForge upload.
 deps.curios = "yohfFbgD"
+# Spelunkery, the same integration the Fabric table builds; see there.
+# 1.21.1-0.4.4, the NeoForge upload.
+deps.spelunkery = "rFDQXIT4"
 # 13.0.11+neoforge, the NeoForge upload.
 deps.architectury = "1IiqEQGl"
 # Cold Sweat, whose temperature drives the thirst drain and whose waterskin carries a grade. NeoForge

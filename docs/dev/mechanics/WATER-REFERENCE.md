@@ -59,6 +59,9 @@ It is sampled only when water is collected, drunk or looked at with Jade.
 | Mountain (`#is_mountain`) | 28 |
 | Ocean, Beach | sea water, not scored (`enableSeaWater`) |
 
+A fluid in `thirstwastaken2:pure_water` is Pure wherever it lies, before the sea check and the score:
+Spelunkery's Spring Water, as optional entries. See [src/main/spelunkery/AGENTS.md](../../../src/main/spelunkery/AGENTS.md).
+
 | Modifier | Score |
 |---|---|
 | Biome base temperature 1.5 or more | +10 |
@@ -115,6 +118,7 @@ give the same bottles, Clean twice as often as Pure. See `compat/LootIntegration
 
 "Up two grades" is `PURIFY_TABLE` in `ThirstRecipeProvider`: Dirty becomes Clean, Murky and Clean
 become Pure. Nothing takes the salt out of sea water; distillation is on the [roadmap](ROADMAP.md).
+With Spelunkery, a furnace boils a sea water bucket down to a salt bucket, and nothing to drink.
 
 | Method | Time | Servings | Result | Fuel | Notes |
 |---|---|---|---|---|---|
@@ -144,7 +148,7 @@ nothing.
 
 ### Where Pure water comes from today
 
-Cold mountain water above y 100, a dripstone cauldron, loot, and every row above that ends in Pure or
+Cold mountain water above y 100, a dripstone cauldron, Spelunkery's Spring Water, loot, and every row above that ends in Pure or
 "up two grades" from Murky or Clean. That last part is why plain heat is being capped; see
 [PURIFICATION-REWORK.md](PURIFICATION-REWORK.md).
 

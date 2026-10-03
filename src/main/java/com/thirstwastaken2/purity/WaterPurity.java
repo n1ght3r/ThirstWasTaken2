@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
@@ -53,6 +54,12 @@ public final class WaterPurity {
 
     private static final TagKey<Biome> STAGNANT_WATER = TagKey.create(
             Registries.BIOME, ThirstWasTaken2.id("stagnant_water"));
+    /**
+     * Water that is Pure wherever it lies, such as Spelunkery's mountain Spring Water. A tag, so a data
+     * pack can add another mod's fluid.
+     */
+    private static final TagKey<Fluid> PURE_WATER = TagKey.create(
+            Registries.FLUID, ThirstWasTaken2.id("pure_water"));
     private static final int SURFACE_MOUNTAIN_Y = 100;
     private static final int DEEP_AQUIFER_Y = 32;
     private static final int SALTY_EXHAUSTION = 8;
@@ -172,6 +179,8 @@ public final class WaterPurity {
         ThirstConfig config = ThirstConfig.get();
         FluidState fluid = state.getFluidState();
         if (!fluid.is(FluidTags.WATER)) return WaterQuality.fresh(config.defaultPurity);
+        // Before the sea check: a spring is Pure even by the coast.
+        if (fluid.is(PURE_WATER)) return WaterQuality.fresh(MAX);
 
         var biome = level.getBiome(pos);
         // The sea is not a grade of fresh water, so it never reaches the scoring below. This also

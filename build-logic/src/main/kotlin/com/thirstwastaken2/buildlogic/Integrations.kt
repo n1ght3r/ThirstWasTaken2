@@ -4,7 +4,7 @@ package com.thirstwastaken2.buildlogic
 enum class Loader(val id: String) {
     FABRIC("fabric"),
     NEOFORGE("neoforge"),
-    /** MinecraftForge 47, the `1.20.1-forge` node; see docs/dev/VERSION-1.20.1.md. */
+    /** MinecraftForge 47, the `1.20.1-forge` node; see docs/dev/VERSION-DIFFERENCES.md. */
     FORGE("forge"),
     ;
 
@@ -305,6 +305,15 @@ val integrations: List<Integration> = listOf(
         loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
         mixinConfig = "thirstwastaken2.beachparty.mixins.json",
         neoForgeDependencies = listOf("beachparty"),
+    ),
+    // Spelunkery: a cooking recipe that makes its salt bucket takes only sea water. Nothing of the mod is
+    // compiled against; the mixin targets Minecraft's class. See src/main/spelunkery/AGENTS.md.
+    Integration(
+        dir = "spelunkery",
+        depsKey = "deps.spelunkery",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.spelunkery.mixins.json",
+        neoForgeDependencies = listOf("spelunkery"),
     ),
 )
 

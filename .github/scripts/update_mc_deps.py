@@ -91,7 +91,6 @@ RECORDS = (
     ROOT / "CHANGELOG.md",
     ROOT / ".github" / "scripts" / "update_mc_deps.py",
     ROOT / "docs" / "dev" / "MANUAL-TESTING.md",
-    ROOT / "docs" / "dev" / "VERSION-1.20.1.md",
     ROOT / "docs" / "dev" / "integration" / "storage" / "SOPHISTICATED-INTEGRATION.md",
     ROOT / "src" / "main" / "createforge" / "AGENTS.md",
     ROOT / "src" / "main" / "sereneseasons" / "AGENTS.md",
@@ -206,6 +205,8 @@ MODRINTH_DEPS = [
     ModrinthDep("trinkets", "trinkets", by_id=True, **NO_PAGE),
     ModrinthDep("curios", "curios", by_id=True, **NO_PAGE),
     ModrinthDep("architectury", "architectury-api", by_id=True, **NO_PAGE),
+    # Spelunkery, both 1.21.1 nodes, pinned by id like the Let's Do mods. It requires Moonlight, above.
+    ModrinthDep("spelunkery", "spelunkery", by_id=True),
 ]
 
 

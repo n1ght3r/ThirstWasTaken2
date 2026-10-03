@@ -59,6 +59,12 @@ These take sea water and give it back salty. Nothing here makes it fresh.
 | Farm & Charm Timber Well | [TimberWellMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/TimberWellMixin.java) | A well over sea water, on a beach or by the ocean, gives sea water |
 | Kaleidoscope teapot as an item | [TeapotItemMixin.java](../../../src/main/kaleidoscope/java/com/thirstwastaken2/kaleidoscope/mixin/TeapotItemMixin.java) | Holds sea water and empties it back salty |
 
+## Taken only if salty
+
+| Mod | Where | What happens | Nodes |
+|---|---|---|---|
+| Spelunkery | [AbstractCookingRecipeMixin.java](../../../src/main/spelunkery/java/com/thirstwastaken2/spelunkery/mixin/AbstractCookingRecipeMixin.java) | Its furnace recipe boils a sea water bucket into a salt bucket, and refuses every fresh bucket, which our purification takes instead. Nothing drinkable comes out | both 1.21.1 nodes |
+
 ## The hanging pot takes sea water
 
 [HangingPotInteractions.java](../../../src/main/java/com/thirstwastaken2/block/HangingPotInteractions.java)

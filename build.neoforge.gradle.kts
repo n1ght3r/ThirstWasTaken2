@@ -154,6 +154,9 @@ val sophisticatedCoreVersion = findProperty("deps.sophisticated_core") as String
 /** Supplementaries' Modrinth version id, on `1.21.1-neoforge` only. See src/main/supplementaries/AGENTS.md. */
 val supplementariesVersion = findProperty("deps.supplementaries") as String?
 
+/** Spelunkery's Modrinth version id, on `1.21.1-neoforge` only. See src/main/spelunkery/AGENTS.md. */
+val spelunkeryVersion = findProperty("deps.spelunkery") as String?
+
 /**
  * Kaleidoscope Cookery's Modrinth version id, set on `1.21.1-neoforge` and nowhere else: the official
  * mod has no NeoForge build past 1.21.1. See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
@@ -472,6 +475,17 @@ dependencies {
         // Test jars, goblets and faucets in runClient. The gametests and runServer run without them, which
         // is what proves the mod is unchanged when they are absent.
         runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementariesVersion") { isTransitive = false }
+    }
+
+    if (spelunkeryVersion != null) {
+        // Its salt bucket recipe in runClient only. The mixin targets Minecraft's cooking recipe and names
+        // nothing of the mod, so nothing is compiled against it.
+        runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkeryVersion") { isTransitive = false }
+    }
+
+    // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out
+    // leaves them out.
+    if (supplementariesVersion != null || spelunkeryVersion != null) {
         runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:${property("deps.moonlight")}") { isTransitive = false }
     }
 

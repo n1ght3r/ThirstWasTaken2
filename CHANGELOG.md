@@ -2,6 +2,14 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Spelunkery, on Fabric and NeoForge 1.21.1:
+  - Spring Water is always Pure.
+  - Only sea water boils down to salt in a furnace. Fresh water is purified there as usual.
+
 ## [1.6.1] - 2026-10-02
 
 Two more Let's Do mods join on 1.21.1: HerbalBrews and Beachparty.

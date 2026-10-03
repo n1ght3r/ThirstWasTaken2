@@ -75,6 +75,11 @@ export const INTEGRATIONS: Mod[] = [
     name: "Let's Do: Beachparty",
     icon: 'https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp',
     link: '/docs/integrations/beachparty'
+  },
+  {
+    name: 'Spelunkery',
+    icon: 'https://cdn.modrinth.com/data/krskFMfA/465cfcd453c22ee5a09884ede98a0442e97658c5.png',
+    link: '/docs/integrations/spelunkery'
   }
 ]
 

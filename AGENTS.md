@@ -73,7 +73,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](do
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Farm & Charm, HerbalBrews and Beachparty mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Farm & Charm, HerbalBrews, Beachparty and Spelunkery mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -202,6 +202,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: Farm & Charm, and Candlelight, its addon, with no code of its own | `deps.farm_and_charm`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/farmandcharm/AGENTS.md](src/main/farmandcharm/AGENTS.md) |
 | Let's Do: HerbalBrews | `deps.herbalbrews`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/herbalbrews/AGENTS.md](src/main/herbalbrews/AGENTS.md) |
 | Let's Do: Beachparty | `deps.beachparty`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/beachparty/AGENTS.md](src/main/beachparty/AGENTS.md) |
+| Spelunkery | `deps.spelunkery`: both 1.21.1 nodes (the 1.20.1 line is no longer updated). Its Spring Water is in the `pure_water` fluid tag, on every node | [src/main/spelunkery/AGENTS.md](src/main/spelunkery/AGENTS.md) |
 
 ### Adding an integration
 
@@ -253,6 +254,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: Candlelight, Farm & Charm's addon: the plan, its decisions and what was found in game | [docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md](docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md) |
 | Let's Do: HerbalBrews: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md](docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md) |
 | Let's Do: Beachparty: the plan, its decision and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md](docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md) |
+| Spelunkery: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/world/SPELUNKERY-INTEGRATION.md](docs/dev/integration/world/SPELUNKERY-INTEGRATION.md) |
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |
 | Minecraft 1.20.1 on Fabric and Forge: the plan, phase by phase | [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md) |

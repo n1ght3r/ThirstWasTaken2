@@ -270,6 +270,12 @@ val herbalBrews = findProperty("deps.herbalbrews") as String?
 val beachparty = findProperty("deps.beachparty") as String?
 
 /**
+ * Spelunkery's Modrinth version id, on `1.21.1` and `1.21.1-neoforge` only. Nothing is compiled against
+ * it. See docs/dev/integration/world/SPELUNKERY-INTEGRATION.md.
+ */
+val spelunkery = findProperty("deps.spelunkery") as String?
+
+/**
  * Serene Seasons' Modrinth version id, on every node. See docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md.
  */
 val sereneSeasons = findProperty("deps.serene_seasons") as String?
@@ -493,9 +499,21 @@ dependencies {
         "modCompileOnly"("maven.modrinth:supplementaries:$supplementaries") { isTransitive = false }
         "modCompileOnly"("maven.modrinth:moonlight:$moonlight") { isTransitive = false }
         // Test jars, goblets and faucets in runClient. The gametests and runServer run without them, which
-        // is what proves the mod is unchanged when they are absent. CodecUI comes out of Moonlight's own
-        // jar, since Loom leaves a dependency's nested mods packed.
+        // is what proves the mod is unchanged when they are absent. Moonlight itself is added below.
         runClientMod(listOf("supplementaries", "moonlight"), "maven.modrinth:supplementaries:$supplementaries")
+    }
+
+    if (spelunkery != null) {
+        // Its salt bucket recipe in runClient only. The mixin targets Minecraft's cooking recipe and names
+        // nothing of the mod, so nothing is compiled against it.
+        runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkery")
+    }
+
+    // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out
+    // leaves them out. CodecUI comes out of Moonlight's own jar, since Loom leaves a dependency's nested
+    // mods packed.
+    if (supplementaries != null || spelunkery != null) {
+        val moonlight = property("deps.moonlight").toString()
         runClientMod(listOf("moonlight"), "maven.modrinth:moonlight:$moonlight")
         runClientMod(listOf("moonlight"), files(nestedMods("moonlight", moonlight)))
     }

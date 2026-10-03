@@ -10,6 +10,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | [`cooking/`](cooking/) | Farmer's Delight addons and Kaleidoscope Cookery: cooking pots, kegs, vats, teapots |
 | [`storage/`](storage/) | Mods that move water in tanks, jars and upgrades |
 | [`climate/`](climate/) | Mods that change the drain: temperature and seasons |
+| [`world/`](world/) | Overworld overhauls: new biomes whose water we grade, and what they add to drink |
 
 | Mod | Plan | Code | Nodes | State |
 |---|---|---|---|---|
@@ -25,6 +26,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Supplementaries | [storage/SUPPLEMENTARIES](storage/SUPPLEMENTARIES-INTEGRATION.md) | `src/main/supplementaries` | both 1.21.1 | see plan |
 | Cold Sweat | [climate/COLD-SWEAT](climate/COLD-SWEAT-INTEGRATION.md) | `src/main/coldsweat`, `coldsweatforge` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
 | Serene Seasons | [climate/SERENE-SEASONS](climate/SERENE-SEASONS-INTEGRATION.md) | `src/main/sereneseasons` | every node | see plan |
+| Spelunkery | [world/SPELUNKERY](world/SPELUNKERY-INTEGRATION.md) | `src/main/spelunkery` | both 1.21.1 | see plan |
 
 A new plan goes in the folder of its family, gets a row here and a row under "Where to look" in the
 root `AGENTS.md`.

@@ -18,12 +18,14 @@ collected and keeps it.
 | River | Murky |
 | Mountain | Clean |
 | Cold peaks | Pure |
+| ![](https://cdn.modrinth.com/data/krskFMfA/465cfcd453c22ee5a09884ede98a0442e97658c5.png){.mod-icon} [Spelunkery](/docs/integrations/spelunkery)'s Spring Water, anywhere | Pure |
 
 - Hot biomes make water worse, cold biomes make it better.
 - Water above y 100 or below y 32 is a little cleaner. So is flowing water.
 - Mud, mangrove roots, farmland or a composter within two blocks make water worse.
 
-Modpacks can add biomes to the `thirstwastaken2:stagnant_water` tag. Water with no grade of its own
+Modpacks can add biomes to the `thirstwastaken2:stagnant_water` tag, and fluids that are always Pure
+to the `thirstwastaken2:pure_water` fluid tag. Water with no grade of its own
 uses [defaultPurity](/docs/configuration#defaultpurity).
 
 ## Checking water with Jade
