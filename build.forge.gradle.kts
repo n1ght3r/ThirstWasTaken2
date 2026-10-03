@@ -20,7 +20,10 @@ plugins {
  * follows section by section. What differs is what Forge 1.20.1 does differently: the game runs under
  * SRG names outside development, so the jar that ships is the remapped `reobfJar`, mod dependencies are
  * remapped the other way through the `mod*` configurations, and the mixin configs are named in the jar
- * manifest and on the run command lines rather than in mods.toml. See docs/dev/VERSION-1.20.1.md.
+ * manifest and on the run command lines rather than in mods.toml. See docs/dev/VERSION-DIFFERENCES.md.
+ *
+ * TODO: what this script and build.neoforge.gradle.kts share (the resource translation shape, the run
+ * and dev-tool wiring) has not been moved into gradle/ yet.
  */
 
 val modId = property("mod.id") as String

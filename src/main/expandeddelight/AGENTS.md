@@ -6,7 +6,9 @@ from a water bucket. The recipe's ingredient matches the item alone, so a bucket
 too, into a soup that restores thirst. This directory refuses it, as Brewin' and Chewin's keg, Cultural
 Delights' vat and Fruits Delight's juice do. A small integration, so there is no plan file.
 
-**Built on `1.21.1-neoforge` only**, the mod's one build for a version this mod supports. What it does:
+**Built on `1.21.1-neoforge` only**, the mod's one build for a version this mod supports. Its 1.20.1
+build is Fabric only, so on the `1.20.1` node its drinks restore thirst through config ids but the
+Cooking Pot still cooks those two from sea water; a port needs a Fabric side of this guard. What it does:
 
 - **no Cooking Pot recipe takes sea water**: a salty bucket, bottle or bowl in any of the six
   ingredient slots matches nothing, so the pot does not cook;

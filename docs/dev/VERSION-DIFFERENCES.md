@@ -29,6 +29,11 @@ one exception: the Fabric 1.21.1 jar claims it, and NeoForge 21.0 is a generatio
 Legacy, and the same holds for it: everything under 1.20.5 and 1.21 below applies to both 1.20.1 jars.
 The Forge jar asks for any Forge 47 build, not the one it is built against.
 
+The Fabric 1.20.1 jar claims 1.20.1 only, not 1.20: Fabric API's last build for 1.20 (0.83.0) has no
+attachment API, which the jar needs for player data. `fabric.mod.json` names
+`fabric-data-attachment-api-v1`, so the loader refuses an older Fabric API on 1.20.1 rather than the
+game crashing.
+
 NeoForge has published only betas for 26.3, so `26.3.x-neoforge` is pinned to one and asks players for
 at least that build. Two of its optional integrations have no 26.3 release yet either: Cloth Config,
 which only AppleSkin's own settings screen needs in runClient, and Sophisticated Core, so that node
@@ -233,7 +238,10 @@ already has by default. The stack the furnace hands out is the same; see
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
 
-Both 1.20.1 nodes, `1.20.1` on Fabric and `1.20.1-forge`; see [VERSION-1.20.1.md](VERSION-1.20.1.md).
+Both 1.20.1 nodes, `1.20.1` on Fabric and `1.20.1-forge`. They are nodes of the one tree rather than a
+separate copy so that a change to core reaches 1.20.1 in the same commit; the
+[version policy](../../AGENTS.md#version-policy) applies, so a feature that needs a core-code fork
+for 1.20.1 retires 1.20.1.
 Most of these are written `>=1.20.5` or `<1.20.5` though the
 change came earlier, in 1.20.2 or 1.20.3: with no node in between, the boundary only has to fall
 between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
@@ -313,7 +321,10 @@ it makes no difference to any jar.
 Forge 47 is 1.20.1's loader in place of NeoForge. What differs between it and the other two loaders on
 the same Minecraft version is a loader difference, in
 [platform/AGENTS.md](../../src/main/java/com/thirstwastaken2/platform/AGENTS.md); what belongs here is
-what the Forge node needs that no other node does:
+what the Forge node needs that no other node does. Why Forge at all: nearly every 1.20.1 modpack
+runs it, and NeoForge 47.1, the 1.20.1 fork, is no longer maintained. It is built with ModDevGradle
+Legacy rather than ForgeGradle, the same plugin family and DSL as `build.neoforge.gradle.kts`, and
+player data is a Capability rather than Cardinal Components, which would be a required dependency:
 
 - **The game runs under SRG names** outside development. The jar that ships is `reobfJar`, the mixins
   carry a refmap, `META-INF/accesstransformer.cfg` is written in SRG names, and mod dependencies are

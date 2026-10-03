@@ -17,7 +17,7 @@ One source tree, one jar per node. Nodes are the Gradle subprojects in `settings
 `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1` on Fabric, and the same five with `-neoforge`
 (`build.neoforge.gradle.kts`). The Fabric `1.21.1` jar also covers 1.21; the NeoForge one does not.
 1.20.1 is `1.20.1` on Fabric and `1.20.1-forge` on MinecraftForge 47 (`build.forge.gradle.kts`, whose
-shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md).
+shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.md](docs/dev/VERSION-DIFFERENCES.md).
 
 | Command | What it does |
 |---|---|
@@ -51,7 +51,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-1.20.1.md](do
 - **Java**: 26.1+ runs on Java 25, 1.21.x on Java 21. Anything a 1.20.1 node will compile (core, the
   Fabric loader directories, datagen, gametests, dev tools) uses nothing newer than Java 17: no pattern
   `switch`, no `Math.clamp`, no `getFirst`. Integration directories no 1.20.1 node builds may use Java 21.
-  See [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md).
+  `release = 17` on the 1.20.1 nodes enforces it.
 - **Multi-version via [Stonecutter](https://stonecutter.kikugie.dev)**. Per-node values (dependency
   versions, compat ranges) live only in `stonecutter.properties.toml`; there is no version catalog.
   `stonecutter.gradle.kts` is the controller, `build.gradle.kts` is the Fabric script (Loom),
@@ -248,6 +248,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |
+| Hearth and Harvest: the plan (1.21.1 NeoForge, 1.20.1 Forge), not started | [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md) |
 | Cultural Delights: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md](docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md) |
 | Serene Seasons: the plan, its decisions and what was found in game (every node) | [docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md](docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md) |
 | Let's Do: Farm & Charm: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md](docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md) |
@@ -255,8 +256,8 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: HerbalBrews: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md](docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md) |
 | Let's Do: Beachparty: the plan, its decision and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md](docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md) |
 | Spelunkery: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/world/SPELUNKERY-INTEGRATION.md](docs/dev/integration/world/SPELUNKERY-INTEGRATION.md) |
+| No Man's Land: the plan and its open decisions (1.21.1 NeoForge) | [docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md](docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md) |
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |
-| Minecraft 1.20.1 on Fabric and Forge: the plan, phase by phase | [docs/dev/VERSION-1.20.1.md](docs/dev/VERSION-1.20.1.md) |
 | Releasing | [tools/release/publish.py](tools/release/publish.py) and [publish_curseforge.py](tools/release/publish_curseforge.py) docstrings |
 | Documentation site, CHANGELOG, Modrinth and CurseForge pages | [docs/AGENTS.md](docs/AGENTS.md) and the `write-docs` skill |

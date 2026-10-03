@@ -36,8 +36,8 @@ plugins {
 stonecutter {
     create(rootProject) {
         version("1.20.1", "1.20.1")
-        // MinecraftForge 47, not NeoForge: nearly every 1.20.1 modpack runs Forge. See
-        // docs/dev/VERSION-1.20.1.md.
+        // MinecraftForge 47, not NeoForge: nearly every 1.20.1 modpack runs Forge, and NeoForge 47.1
+        // is no longer maintained. See docs/dev/VERSION-DIFFERENCES.md.
         version("1.20.1-forge", "1.20.1").buildscript = "build.forge.gradle.kts"
         versions("1.21.1", "1.21.11")
         // NeoForge on 1.21.1 only: 1.21 is a separate NeoForge generation (21.0), unlike on Fabric.

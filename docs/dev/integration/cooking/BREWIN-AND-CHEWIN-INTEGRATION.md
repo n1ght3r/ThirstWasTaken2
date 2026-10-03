@@ -252,3 +252,7 @@ Run again on 2026-09-25 after step 8, on `1.21.1` and `1.21.1-neoforge`:
 - **Tankards and wine bottles as fluid containers** (NeoForge's `TankardItemFluidHandlerNeoForge`,
   `WineBottleItemFluidHandlerNeoForge`): they hold the mod's own fluids, never water.
 - **Newer Minecraft versions**, until the mod publishes one.
+- **1.20.1, by demand.** Its drinks and soups already restore thirst there through ids in
+  `ThirstConfig`, but its 1.20.1 Keg (Forge 3.2.1) is an older design than the 1.21.1 one the mixins
+  in `src/main/brewinandchewin` target, so water poured into it comes back without its grade. A port
+  needs mixins of its own against that Keg.
