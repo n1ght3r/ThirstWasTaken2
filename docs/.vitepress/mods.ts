@@ -67,16 +67,6 @@ export const INTEGRATIONS: Mod[] = [
     link: '/docs/integrations/serene-seasons'
   },
   {
-    name: "Let's Do: HerbalBrews",
-    icon: 'https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp',
-    link: '/docs/integrations/herbalbrews'
-  },
-  {
-    name: "Let's Do: Beachparty",
-    icon: 'https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp',
-    link: '/docs/integrations/beachparty'
-  },
-  {
     name: 'Spelunkery',
     icon: 'https://cdn.modrinth.com/data/krskFMfA/465cfcd453c22ee5a09884ede98a0442e97658c5.png',
     link: '/docs/integrations/spelunkery'
@@ -105,17 +95,28 @@ export const DELIGHT_ADDONS: Mod[] = [
   large: true
 }))
 
-// Let's Do: Farm & Charm and its addons, grouped the same way as Farmer's Delight's.
+// The Let's Do mods, grouped under Farm & Charm the same way as Farmer's Delight's addons: its addon
+// Candlelight, then HerbalBrews and Beachparty, which keep their own pages outside farm-and-charm/.
 export const FARM_AND_CHARM: Mod = {
   name: "Let's Do: Farm & Charm",
   icon: 'https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp',
   link: '/docs/integrations/farm-and-charm/'
 }
 
-export const FARM_AND_CHARM_ADDONS: Mod[] = [
+export const LETS_DO: Mod[] = [
   {
     name: "Let's Do: Candlelight",
     icon: 'https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp',
     link: '/docs/integrations/farm-and-charm/candlelight'
+  },
+  {
+    name: "Let's Do: HerbalBrews",
+    icon: 'https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp',
+    link: '/docs/integrations/herbalbrews'
+  },
+  {
+    name: "Let's Do: Beachparty",
+    icon: 'https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp',
+    link: '/docs/integrations/beachparty'
   }
 ]
