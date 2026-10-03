@@ -76,7 +76,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Farm & Charm, HerbalBrews, Beachparty and Spelunkery mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery and Hearth and Harvest (NeoForge and Forge) mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -206,6 +206,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: HerbalBrews | `deps.herbalbrews`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/herbalbrews/AGENTS.md](src/main/herbalbrews/AGENTS.md) |
 | Let's Do: Beachparty | `deps.beachparty`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/beachparty/AGENTS.md](src/main/beachparty/AGENTS.md) |
 | Spelunkery | `deps.spelunkery`: both 1.21.1 nodes (the 1.20.1 line is no longer updated). Its Spring Water is in the `pure_water` fluid tag, on every node | [src/main/spelunkery/AGENTS.md](src/main/spelunkery/AGENTS.md) |
+| Hearth and Harvest | `deps.hearth_and_harvest`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/hearthandharvest/AGENTS.md](src/main/hearthandharvest/AGENTS.md), [src/main/hearthandharvestforge/AGENTS.md](src/main/hearthandharvestforge/AGENTS.md) |
 
 ### Adding an integration
 
@@ -251,7 +252,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |
-| Hearth and Harvest: the plan (1.21.1 NeoForge, 1.20.1 Forge), not started | [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md) |
+| Hearth and Harvest: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md) |
 | Cultural Delights: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md](docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md) |
 | Serene Seasons: the plan, its decisions and what was found in game (every node) | [docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md](docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md) |
 | Let's Do: Farm & Charm: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md](docs/dev/integration/lets-do/FARM-AND-CHARM-INTEGRATION.md) |

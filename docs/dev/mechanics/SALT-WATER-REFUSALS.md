@@ -25,7 +25,7 @@ A check that keeps sea water out reads `WaterPurity.isSalty(stack)` on a stack,
 | Mod | Where | What is refused | Nodes |
 |---|---|---|---|
 | Farmer's Delight Refabricated | [CookingPotMatching.java](../../../src/main/farmersdelight/java/com/thirstwastaken2/farmersdelight/CookingPotMatching.java) | The Cooking Pot boiling a sea water bottle into Pure. Refabricated never tested component ingredients; this tests them. NeoForge and Forge Farmer's Delight test them already | Fabric |
-| Expanded Delight | [CookingPotSeaWaterMixin.java](../../../src/main/expandeddelight/java/com/thirstwastaken2/expandeddelight/mixin/CookingPotSeaWaterMixin.java) | Every Cooking Pot recipe with sea water in one of its six ingredient slots, not only Expanded Delight's | `1.21.1-neoforge` |
+| Expanded Delight | [CookingPotSeaWaterMixin.java](../../../src/main/expandeddelight/java/com/thirstwastaken2/expandeddelight/mixin/CookingPotSeaWaterMixin.java) | Every Cooking Pot recipe with sea water in one of its six ingredient slots, not only Expanded Delight's, unless the recipe asks for sea water itself (Hearth and Harvest's salt, below) | `1.21.1-neoforge` |
 | Brewin' and Chewin' | [KegFermentingMixin.java](../../../src/main/brewinandchewin/java/com/thirstwastaken2/brewinandchewin/mixin/KegFermentingMixin.java) | Fermenting in a keg holding sea water. The keg still stores it and hands it back salty, and a keg already brewing stops | both 1.21.1 nodes |
 | Cultural Delights | [VatSeaWaterMixin.java](../../../src/main/culturaldelights/java/com/thirstwastaken2/culturaldelights/mixin/VatSeaWaterMixin.java), [VatWater.java](../../../src/main/culturaldelights/java/com/thirstwastaken2/culturaldelights/VatWater.java) | Brewing in a vat with a sea water bucket in any slot. The bucket may sit in its slot; a brew in progress stops | `1.21.1-neoforge` |
 | Fruits Delight | [WaterBottleIngredientMixin.java](../../../src/main/fruitsdelight/java/com/thirstwastaken2/fruitsdelight/mixin/WaterBottleIngredientMixin.java) | A sea water bottle counting as the water bottle a recipe asks for | `1.21.1-neoforge`, `1.20.1-forge` |
@@ -35,13 +35,16 @@ A check that keeps sea water out reads `WaterPurity.isSalty(stack)` on a stack,
 | Farm & Charm | [WaterTroughMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/WaterTroughMixin.java) | A sea water bucket poured into a Water Trough, which would hand it back fresh | both 1.21.1 nodes |
 | Candlelight | [SinkMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/SinkMixin.java) | A sea water bucket poured into a kitchen sink, Farm & Charm's sink block, which would hand it back fresh | both 1.21.1 nodes |
 | HerbalBrews | [TeaKettleMixin.java](../../../src/main/herbalbrews/java/com/thirstwastaken2/herbalbrews/mixin/TeaKettleMixin.java) | A sea water bucket or bottle in the Tea Kettle's water slot. It sits in the slot and fills nothing | both 1.21.1 nodes |
+| Hearth and Harvest | [SinkBlockMixin.java](../../../src/main/hearthandharvest/java/com/thirstwastaken2/hearthandharvest/mixin/SinkBlockMixin.java) | Sea water poured into the Sink, which would hand it back as its Murky water. The click is spent | `1.21.1-neoforge` |
+| Hearth and Harvest | [CaskBlockEntityMixin.java](../../../src/main/hearthandharvest/java/com/thirstwastaken2/hearthandharvest/mixin/CaskBlockEntityMixin.java) | Ageing mead, moonshine or root beer in a Cask with a sea water bottle in it. The bottle waits in its slot | `1.21.1-neoforge` |
 | Sophisticated Backpacks | [DrinkingUpgradeWrapper.java](../../../src/main/sophisticated/java/com/thirstwastaken2/sophisticated/drinking/DrinkingUpgradeWrapper.java) | The Drinking Upgrade drinking sea water on its own | NeoForge nodes but `26.3.x-neoforge` |
 
 ## Refused by mixing rules, not by salt
 
 Tanks that compare fluid components will not put two kinds of water together. A tank of fresh water
 refuses sea water, and a tank of sea water refuses fresh, as two grades refuse each other:
-Sophisticated's tanks, Supplementaries' jars and faucet, Brewin' and Chewin's keg, Create's tanks. See
+Sophisticated's tanks, Supplementaries' jars and faucet, Brewin' and Chewin's keg, Create's tanks,
+Hearth and Harvest's Jug (on Forge 1.20.1 too), Trough, Sprinkler and Stomping Basin. See
 [sophisticated/AGENTS.md](../../../src/main/sophisticated/AGENTS.md) for the measured cases.
 
 ## Taken, and kept salty
@@ -58,12 +61,14 @@ These take sea water and give it back salty. Nothing here makes it fresh.
 | Kaleidoscope Stockpot | [StockpotBlockEntityMixin.java](../../../src/main/kaleidoscope/java/com/thirstwastaken2/kaleidoscope/mixin/StockpotBlockEntityMixin.java) | Cooks soup with it on purpose; the bucket comes back salty |
 | Farm & Charm Timber Well | [TimberWellMixin.java](../../../src/main/farmandcharm/java/com/thirstwastaken2/farmandcharm/mixin/TimberWellMixin.java) | A well over sea water, on a beach or by the ocean, gives sea water |
 | Kaleidoscope teapot as an item | [TeapotItemMixin.java](../../../src/main/kaleidoscope/java/com/thirstwastaken2/kaleidoscope/mixin/TeapotItemMixin.java) | Holds sea water and empties it back salty |
+| Hearth and Harvest's Jug, Trough, Sprinkler and Stomping Basin | [FluidHandlingMixin.java](../../../src/main/hearthandharvest/java/com/thirstwastaken2/hearthandharvest/mixin/FluidHandlingMixin.java), [JugBlockItemMixin.java](../../../src/main/hearthandharvest/java/com/thirstwastaken2/hearthandharvest/mixin/JugBlockItemMixin.java) | Hold sea water poured in, or a Jug scooped from the sea, and hand it back salty |
 
 ## Taken only if salty
 
 | Mod | Where | What happens | Nodes |
 |---|---|---|---|
 | Spelunkery | [AbstractCookingRecipeMixin.java](../../../src/main/spelunkery/java/com/thirstwastaken2/spelunkery/mixin/AbstractCookingRecipeMixin.java) | Its furnace recipe boils a sea water bucket into a salt bucket, and refuses every fresh bucket, which our purification takes instead. Nothing drinkable comes out | both 1.21.1 nodes |
+| Hearth and Harvest | `minecraft:salt_from_bottle`, replaced from [FarmersDelightRecipeProvider.java](../../../src/datagen/java/com/thirstwastaken2/datagen/FarmersDelightRecipeProvider.java) on 1.21.1; [SaltFromSeaWaterMixin.java](../../../src/main/hearthandharvestforge/java/com/thirstwastaken2/hearthandharvestforge/mixin/SaltFromSeaWaterMixin.java) on Forge | The Cooking Pot boils a sea water bottle into two salt, and no fresh bottle, which our purification takes instead | `1.21.1-neoforge`, `1.20.1-forge` |
 
 ## The hanging pot takes sea water
 

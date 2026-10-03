@@ -109,7 +109,7 @@ The generators are the same; the formats they write to are older.
 | Provider | Writes |
 |---|---|
 | `ThirstRecipeProvider` | `data/…/recipe/`, and the `advancement/recipes/misc/` unlocks with them |
-| `FarmersDelightRecipeProvider` | the two Cooking Pot recipes and their unlocks, as JSON with a load condition |
+| `FarmersDelightRecipeProvider` | the two Cooking Pot recipes and their unlocks, as JSON with a load condition; on 1.21.1 only, `minecraft:salt_from_bottle`, which replaces Hearth and Harvest's so that only sea water boils into salt (see `src/main/hearthandharvest/AGENTS.md`) |
 | `ThirstAdvancementProvider` | `data/…/advancement/`, the mod's own tab |
 | `ThirstDamageTypeProvider` | `data/…/damage_type/dehydrate.json` |
 | `ThirstDamageTypeTagProvider` | `data/minecraft/tags/damage_type/bypasses_armor.json` |

@@ -4,7 +4,9 @@
 // refused, and Nourishment stops the drain. Both 1.20.1 nodes set deps.farmersdelight: Refabricated on
 // Fabric, vectorwing's original on Forge. Run it unattended:
 //     ./gradlew ":1.20.1:runClient" -Pagent=tools/agent/integrations/farmers-delight-1.20.1.jsonl -Pquickplay=FarmersDelightAgent
-//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/farmers-delight-1.20.1.jsonl -Pquickplay=FarmersDelightAgent
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/farmers-delight-1.20.1.jsonl -Pquickplay=FarmersDelightAgent -PwithoutOptional=hearth-and-harvest,cold-sweat
+// Hearth and Harvest is left out on Forge: with it, the salty bottle boils into salt, by design (see
+// hearth-and-harvest-1.20.1.jsonl), rather than staying in the pot.
 // FarmersDelightAgent is a throwaway world, made fresh for each run by
 //     python tools/agent/new_world.py <node> FarmersDelightAgent
 // Read run/<node>/agent/client/out.jsonl: every "execute if" and "execute unless" line has to say

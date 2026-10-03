@@ -53,7 +53,7 @@ class BuildLogicTest {
         val everything: (String) -> Boolean = { true }
         assertEquals(listOf("createfly", "farmersdelight", "supplementaries", "kaleidoscope", "brewinandchewin", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery"),
             integrationsFor(Loader.FABRIC, everything).map { it.dir })
-        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery"),
+        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest"),
             integrationsFor(Loader.NEOFORGE, everything).map { it.dir })
         assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery"), integrations.filter { it.loaderIndependent }.map { it.dir })
     }
@@ -89,6 +89,21 @@ class BuildLogicTest {
             |ordering = "NONE"
             |side = "BOTH"
             |""".trimMargin(), integration("sereneseasons").neoForgeManifest("thirstwastaken2"))
+    }
+
+    @Test
+    fun aDependencyWhoseDataWeReplaceLoadsFirst() {
+        assertEquals("""
+            |
+            |[[mixins]]
+            |config = "thirstwastaken2.hearthandharvest.mixins.json"
+            |
+            |[[dependencies.thirstwastaken2]]
+            |modId = "hearthandharvest"
+            |type = "optional"
+            |ordering = "AFTER"
+            |side = "BOTH"
+            |""".trimMargin(), integration("hearthandharvest").neoForgeManifest("thirstwastaken2"))
     }
 
     @Test

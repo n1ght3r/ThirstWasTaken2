@@ -2,7 +2,9 @@
 // Cooking Pot recipes load and boil water Pure, salt water is refused, and Nourishment stops the drain.
 // The saved inventory writes Slot as an int, so a check matches Slot:0, not Slot:0b.
 // Only nodes that set deps.farmersdelight have it on the runClient classpath. Run it unattended:
-//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/farmers-delight.jsonl -Pquickplay=FarmersDelightAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/farmers-delight.jsonl -Pquickplay=FarmersDelightAgent -PwithoutOptional=hearth-and-harvest,cold-sweat
+// Hearth and Harvest is left out: with it, the salty bottle boils into salt, by design (see
+// hearth-and-harvest.jsonl), rather than staying in the pot.
 // FarmersDelightAgent is a throwaway world, made fresh for each run by
 //     python tools/agent/new_world.py <node> FarmersDelightAgent
 // drive.py's expectations and checks are not

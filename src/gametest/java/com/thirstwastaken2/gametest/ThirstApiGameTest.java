@@ -351,6 +351,47 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /** Hearth and Harvest is never installed here either; see the Kaleidoscope Cookery test above. */
+    @GameTest
+    public void hearthAndHarvestDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"cherry_juice", "goat_milk_bottle", "mead", "red_grape_wine", "moonshine", "syrup_bottle"};
+        String[] foods = {"corn_stew", "onion_soup", "red_grapes", "caramel_apple"};
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("hearthandharvest:red_grape_wine"), new int[]{3, 4}),
+                "a wine should restore what Brewin' and Chewin's do, not upstream's 10, 14");
+        for (String dry : new String[]{"grape_jam", "pickled_carrots", "cheddar_cheese_slice", "sap_bucket", "macaroni_and_cheese"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("hearthandharvest:" + dry)
+                            && !defaults.drinks.containsKey("hearthandharvest:" + dry),
+                    "hearthandharvest:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("hearthandharvest:" + drink);
+            for (String food : foods) config.foods.remove("hearthandharvest:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("hearthandharvest:mead", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                if (drink.equals("mead")) continue;
+                String id = "hearthandharvest:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "hearthandharvest:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("hearthandharvest:mead"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("hearthandharvest:mead")));
+        });
+        helper.succeed();
+    }
+
     /**
      * Farm & Charm and Candlelight are never installed here either; see the Kaleidoscope Cookery test
      * above. One test for both, since Candlelight is Farm & Charm's addon and merges in the same pass.

@@ -230,6 +230,12 @@ dependencies {
         // Keeps `-PwithoutOptional=fruits-delight` in the agent scripts a known name while the lines above are off.
         optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
+    // Hearth and Harvest: nothing of its 1.20.1 build needs code, only its drinks by id and the salt
+    // recipe ours overrides, so nothing compiles against it. Only here to test them.
+    findProperty("deps.hearth_and_harvest")?.let {
+        runClientMod(listOf("hearth-and-harvest", "hearthandharvest", "farmers-delight", "farmersdelight"),
+            "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
+    }
     findProperty("deps.cold_sweat")?.let { coldSweat ->
         // Mixed into and read through its API, in SRG names, so remapped. See src/main/coldsweatforge/AGENTS.md.
         modCompileOnly("maven.modrinth:cold-sweat:$coldSweat") { isTransitive = false }

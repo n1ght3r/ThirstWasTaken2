@@ -1,0 +1,112 @@
+// hearth-and-harvest.jsonl for Hearth and Harvest's 1.20.1 build on Forge, the early mod: every id
+// ThirstConfig lists that this build has exists; the Cooking Pot boils a Murky bottle Pure and a sea
+// water bottle into two salt, and a Pure bottle, which Hearth and Harvest's own recipe boiled into salt,
+// stays put (src/main/hearthandharvestforge); a placed Jug keeps the grade of a bucket poured in; and a
+// juice restores 8. A stack's water is its NBT tag
+// here. Runs on 1.20.1-forge. Run it unattended:
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/hearth-and-harvest-1.20.1.jsonl -Pquickplay=HearthAgent -PwithoutOptional=cold-sweat
+// HearthAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py 1.20.1-forge HearthAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/1.20.1-forge/agent/client tools/agent/integrations/hearth-and-harvest-1.20.1.jsonl --verify --max-age 15
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "view", "command": "server.command", "args": {"command": "tp @p 0.5 200 -3.5 0 25"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -6 200 -6 6 206 6 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -6 199 -6 6 199 6 minecraft:stone"}}
+{"id": "stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 -3.5 0 25"}}
+
+// Every id ThirstConfig lists that the 1.20.1 build has.
+{"id": "id_blueberry_juice", "command": "server.command", "args": {"command": "give @p hearthandharvest:blueberry_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cherry_juice", "command": "server.command", "args": {"command": "give @p hearthandharvest:cherry_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_raspberry_juice", "command": "server.command", "args": {"command": "give @p hearthandharvest:raspberry_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grape_juice", "command": "server.command", "args": {"command": "give @p hearthandharvest:red_grape_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_green_grape_juice", "command": "server.command", "args": {"command": "give @p hearthandharvest:green_grape_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_goat_milk_bottle", "command": "server.command", "args": {"command": "give @p hearthandharvest:goat_milk_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mead", "command": "server.command", "args": {"command": "give @p hearthandharvest:mead"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_blueberry_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:blueberry_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cherry_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:cherry_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_raspberry_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:raspberry_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grape_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:red_grape_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_green_grape_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:green_grape_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_wine", "command": "server.command", "args": {"command": "give @p hearthandharvest:sweet_berry_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_syrup_bottle", "command": "server.command", "args": {"command": "give @p hearthandharvest:syrup_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_onion_soup", "command": "server.command", "args": {"command": "give @p hearthandharvest:onion_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_blueberries", "command": "server.command", "args": {"command": "give @p hearthandharvest:blueberries"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_raspberry", "command": "server.command", "args": {"command": "give @p hearthandharvest:raspberry"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cherry", "command": "server.command", "args": {"command": "give @p hearthandharvest:cherry"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grapes", "command": "server.command", "args": {"command": "give @p hearthandharvest:red_grapes"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_green_grapes", "command": "server.command", "args": {"command": "give @p hearthandharvest:green_grapes"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_caramel_apple", "command": "server.command", "args": {"command": "give @p hearthandharvest:caramel_apple"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Three Cooking Pots on lit campfires: Murky, sea water and Pure bottles.
+{"id": "fire", "command": "server.command", "args": {"command": "setblock 0 200 0 minecraft:campfire"}}
+{"id": "pot", "command": "server.command", "args": {"command": "setblock 0 201 0 farmersdelight:cooking_pot"}}
+{"id": "saltFire", "command": "server.command", "args": {"command": "setblock 2 200 0 minecraft:campfire"}}
+{"id": "saltPot", "command": "server.command", "args": {"command": "setblock 2 201 0 farmersdelight:cooking_pot"}}
+{"id": "pureFire", "command": "server.command", "args": {"command": "setblock -2 200 0 minecraft:campfire"}}
+{"id": "purePot", "command": "server.command", "args": {"command": "setblock -2 201 0 farmersdelight:cooking_pot"}}
+{"id": "murky", "command": "server.command", "args": {"command": "data merge block 0 201 0 {Inventory:{Size:9,Items:[{Slot:0,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water\",thirstwastaken2:{purity:1,salty:0b}}}]}}"}}
+{"id": "salty", "command": "server.command", "args": {"command": "data merge block 2 201 0 {Inventory:{Size:9,Items:[{Slot:0,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water\",thirstwastaken2:{salty:1b}}}]}}"}}
+{"id": "pure", "command": "server.command", "args": {"command": "data merge block -2 201 0 {Inventory:{Size:9,Items:[{Slot:0,id:\"minecraft:potion\",Count:1b,tag:{Potion:\"minecraft:water\",thirstwastaken2:{purity:3,salty:0b}}}]}}"}}
+{"id": "boil", "command": "wait", "args": {"ticks": 360}}
+{"id": "potAfter", "command": "server.command", "args": {"command": "data get block 0 201 0 Inventory"}}
+{"id": "bottlePure", "command": "server.command", "args": {"command": "execute if data block 0 201 0 Inventory.Items[{Slot:8,id:\"minecraft:potion\",tag:{thirstwastaken2:{purity:3}}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "saltAfter", "command": "server.command", "args": {"command": "data get block 2 201 0 Inventory"}}
+{"id": "saltMade", "command": "server.command", "args": {"command": "execute if data block 2 201 0 Inventory.Items[{Slot:8,id:\"hearthandharvest:salt\",Count:2b}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "pureAfter", "command": "server.command", "args": {"command": "data get block -2 201 0 Inventory"}}
+{"id": "pureStays", "command": "server.command", "args": {"command": "execute if data block -2 201 0 Inventory.Items[{Slot:0,tag:{thirstwastaken2:{purity:3}}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potsGone", "command": "server.command", "args": {"command": "fill -2 200 0 2 201 0 minecraft:air"}}
+
+// A placed Jug on 0 200 2: a Dirty bucket poured in comes back out Dirty, a Clean bucket is refused
+// while it holds Dirty water, and sea water poured into an empty jug comes back salty.
+{"id": "jug", "command": "server.command", "args": {"command": "setblock 0 200 2 hearthandharvest:jug"}}
+{"id": "jug_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "jug_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket{thirstwastaken2:{purity:0,salty:0b}}"}}
+{"id": "jug_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_dirty_taken", "command": "server.command", "args": {"command": "execute if entity @p[nbt={SelectedItem:{id:\"minecraft:bucket\"}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jug_clean_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket{thirstwastaken2:{purity:2,salty:0b}}"}}
+{"id": "jug_clean_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_clean_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_clean_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_clean_refused", "command": "server.command", "args": {"command": "execute if entity @p[nbt={SelectedItem:{id:\"minecraft:water_bucket\",tag:{thirstwastaken2:{purity:2}}}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jug_draw_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "jug_draw_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_draw_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_draw_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_draw_dirty", "command": "server.command", "args": {"command": "execute if entity @p[nbt={SelectedItem:{id:\"minecraft:water_bucket\",tag:{thirstwastaken2:{purity:0}}}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jugSalt", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "jugSaltNew", "command": "server.command", "args": {"command": "setblock 0 200 2 hearthandharvest:jug"}}
+{"id": "jug_salt_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket{thirstwastaken2:{salty:1b}}"}}
+{"id": "jug_salt_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_salt_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_salt_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_salt_draw_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "jug_salt_draw_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_salt_draw_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jug_salt_draw_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jug_salt_draw_salty", "command": "server.command", "args": {"command": "execute if entity @p[nbt={SelectedItem:{id:\"minecraft:water_bucket\",tag:{thirstwastaken2:{salty:1b}}}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jugGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// Drinking a juice from thirst 4, quenched 0, looking up: 8 thirst. The juice is a food here, so the
+// player is made hungry first.
+{"id": "drink_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with hearthandharvest:cherry_juice"}}
+{"id": "drink_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_state", "command": "client.state", "expect": {"result.thirst": 12}}

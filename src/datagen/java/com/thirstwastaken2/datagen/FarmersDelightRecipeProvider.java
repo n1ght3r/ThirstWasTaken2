@@ -9,6 +9,7 @@ import com.mojang.serialization.JsonOps;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.compat.FarmersDelight;
 import com.thirstwastaken2.datagen.ThirstRecipeProvider.Container;
+import com.thirstwastaken2.platform.ThirstComponents;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
@@ -19,10 +20,16 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.triggers.InventoryChangeTrigger;
 import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 //? if >=26.1 {
 import net.minecraft.world.item.ItemStackTemplate;
 //?} else
@@ -53,6 +60,13 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
     /** The Cooking Pot's own default, the same as a furnace. */
     private static final int COOKING_TIME = 200;
     private static final List<Container> CONTAINERS = List.of(Container.BOTTLE, Container.BOWL);
+    private static final String HEARTH_AND_HARVEST = "hearthandharvest";
+    // Hearth and Harvest has no build past 1.21.1, so later versions write no salt recipe for it.
+    //? if <1.21.2 {
+    /*private static final boolean HEARTH_AND_HARVEST_BUILDS = true;
+    *///?} else {
+    private static final boolean HEARTH_AND_HARVEST_BUILDS = false;
+    //?}
 
     private final PackOutput.PathProvider recipes;
     private final PackOutput.PathProvider advancements;
@@ -86,6 +100,10 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
                 writes.add(DataProvider.saveStable(cache, unlock(container, ops),
                         advancements.json(ThirstWasTaken2.id("recipes/misc/" + name))));
             }
+            if (HEARTH_AND_HARVEST_BUILDS) {
+                writes.add(DataProvider.saveStable(cache, hearthAndHarvestSalt(ops),
+                        recipes.json(Identifier.withDefaultNamespace("salt_from_bottle"))));
+            }
             return CompletableFuture.allOf(writes.toArray(CompletableFuture[]::new));
         });
     }
@@ -111,6 +129,36 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
                 ThirstRecipeProvider.Recipes.purifyResult(container, ThirstRecipeProvider.PURIFIED), ops));
         json.addProperty("experience", ThirstRecipeProvider.PURIFY_EXPERIENCE);
         json.addProperty("cookingtime", COOKING_TIME);
+        return json;
+    }
+
+    /**
+     * Hearth and Harvest's salt from a bottle in the Cooking Pot, replaced at its own id so that only sea
+     * water boils down to salt. Its own matched any water bottle by its potion alone, so a fresh bottle
+     * matched both it and the purifying recipe above, and recipe order decided which one cooked. This mod
+     * loads after Hearth and Harvest (its row in the integration table says so), so this file wins. Its
+     * bucket recipe, which nothing of ours matches, is left alone. The result is the mod's item, which
+     * the datagen registries do not know, so it is written by hand in 1.21.1's shape.
+     */
+    private static JsonObject hearthAndHarvestSalt(DynamicOps<JsonElement> ops) {
+        DataComponentPatch.Builder seaWater = DataComponentPatch.builder();
+        seaWater.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER));
+        seaWater.set(ThirstComponents.WATER_SALTY, true);
+        Ingredient ingredient = DefaultCustomIngredients.components(Ingredient.of(Items.POTION), seaWater.build());
+
+        JsonObject json = new JsonObject();
+        json.add(ResourceConditions.CONDITIONS_KEY, encode(ResourceCondition.LIST_CODEC,
+                List.of(ResourceConditions.allModsLoaded(FarmersDelight.MOD_ID, HEARTH_AND_HARVEST)), ops));
+        json.addProperty("type", COOKING);
+        JsonArray ingredients = new JsonArray();
+        ingredients.add(encode(INGREDIENT_CODEC, ingredient, ops));
+        json.add("ingredients", ingredients);
+        JsonObject salt = new JsonObject();
+        salt.addProperty("count", 2);
+        salt.addProperty("id", HEARTH_AND_HARVEST + ":salt");
+        json.add("result", salt);
+        json.addProperty("experience", 0.35);
+        json.addProperty("cookingtime", 100);
         return json;
     }
 

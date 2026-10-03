@@ -55,6 +55,11 @@ data class Integration(
     val fabricEntrypoints: Map<String, List<String>> = emptyMap(),
     /** Mod ids named as optional dependencies in `neoforge.mods.toml`, and in Forge's `mods.toml`. */
     val neoForgeDependencies: List<String> = emptyList(),
+    /**
+     * Those of [neoForgeDependencies] this mod loads after (`ordering = "AFTER"`), because a data file of
+     * ours replaces one of theirs at the same id, and the mod loaded later wins.
+     */
+    val loadAfter: Set<String> = emptySet(),
 ) {
     /** Whether more than one loader compiles the integration, so that none of its code may name one. */
     val loaderIndependent: Boolean get() = loaders.size > 1
@@ -79,7 +84,7 @@ data class Integration(
     fun neoForgeManifest(modId: String): String = buildString {
         if (mixinConfig != null) append("\n[[mixins]]\nconfig = \"$mixinConfig\"\n")
         neoForgeDependencies.forEach { dependency ->
-            append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\ntype = \"optional\"\nordering = \"NONE\"\nside = \"BOTH\"\n")
+            append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\ntype = \"optional\"\nordering = \"${ordering(dependency)}\"\nside = \"BOTH\"\n")
         }
     }
 
@@ -90,9 +95,11 @@ data class Integration(
      */
     fun forgeManifest(modId: String): String = buildString {
         neoForgeDependencies.forEach { dependency ->
-            append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\nmandatory = false\nversionRange = \"[0,)\"\nordering = \"NONE\"\nside = \"BOTH\"\n")
+            append("\n[[dependencies.$modId]]\nmodId = \"$dependency\"\nmandatory = false\nversionRange = \"[0,)\"\nordering = \"${ordering(dependency)}\"\nside = \"BOTH\"\n")
         }
     }
+
+    private fun ordering(dependency: String): String = if (dependency in loadAfter) "AFTER" else "NONE"
 
     /** Adds the mixin config and the entrypoints to a parsed `fabric.mod.json`. */
     fun patchFabricManifest(json: MutableMap<String, Any?>) {
@@ -314,6 +321,27 @@ val integrations: List<Integration> = listOf(
         loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
         mixinConfig = "thirstwastaken2.spelunkery.mixins.json",
         neoForgeDependencies = listOf("spelunkery"),
+    ),
+    // NeoForge only: Hearth and Harvest's newest build is NeoForge 1.21.1, and its tanks move water as
+    // NeoForge fluid stacks. Its salt recipe is replaced by one in core's data, so this mod loads after it.
+    // See src/main/hearthandharvest/AGENTS.md.
+    Integration(
+        dir = "hearthandharvest",
+        depsKey = "deps.hearth_and_harvest",
+        loaders = setOf(Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.hearthandharvest.mixins.json",
+        neoForgeDependencies = listOf("hearthandharvest"),
+        loadAfter = setOf("hearthandharvest"),
+    ),
+    // Its 1.20.1 build on Forge 47, the early mod, has no tank that needs code; its one mixin makes the
+    // same salt recipe take only sea water, since on Forge the mod's own file wins over a replacement.
+    // See src/main/hearthandharvestforge/AGENTS.md.
+    Integration(
+        dir = "hearthandharvestforge",
+        depsKey = "deps.hearth_and_harvest",
+        loaders = setOf(Loader.FORGE),
+        mixinConfig = "thirstwastaken2.hearthandharvestforge.mixins.json",
+        neoForgeDependencies = listOf("hearthandharvest"),
     ),
 )
 

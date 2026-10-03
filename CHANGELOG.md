@@ -9,6 +9,14 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Spelunkery, on Fabric and NeoForge 1.21.1:
   - Spring Water is always Pure.
   - Only sea water boils down to salt in a furnace. Fresh water is purified there as usual.
+- Hearth and Harvest, on NeoForge 1.21.1 and Forge 1.20.1:
+  - Juices, milks, wines and stews restore thirst. Alcohol restores less than juice.
+  - Only a bottle of sea water boils down to salt in a Cooking Pot. A fresh bottle is purified there
+    instead.
+  - Jugs keep the grade of the water poured in, so nothing comes back out cleaner than it went in. On
+    1.21.1, so do Troughs, the Sprinkler and the Stomping Basin.
+  - A Jug filled from the sea holds sea water, and the Sink's endless water is Murky. 1.21.1 only.
+  - The Cask won't age drinks from sea water. 1.21.1 only.
 
 ## [1.6.1] - 2026-10-02
 

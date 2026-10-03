@@ -298,6 +298,9 @@ public final class ThirstConfig {
         herbalBrewsDrinks(drinks);
         beachpartyDrinks(drinks);
         beachpartyFoods(foods);
+        // And for Hearth and Harvest, added after that.
+        hearthAndHarvestDrinks(drinks);
+        hearthAndHarvestFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -419,6 +422,7 @@ public final class ThirstConfig {
         farmAndCharmDrinks(values);
         herbalBrewsDrinks(values);
         beachpartyDrinks(values);
+        hearthAndHarvestDrinks(values);
         return values;
     }
 
@@ -448,6 +452,7 @@ public final class ThirstConfig {
         farmAndCharmFoods(values);
         candlelightFoods(values);
         beachpartyFoods(values);
+        hearthAndHarvestFoods(values);
         return values;
     }
 
@@ -745,6 +750,40 @@ public final class ThirstConfig {
      */
     private static void beachpartyFoods(Map<String, int[]> foods) {
         putMissing(foods, 4, 5, "beachparty:coconut_open");
+    }
+
+    /**
+     * Hearth and Harvest's drinks, by id alone; its 1.20.1 build has a subset of the same ids. Its own
+     * Thirst compat names the upstream mod and never runs with this one, and its values are two to four
+     * times ours for alcohol, so these follow Farmer's Delight's juices and milk and Brewin' and Chewin's
+     * beer, wine and rum instead. Aged drinks are safe whatever fresh water went into the cask; sea water
+     * ages nothing (see {@code src/main/hearthandharvest}).
+     */
+    private static void hearthAndHarvestDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 8, 13, "hearthandharvest:blueberry_juice", "hearthandharvest:cherry_juice",
+                "hearthandharvest:raspberry_juice", "hearthandharvest:red_grape_juice",
+                "hearthandharvest:green_grape_juice", "hearthandharvest:sweet_berry_juice",
+                "hearthandharvest:glow_berry_juice");
+        putMissing(drinks, 6, 8, "hearthandharvest:goat_milk_bottle", "hearthandharvest:chocolate_milk_bottle");
+        putMissing(drinks, 5, 6, "hearthandharvest:mead", "hearthandharvest:hard_cider", "hearthandharvest:root_beer");
+        putMissing(drinks, 3, 4, "hearthandharvest:blueberry_wine", "hearthandharvest:cherry_wine",
+                "hearthandharvest:raspberry_wine", "hearthandharvest:red_grape_wine",
+                "hearthandharvest:green_grape_wine", "hearthandharvest:sweet_berry_wine",
+                "hearthandharvest:glow_berry_wine", "hearthandharvest:melon_wine");
+        putMissing(drinks, 2, 2, "hearthandharvest:moonshine");
+        putMissing(drinks, 2, 3, "hearthandharvest:syrup_bottle");
+    }
+
+    /**
+     * Hearth and Harvest's stews and fruit: a stew as Farmer's Delight's, berries and grapes as sweet
+     * berries, a baked or caramel apple as an apple. {@code onion_soup} is its 1.20.1 build's own. Jams,
+     * pickles, cheese and the dry foods are left out.
+     */
+    private static void hearthAndHarvestFoods(Map<String, int[]> foods) {
+        putMissing(foods, 4, 5, "hearthandharvest:corn_stew", "hearthandharvest:onion_soup");
+        putMissing(foods, 1, 2, "hearthandharvest:blueberries", "hearthandharvest:raspberry",
+                "hearthandharvest:cherry", "hearthandharvest:red_grapes", "hearthandharvest:green_grapes");
+        putMissing(foods, 2, 3, "hearthandharvest:baked_apple", "hearthandharvest:caramel_apple");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

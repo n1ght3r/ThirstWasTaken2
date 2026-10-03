@@ -240,6 +240,14 @@ dependencies {
         runClientMod(listOf("expanded-delight", "expandeddelight", "farmers-delight", "farmersdelight"), "maven.modrinth:expanded-delight:$it") { isTransitive = false }
     }
 
+    // Hearth and Harvest, on the node that sets it. src/main/hearthandharvest's mixins name its tank,
+    // sink, jug, sprinkler and cask classes, so they compile against it.
+    findProperty("deps.hearth_and_harvest")?.let {
+        compileOnly("maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
+        runClientMod(listOf("hearth-and-harvest", "hearthandharvest", "farmers-delight", "farmersdelight"),
+            "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
+    }
+
     if (createVersion != null && createLibraries != null) {
         compileOnly("maven.modrinth:create:$createVersion") { isTransitive = false }
         compileOnly(files(createLibraries.map { it.destinationDir.listFiles().orEmpty().toList() })

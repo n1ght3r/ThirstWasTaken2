@@ -122,16 +122,20 @@ resolves on both nodes.
 
 | # | Item | Kind | Nodes | Status |
 |---|---|---|---|---|
-| 1 | The mod on the `runClient` classpath | build | `1.21.1-neoforge`, `1.20.1-forge` | Not started |
-| 2 | Thirst values for the drinks and foods | data | all (config) | Not started |
-| 3 | What happens to a grade, per path; which salt recipe wins | investigation | both | Not started |
-| 4 | Tanks keep the grade (`HHFluidHandling`) | decision, then code | `1.21.1-neoforge` | Not decided |
-| 5 | Water from nothing or from the world: Sink, Jug item, sponge, rain | decision, then code | `1.21.1-neoforge` | Not decided |
-| 6 | Sea water refused in the cask | code | `1.21.1-neoforge` (1.20.1 if step 3 finds water there) | Not started |
-| 7 | The salt recipe collision | decision, then data | both | Not decided |
+| 1 | The mod on the `runClient` classpath | build | `1.21.1-neoforge`, `1.20.1-forge` | **Done** (2026-10-03) |
+| 2 | Thirst values for the drinks and foods | data | all (config) | **Done** (2026-10-03), values as proposed |
+| 3 | What happens to a grade, per path; which salt recipe wins | investigation, then check | both | **Done** (2026-10-03), as the check of steps 4 to 7 |
+| 4 | Tanks keep the grade (`HHFluidHandling`) | decision, then code | `1.21.1-neoforge` | **Decided** (2026-10-03): (a), and **done** |
+| 5 | Water from nothing or from the world: Sink, Jug item, sponge, rain | decision, then code | `1.21.1-neoforge` | **Decided** (2026-10-03): as proposed, and **done** |
+| 6 | Sea water refused in the cask | code | `1.21.1-neoforge` | **Done** (2026-10-03); 1.20.1 needs none |
+| 7 | The salt recipe collision | decision, then data | both | **Decided** (2026-10-03): (a), and **done**; a mixin on Forge, see below |
 | 8 | Ask upstream to target `thirstwastaken2` | outreach | — | Not done: optional, for the user to raise |
-| 9 | Nothing crashes without the mod | test | both | Not started |
-| 10 | Changelog, player docs, store pages | docs | — | Not started |
+| 9 | Nothing crashes without the mod | test | both | **Done** (2026-10-03) |
+| 10 | Changelog, player docs, store pages | docs | — | **Done** (2026-10-03) |
+| 11 | The Jug keeps the grade on Forge 1.20.1 | code | `1.20.1-forge` | **Done** (2026-10-03), after the first pass |
+
+How it works now is in [src/main/hearthandharvest/AGENTS.md](../../../../src/main/hearthandharvest/AGENTS.md)
+and [src/main/hearthandharvestforge/AGENTS.md](../../../../src/main/hearthandharvestforge/AGENTS.md).
 
 ## 1. The mod on the `runClient` classpath
 
@@ -142,6 +146,8 @@ integration table once step 4 brings code (`compileOnly` then too, since the mix
 `HHFluidHandling` and `JugBlockItem`). `-PwithoutOptional=hearth-and-harvest` leaves it out.
 
 **Check:** both nodes' `runClient` come up with the mod listed, no errors from either mod at load.
+Done as written; the mod is `compileOnly` on `1.21.1-neoforge` only, since nothing compiles against it on
+Forge.
 
 ## 2. Thirst values
 
@@ -149,7 +155,8 @@ integration table once step 4 brings code (`compileOnly` then too, since the mix
 `putMissing`. A gametest in the shape of `fruitsDelightDrinksAreMergedIntoAnOlderConfig`: the defaults,
 that jam and the dry foods are left out, and that a merge keeps a player's value.
 
-**Check:** `runGametest` on `1.21.1`, `1.21.1-neoforge` and `1.20.1-forge`.
+**Check:** `runGametest` on `1.21.1`, `1.21.1-neoforge` and `1.20.1-forge`. Passed (200, 200, 199) with
+`hearthAndHarvestDrinksAreMergedIntoAnOlderConfig`. `root_beer` stays at 5, 6: it was not drunk in game.
 
 ## 3. Investigation
 
@@ -171,6 +178,33 @@ Sweat left out, and the salt and id cases again on `1.20.1-forge`:
 | Drinking from thirst 4, quenched 0 | juice to 12 and 12, wine to 7 and 4, the tooltips show the droplets; whether `root_beer` makes the player Drunk |
 
 **Check:** the script passes whole and this section records what it found.
+
+The table above was written before the code, from the source and the 1.3.4 jar's bytecode, and the code
+was built against it; the script was written with the fixes in, so it checks them. On 2026-10-03,
+[hearth-and-harvest.jsonl](../../../../tools/agent/integrations/hearth-and-harvest.jsonl) on
+`1.21.1-neoforge` and [hearth-and-harvest-1.20.1.jsonl](../../../../tools/agent/integrations/hearth-and-harvest-1.20.1.jsonl)
+on `1.20.1-forge` pass whole:
+
+| Case | Found |
+|---|---|
+| Every id in step 2 | exists on both nodes (1.20.1 has its subset) |
+| A Sink left 10 s, then a glass bottle | Murky |
+| A salty bottle on the Sink | refused, kept in hand |
+| A Pure bottle into the Sink, then drawn back | taken; Murky comes back |
+| A Dirty bottle into a Trough, a Clean one after it, then a draw | Dirty taken, Clean refused, Dirty drawn |
+| A salty bottle into an empty Trough, then a draw | salty |
+| A Dirty bucket into the Sprinkler, then an empty bucket | a Dirty bucket |
+| The Jug item on an ocean source | the jug holds sea water |
+| A wet sponge stomped in a Stomping Basin, then a bottle | Murky |
+| Mead's ingredients in a Cask, with a Murky bottle and with a salty one | the first ages, the second does not start |
+| A Murky, a sea water and a Pure bottle in heated Cooking Pots | Pure water; two salt; the Pure bottle stays, so the replacement won (1.21.1) or the mixin holds (1.20.1) |
+| On 1.20.1, a Dirty bucket into a placed Jug, a Clean one after it, then an empty bucket; a salty one into a new Jug | Dirty taken, Clean refused, Dirty drawn; salty drawn (added later, see "The Jug on Forge") |
+| Drinking from thirst 4 | cherry juice to 12 and 12, red grape wine to 7 and 4 (1.21.1); cherry juice to 12 on 1.20.1, where a juice is a food and needs hunger |
+
+What the first runs found: on Forge the replacement file lost to Hearth and Harvest's own and the Pure
+bottle boiled into salt, so step 7 changed there (below). Expanded Delight, also on the 1.21.1 client,
+refused the sea water bottle in the pot; step 7 says how. The furnace stack case was not run: Hearth and
+Harvest's stacking leaves our stamped bottles alone, since they stack only with their own grade.
 
 ## 4. Decision: tanks keep the grade
 
@@ -197,6 +231,11 @@ Harvest tank follows one rule.
 **Check:** the step 3 cases expect the grade back: Dirty in, Dirty out; sea water in, salty out; a
 Dirty bottle into a Clean jug refused.
 
+**Decided (a) and done.** `FluidHandlingMixin` wraps both methods; the pour is simulated against a
+`StampingTank` that stamps what it is filled with, since Hearth and Harvest checks a pour with plain water
+first, which a graded tank would refuse. The Sprinkler's `FluidUtil` call is replaced by `useOnTank`, so a
+glass bottle now draws from it too. Passed as in step 3.
+
 ## 5. Decision: water from nothing or from the world
 
 Step 4 keeps a grade that exists. Four places make water without one:
@@ -218,6 +257,12 @@ the fill would not take, or accept a sink that stays as it was poured.
 **Check:** the step 3 cases: the sink gives Murky, the jug from the ocean gives sea water, the ocean
 sponge gives Murky, a rain-filled trough gives Clean.
 
+**Decided as proposed and done**, with two changes. `StandingWater` stayed where it is: the integration has
+its own `HearthWater.STANDING`, the same Murky, rather than moving a class another integration owns. And
+the open question is settled by the sink holding nothing but its own water: everything poured into it
+becomes Murky, sea water is refused, and water saved unstamped is restamped first, so the self-fill always
+takes. Rain in a trough was not run in game; the mixin is one line on the rain fill.
+
 ## 6. Sea water refused in the cask
 
 Mead, moonshine and root beer take a water bottle by `potion_contents` alone. As with Brewin' and
@@ -232,6 +277,9 @@ takes water, and if none does, 1.20.1 needs no code at all.
 
 **Check:** the step 3 cask case: mead from the plain and the Dirty bottle, nothing from the salty one.
 A line in `docs/dev/mechanics/SALT-WATER-REFUSALS.md`.
+
+**Done**, on `CaskBlockEntity.getMatchingRecipe`. 1.0.12c has only the honey bottle mead, so 1.20.1 needs
+nothing.
 
 ## 7. Decision: the salt recipe collision
 
@@ -256,6 +304,21 @@ Forge `forge:nbt`-style partial ingredient); `checkDataConditions` covers both.
 **Check:** step 3's pot cases: Dirty bottle → Pure water, sea water bottle → 2 salt, Pure bottle →
 nothing, water bucket → 8 salt. Run on both nodes.
 
+**Decided (a) and done**, differently per loader:
+
+- **1.21.1.** The replacement file as written, from `FarmersDelightRecipeProvider`, generated for 1.21.1
+  only, with `ordering = "AFTER"` from the row's new `loadAfter`. It wins: the Pure bottle stays in the pot.
+- **Forge 1.20.1.** The replacement lost whatever the ordering, so it was dropped. In its place
+  `src/main/hearthandharvestforge` has one mixin on Farmer's Delight's `CookingPotRecipe.matches`: the
+  recipe `minecraft:salt_from_bottle` fails when a water container in the pot is not salty. Same result.
+- **Expanded Delight** refuses sea water in every Cooking Pot recipe, which also stopped the salt. Its
+  mixin now lets through a recipe that asks for sea water itself, an ingredient that takes the salty stack
+  and not the same stack fresh. `expanded-delight.jsonl` still passes.
+- `farmers-delight.jsonl` and its 1.20.1 twin put a salty bottle in the pot and expect it to stay, so they
+  now run with `-PwithoutOptional=hearth-and-harvest`.
+
+The bucket case was not run; its recipe is untouched.
+
 ## 8. Optional: ask upstream to target `thirstwastaken2`
 
 Hearth and Harvest already ships Thirst compat, for the upstream mod. A data pack file in its own jar
@@ -267,7 +330,7 @@ Our config still wins over it. Not needed for anything above.
 
 `checkOptionalSeam`, `checkLoaderSeam` and `checkDataConditions` pass on both nodes, and
 `tools/agent/smoke/boot.jsonl` with `-PwithoutOptional=hearth-and-harvest,cold-sweat` comes up and stays
-up on `1.21.1-neoforge` and `1.20.1-forge`.
+up on `1.21.1-neoforge` and `1.20.1-forge`. **Done** (2026-10-03).
 
 ## 10. Docs
 
@@ -275,6 +338,15 @@ up on `1.21.1-neoforge` and `1.20.1-forge`.
 entry, the NeoForge and Forge rows in `docs/docs/installation.md`, the Modrinth and CurseForge
 compatibility tables, `src/main/hearthandharvest/AGENTS.md` once there is code, and the root `AGENTS.md`
 integration row. Other versions ignore Hearth and Harvest, which has no build for them.
+
+**Done** (2026-10-03).
+
+## The Jug on Forge (done, 2026-10-03)
+
+Left open in the first pass: on 1.20.1 the placed Jug moves water through item fluid capabilities, and
+Forge's bucket wrapper pours and draws plain water, so a Dirty bucket came back Clean. `JugBlockMixin` in
+`src/main/hearthandharvestforge` wraps the held container's handler so that the grade crosses it both
+ways, as on the 1.21.1 tanks. Checked by the 1.20.1 script.
 
 ## What 1.4.0 changes
 
