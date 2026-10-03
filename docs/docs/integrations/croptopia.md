@@ -1,4 +1,8 @@
-# ![](https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png){.mod-icon} Croptopia
+---
+title: "Croptopia"
+---
+
+![Croptopia](https://media.forgecdn.net/attachments/330/750/croptopia.png){.mod-banner}
 
 With Croptopia installed, its drinks, soups and juicier fruit restore thirst, and sea water can't be
 used in its recipes.

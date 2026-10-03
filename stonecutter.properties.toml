@@ -7,7 +7,7 @@
 mod.id = "thirstwastaken2"
 mod.name = "ThirstWasTaken2"
 mod.group = "com.thirstwastaken2"
-mod.version = "1.6.1"
+mod.version = "1.6.2"
 
 deps.fabric_loader = "0.19.5"
 # Pinned to a release rather than `1.17-SNAPSHOT`, so the same commit builds the same jars later.

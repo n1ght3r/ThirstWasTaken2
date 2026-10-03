@@ -308,7 +308,7 @@ Also works with:
     <td width="55%">Water in its Bog, Bayou, Dark Swamp and Blackwater River is Dirty, and the sea at its Mud Beach is salty. Its drinks restore thirst, and so does sipping from its milk cauldron.</td>
   </tr>
   <tr>
-    <td width="45%"><img alt="Croptopia icon" src="https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia">Croptopia</a><br><i>Fabric, NeoForge and Forge</i></td>
+    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia"><img alt="Croptopia" src="https://media.forgecdn.net/attachments/330/750/croptopia.png" width="172"></a><br><i>Fabric, NeoForge and Forge</i></td>
     <td width="55%">Its juices, teas, soups and fruit restore thirst, and sea water crafts nothing of it.</td>
   </tr>
 </table>

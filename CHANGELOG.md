@@ -2,7 +2,10 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.6.2] - 2026-10-03
+
+Five more mods join: Spelunkery, Hearth and Harvest, No Man's Land, Let's Do: Vinery and Croptopia.
+Croptopia works on almost every version.
 
 ### Added
 
@@ -28,6 +31,11 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Croptopia, on Fabric and NeoForge 26.2, 26.1 and 1.21.1, and on Fabric and Forge 1.20.1:
   - Juices, smoothies, teas, coffees, soups, salads and the juicier fruit restore thirst.
   - A bucket of sea water won't craft its water bottles, tea or anything else that takes water.
+
+### Fixed
+
+- The feet and the fork at the top of the Hanging Pot's stand no longer look paler than the rest of
+  the wood.
 
 ## [1.6.1] - 2026-10-02
 
