@@ -26,12 +26,14 @@ npm run docs:build    # must pass before you call a docs change done
 `docs/` contains all player and server documentation. Pages describing gameplay belong in
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
-sidebar's Integrations group in `.vitepress/config.mts`, and a row in `MODRINTH.md` and
-`CURSEFORGE.md`. There, Mod Compatibility opens with one collapsed section per family of mods, with no
+sidebar's Integrations group in `.vitepress/config.mts`. It gets a row in `MODRINTH.md` and
+`CURSEFORGE.md` only when it is a Farmer's Delight addon or a Let's Do mod, or when the maintainer
+asks; any other new integration stays off the store pages, which point to the site's full list. There, Mod Compatibility opens with one collapsed section per family of mods, with no
 heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews, Beachparty and Vinery), then
 the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
 mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
-Terralith). A family is a `<details>` on Modrinth, whose summary is the main mod's icon and
+Spelunkery). That table stays short: the rest are left to "...and more. [View full list]", which links
+to the site's `docs/installation#compatible-mods` (the store pages strip in-page anchors). A family is a `<details>` on Modrinth, whose summary is the main mod's icon and
 "<b>Name and its addons</b>, click to expand" (the Let's Do family's is just "<b>Let's Do mods</b>") (Farmer's Delight's is its banner at 204 px wide,
 unlinked so a click still opens it, then "<b>and its addons</b>, click to expand"), and on CurseForge,
 which strips `<details>` and ignores `align` and `vertical-align` on an image, the main mod's icon and

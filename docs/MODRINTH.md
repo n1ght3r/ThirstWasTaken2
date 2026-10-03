@@ -297,21 +297,12 @@ Also works with:
     <td width="55%">Thirst drains faster in summer and slower in winter, and tropical biomes dry out in their dry season.</td>
   </tr>
   <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#the-four-grades"><img alt="Terralith" src="https://wsrv.nl/?url=https%3A%2F%2Fuser-images.githubusercontent.com%2F63272345%2F224816673-7f074733-da85-4673-a7b0-3362651c4dbd.png&amp;w=600" width="300"></a><br><i>Fabric, NeoForge and Forge</i></td>
-    <td width="55%">Water in its Orchid Swamp and Ice Marsh is Dirty, the same as in a vanilla swamp.</td>
-  </tr>
-  <tr>
     <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/spelunkery"><img alt="Spelunkery" src="https://cdn-raw.modrinth.com/data/krskFMfA/images/3334d4f848d7b094895130da48ed04b15862fb52.png" width="200"></a><br><i>1.21.1 Fabric and NeoForge</i></td>
     <td width="55%">Its Spring Water is always Pure, and only sea water boils down to salt in a furnace.</td>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/no-mans-land"><img alt="No Man's Land" src="https://cdn.modrinth.com/data/cached_images/527cfcbdc05088cfec1c032302d336faf9106621.png" width="300"></a><br><i>1.21.1 NeoForge</i></td>
-    <td width="55%">Water in its Bog, Bayou, Dark Swamp and Blackwater River is Dirty, and the sea at its Mud Beach is salty. Its drinks restore thirst, and so does sipping from its milk cauldron.</td>
-  </tr>
-  <tr>
-    <td width="45%"><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia"><img alt="Croptopia" src="https://media.forgecdn.net/attachments/330/750/croptopia.png" width="172"></a><br><i>Fabric, NeoForge and Forge</i></td>
-    <td width="55%">Its juices, teas, soups and fruit restore thirst, and sea water crafts nothing of it.</td>
   </tr>
 </table>
+
+...and more. [View full list](https://n1ght3r.github.io/ThirstWasTaken2/docs/installation#compatible-mods)
 
 ## Version Support
 
