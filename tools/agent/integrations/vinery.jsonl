@@ -1,0 +1,125 @@
+// Let's Do: Vinery in a real client. Vinery has no integration directory: its juices, wines and fruit
+// are ThirstConfig ids (vineryDrinks, vineryFoods), and it holds no water. What this proves: every id
+// ThirstConfig lists for the mod exists, and a cider, a wine and a grape restore what ThirstConfig
+// says. Vinery 1.5.4's juices cannot be drunk on Fabric, with or without this mod: its
+// GrapejuiceBottleItem declares the pre 1.21 getUseDuration(ItemStack), which Fabric never calls, so the
+// use never finishes. NeoForge still calls it, and there a juice drinks in two seconds. The juice case
+// is recorded, not checked: read drink_red_grapejuice_state by hand. Fabric: 4, 0 and the juice still
+// in hand. NeoForge: 12, 12 (8, 13 from 4, quenched held at the thirst). When Fabric matches NeoForge,
+// Vinery has fixed it: drop the Fabric note from docs/docs/integrations/vinery.md.
+// Runs on both 1.21.1 nodes, with Vinery's runClientMod line uncommented. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/vinery.jsonl -Pquickplay=LetsDoAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/vinery.jsonl -Pquickplay=LetsDoAgent -PwithoutOptional=cold-sweat
+// LetsDoAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> LetsDoAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/vinery.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199, biome plains. The player stands at 0.5 200 0.5.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+
+// Every id ThirstConfig lists: /give refuses an unknown item.
+{"id": "id_apple_juice", "command": "server.command", "args": {"command": "give @p vinery:apple_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:red_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:white_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_savanna_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:red_savanna_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_savanna_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:white_savanna_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_taiga_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:red_taiga_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_taiga_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:white_taiga_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_jungle_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:red_jungle_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_jungle_grapejuice", "command": "server.command", "args": {"command": "give @p vinery:white_jungle_grapejuice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_cider", "command": "server.command", "args": {"command": "give @p vinery:apple_cider"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kelp_cider", "command": "server.command", "args": {"command": "give @p vinery:kelp_cider"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mead", "command": "server.command", "args": {"command": "give @p vinery:mead"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_wine", "command": "server.command", "args": {"command": "give @p vinery:apple_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glowing_wine", "command": "server.command", "args": {"command": "give @p vinery:glowing_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_solaris_wine", "command": "server.command", "args": {"command": "give @p vinery:solaris_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_eiswein", "command": "server.command", "args": {"command": "give @p vinery:eiswein"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_aegis_wine", "command": "server.command", "args": {"command": "give @p vinery:aegis_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_villagers_fright", "command": "server.command", "args": {"command": "give @p vinery:villagers_fright"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_clark_wine", "command": "server.command", "args": {"command": "give @p vinery:clark_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_jellie_wine", "command": "server.command", "args": {"command": "give @p vinery:jellie_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_noir_wine", "command": "server.command", "args": {"command": "give @p vinery:noir_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_wine", "command": "server.command", "args": {"command": "give @p vinery:red_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_strad_wine", "command": "server.command", "args": {"command": "give @p vinery:strad_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cherry_wine", "command": "server.command", "args": {"command": "give @p vinery:cherry_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cristel_wine", "command": "server.command", "args": {"command": "give @p vinery:cristel_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lilitu_wine", "command": "server.command", "args": {"command": "give @p vinery:lilitu_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_jo_special_mixture", "command": "server.command", "args": {"command": "give @p vinery:jo_special_mixture"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bolvar_wine", "command": "server.command", "args": {"command": "give @p vinery:bolvar_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_magnetic_wine", "command": "server.command", "args": {"command": "give @p vinery:magnetic_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_stal_wine", "command": "server.command", "args": {"command": "give @p vinery:stal_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chenet_wine", "command": "server.command", "args": {"command": "give @p vinery:chenet_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bottle_mojang_noir", "command": "server.command", "args": {"command": "give @p vinery:bottle_mojang_noir"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chorus_wine", "command": "server.command", "args": {"command": "give @p vinery:chorus_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_creepers_crush", "command": "server.command", "args": {"command": "give @p vinery:creepers_crush"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mellohi_wine", "command": "server.command", "args": {"command": "give @p vinery:mellohi_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_mash", "command": "server.command", "args": {"command": "give @p vinery:apple_mash"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grape", "command": "server.command", "args": {"command": "give @p vinery:red_grape"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_grape", "command": "server.command", "args": {"command": "give @p vinery:white_grape"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_savanna_grapes_red", "command": "server.command", "args": {"command": "give @p vinery:savanna_grapes_red"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_savanna_grapes_white", "command": "server.command", "args": {"command": "give @p vinery:savanna_grapes_white"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_taiga_grapes_red", "command": "server.command", "args": {"command": "give @p vinery:taiga_grapes_red"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_taiga_grapes_white", "command": "server.command", "args": {"command": "give @p vinery:taiga_grapes_white"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_jungle_grapes_red", "command": "server.command", "args": {"command": "give @p vinery:jungle_grapes_red"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_jungle_grapes_white", "command": "server.command", "args": {"command": "give @p vinery:jungle_grapes_white"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cherry", "command": "server.command", "args": {"command": "give @p vinery:cherry"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// Drinking and eating from thirst 4, quenched 0, looking up so nothing is placed: a cider is 5, 6, a
+// wine 3, 4, a grape 1, 2, and a juice as above. Hunger first, so the grape can be eaten.
+{"id": "drink_red_grapejuice_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_red_grapejuice_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_red_grapejuice_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_red_grapejuice_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_red_grapejuice_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_red_grapejuice_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with vinery:red_grapejuice"}}
+{"id": "drink_red_grapejuice_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_grapejuice_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_red_grapejuice_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_grapejuice_state", "command": "client.state"}
+{"id": "drink_apple_cider_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_apple_cider_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_apple_cider_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_apple_cider_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_apple_cider_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_apple_cider_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with vinery:apple_cider"}}
+{"id": "drink_apple_cider_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_apple_cider_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_apple_cider_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_apple_cider_state", "command": "client.state", "expect": {"result.thirst": 9, "result.quenched": 6}}
+{"id": "drink_red_wine_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_red_wine_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_red_wine_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_red_wine_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_red_wine_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_red_wine_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with vinery:red_wine"}}
+{"id": "drink_red_wine_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_wine_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_red_wine_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_wine_state", "command": "client.state", "expect": {"result.thirst": 7, "result.quenched": 4}}
+{"id": "drink_red_grape_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_red_grape_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_red_grape_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_red_grape_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_red_grape_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_red_grape_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with vinery:red_grape"}}
+{"id": "drink_red_grape_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_grape_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_red_grape_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_red_grape_state", "command": "client.state", "expect": {"result.thirst": 5, "result.quenched": 2}}
+
+{"id": "done", "command": "wait", "args": {"ticks": 20}}

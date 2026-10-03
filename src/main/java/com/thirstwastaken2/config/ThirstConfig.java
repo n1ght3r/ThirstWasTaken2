@@ -304,6 +304,9 @@ public final class ThirstConfig {
         // And for No Man's Land, added after that.
         noMansLandDrinks(drinks);
         noMansLandFoods(foods);
+        // And for Vinery, added after that.
+        vineryDrinks(drinks);
+        vineryFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -427,6 +430,7 @@ public final class ThirstConfig {
         beachpartyDrinks(values);
         hearthAndHarvestDrinks(values);
         noMansLandDrinks(values);
+        vineryDrinks(values);
         return values;
     }
 
@@ -458,6 +462,7 @@ public final class ThirstConfig {
         beachpartyFoods(values);
         hearthAndHarvestFoods(values);
         noMansLandFoods(values);
+        vineryFoods(values);
         return values;
     }
 
@@ -811,6 +816,39 @@ public final class ThirstConfig {
     private static void noMansLandFoods(Map<String, int[]> foods) {
         putMissing(foods, 4, 5, "nomansland:witch_stew");
         putMissing(foods, 2, 3, "nomansland:pear", "nomansland:syruped_pear", "nomansland:honeyed_apple");
+    }
+
+    /**
+     * Let's Do: Vinery's juices and wines, by id alone like the other Let's Do mods. Vinery holds no water:
+     * the Apple Press squeezes fruit and the Fermentation Barrel ferments juice, so nothing here has a
+     * grade, and a placed bottle is only stored, never drunk. Juices are Farmer's Delight's, wines Brewin'
+     * and Chewin's, the ciders and mead its beer and mead, as Hearth and Harvest's are. A big bottle and a
+     * small one restore the same: Vinery's size is only its look. Vinery 1.5.4's juices drink on NeoForge
+     * only; on Fabric its juice item never finishes being used, ours or not (see
+     * {@code tools/agent/integrations/vinery.jsonl}).
+     */
+    private static void vineryDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 8, 13, "vinery:apple_juice", "vinery:red_grapejuice", "vinery:white_grapejuice",
+                "vinery:red_savanna_grapejuice", "vinery:white_savanna_grapejuice", "vinery:red_taiga_grapejuice",
+                "vinery:white_taiga_grapejuice", "vinery:red_jungle_grapejuice", "vinery:white_jungle_grapejuice");
+        putMissing(drinks, 5, 6, "vinery:apple_cider", "vinery:kelp_cider", "vinery:mead");
+        putMissing(drinks, 3, 4, "vinery:apple_wine", "vinery:glowing_wine", "vinery:solaris_wine",
+                "vinery:eiswein", "vinery:aegis_wine", "vinery:villagers_fright", "vinery:clark_wine",
+                "vinery:jellie_wine", "vinery:noir_wine", "vinery:red_wine", "vinery:strad_wine",
+                "vinery:cherry_wine", "vinery:cristel_wine", "vinery:lilitu_wine", "vinery:jo_special_mixture",
+                "vinery:bolvar_wine", "vinery:magnetic_wine", "vinery:stal_wine", "vinery:chenet_wine",
+                "vinery:bottle_mojang_noir", "vinery:chorus_wine", "vinery:creepers_crush", "vinery:mellohi_wine");
+    }
+
+    /**
+     * Vinery's fruit; see {@link #vineryDrinks}. Every grape is a sweet berry, whatever food Vinery gives
+     * the jungle ones, the cherry a sweet berry too, apple mash an apple. The rotten cherry is left out.
+     */
+    private static void vineryFoods(Map<String, int[]> foods) {
+        putMissing(foods, 2, 3, "vinery:apple_mash");
+        putMissing(foods, 1, 2, "vinery:red_grape", "vinery:white_grape", "vinery:savanna_grapes_red",
+                "vinery:savanna_grapes_white", "vinery:taiga_grapes_red", "vinery:taiga_grapes_white",
+                "vinery:jungle_grapes_red", "vinery:jungle_grapes_white", "vinery:cherry");
     }
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

@@ -533,6 +533,57 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Vinery, another Let's Do mod, is never installed here either. Alcohol restores less than juice, and
+     * the wine bottle and the rotten cherry are not listed.
+     */
+    @GameTest
+    public void vineryDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"red_grapejuice", "apple_juice", "apple_cider", "red_wine", "chorus_wine"};
+        String[] foods = {"red_grape", "jungle_grapes_white", "cherry", "apple_mash"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("vinery:" + drink),
+                    "the default drinks should list vinery:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("vinery:" + food),
+                    "the default foods should list vinery:" + food);
+        }
+        TestFixtures.check(helper, defaults.drinks.get("vinery:red_wine")[0] < defaults.drinks.get("vinery:red_grapejuice")[0],
+                "wine should restore less than the juice it is made from");
+        for (String dry : new String[]{"wine_bottle", "rotten_cherry", "red_grape_seeds"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("vinery:" + dry)
+                            && !defaults.drinks.containsKey("vinery:" + dry),
+                    "vinery:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("vinery:" + drink);
+            for (String food : foods) config.foods.remove("vinery:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("vinery:mead", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "vinery:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "vinery:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("vinery:mead"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("vinery:mead")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {

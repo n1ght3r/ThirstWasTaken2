@@ -127,6 +127,11 @@ deps.candlelight = "DEKqjSw9"
 deps.herbalbrews = "43g8sVYA"
 # 2.1.5, the Fabric upload.
 deps.beachparty = "jeZE0Qav"
+# Let's Do: Vinery, whose juices and wines restore thirst. It holds no water, so there is no code for
+# it, only ThirstConfig values; this puts it on runClient to check them. Same versions story as Farm &
+# Charm: both 1.21.1 nodes, and only they.
+# 1.5.4, the Fabric upload.
+deps.vinery = "zump1BXr"
 # Trinkets, which Beachparty's Fabric client entrypoint names whatever its manifest says, only on the
 # runClient classpath. Its Cardinal Components are nested in its jar.
 # 3.10.0, the Fabric upload.
@@ -199,6 +204,9 @@ deps.candlelight = "Cxu0FvZB"
 deps.herbalbrews = "kGYbyn9P"
 # 2.1.5, the NeoForge upload.
 deps.beachparty = "HN4rzKRl"
+# Vinery, runClient only, as in the Fabric table; see there.
+# 1.5.4, the NeoForge upload.
+deps.vinery = "lbCQKzNt"
 # Curios API, which Beachparty's items implement whatever its manifest says, only on the runClient
 # classpath.
 # 9.5.1+1.21.1, the NeoForge upload.

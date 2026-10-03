@@ -196,13 +196,14 @@ MODRINTH_DEPS = [
     ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
     # Hearth and Harvest, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others.
     ModrinthDep("hearth_and_harvest", "hearth-and-harvest", by_id=True),
-    # Let's Do: Farm & Charm and Candlelight, its addon, HerbalBrews and Beachparty, both 1.21.1 nodes,
+    # Let's Do: Farm & Charm and Candlelight, its addon, HerbalBrews, Beachparty and Vinery, both 1.21.1 nodes,
     # pinned by id: their Fabric and NeoForge uploads share a version number. Architectury API, which
     # all of them require, runClient only.
     ModrinthDep("farm_and_charm", "lets-do-farm-charm", by_id=True),
     ModrinthDep("candlelight", "lets-do-candlelight-farmcharm-compat", by_id=True),
     ModrinthDep("herbalbrews", "lets-do-herbalbrews", by_id=True),
     ModrinthDep("beachparty", "lets-do-beachparty", by_id=True),
+    ModrinthDep("vinery", "lets-do-vinery", by_id=True),
     # Trinkets and Curios, which Beachparty needs on Fabric and NeoForge, runClient only.
     ModrinthDep("trinkets", "trinkets", by_id=True, **NO_PAGE),
     ModrinthDep("curios", "curios", by_id=True, **NO_PAGE),

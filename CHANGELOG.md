@@ -23,6 +23,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - The sea at the Mud Beach is salty, like at any other beach.
   - Pear juice, maple syrup, pesto, witch stew and pears restore thirst.
   - Each sip from a milk cauldron restores a quarter of a milk bucket.
+- Let's Do: Vinery, on Fabric and NeoForge 1.21.1: juices, wines, grapes and cherries restore thirst.
+  Wine restores less than the juice it's made from.
 
 ## [1.6.1] - 2026-10-02
 

@@ -268,6 +268,7 @@ val farmAndCharm = findProperty("deps.farm_and_charm") as String?
  */
 val herbalBrews = findProperty("deps.herbalbrews") as String?
 val beachparty = findProperty("deps.beachparty") as String?
+val vinery = findProperty("deps.vinery") as String?
 
 /**
  * Spelunkery's Modrinth version id, on `1.21.1` and `1.21.1-neoforge` only. Nothing is compiled against
@@ -595,9 +596,19 @@ dependencies {
         optionalRunMods.include(names)
     }
 
+    if (vinery != null) {
+        // Nothing of Vinery's is compiled against: its juices and wines are ThirstConfig ids. On
+        // runClient only, to drink them. Off by default: its trees, grapevines and wandering winemaker
+        // slow every client start. Uncomment the line below only to work on it.
+        val names = listOf("vinery", "lets-do-vinery") + architecturyNames
+        // runClientMod(names, "maven.modrinth:lets-do-vinery:$vinery")
+        // Keeps its `-PwithoutOptional` names known while the line above is off.
+        optionalRunMods.include(names)
+    }
+
     // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
     // names, so leaving it out leaves them out; leaving one of them out keeps it for the others.
-    if (farmAndCharm != null || herbalBrews != null || beachparty != null) {
+    if (farmAndCharm != null || herbalBrews != null || beachparty != null || vinery != null) {
         runClientMod(architecturyNames, "maven.modrinth:architectury-api:${property("deps.architectury")}")
     }
 
