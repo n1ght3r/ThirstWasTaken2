@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:cooling_tub"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:barrel",
+    "P": "thirstwastaken2:copper_pipe",
+    "U": "minecraft:cauldron"
+  },
+  "pattern": [
+    "PPP",
+    "PBP",
+    " U "
+  ],
+  "result": {
+    "count": 1,
+    "id": "thirstwastaken2:cooling_tub"
+  }
+}

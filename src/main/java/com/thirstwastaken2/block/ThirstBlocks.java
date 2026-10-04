@@ -35,6 +35,21 @@ public final class ThirstBlocks {
                     .noOcclusion()
                     .pushReaction(PushReaction.POPPED));
 
+    /**
+     * The copper distiller, two blocks wide. Slower to mine than a pot, by hand too. A piston breaks
+     * it rather than pushing one half away from the other. Its firebox is always lit for now, and
+     * glows like a furnace that is.
+     */
+    public static final DistillerBlock COPPER_DISTILLER = Vanilla.registerBlock("copper_distiller",
+            DistillerBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(2.0F)
+                    .sound(SoundType.COPPER)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(DistillerBlock.PART) == DistillerBlock.Part.BOILER ? 13 : 0)
+                    .pushReaction(PushReaction.POPPED));
+
     private ThirstBlocks() { }
 
     /**

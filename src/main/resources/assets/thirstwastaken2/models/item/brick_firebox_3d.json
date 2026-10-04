@@ -1,0 +1,1180 @@
+{
+  "credit": "Made for ThirstWasTaken2 by tools/distiller/generate_distiller_model.py",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "bricks": "minecraft:block/bricks",
+    "recess": "minecraft:block/polished_blackstone",
+    "logs": "minecraft:block/campfire_log_lit",
+    "fire": "minecraft:block/fire_0",
+    "slab_side": "minecraft:block/smooth_stone_slab_side",
+    "slab_top": "minecraft:block/smooth_stone",
+    "soot": "minecraft:block/coal_block",
+    "particle": "minecraft:block/copper_block"
+  },
+  "elements": [
+    {
+      "name": "firebox",
+      "from": [
+        1.0,
+        -1.25,
+        3.25
+      ],
+      "to": [
+        15.0,
+        4.75,
+        11.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            10,
+            15,
+            16
+          ],
+          "texture": "#recess"
+        },
+        "east": {
+          "uv": [
+            4,
+            10,
+            12,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            1,
+            10,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            4,
+            10,
+            12,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            1,
+            4,
+            15,
+            12
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            1,
+            4,
+            15,
+            12
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "firebox_back",
+      "from": [
+        1.0,
+        -1.25,
+        11.25
+      ],
+      "to": [
+        11.0,
+        4.75,
+        14.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            10,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            1,
+            10,
+            4,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            1,
+            10,
+            11,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            12,
+            10,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            1,
+            12,
+            11,
+            15
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            1,
+            1,
+            11,
+            4
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "firebox_left",
+      "from": [
+        11.0,
+        -1.25,
+        1.25
+      ],
+      "to": [
+        15.0,
+        4.75,
+        3.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            10,
+            5,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            12,
+            10,
+            14,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            11,
+            10,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            2,
+            10,
+            4,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            11,
+            2,
+            15,
+            4
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            11,
+            12,
+            15,
+            14
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "firebox_right",
+      "from": [
+        1.0,
+        -1.25,
+        1.25
+      ],
+      "to": [
+        5.0,
+        4.75,
+        3.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11,
+            10,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            12,
+            10,
+            14,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            1,
+            10,
+            5,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            2,
+            10,
+            4,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            1,
+            2,
+            5,
+            4
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            1,
+            12,
+            5,
+            14
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "firebox_lintel",
+      "from": [
+        5.0,
+        2.75,
+        1.25
+      ],
+      "to": [
+        11.0,
+        4.75,
+        3.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            10,
+            11,
+            12
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            12,
+            10,
+            14,
+            12
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            5,
+            10,
+            11,
+            12
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            2,
+            10,
+            4,
+            12
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            5,
+            2,
+            11,
+            4
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            5,
+            12,
+            11,
+            14
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "firebox_sill",
+      "from": [
+        5.0,
+        -1.25,
+        1.25
+      ],
+      "to": [
+        11.0,
+        -0.75,
+        3.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            15.5,
+            11,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            12,
+            15.5,
+            14,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            5,
+            15.5,
+            11,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            2,
+            15.5,
+            4,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            5,
+            2,
+            11,
+            4
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            5,
+            12,
+            11,
+            14
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "logs",
+      "from": [
+        5.5,
+        -0.75,
+        1.75
+      ],
+      "to": [
+        10.5,
+        0.25,
+        3.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5.5,
+            14.5,
+            10.5,
+            15.5
+          ],
+          "texture": "#logs"
+        },
+        "east": {
+          "uv": [
+            12,
+            14.5,
+            13.5,
+            15.5
+          ],
+          "texture": "#logs"
+        },
+        "south": {
+          "uv": [
+            5.5,
+            14.5,
+            10.5,
+            15.5
+          ],
+          "texture": "#logs"
+        },
+        "west": {
+          "uv": [
+            2.5,
+            14.5,
+            4,
+            15.5
+          ],
+          "texture": "#logs"
+        },
+        "up": {
+          "uv": [
+            5.5,
+            2.5,
+            10.5,
+            4
+          ],
+          "texture": "#logs"
+        },
+        "down": {
+          "uv": [
+            5.5,
+            12,
+            10.5,
+            13.5
+          ],
+          "texture": "#logs"
+        }
+      }
+    },
+    {
+      "name": "fire",
+      "from": [
+        5.5,
+        -0.25,
+        2.25
+      ],
+      "to": [
+        10.5,
+        2.75,
+        2.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            7,
+            14,
+            16
+          ],
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "name": "ledge",
+      "from": [
+        0.5,
+        4.75,
+        0.75
+      ],
+      "to": [
+        15.5,
+        5.75,
+        11.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            9,
+            15.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "east": {
+          "uv": [
+            3.5,
+            9,
+            14.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            9,
+            15.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "west": {
+          "uv": [
+            1.5,
+            9,
+            12.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            1.5,
+            15.5,
+            12.5
+          ],
+          "texture": "#slab_top"
+        },
+        "down": {
+          "uv": [
+            0.5,
+            3.5,
+            15.5,
+            14.5
+          ],
+          "texture": "#slab_top"
+        }
+      }
+    },
+    {
+      "name": "ledge_back",
+      "from": [
+        0.5,
+        4.75,
+        11.75
+      ],
+      "to": [
+        11.0,
+        5.75,
+        14.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            9,
+            15.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "east": {
+          "uv": [
+            0.5,
+            9,
+            3.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            9,
+            11,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "west": {
+          "uv": [
+            12.5,
+            9,
+            15.5,
+            10
+          ],
+          "texture": "#slab_side"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            12.5,
+            11,
+            15.5
+          ],
+          "texture": "#slab_top"
+        },
+        "down": {
+          "uv": [
+            0.5,
+            0.5,
+            11,
+            3.5
+          ],
+          "texture": "#slab_top"
+        }
+      }
+    },
+    {
+      "name": "chimney",
+      "from": [
+        11.0,
+        -1.25,
+        11.25
+      ],
+      "to": [
+        15.0,
+        14.75,
+        15.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            0,
+            5,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            11,
+            0,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            11,
+            12,
+            15,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            15,
+            4
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "chimney_top",
+      "from": [
+        11.0,
+        14.75,
+        11.25
+      ],
+      "to": [
+        15.0,
+        15.75,
+        15.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            1,
+            0,
+            5,
+            1
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            4,
+            1
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            11,
+            0,
+            15,
+            1
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            16,
+            1
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            11,
+            12,
+            15,
+            16
+          ],
+          "texture": "#soot"
+        },
+        "down": {
+          "uv": [
+            11,
+            0,
+            15,
+            4
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "chimney_cap_north",
+      "from": [
+        10.5,
+        15.75,
+        10.75
+      ],
+      "to": [
+        15.5,
+        17.25,
+        11.75
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            0.0,
+            5.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            3.5,
+            0.0,
+            4.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            10.5,
+            0.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            11.5,
+            0.0,
+            12.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            10.5,
+            11.5,
+            15.5,
+            12.5
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            10.5,
+            3.5,
+            15.5,
+            4.5
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "chimney_cap_south",
+      "from": [
+        10.5,
+        15.75,
+        14.25
+      ],
+      "to": [
+        15.5,
+        17.25,
+        15.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            0.0,
+            5.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            0,
+            0.0,
+            1,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            10.5,
+            0.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            15,
+            0.0,
+            16,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            10.5,
+            15,
+            15.5,
+            16
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            10.5,
+            0,
+            15.5,
+            1
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "chimney_cap_west",
+      "from": [
+        14.5,
+        15.75,
+        11.75
+      ],
+      "to": [
+        15.5,
+        17.25,
+        14.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0.5,
+            0.0,
+            1.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            1,
+            0.0,
+            3.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            14.5,
+            0.0,
+            15.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            12.5,
+            0.0,
+            15,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            14.5,
+            12.5,
+            15.5,
+            15
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            14.5,
+            1,
+            15.5,
+            3.5
+          ],
+          "texture": "#bricks"
+        }
+      }
+    },
+    {
+      "name": "chimney_cap_east",
+      "from": [
+        10.5,
+        15.75,
+        11.75
+      ],
+      "to": [
+        11.5,
+        17.25,
+        14.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4.5,
+            0.0,
+            5.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "east": {
+          "uv": [
+            1,
+            0.0,
+            3.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "south": {
+          "uv": [
+            10.5,
+            0.0,
+            11.5,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "west": {
+          "uv": [
+            12.5,
+            0.0,
+            15,
+            1.5
+          ],
+          "texture": "#bricks"
+        },
+        "up": {
+          "uv": [
+            10.5,
+            12.5,
+            11.5,
+            15
+          ],
+          "texture": "#bricks"
+        },
+        "down": {
+          "uv": [
+            10.5,
+            1,
+            11.5,
+            3.5
+          ],
+          "texture": "#bricks"
+        }
+      }
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.678,
+        0.678,
+        0.678
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.2712,
+        0.2712,
+        0.2712
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.5424,
+        0.5424,
+        0.5424
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.4068,
+        0.4068,
+        0.4068
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.4339,
+        0.4339,
+        0.4339
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.4339,
+        0.4339,
+        0.4339
+      ]
+    }
+  }
+}

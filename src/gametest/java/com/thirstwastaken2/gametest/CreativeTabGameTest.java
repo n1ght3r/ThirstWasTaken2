@@ -30,7 +30,12 @@ public final class CreativeTabGameTest {
             ThirstItems.COPPER_CANTEEN,
             ThirstItems.IRON_FLASK,
             ThirstItems.COPPER_HANGING_POT,
-            ThirstItems.IRON_HANGING_POT);
+            ThirstItems.IRON_HANGING_POT,
+            ThirstItems.COPPER_DISTILLER,
+            ThirstItems.COPPER_PIPE,
+            ThirstItems.DISTILLER_BOILER,
+            ThirstItems.COOLING_TUB,
+            ThirstItems.BRICK_FIREBOX);
 
     @GameTest
     public void tabIconIsAWaterskin(GameTestHelper helper) {

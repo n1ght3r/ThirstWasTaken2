@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "thirstwastaken2:copper_distiller",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "part": "boiler"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thirstwastaken2:copper_distiller"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "thirstwastaken2:blocks/copper_distiller"
+}

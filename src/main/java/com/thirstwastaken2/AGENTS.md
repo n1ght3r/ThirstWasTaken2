@@ -18,6 +18,8 @@ thirst, and the client only receives it through the `PlayerData` sync.
 | Bowls, waterskin, copper canteen, iron flask, creative tab | `item/` (the three carried containers are one class, `WaterskinItem`) |
 | The mod's own mob effects (Parched) | `effect/ThirstEffects`; what they do lives where they matter, e.g. Parched's drain in `ThirstManager.tickPlayer` |
 | The copper and iron hanging pots: capacity, boiling, filling and drawing | `block/` |
+| The copper distiller, a two-block block placed and broken whole like a bed; no distilling yet | `block/DistillerBlock`; its models from `tools/distiller/generate_distiller_model.py`; checked in a client by `tools/agent/gameplay/distiller.jsonl` |
+| The distiller's four crafting parts (pipe, boiler, cooling tub, brick firebox), plain items under one Mod Items switch | `item/ThirstItems`, `config/ThirstConfig.enableCopperDistiller`; 3D item models from the same generator, the pipe a sprite from `generate_distiller_sprites.py` |
 | Anything about water cleanliness | `purity/` (has its own AGENTS.md) |
 | A vanilla behaviour hook | `mixin/` (has its own AGENTS.md) |
 | Loot, optional mod integrations | `compat/` (has its own AGENTS.md) |

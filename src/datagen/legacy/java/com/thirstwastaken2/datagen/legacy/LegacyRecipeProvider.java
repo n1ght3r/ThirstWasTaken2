@@ -23,6 +23,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -161,6 +162,50 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
                 .define('I', IRON_INGOTS)
                 .unlockedBy("has_iron_ingot", has(IRON_INGOTS))
                 .save(enabled(output, ThirstItems.IRON_FLASK), id("iron_flask"));
+
+        // The distiller and its four parts, as in ThirstRecipeProvider.
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.COPPER_PIPE, 4)
+                .pattern("CCC")
+                .define('C', COPPER_INGOTS)
+                .unlockedBy("has_copper_ingot", has(COPPER_INGOTS))
+                .save(enabled(output, ThirstItems.COPPER_PIPE), id("copper_pipe"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.DISTILLER_BOILER)
+                .pattern(" P ")
+                .pattern("CHC")
+                .define('P', ThirstItems.COPPER_PIPE)
+                .define('C', COPPER_INGOTS)
+                .define('H', ThirstItems.COPPER_HANGING_POT)
+                .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                .save(enabled(output, ThirstItems.DISTILLER_BOILER), id("distiller_boiler"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.COOLING_TUB)
+                .pattern("PPP")
+                .pattern("PBP")
+                .pattern(" U ")
+                .define('P', ThirstItems.COPPER_PIPE)
+                .define('B', Items.BARREL)
+                .define('U', Items.CAULDRON)
+                .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                .save(enabled(output, ThirstItems.COOLING_TUB), id("cooling_tub"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.BRICK_FIREBOX)
+                .pattern("SSS")
+                .pattern("XFX")
+                .pattern("XXX")
+                .define('S', Items.SMOOTH_STONE_SLAB)
+                .define('X', Items.BRICKS)
+                .define('F', Items.CAMPFIRE)
+                .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                .save(enabled(output, ThirstItems.BRICK_FIREBOX), id("brick_firebox"));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ThirstItems.COPPER_DISTILLER)
+                .requires(ThirstItems.BRICK_FIREBOX)
+                .requires(ThirstItems.DISTILLER_BOILER)
+                .requires(ThirstItems.COOLING_TUB)
+                .requires(ThirstItems.COPPER_PIPE)
+                .unlockedBy("has_distiller_boiler", has(ThirstItems.DISTILLER_BOILER))
+                .save(enabled(output, ThirstItems.COPPER_DISTILLER), id("copper_distiller"));
 
         // A bucket of fresh water poured into a fired bowl, graded 2.
         Identifier bowlRecipe = id("terracotta_water_bowl");

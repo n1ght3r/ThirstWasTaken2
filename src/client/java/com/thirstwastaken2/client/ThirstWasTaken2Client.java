@@ -16,5 +16,6 @@ public final class ThirstWasTaken2Client {
                 ThirstHud::shouldRender, ThirstHud::render);
         ClientLoader.renderCutout(() -> ThirstBlocks.COPPER_HANGING_POT);
         ClientLoader.renderCutout(() -> ThirstBlocks.IRON_HANGING_POT);
+        ClientLoader.renderCutout(() -> ThirstBlocks.COPPER_DISTILLER);
     }
 }

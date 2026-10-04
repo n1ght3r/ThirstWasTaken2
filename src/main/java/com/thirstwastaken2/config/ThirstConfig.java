@@ -150,6 +150,8 @@ public final class ThirstConfig {
     public boolean enableIronFlask = true;
     public boolean enableCopperHangingPot = true;
     public boolean enableIronHangingPot = true;
+    /** The copper distiller and the four parts it is crafted from, which are good for nothing else. */
+    public boolean enableCopperDistiller = true;
 
     private transient Pattern keywordBlacklistPattern;
     private transient Pattern drinkKeywordPattern;
@@ -241,6 +243,8 @@ public final class ThirstConfig {
             case "thirstwastaken2:iron_flask" -> enableIronFlask;
             case "thirstwastaken2:copper_hanging_pot" -> enableCopperHangingPot;
             case "thirstwastaken2:iron_hanging_pot" -> enableIronHangingPot;
+            case "thirstwastaken2:copper_distiller", "thirstwastaken2:copper_pipe", "thirstwastaken2:distiller_boiler",
+                 "thirstwastaken2:cooling_tub", "thirstwastaken2:brick_firebox" -> enableCopperDistiller;
             default -> true;
         };
     }

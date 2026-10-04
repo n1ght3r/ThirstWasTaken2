@@ -2,6 +2,8 @@ package com.thirstwastaken2.platform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -17,6 +19,10 @@ import java.util.function.IntConsumer;
  * <p>It also carries the block codec, which is the other override a mod block used to owe vanilla and
  * which 26.3 removed along with the whole codec. {@code copy} is what rebuilds the block from properties
  * alone; from 26.3 nothing asks for it.
+ *
+ * <p>A block made of two halves hears about its other half the same way, through {@link #sideChanged},
+ * and about a player breaking it through {@link #beforePlayerBreaks}, whose override lost its void
+ * return in 1.20.2.
  *
  * <p>A class rather than a method for the same reason as {@link DrinkItem}: what differs is an override.
  */
@@ -64,9 +70,34 @@ public abstract class SupportedBlock extends Block {
     protected abstract BlockState supportChanged(BlockState state, LevelReader level, BlockPos pos, BlockState below,
                                                  IntConsumer scheduleTick);
 
+    /**
+     * The block beside or above {@code pos}, toward {@code direction}, is now {@code neighbor}. Returns the
+     * state this block should take; air breaks it, drops included. Most blocks ignore it.
+     */
+    protected BlockState sideChanged(BlockState state, Direction direction, BlockState neighbor) {
+        return state;
+    }
+
+    /** A player is about to break the block at {@code pos}, on both sides, before it is removed. */
+    protected void beforePlayerBreaks(Level level, BlockPos pos, BlockState state, Player player) { }
+
+    //? if >=1.20.2 {
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        beforePlayerBreaks(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+    //?} else {
+    /*@Override
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        beforePlayerBreaks(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
+    }
+    *///?}
+
     private BlockState neighborChanged(BlockState state, LevelReader level, BlockPos pos, Direction direction,
                                        BlockState neighbor, IntConsumer scheduleTick) {
-        if (direction != Direction.DOWN) return state;
+        if (direction != Direction.DOWN) return sideChanged(state, direction, neighbor);
         // updateOrDestroy breaks a block that turns into air here, drops included.
         if (!state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
         return supportChanged(state, level, pos, neighbor, scheduleTick);

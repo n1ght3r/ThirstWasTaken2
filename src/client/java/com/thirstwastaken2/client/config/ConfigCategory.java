@@ -136,7 +136,9 @@ enum ConfigCategory {
                     ConfigEntry.toggle("enable_copper_hanging_pot",
                             config -> config.enableCopperHangingPot, (config, value) -> config.enableCopperHangingPot = value),
                     ConfigEntry.toggle("enable_iron_hanging_pot",
-                            config -> config.enableIronHangingPot, (config, value) -> config.enableIronHangingPot = value)))) {
+                            config -> config.enableIronHangingPot, (config, value) -> config.enableIronHangingPot = value),
+                    ConfigEntry.toggle("enable_copper_distiller",
+                            config -> config.enableCopperDistiller, (config, value) -> config.enableCopperDistiller = value)))) {
         @Override
         void addLeadingRows(List<ConfigRow> rows) {
             // Recipes are only read as data loads, so a switch here does nothing until the next load.

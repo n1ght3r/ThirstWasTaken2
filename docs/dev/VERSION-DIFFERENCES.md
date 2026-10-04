@@ -110,6 +110,7 @@ never see it.
 | Every `PushReaction` constant was renamed; `DESTROY` is `POPPED` | replacement |
 | `LootPoolSingletonContainer` split into three classes, of which the entry builders are typed on `UniformContainerBase` | replacement |
 | Loot number providers split into an int and a float family, each behind a `Holder`, so a pool's rolls and a count are built differently | `Vanilla.lootPool`, `Vanilla.setCount` |
+| The block state loot condition is `MatchBlock`, taking a block lookup and writing `match_block`; it was `LootItemBlockStatePropertyCondition` | `ThirstBlockLootProvider.boilerHalf`, for the distiller's drop |
 | `Inventory#placeItemBackInInventory` asks whether the client predicted the call | `Vanilla.placeItemBackInInventory` |
 | Recipes became a registry: a recipe provider bootstraps them alongside their unlock advancements, and the criteria that name a recipe name a holder rather than a key | `ThirstRecipeProvider`, and `RecipeKeys` for the two providers outside that registry set |
 | The advancement builder's `display` split in two, and only `rootDisplay` still takes the tab background | `ThirstAdvancementProvider`, at both call sites. Not a replacement: `display` is still the name a child calls on 26.3, so a rule rewriting it would be reversed onto those too |
@@ -135,6 +136,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 | The main render target moved from the client onto its game renderer | `AgentClientVanilla.mainTarget`, for `screenshot` and `readFrame` |
 | Entity type constants moved from `EntityType` to `EntityTypes` | `TestFixtures.mountType`, `piglinType` |
 | Advancement trigger classes moved into `triggers` | replacement |
+| `StatePropertiesPredicate` moved into `predicates` (it was in `criterion`, `critereon` before 1.21.11) | `ThirstBlockLootProvider.boilerHalf`, one branch per package, since only datagen names it |
 | Serene Seasons' API says whether a dimension has seasons (`SeasonHelper.hasSeasons`); its builds for older versions keep that only in their internal config, whose class extends GlitchCore's and Night Config's, so the loader scripts compile against those two as well | `SeasonsPlatform.hasSeasons` in Serene Seasons' `platform/` |
 
 ### 26.1 (affects 1.21.11, 1.21.1)
@@ -257,6 +259,7 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | `ResourceLocation` has public constructors instead of `fromNamespaceAndPath`, `withDefaultNamespace` and `parse` | `replacements` in `stonecutter.gradle.kts` (below 1.21) |
 | No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
 | Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
+| `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
 | `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |
 | Hover text is handed the level; `FoodData` adds food through `eat(int, float)`; the cauldron is told its weather by a predicate | `ItemStackMixin`, `FoodDataMixin`, `BlocksMixin` |
 | No GUI sprite atlas: vanilla's HUD icons are regions of `textures/gui/icons.png` | `ClientVanilla.blitSprite` knows the food icons the config preview draws; the dev `GuiDrawMixin` records food and air from `blit` |
