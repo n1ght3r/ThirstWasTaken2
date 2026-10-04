@@ -183,7 +183,7 @@ deps.glitchcore = "sux8kYHe"
 mod.mc_compat = "[1.21.1,1.21.2)"
 mod.mc_releases = ["1.21.1"]
 
-deps.neoforge = "21.1.252"
+deps.neoforge = "21.1.255"
 # 3.0.9+mc1.21, the NeoForge upload.
 deps.appleskin = "uAKA6Laj"
 deps.cloth_config = "15.0.140+neoforge"
@@ -490,7 +490,7 @@ deps.glitchcore = "aaUghyGp"
 mod.mc_compat = "[26.3,26.4)"
 
 # NeoForge has published only betas for 26.3. This is the newest, and the lower bound players need.
-deps.neoforge = "26.3.0.45-beta"
+deps.neoforge = "26.3.0.48-beta"
 # 3.0.10+mc26.3, the NeoForge upload. Pinned by Modrinth version id for the reason the 26.2 table gives.
 deps.appleskin = "6vok7cLb"
 deps.jade = "26.3.5+neoforge"
