@@ -21,6 +21,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Brewin' and Chewin' | [cooking/BREWIN-AND-CHEWIN](cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) | `src/main/brewinandchewin` | both 1.21.1 | see plan |
 | Cultural Delights | [cooking/CULTURAL-DELIGHTS](cooking/CULTURAL-DELIGHTS-INTEGRATION.md) | `src/main/culturaldelights` | `1.21.1-neoforge` | see plan |
 | Fruits Delight | [cooking/FRUITS-DELIGHT](cooking/FRUITS-DELIGHT-INTEGRATION.md) | `src/main/fruitsdelight` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
+| Miner's Delight | [cooking/MINERS-DELIGHT](cooking/MINERS-DELIGHT-INTEGRATION.md) | `src/main/minersdelight` | `1.21.1-neoforge`, `1.20.1-forge` | built |
 | Hearth and Harvest | [cooking/HEARTH-AND-HARVEST](cooking/HEARTH-AND-HARVEST-INTEGRATION.md) | `src/main/hearthandharvest`, `hearthandharvestforge` | `1.21.1-neoforge`, `1.20.1-forge` | done |
 | Croptopia | [cooking/CROPTOPIA](cooking/CROPTOPIA-INTEGRATION.md) | `src/main/croptopia` | 26.2, 26.1.x, 1.21.1 both loaders; 1.20.1 Fabric and Forge | built |
 | Kaleidoscope Cookery | [cooking/KALEIDOSCOPE-COOKERY](cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) | `src/main/kaleidoscope` | see plan | see plan |

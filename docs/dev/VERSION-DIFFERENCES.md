@@ -141,6 +141,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 
 | Difference | Code |
 |---|---|
+| The cauldron interaction maps became `CauldronInteractions`' dispatchers, asked with the stack and answering a do-nothing default; before, `CauldronInteraction`'s maps by item (`InteractionMap.map()`, a plain map on 1.20.1) | `Vanilla.cauldronHasInteraction` |
 | A player's action bar message has its own method, `sendOverlayMessage` | `Vanilla.sendOverlayMessage`, which the Kaleidoscope Cookery Teapot's sea water refusal calls |
 | The HUD draw target was renamed `GuiGraphicsExtractor` | replacement |
 | Its `renderFakeItem` became `fakeItem` | replacement; `ConfigTheme.item` |

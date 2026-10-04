@@ -71,6 +71,10 @@ deps.fruits_delight = "E7H5IrKI"
 # tank that needs code: only its drinks and its salt recipe, both data.
 # 1.0.12c, the Forge upload.
 deps.hearth_and_harvest = "Lc4WN5U1"
+# Miner's Delight; see [neoforge."1.21.1"]. Its 1.20.1 build is Forge only, under the mod id
+# miners_delight rather than minersdelight.
+# 1.20.1-1.4.5-backport, the Forge upload.
+deps.miners_delight = "p0INUam7"
 # Cold Sweat's 1.20.1 build, Forge only; see src/main/coldsweatforge/AGENTS.md.
 # 2.4.3.2, the Forge upload.
 deps.cold_sweat = "VCWBWOkR"
@@ -261,6 +265,13 @@ deps.fruits_delight = "TWbuEFZt"
 # See src/main/expandeddelight/AGENTS.md.
 # 0.1.4-neoforge, the NeoForge upload.
 deps.expanded_delight = "RTRYPIJp"
+# Miner's Delight, whose copper cups scoop and pour water like a bucket and now keep its grade.
+# NeoForge 1.21.1 is its newest build. See src/main/minersdelight/AGENTS.md.
+# 1.4.5, the NeoForge upload.
+deps.miners_delight = "YUHbwbgQ"
+# Lodestone, which Miner's Delight requires, only on the runClient classpath.
+# 1.8.2, the NeoForge upload.
+deps.lodestone = "CohX6yP1"
 # Hearth and Harvest, whose tanks keep a water's grade, whose sink and jug stop making Clean water from
 # nothing or from the sea, and whose cask ages no sea water. NeoForge 1.21.1 is its newest build.
 # See src/main/hearthandharvest/AGENTS.md.

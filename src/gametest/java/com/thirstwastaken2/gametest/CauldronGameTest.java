@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -136,6 +137,58 @@ public final class CauldronGameTest {
     }
 
     /**
+     * A water bottle on a full cauldron does nothing in vanilla, nor does a terracotta water bowl on any,
+     * so nothing is poured and the cauldron keeps its grade. It used to take theirs, worse or not.
+     */
+    @GameTest
+    public void aContainerTheCauldronRefusesChangesNothing(GameTestHelper helper) {
+        BlockPos pos = fullCauldron(helper, WaterQuality.fresh(WaterPurity.MAX));
+        use(helper, pos, WaterPurity.setQuality(TestFixtures.waterBottle(), WaterQuality.fresh(0)));
+        BlockState after = helper.getLevel().getBlockState(pos);
+        TestFixtures.check(helper, after.getValue(WaterPurity.BLOCK_PURITY) == WaterPurity.MAX + 1
+                        && after.getValue(LayeredCauldronBlock.LEVEL) == LayeredCauldronBlock.MAX_FILL_LEVEL,
+                "a refused bottle should leave the full Pure cauldron as it was, got " + after);
+
+        // A terracotta water bowl has no cauldron interaction at all, so it pours nothing either.
+        use(helper, pos, WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), WaterQuality.fresh(0)));
+        TestFixtures.check(helper, helper.getLevel().getBlockState(pos).getValue(WaterPurity.BLOCK_PURITY) == WaterPurity.MAX + 1,
+                "a water bowl should leave the Pure cauldron Pure, got " + helper.getLevel().getBlockState(pos));
+        helper.succeed();
+    }
+
+    /**
+     * An empty bucket on a cauldron that is not full draws nothing, so no container is stamped. It used to
+     * stamp the first unstamped water container in the inventory with the cauldron's grade.
+     */
+    @GameTest
+    public void aDrawThatDoesNotHappenStampsNothing(GameTestHelper helper) {
+        helper.setBlock(CAULDRON, Blocks.WATER_CAULDRON.defaultBlockState()
+                .setValue(LayeredCauldronBlock.LEVEL, 2)
+                .setValue(WaterPurity.BLOCK_PURITY, WaterPurity.storedValue(WaterQuality.fresh(0))));
+        BlockPos pos = helper.absolutePos(CAULDRON);
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        ItemStack unstamped = TestFixtures.waterBottle();
+        player.getInventory().setItem(5, unstamped);
+        ItemStack bucket = new ItemStack(Items.BUCKET);
+        player.setItemInHand(InteractionHand.MAIN_HAND, bucket);
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
+        player.gameMode.useItemOn(player, helper.getLevel(), bucket, InteractionHand.MAIN_HAND, hit);
+        WaterInteractions.tick(helper.getLevel().getServer());
+
+        TestFixtures.check(helper, !WaterPurity.isStamped(player.getInventory().getItem(5)),
+                "a bucket that drew nothing should stamp no other bottle");
+        TestFixtures.check(helper, player.getMainHandItem().is(Items.BUCKET), "the bucket should still be empty");
+        helper.succeed();
+    }
+
+    private static BlockPos fullCauldron(GameTestHelper helper, WaterQuality quality) {
+        helper.setBlock(CAULDRON, Blocks.WATER_CAULDRON.defaultBlockState()
+                .setValue(LayeredCauldronBlock.LEVEL, LayeredCauldronBlock.MAX_FILL_LEVEL)
+                .setValue(WaterPurity.BLOCK_PURITY, WaterPurity.storedValue(quality)));
+        return helper.absolutePos(CAULDRON);
+    }
+
+    /**
      * Rain grades itself. An empty cauldron that fills with rain is a water cauldron nobody poured
      * anything into, which used to fall back to {@code defaultPurity} by accident.
      *
@@ -179,7 +232,10 @@ public final class CauldronGameTest {
     @GameTest
     public void rainKeepsTheWorseOfTheTwoQualities(GameTestHelper helper) {
         WaterQuality dirty = WaterQuality.fresh(0);
-        BlockPos pos = pour(helper, dirty);
+        // One layer, so rain has room to add another; a poured bucket would fill it.
+        helper.setBlock(CAULDRON, Blocks.WATER_CAULDRON.defaultBlockState()
+                .setValue(WaterPurity.BLOCK_PURITY, WaterPurity.storedValue(dirty)));
+        BlockPos pos = helper.absolutePos(CAULDRON);
 
         rainOn(helper, pos);
 
@@ -248,15 +304,22 @@ public final class CauldronGameTest {
         return pos;
     }
 
+    /**
+     * Pours a bucket of water of {@code quality} into the cauldron the way a player does, so vanilla
+     * really empties the bucket: the transfer only happens when the use went through.
+     */
     private static void pourInto(GameTestHelper helper, BlockPos pos, WaterQuality quality) {
-        ServerPlayer player = TestFixtures.mockPlayer(helper);
-        ItemStack container = WaterPurity.setQuality(
-                new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), quality);
-        player.setItemInHand(InteractionHand.MAIN_HAND, container);
+        use(helper, pos, WaterPurity.setQuality(new ItemStack(Items.WATER_BUCKET), quality));
+    }
 
+    /** Uses {@code held} on the cauldron at {@code pos} as a survival player, then runs the deferred queue. */
+    private static ServerPlayer use(GameTestHelper helper, BlockPos pos, ItemStack held) {
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        player.setItemInHand(InteractionHand.MAIN_HAND, held);
         BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
-        WaterInteractions.transferCauldronPurity(player, helper.getLevel(), InteractionHand.MAIN_HAND, hit);
+        player.gameMode.useItemOn(player, helper.getLevel(), held, InteractionHand.MAIN_HAND, hit);
         // The transfer is queued until vanilla has settled the block, so run the queue by hand.
         WaterInteractions.tick(helper.getLevel().getServer());
+        return player;
     }
 }

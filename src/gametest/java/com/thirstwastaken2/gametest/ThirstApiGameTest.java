@@ -351,6 +351,52 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Miner's Delight is never installed here either; see the Kaleidoscope Cookery test above. Its two
+     * builds have two mod ids, and every value is listed under both.
+     */
+    @GameTest
+    public void minersDelightValuesAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] namespaces = {"minersdelight:", "miners_delight:"};
+        for (String mod : namespaces) {
+            TestFixtures.check(helper, Arrays.equals(defaults.drinks.get(mod + "milk_cup"), new int[]{6, 8}),
+                    mod + "milk_cup should be the milk bottle's 6, 8");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "cave_soup"), new int[]{4, 5}),
+                    mod + "cave_soup should be a stew's 4, 5");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "beef_stew_cup"), new int[]{2, 3}),
+                    mod + "beef_stew_cup should be half a stew, 2, 3");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "bone_broth_cup"), new int[]{3, 4}),
+                    mod + "bone_broth_cup should be half a broth, 3, 4");
+            for (String none : new String[]{"water_cup", "powder_snow_cup", "copper_cup", "baked_squid"}) {
+                TestFixtures.check(helper, !defaults.foods.containsKey(mod + none) && !defaults.drinks.containsKey(mod + none),
+                        mod + none + " restores no thirst and should not be listed");
+            }
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String mod : namespaces) {
+                config.drinks.remove(mod + "milk_cup");
+                config.foods.remove(mod + "insect_stew_cup");
+            }
+            // A player's own value, which merging must leave alone.
+            config.foods.put("minersdelight:cave_soup", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String mod : namespaces) {
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(mod + "milk_cup"), new int[]{6, 8}),
+                        mod + "milk_cup should be merged back, got " + Arrays.toString(config.drinks.get(mod + "milk_cup")));
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(mod + "insect_stew_cup"), new int[]{2, 3}),
+                        mod + "insect_stew_cup should be merged back, got "
+                                + Arrays.toString(config.foods.get(mod + "insect_stew_cup")));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.foods.get("minersdelight:cave_soup"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.foods.get("minersdelight:cave_soup")));
+        });
+        helper.succeed();
+    }
+
     /** Hearth and Harvest is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void hearthAndHarvestDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {

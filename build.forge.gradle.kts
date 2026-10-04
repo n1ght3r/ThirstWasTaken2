@@ -241,6 +241,12 @@ dependencies {
         runClientMod(listOf("hearth-and-harvest", "hearthandharvest", "farmers-delight", "farmersdelight"),
             "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
     }
+    findProperty("deps.miners_delight")?.let { minersDelight ->
+        // Mixed into, and in SRG names, so remapped. See src/main/minersdelight/AGENTS.md.
+        modCompileOnly("maven.modrinth:miners-delight:$minersDelight") { isTransitive = false }
+        runClientMod(listOf("miners-delight", "miners_delight", "farmers-delight", "farmersdelight"),
+            "maven.modrinth:miners-delight:$minersDelight") { isTransitive = false }
+    }
     findProperty("deps.cold_sweat")?.let { coldSweat ->
         // Mixed into and read through its API, in SRG names, so remapped. See src/main/coldsweatforge/AGENTS.md.
         modCompileOnly("maven.modrinth:cold-sweat:$coldSweat") { isTransitive = false }

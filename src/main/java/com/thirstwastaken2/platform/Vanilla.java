@@ -428,6 +428,27 @@ public final class Vanilla {
     }
 
     /**
+     * Whether vanilla's cauldron interactions, which mods add to, have one for {@code stack} on an empty
+     * cauldron or, with {@code water}, a water cauldron. The interaction may still refuse, such as a bottle
+     * on a full cauldron; an item with none does nothing to the cauldron at all. 26.1 made the maps
+     * dispatchers asked with the stack, which answer the do-nothing default when nothing matches.
+     */
+    public static boolean cauldronHasInteraction(boolean water, ItemStack stack) {
+        //? if >=26.1 {
+        net.minecraft.core.cauldron.CauldronInteraction interaction = (water
+                ? net.minecraft.core.cauldron.CauldronInteractions.WATER
+                : net.minecraft.core.cauldron.CauldronInteractions.EMPTY).get(stack);
+        return interaction != null && interaction != net.minecraft.core.cauldron.CauldronInteraction.DEFAULT;
+        //?} elif >=1.20.5 {
+        /*return (water ? net.minecraft.core.cauldron.CauldronInteraction.WATER
+                : net.minecraft.core.cauldron.CauldronInteraction.EMPTY).map().containsKey(stack.getItem());
+        *///?} else {
+        /*return (water ? net.minecraft.core.cauldron.CauldronInteraction.WATER
+                : net.minecraft.core.cauldron.CauldronInteraction.EMPTY).containsKey(stack.getItem());
+        *///?}
+    }
+
+    /**
      * The item model a stack is pointed at, or {@code null}. Always {@code null} before 1.21.2, where the
      * {@code minecraft:item_model} component does not exist.
      */

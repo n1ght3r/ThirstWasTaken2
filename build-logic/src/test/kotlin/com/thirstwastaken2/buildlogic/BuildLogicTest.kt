@@ -53,9 +53,9 @@ class BuildLogicTest {
         val everything: (String) -> Boolean = { true }
         assertEquals(listOf("createfly", "farmersdelight", "supplementaries", "kaleidoscope", "brewinandchewin", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"),
             integrationsFor(Loader.FABRIC, everything).map { it.dir })
-        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest", "nomansland", "croptopia"),
+        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest", "nomansland", "croptopia"),
             integrationsFor(Loader.NEOFORGE, everything).map { it.dir })
-        assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"), integrations.filter { it.loaderIndependent }.map { it.dir })
+        assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"), integrations.filter { it.loaderIndependent }.map { it.dir })
     }
 
     @Test

@@ -310,6 +310,9 @@ public final class ThirstConfig {
         // And for Croptopia, added after that.
         croptopiaDrinks(drinks);
         croptopiaFoods(foods);
+        // And for Miner's Delight, added after that.
+        minersDelightDrinks(drinks);
+        minersDelightFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -435,6 +438,7 @@ public final class ThirstConfig {
         noMansLandDrinks(values);
         vineryDrinks(values);
         croptopiaDrinks(values);
+        minersDelightDrinks(values);
         return values;
     }
 
@@ -468,6 +472,7 @@ public final class ThirstConfig {
         noMansLandFoods(values);
         vineryFoods(values);
         croptopiaFoods(values);
+        minersDelightFoods(values);
         return values;
     }
 
@@ -916,6 +921,33 @@ public final class ThirstConfig {
 
     private static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {
         for (String id : ids) values.put(id, new int[]{thirst, quenched});
+    }
+
+    /**
+     * Miner's Delight's milk cup, by id alone like the other mods'. The mod is {@code minersdelight} on
+     * NeoForge 1.21.1 and {@code miners_delight} on Forge 1.20.1, its only builds for a version this mod
+     * supports, so every id is listed under both. The milk cup is Farmer's Delight's milk bottle. The
+     * water cup is a water container with no value of its own, like the water bucket; see
+     * {@code WaterPurity}.
+     */
+    private static void minersDelightDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 6, 8, "minersdelight:milk_cup", "miners_delight:milk_cup");
+    }
+
+    /**
+     * Miner's Delight's soups; see {@link #minersDelightDrinks}. Its three bowls are Farmer's Delight's
+     * stews. A cup is half a bowl, eaten fast, so each cup gets half its bowl's value, rounded up. The
+     * cave foods, plates and sandwiches are dry and left out.
+     */
+    private static void minersDelightFoods(Map<String, int[]> foods) {
+        for (String mod : new String[]{"minersdelight:", "miners_delight:"}) {
+            putMissing(foods, 4, 5, mod + "cave_soup", mod + "bat_soup", mod + "insect_stew");
+            putMissing(foods, 2, 3, mod + "beef_stew_cup", mod + "chicken_soup_cup", mod + "fish_stew_cup",
+                    mod + "baked_cod_stew_cup", mod + "noodle_soup_cup", mod + "pumpkin_soup_cup",
+                    mod + "vegetable_soup_cup", mod + "onion_soup_cup", mod + "mushroom_stew_cup",
+                    mod + "rabbit_stew_cup", mod + "cave_soup_cup", mod + "bat_soup_cup", mod + "insect_stew_cup");
+            putMissing(foods, 3, 4, mod + "bone_broth_cup", mod + "beetroot_soup_cup");
+        }
     }
 
     private static void putMissing(Map<String, int[]> values, int thirst, int quenched, String... ids) {

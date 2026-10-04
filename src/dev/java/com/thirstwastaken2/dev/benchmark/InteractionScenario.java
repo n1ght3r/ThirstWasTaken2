@@ -239,14 +239,17 @@ final class InteractionScenario implements Stage {
                 },
                 () -> sink = ThirstManager.drinkByHand(player, level, HAND, waterHit),
                 () -> ThirstManager.get(player).thirst() > THIRSTY);
-        single("cauldron_pour", "Pouring a bowl into a cauldron, including the deferred purity transfer",
+        single("cauldron_pour", "Pouring a bucket into a cauldron, including the deferred purity transfer",
                 () -> {
                     standing();
                     world.resetCauldron();
-                    player.setItemInHand(HAND, WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), dirty));
+                    player.setItemInHand(HAND, WaterPurity.setQuality(new ItemStack(Items.WATER_BUCKET), dirty));
                 },
                 () -> {
                     sink = WaterInteractions.transferCauldronPurity(player, level, HAND, cauldronHit);
+                    // Vanilla's part, between the callback and the queue: the bucket goes back to empty.
+                    // The transfer runs only when the use went through.
+                    player.setItemInHand(HAND, new ItemStack(Items.BUCKET));
                     WaterInteractions.tick(world.server);
                 },
                 () -> level.getBlockState(cauldron).getValue(WaterPurity.BLOCK_PURITY) > 0);

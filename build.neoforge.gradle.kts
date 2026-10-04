@@ -252,6 +252,15 @@ dependencies {
         runClientMod(listOf("expanded-delight", "expandeddelight", "farmers-delight", "farmersdelight"), "maven.modrinth:expanded-delight:$it") { isTransitive = false }
     }
 
+    // Miner's Delight, on the node that sets it. src/main/minersdelight's mixin names its copper cup, so
+    // it compiles against it. Lodestone, which it requires, is on runClient only.
+    findProperty("deps.miners_delight")?.let {
+        compileOnly("maven.modrinth:miners-delight:$it") { isTransitive = false }
+        val names = listOf("miners-delight", "minersdelight", "lodestone", "lodestonelib", "farmers-delight", "farmersdelight")
+        runClientMod(names, "maven.modrinth:miners-delight:$it") { isTransitive = false }
+        runClientMod(names, "maven.modrinth:lodestonelib:${property("deps.lodestone")}") { isTransitive = false }
+    }
+
     // Hearth and Harvest, on the node that sets it. src/main/hearthandharvest's mixins name its tank,
     // sink, jug, sprinkler and cask classes, so they compile against it.
     findProperty("deps.hearth_and_harvest")?.let {

@@ -194,6 +194,10 @@ MODRINTH_DEPS = [
     ModrinthDep("fruits_delight", "fruits-delight", by_id=True),
     # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others.
     ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
+    # Miner's Delight, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others, and the Lodestone
+    # it requires on 1.21.1, runClient only.
+    ModrinthDep("miners_delight", "miners-delight", by_id=True),
+    ModrinthDep("lodestone", "lodestonelib", by_id=True, **NO_PAGE),
     # Hearth and Harvest, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others.
     ModrinthDep("hearth_and_harvest", "hearth-and-harvest", by_id=True),
     # Let's Do: Farm & Charm and Candlelight, its addon, HerbalBrews, Beachparty and Vinery, both 1.21.1 nodes,

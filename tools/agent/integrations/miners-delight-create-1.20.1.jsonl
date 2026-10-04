@@ -1,0 +1,52 @@
+// Miner's Delight's copper cup through Create on Forge 1.20.1 (Create 6.0.8): a Spout fills a copper cup
+// by Miner's Delight's create:filling recipe (FillingBySpoutMixin), and an Item Drain empties a water cup
+// by its create:emptying recipe (GenericItemEmptyingMixin, once the water cup is a water container). Both
+// keep the water's grade: a salty tank gives a salty cup, a Dirty one a Dirty cup, and a salty or Dirty
+// cup drains into a tank of the same water. Only 1.20.1: the mod's 1.21.1 build ships these two recipes
+// under recipes/, the pre-1.21 folder, so 1.21.1 never loads them and Create there does nothing to a cup.
+//
+// Create is off in runClient by default: uncomment its runClientMod line in build.forge.gradle.kts first,
+// and comment it out again afterwards. Read with server.command, which reads block entities on 1.20.1:
+// every "...Check" line in run/1.20.1-forge/agent/client/out.jsonl has to say "Test passed".
+//     python tools/agent/new_world.py 1.20.1-forge MinersAgent
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/miners-delight-create-1.20.1.jsonl -Pquickplay=MinersAgent
+//     python tools/agent/drive.py run/1.20.1-forge/agent/client tools/agent/integrations/miners-delight-create-1.20.1.jsonl --verify --max-age 15
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 201 -3.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -8 199 -8 8 200 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 210 8 minecraft:plains"}}
+
+// Two Spouts two blocks above two Depots, one holding a bucket of sea water and one a bucket of Dirty
+// water, and two Item Drains.
+{"id": "depotSalty", "command": "server.command", "args": {"command": "setblock -2 201 0 create:depot"}}
+{"id": "spoutSalty", "command": "server.command", "args": {"command": "setblock -2 203 0 create:spout"}}
+{"id": "depotDirty", "command": "server.command", "args": {"command": "setblock 2 201 0 create:depot"}}
+{"id": "spoutDirty", "command": "server.command", "args": {"command": "setblock 2 203 0 create:spout"}}
+{"id": "drainSalty", "command": "server.command", "args": {"command": "setblock -2 201 4 create:item_drain"}}
+{"id": "drainDirty", "command": "server.command", "args": {"command": "setblock 2 201 4 create:item_drain"}}
+{"id": "placed", "command": "wait", "args": {"ticks": 20}}
+{"id": "fillSalty", "command": "server.command", "args": {"command": "data merge block -2 203 0 {Tanks:[{TankContent:{FluidName:\"minecraft:water\",Amount:1000,Tag:{thirstwastaken2:{salty:1b}}}}]}"}}
+{"id": "fillDirty", "command": "server.command", "args": {"command": "data merge block 2 203 0 {Tanks:[{TankContent:{FluidName:\"minecraft:water\",Amount:1000,Tag:{thirstwastaken2:{purity:0,salty:0b}}}}]}"}}
+{"id": "spoutsBefore", "command": "server.command", "args": {"command": "data get block -2 203 0 Tanks"}}
+{"id": "cupSalty", "command": "server.command", "args": {"command": "summon item -1.5 202.2 0.5 {Item:{id:\"miners_delight:copper_cup\",Count:1b}}"}}
+{"id": "cupDirty", "command": "server.command", "args": {"command": "summon item 2.5 202.2 0.5 {Item:{id:\"miners_delight:copper_cup\",Count:1b}}"}}
+{"id": "waterCupSalty", "command": "server.command", "args": {"command": "summon item -1.5 202.2 4.5 {Item:{id:\"miners_delight:water_cup\",Count:1b,tag:{thirstwastaken2:{salty:1b}}}}"}}
+{"id": "waterCupDirty", "command": "server.command", "args": {"command": "summon item 2.5 202.2 4.5 {Item:{id:\"miners_delight:water_cup\",Count:1b,tag:{thirstwastaken2:{purity:0,salty:0b}}}}"}}
+{"id": "working", "command": "wait", "args": {"ticks": 200}}
+
+{"id": "spoutSaltyRead", "command": "server.command", "args": {"command": "data get block -2 201 0 HeldItem"}}
+{"id": "spoutSaltyCheck", "command": "server.command", "args": {"command": "execute if data block -2 201 0 HeldItem.Item{id:\"miners_delight:water_cup\",tag:{thirstwastaken2:{salty:1b}}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "spoutDirtyRead", "command": "server.command", "args": {"command": "data get block 2 201 0 HeldItem"}}
+{"id": "spoutDirtyCheck", "command": "server.command", "args": {"command": "execute if data block 2 201 0 HeldItem.Item{id:\"miners_delight:water_cup\",tag:{thirstwastaken2:{purity:0}}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "drainSaltyRead", "command": "server.command", "args": {"command": "data get block -2 201 4"}}
+{"id": "drainSaltyCheck", "command": "server.command", "args": {"command": "execute if data block -2 201 4 Tanks[0].TankContent{Amount:1000,Tag:{thirstwastaken2:{salty:1b}}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "drainDirtyRead", "command": "server.command", "args": {"command": "data get block 2 201 4"}}
+{"id": "drainDirtyCheck", "command": "server.command", "args": {"command": "execute if data block 2 201 4 Tanks[0].TankContent{Amount:1000,Tag:{thirstwastaken2:{purity:0}}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "done", "command": "client.state"}

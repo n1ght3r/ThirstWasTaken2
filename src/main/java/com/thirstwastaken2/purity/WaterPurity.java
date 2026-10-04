@@ -93,9 +93,11 @@ public final class WaterPurity {
     /** Purity that has to be looked up from the config instead of being baked into the item. */
     private static final int PURITY_FROM_CONFIG = -1;
 
-    private record ItemInfo(boolean container, boolean plainWater, int staticPurity) { }
+    /** {@code drawsWater}: an empty container a full water cauldron fills, as a bucket. */
+    private record ItemInfo(boolean container, boolean plainWater, int staticPurity, boolean drawsWater) { }
 
-    private static final ItemInfo NOT_A_CONTAINER = new ItemInfo(false, false, PURITY_FROM_CONFIG);
+    private static final ItemInfo NOT_A_CONTAINER = new ItemInfo(false, false, PURITY_FROM_CONFIG, false);
+    private static final ItemInfo DRAWS_WATER = new ItemInfo(false, false, PURITY_FROM_CONFIG, true);
     private static final Map<Item, ItemInfo> INFO = new ConcurrentHashMap<>();
 
     private WaterPurity() { }
@@ -106,6 +108,14 @@ public final class WaterPurity {
         if (info(stack.getItem()).container()) return true;
         // Water bottles are plain potions distinguished only by their contents.
         return Vanilla.holdsWaterPotion(stack);
+    }
+
+    /**
+     * Whether a full water cauldron fills {@code stack} with water, so that the container it becomes is
+     * stamped with the cauldron's grade: a glass bottle, a bucket, Miner's Delight's copper cup.
+     */
+    public static boolean drawsFromCauldron(ItemStack stack) {
+        return !stack.isEmpty() && info(stack.getItem()).drawsWater();
     }
 
     /** Water-only drinks are blocked at a full thirst bar, unlike drinks with other gameplay uses. */
@@ -395,8 +405,9 @@ public final class WaterPurity {
 
     private static ItemInfo resolve(Item item) {
         if (item == Items.WATER_BUCKET || item == ThirstItems.TERRACOTTA_WATER_BOWL) {
-            return new ItemInfo(true, item == ThirstItems.TERRACOTTA_WATER_BOWL, PURITY_FROM_CONFIG);
+            return new ItemInfo(true, item == ThirstItems.TERRACOTTA_WATER_BOWL, PURITY_FROM_CONFIG, false);
         }
+        if (item == Items.GLASS_BOTTLE || item == Items.BUCKET) return DRAWS_WATER;
         if (item == Items.POTION) {
             // Only water bottles count, which isWaterContainer decides per stack.
             return NOT_A_CONTAINER;
@@ -409,12 +420,19 @@ public final class WaterPurity {
         if (namespace.equals("farmersdelight")) {
             // Only the two bottled drinks were registered as containers by the original mod.
             boolean container = path.equals("melon_juice") || path.equals("apple_cider");
-            return new ItemInfo(container, false, 3);
+            return new ItemInfo(container, false, 3, false);
         }
         if (namespace.equals("cold_sweat")) {
             // Cold Sweat's filled waterskin, graded when it is filled. Not plain water: its default use
             // pours it over the player and a sip also warms or cools, so a full thirst bar stops neither.
-            return path.equals("filled_waterskin") ? new ItemInfo(true, false, PURITY_FROM_CONFIG) : NOT_A_CONTAINER;
+            return path.equals("filled_waterskin") ? new ItemInfo(true, false, PURITY_FROM_CONFIG, false) : NOT_A_CONTAINER;
+        }
+        // Miner's Delight names itself minersdelight on 1.21.1 and miners_delight on 1.20.1. Its copper cup
+        // is a small bucket: the water cup holds a bucket of water, not drinkable, and the empty cup draws
+        // one from a full cauldron. Graded like the bucket, so the cup cannot turn sea water fresh.
+        if (namespace.equals("minersdelight") || namespace.equals("miners_delight")) {
+            if (path.equals("water_cup")) return new ItemInfo(true, false, PURITY_FROM_CONFIG, false);
+            return path.equals("copper_cup") ? DRAWS_WATER : NOT_A_CONTAINER;
         }
         return NOT_A_CONTAINER;
     }

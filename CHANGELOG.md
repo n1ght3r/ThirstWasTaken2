@@ -2,6 +2,21 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Miner's Delight, on NeoForge 1.21.1 and Forge 1.20.1:
+  - Its soups and the Milk Cup restore thirst. A cup of soup restores half what a bowl does.
+  - Copper cups keep the grade of their water, like a bucket. A cup filled from the sea stays salty
+    instead of pouring into a cauldron as Clean water. On 1.20.1 the same goes for Create's Spout and
+    Item Drain.
+
+### Fixed
+
+- A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
+  water inside, for example a Dirty bottle clicked on a full cauldron of Pure water.
+
 ## [1.6.2] - 2026-10-03
 
 Five more mods join: Spelunkery, Hearth and Harvest, No Man's Land, Let's Do: Vinery and Croptopia.

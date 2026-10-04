@@ -14,9 +14,9 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -139,6 +139,13 @@ public final class WaterInteractions {
     /**
      * Mirrors the original {@code fillablesHandler}: pouring a container into a cauldron stores the
      * worse of the two purities, and drawing from a cauldron stamps the resulting container.
+     *
+     * <p>Only when vanilla, or the mod that owns the container, actually did something: the callback
+     * runs first and cannot tell whether a container will be accepted. A terracotta water bowl, or Miner's
+     * Delight's water cup on a full cauldron, has no cauldron interaction at all; a bottle on a full
+     * cauldron or a bucket on one that is not full has one that refuses. Storing a grade then turned a
+     * Pure cauldron Dirty with nothing poured, or stamped some other bottle in the inventory. The first
+     * kind is skipped here; the second at the end of the tick, by {@link #interacted}.
      */
     public static InteractionResult transferCauldronPurity(Player player, Level level, InteractionHand hand,
                                                            BlockHitResult hit) {
@@ -154,9 +161,11 @@ public final class WaterInteractions {
         // interaction that could actually pour them back, so do not schedule a phantom transfer.
         if (WaterskinItem.is(held)) return InteractionResult.PASS;
         boolean filling = WaterPurity.isWaterContainer(held);
-        boolean draining = before.is(Blocks.WATER_CAULDRON)
-                && (held.is(Items.GLASS_BOTTLE) || held.is(Items.BUCKET));
+        boolean draining = before.is(Blocks.WATER_CAULDRON) && WaterPurity.drawsFromCauldron(held);
         if (!filling && !draining) return InteractionResult.PASS;
+        // A container the cauldron has no interaction for does nothing to it, whatever happens next: a
+        // water cup on a full cauldron goes on to place its water in the world.
+        if (!Vanilla.cauldronHasInteraction(before.is(Blocks.WATER_CAULDRON), held)) return InteractionResult.PASS;
 
         WaterQuality quality = filling ? WaterPurity.quality(held) : WaterPurity.sampleAt(level, pos);
         if (filling) {
@@ -165,10 +174,32 @@ public final class WaterInteractions {
         }
 
         WaterQuality transferred = quality;
-        END_OF_TICK.add(filling
-                ? () -> storeInCauldron(level, pos, transferred)
-                : () -> stampDrawnContainer(player, hand, transferred));
+        Item heldItem = held.getItem();
+        int heldCount = held.getCount();
+        END_OF_TICK.add(() -> {
+            if (!interacted(player, hand, level, pos, before, heldItem, heldCount)) return;
+            if (filling) {
+                storeInCauldron(level, pos, transferred);
+            } else {
+                stampDrawnContainer(player, hand, transferred);
+            }
+        });
         return InteractionResult.PASS;
+    }
+
+    /**
+     * Whether an interaction the cauldron has went through: the cauldron changed, or the stack in the
+     * hand did. Every pour or draw changes one of them. Pouring resets the stored grade to unset or
+     * changes the level; drawing lowers the level or empties the cauldron; and outside creative the
+     * container in the hand is swapped or shrinks. Blockstates are canonical instances, so an unchanged
+     * block is the same object. The hand alone would not do without asking for the interaction first: an
+     * item the cauldron does nothing with can go on to its own use in the same tick, as the water cup does.
+     */
+    private static boolean interacted(Player player, InteractionHand hand, Level level, BlockPos pos,
+                                      BlockState before, Item heldItem, int heldCount) {
+        if (level.getBlockState(pos) != before) return true;
+        ItemStack now = player.getItemInHand(hand);
+        return !now.is(heldItem) || now.getCount() != heldCount;
     }
 
     /**

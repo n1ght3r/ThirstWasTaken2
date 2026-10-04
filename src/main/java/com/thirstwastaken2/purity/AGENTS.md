@@ -113,7 +113,7 @@ checks all three implementations against one set of assertions, in millibuckets.
 - **`INFO` caches forever.** Only put facts in it that cannot change at runtime. Config-dependent
   purity is stored as the sentinel `PURITY_FROM_CONFIG` (`-1`) and resolved on each call.
 - **Optional mod support is by registry id only.** `resolve` matches namespaces (currently
-  `farmersdelight` and `cold_sweat`) as strings - no class is ever referenced, so no such mod is a dependency. Add support by
+  `farmersdelight`, `cold_sweat` and Miner's Delight's two, `minersdelight` and `miners_delight`) as strings - no class is ever referenced, so no such mod is a dependency. Add support by
   extending `resolve`, not by importing anything.
 - **The sickness tables, by difficulty.** `applyEffects` hands fresh water to `effect/WaterSickness`
   and always returns true: every fresh drink quenches, the illness is the price. `WaterSickness` gives
@@ -145,6 +145,17 @@ Vanilla resolves a cauldron fill or drain *after* our `UseBlockCallback` returns
 vanilla interaction still happens and the later callbacks still run), and queues a `Runnable` on
 `END_OF_TICK`, drained by `WaterInteractions.tick` on the same server tick. The queue is an
 `ArrayDeque` with no locking - **server thread only**.
+
+The callback also runs before anyone knows whether the cauldron accepts the container, and many are
+not accepted: a bottle on a full cauldron, a bucket on one that is not full, a terracotta water bowl on
+any (it has no cauldron interaction at all), Miner's Delight's water cup on a full one. Two checks keep a
+refused use from storing or stamping a grade. `transferCauldronPurity` queues nothing unless vanilla's
+interaction maps, which mods add to, hold an interaction for the item (`Vanilla.cauldronHasInteraction`).
+The queued transfer then runs only if the cauldron's blockstate or the stack in the hand changed by the
+end of the tick (`interacted`). The first is needed because the hand alone lies: the water cup, refused,
+goes on to place its water in the world in the same tick. A creative refill of a full cauldron that was
+unset changes neither, so it is not graded; nothing else real is missed. `CauldronGameTest` drives these
+through `gameMode.useItemOn`, so vanilla really runs.
 
 Draining is messier than filling: the filled container does not have to end up in the interaction
 hand (a stacked glass bottle sends the water bottle to the first free slot), so

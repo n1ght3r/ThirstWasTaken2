@@ -76,7 +76,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land and Croptopia mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Miner's Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land and Croptopia mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -200,6 +200,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md), [src/main/coldsweatforge/AGENTS.md](src/main/coldsweatforge/AGENTS.md) |
 | Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge`, `1.20.1-forge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
 | Expanded Delight | `deps.expanded_delight`: `1.21.1-neoforge` | [src/main/expandeddelight/AGENTS.md](src/main/expandeddelight/AGENTS.md) |
+| Miner's Delight | `deps.miners_delight`: `1.21.1-neoforge`, `1.20.1-forge` (mod id `minersdelight` and `miners_delight`). Its water cup and copper cup are graded by id in `WaterPurity`; a Spout recipe fill is stamped in the Create directories | [src/main/minersdelight/AGENTS.md](src/main/minersdelight/AGENTS.md) |
 | Cultural Delights | `deps.cultural_delights`: `1.21.1-neoforge` (the Fabric port stopped at 0.17 and is not built against) | [src/main/culturaldelights/AGENTS.md](src/main/culturaldelights/AGENTS.md) |
 | Serene Seasons | `deps.serene_seasons`: every node, every loader | [src/main/sereneseasons/AGENTS.md](src/main/sereneseasons/AGENTS.md) |
 | Let's Do: Farm & Charm, and Candlelight, its addon, with no code of its own | `deps.farm_and_charm`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/farmandcharm/AGENTS.md](src/main/farmandcharm/AGENTS.md) |
@@ -254,6 +255,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |
+| Miner's Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/cooking/MINERS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/MINERS-DELIGHT-INTEGRATION.md) |
 | Hearth and Harvest: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md) |
 | Cultural Delights: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md](docs/dev/integration/cooking/CULTURAL-DELIGHTS-INTEGRATION.md) |
 | Serene Seasons: the plan, its decisions and what was found in game (every node) | [docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md](docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md) |

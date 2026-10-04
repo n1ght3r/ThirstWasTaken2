@@ -260,6 +260,17 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.expandeddelight.mixins.json",
         neoForgeDependencies = listOf("expandeddelight"),
     ),
+    // NeoForge 1.21.1 and Forge 1.20.1, its only builds for a version this mod supports, which name the
+    // mod `minersdelight` and `miners_delight`; both are listed, an optional dependency on an absent id
+    // being harmless. Its one mixin names the copper cup's class, so the scripts compile against it.
+    // See src/main/minersdelight/AGENTS.md.
+    Integration(
+        dir = "minersdelight",
+        depsKey = "deps.miners_delight",
+        loaders = setOf(Loader.NEOFORGE, Loader.FORGE),
+        mixinConfig = "thirstwastaken2.minersdelight.mixins.json",
+        neoForgeDependencies = listOf("minersdelight", "miners_delight"),
+    ),
     // Both loaders and every node: Serene Seasons ships them all. No mixins; the calendar is read
     // through its API when the drain recomputes, and the entrypoint hands the drain a SeasonalClimate.
     // Fabric finds the entrypoint through `thirstwastaken2:integration`, NeoForge and Forge by its annotation.

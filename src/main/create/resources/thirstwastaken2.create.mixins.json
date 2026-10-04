@@ -4,6 +4,7 @@
   "plugin": "com.thirstwastaken2.create.CreateMixinPlugin",
   "compatibilityLevel": "${java}",
   "mixins": [
+    "FillingBySpoutMixin",
     "FluidDrainingBehaviourMixin",
     "GenericItemEmptyingMixin",
     "GenericItemFillingMixin",
