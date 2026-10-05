@@ -51,7 +51,9 @@ underscore rather than a hyphen because NeoForge mod ids cannot contain one.
 - **Water in the world comes from `TestFixtures.water`,** which makes its patch plains with `/fillbiome`
   first. Where a test lands depends on the seed and on how many tests run before it, so an unpinned
   fixture can stand in an ocean and get salt water: 1.20.1 on Forge failed four drinking and
-  filling tests that way once tests were added. A test that needs another biome sets it the same way.
+  filling tests that way once tests were added. A test that needs another biome sets it the same way,
+  5 blocks past the block on every axis: `getBiome` picks one of the eight 4x4x4 cells around a block
+  by seeded noise, so a tighter box passes or fails by where the test lands (it once read cold ocean).
 - Use survival mode for anything that fills a container. `ItemUtils.createFilledResult` behaves
   differently once the player has infinite materials.
 

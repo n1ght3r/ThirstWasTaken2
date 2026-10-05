@@ -1,5 +1,6 @@
 package com.thirstwastaken2.gametest;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.gametest.platform.MockPlayers;
 import com.thirstwastaken2.platform.Vanilla;
@@ -32,6 +33,12 @@ final class TestFixtures {
     /** Relative position of the water source every water test uses. */
     static final BlockPos WATER = new BlockPos(2, 2, 2);
 
+    /**
+     * How far past a block {@code getBiome} can look: it shifts the block back 2 and picks the cell
+     * there or the next one, so the cells it reads span from 5 blocks before it to 5 after.
+     */
+    private static final int BIOME_REACH = 5;
+
     private TestFixtures() { }
 
     /**
@@ -56,6 +63,11 @@ final class TestFixtures {
      * the seed and on how many tests run before it, so without help a test could stand in an ocean and
      * get salt water, which hydrates nothing (1.20.1 on Forge did, once tests were added). So the patch
      * around the water is made plains first, and the water is the same in every run on every node.
+     *
+     * <p>The patch reaches {@link #BIOME_REACH} blocks past the water on every axis, because
+     * {@code getBiome} does not read the 4x4x4 biome cell the block is in: it picks one of the eight
+     * cells around it by seeded noise, and {@code fillbiome} changes only whole cells. A smaller patch
+     * passes or fails by where the test lands, which is how 1.20.1 on Forge once read cold ocean.
      */
     static BlockPos water(GameTestHelper helper) {
         for (int x = 1; x <= 3; x++) {
@@ -63,18 +75,27 @@ final class TestFixtures {
                 helper.setBlock(new BlockPos(x, WATER.getY() - 1, z), Blocks.STONE);
             }
         }
-        BlockPos from = helper.absolutePos(new BlockPos(0, WATER.getY() - 1, 0));
-        BlockPos to = helper.absolutePos(new BlockPos(4, WATER.getY() + 1, 4));
-        helper.getLevel().getServer().getCommands().performPrefixedCommand(
-                helper.getLevel().getServer().createCommandSourceStack().withLevel(helper.getLevel()).withSuppressedOutput(),
-                "fillbiome " + Math.min(from.getX(), to.getX()) + " " + from.getY() + " " + Math.min(from.getZ(), to.getZ())
-                        + " " + Math.max(from.getX(), to.getX()) + " " + to.getY() + " " + Math.max(from.getZ(), to.getZ())
-                        + " minecraft:plains");
-        helper.setBlock(WATER, Blocks.WATER);
         BlockPos water = helper.absolutePos(WATER);
+        fillPlains(helper, water.offset(-BIOME_REACH, -BIOME_REACH, -BIOME_REACH), water.offset(BIOME_REACH, BIOME_REACH, BIOME_REACH));
+        helper.setBlock(WATER, Blocks.WATER);
         check(helper, helper.getLevel().getBiome(water).is(Biomes.PLAINS),
                 "the water fixture should stand in plains, got " + helper.getLevel().getBiome(water));
         return water;
+    }
+
+    /**
+     * Runs {@code fillbiome} over the box through the dispatcher rather than
+     * {@code performPrefixedCommand}, which swallows a failure such as an unloaded chunk.
+     */
+    private static void fillPlains(GameTestHelper helper, BlockPos from, BlockPos to) {
+        String command = "fillbiome " + from.getX() + " " + from.getY() + " " + from.getZ()
+                + " " + to.getX() + " " + to.getY() + " " + to.getZ() + " minecraft:plains";
+        try {
+            helper.getLevel().getServer().getCommands().getDispatcher().execute(command,
+                    helper.getLevel().getServer().createCommandSourceStack().withLevel(helper.getLevel()).withSuppressedOutput());
+        } catch (CommandSyntaxException e) {
+            check(helper, false, "the water fixture's " + command + " failed: " + e.getMessage());
+        }
     }
 
     /**
