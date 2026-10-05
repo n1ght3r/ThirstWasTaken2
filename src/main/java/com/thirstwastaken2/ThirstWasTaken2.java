@@ -1,6 +1,7 @@
 package com.thirstwastaken2;
 
 import com.thirstwastaken2.api.ThirstApi;
+import com.thirstwastaken2.block.DistillerInteractions;
 import com.thirstwastaken2.block.HangingPotInteractions;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.command.ThirstCommands;
@@ -57,6 +58,7 @@ public final class ThirstWasTaken2 {
         Loader.onServerTickEnd(WaterInteractions::tick);
         Loader.onUseBlock(ThirstManager::drinkByHand);
         Loader.onUseBlock(HangingPotInteractions::use);
+        Loader.onUseBlock(DistillerInteractions::fillTub);
         Loader.onUseBlock(WaterInteractions::emptyWaterskinOnBlock);
         Loader.onUseBlock(WaterInteractions::fillWaterskinFromCauldron);
         Loader.onUseBlock(WaterInteractions::transferCauldronPurity);

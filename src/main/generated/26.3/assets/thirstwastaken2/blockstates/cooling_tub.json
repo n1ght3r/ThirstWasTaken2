@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,cooled=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 90
+    },
+    "facing=east,cooled=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 90
+    },
+    "facing=north,cooled=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty"
+    },
+    "facing=north,cooled=true": {
+      "model": "thirstwastaken2:block/cooling_tub"
+    },
+    "facing=south,cooled=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 180
+    },
+    "facing=south,cooled=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 180
+    },
+    "facing=west,cooled=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 270
+    },
+    "facing=west,cooled=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 270
+    }
+  }
+}

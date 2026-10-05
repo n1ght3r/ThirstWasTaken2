@@ -12,7 +12,8 @@
             "type": "minecraft:match_block",
             "blocks": "thirstwastaken2:copper_distiller",
             "state": {
-              "part": "boiler"
+              "part": "boiler",
+              "piped": "true"
             }
           }
         ]
@@ -21,6 +22,56 @@
         {
           "type": "minecraft:item",
           "name": "thirstwastaken2:copper_distiller"
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "thirstwastaken2:copper_distiller",
+            "state": {
+              "part": "boiler",
+              "piped": "false"
+            }
+          }
+        ]
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thirstwastaken2:brick_firebox"
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "thirstwastaken2:copper_distiller",
+            "state": {
+              "part": "boiler",
+              "piped": "false"
+            }
+          }
+        ]
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thirstwastaken2:distiller_boiler"
         }
       ],
       "rolls": 1

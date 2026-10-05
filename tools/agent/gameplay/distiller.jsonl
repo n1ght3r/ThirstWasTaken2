@@ -5,8 +5,10 @@
 //     python tools/agent/new_world.py <node> DistillerAgent
 // Then python tools/agent/drive.py run/<node>/agent/client tools/agent/gameplay/distiller.jsonl --verify,
 // read the five recipe lines in run/<node>/agent/client/out.jsonl, and look at the captures in run/<node>/agent/client/screenshots/: the placed machine from the front
-// and from behind, with the distiller and its four parts in the hotbar. Placing, breaking and dropping
-// are gametests (DistillerGameTest); this covers what they cannot, the click and the drawing.
+// and from behind, with the distiller and its four parts in the hotbar; then a second one built in the
+// world by real clicks, its parts alone, the boiler on its firebox beside a dry tub, and joined. Placing,
+// breaking, dropping and joining are gametests (DistillerGameTest); this covers what they cannot, the
+// click and the drawing.
 
 {"id": "load", "command": "wait", "args": {"ticks": 400}}
 {"id": "joined", "command": "client.state", "expect": {"result.alive": true}}
@@ -15,8 +17,8 @@
 {"id": "chunks", "command": "wait", "args": {"ticks": 100}}
 {"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
 {"id": "clear", "command": "server.command", "args": {"command": "weather clear 100000"}}
-{"id": "air", "command": "server.command", "args": {"command": "fill -5 200 -5 5 206 5 minecraft:air"}}
-{"id": "floor", "command": "server.command", "args": {"command": "fill -5 199 -5 5 199 5 minecraft:grass_block"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -5 200 -5 7 206 5 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -5 199 -5 7 199 5 minecraft:grass_block"}}
 {"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
 
 // The recipes load: giving each one says it unlocked one recipe (read out.jsonl; the message names
@@ -55,3 +57,63 @@
 {"id": "back", "command": "server.command", "args": {"command": "tp @p -0.5 200.5 3.5 180 25"}}
 {"id": "settleBack", "command": "wait", "args": {"ticks": 40}}
 {"id": "captureBack", "command": "client.capture", "args": {"name": "distiller-back"}}
+
+// Built in the world, three blocks east: a firebox, then a boiler clicked onto its top, then a tub to its
+// right, all placed looking south so they face north.
+{"id": "firebox", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:brick_firebox"}}
+{"id": "aimFirebox", "command": "server.command", "args": {"command": "tp @p 4.5 200 -2.5 0 28"}}
+{"id": "settleFirebox", "command": "wait", "args": {"ticks": 10}}
+{"id": "pressFirebox", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedFirebox", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseFirebox", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "placedFirebox", "command": "wait", "args": {"ticks": 10}}
+{"id": "fireboxPlaced", "command": "server.command", "args": {"command": "execute if block 4 200 0 thirstwastaken2:brick_firebox[facing=north]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "tubItem", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:cooling_tub"}}
+{"id": "aimTub", "command": "server.command", "args": {"command": "tp @p 3.5 200 -2.5 0 28"}}
+{"id": "settleTub", "command": "wait", "args": {"ticks": 10}}
+{"id": "pressTub", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedTub", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseTub", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "placedTub", "command": "wait", "args": {"ticks": 10}}
+{"id": "tubPlaced", "command": "server.command", "args": {"command": "execute if block 3 200 0 thirstwastaken2:cooling_tub[facing=north,cooled=false]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "loneBoiler", "command": "server.command", "args": {"command": "setblock 6 200 0 thirstwastaken2:distiller_boiler[facing=north]"}}
+{"id": "parts", "command": "server.command", "args": {"command": "tp @p 4.5 200.5 -3.5 0 20"}}
+{"id": "settleParts", "command": "wait", "args": {"ticks": 40}}
+{"id": "captureParts", "command": "client.capture", "args": {"name": "distiller-parts"}}
+{"id": "loneBoilerGone", "command": "server.command", "args": {"command": "setblock 6 200 0 minecraft:air"}}
+
+// The boiler onto the firebox's top: from close by and steep, so the ray meets the ledge's top and
+// not its front.
+{"id": "boilerItem", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:distiller_boiler"}}
+{"id": "aimBoiler", "command": "server.command", "args": {"command": "tp @p 4.5 200 -1.0 0 45"}}
+{"id": "settleBoiler", "command": "wait", "args": {"ticks": 10}}
+{"id": "pressBoiler", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedBoiler", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseBoiler", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "placedBoiler", "command": "wait", "args": {"ticks": 10}}
+{"id": "merged", "command": "server.command", "args": {"command": "execute if block 4 200 0 thirstwastaken2:copper_distiller[facing=north,part=boiler,piped=false]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "unjoined", "command": "server.command", "args": {"command": "tp @p 4.0 200.5 -3.5 0 20"}}
+{"id": "settleUnjoined", "command": "wait", "args": {"ticks": 40}}
+{"id": "captureUnjoined", "command": "client.capture", "args": {"name": "distiller-unjoined"}}
+
+// Coolant into the tub from a bucket, then the pipe on the tub joins the two.
+{"id": "bucket", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket"}}
+{"id": "aimCoolant", "command": "server.command", "args": {"command": "tp @p 3.5 200 -2.5 0 28"}}
+{"id": "settleCoolant", "command": "wait", "args": {"ticks": 10}}
+{"id": "pressCoolant", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedCoolant", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseCoolant", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "poured", "command": "wait", "args": {"ticks": 10}}
+{"id": "cooled", "command": "server.command", "args": {"command": "execute if block 3 200 0 thirstwastaken2:cooling_tub[cooled=true]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "emptied", "command": "server.command", "args": {"command": "execute unless items entity @p weapon.mainhand minecraft:water_bucket"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "pipeItem", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_pipe"}}
+{"id": "pressPipe", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedPipe", "command": "wait", "args": {"ticks": 3}}
+{"id": "releasePipe", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "piped", "command": "wait", "args": {"ticks": 10}}
+{"id": "joinedBoiler", "command": "server.command", "args": {"command": "execute if block 4 200 0 thirstwastaken2:copper_distiller[facing=north,part=boiler,piped=true]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "joinedTub", "command": "server.command", "args": {"command": "execute if block 3 200 0 thirstwastaken2:copper_distiller[facing=north,part=tub,piped=true,cooled=true]"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "pipeSpent", "command": "server.command", "args": {"command": "execute unless items entity @p weapon.mainhand thirstwastaken2:copper_pipe"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "built", "command": "server.command", "args": {"command": "tp @p 4.0 200.5 -3.5 0 20"}}
+{"id": "settleBuilt", "command": "wait", "args": {"ticks": 40}}
+{"id": "captureBuilt", "command": "client.capture", "args": {"name": "distiller-built"}}

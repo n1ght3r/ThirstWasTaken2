@@ -1,8 +1,10 @@
 # Distillation: the Copper Distiller at work
 
-**Status: planned, not started.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
+**Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
-what makes it distil. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+what makes it distil. Done so far (2026-10-05): step 5, building it in the world, and of step 8 the
+`cooled` property and the pour that sets it; the tub does not yet stop the machine, which has no
+block entity. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -148,6 +150,11 @@ Breaking:
 | The firebox with a boiler on it, unjoined | a Brick Firebox and a Distiller Boiler |
 | A lone part | itself |
 
+The tub's coolant goes with a broken tub: its item carries no state, so a tub placed again is dry.
+
+As built: a firebox alone is drawn cold (unlit logs, no fire) and gives no light, and so is a boiler set
+on its firebox until the pipe joins it; the basin under the tap shows water only on a joined machine.
+
 In code: `DistillerBlock` gains `piped` (false for the firebox-with-boiler before the pipe; a half only
 watches its other half while piped). The three parts are blocks with a facing; the boiler's and the
 pipe's items are item classes of their own that do the merging on use, the way `HangingPotItem`
@@ -188,12 +195,13 @@ models and item use only, on every node, and gives something to see while the se
 3. **`DistillerMenu`** with its slots and a `ContainerData` for fuel, progress and both tank levels.
 4. **`DistillerScreen`** and its texture, `textures/gui/container/copper_distiller.png`, in the style of
    the furnace's (drawn from vanilla's palette, checked beside it).
-5. **Building it in the world**: the three part blocks, the merge on placing a boiler on a firebox,
+5. **Building it in the world** (done): the three part blocks, the merge on placing a boiler on a firebox,
    `piped`, the pipe joining them, the drops, and the extra models.
 6. **`lit`** in the blockstate: the generator writes a cold firebox (logs unlit, no fire plane) beside the
    burning one; light and smoke follow.
 7. **Salt**: the `distiller_salt` tag in datagen, the config option, the slot shown only when it resolves.
-8. **The cooling tub**: `cooled`, filled by a right-click, required to condense.
+8. **The cooling tub**: `cooled`, filled by a right-click (done: `block/DistillerInteractions`, any
+   water container, a skin pouring up to a bucket), required to condense (with step 2).
 9. **Config**: the serving time and tank sizes on the Containers page (lang keys in all nine files).
 10. **Tests.** Gametests: fill from each container, distil a bucket of sea water and get three Pure and
    one salt with a salt item tagged by a test data pack, no salt with the tag empty, fuel not burnt with

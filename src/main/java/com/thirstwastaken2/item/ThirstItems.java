@@ -58,15 +58,19 @@ public final class ThirstItems {
             properties -> new HangingPotItem(ThirstBlocks.IRON_HANGING_POT, properties), new Item.Properties());
     /**
      * The copper distiller, crafted from the four parts below, each one piece of the machine: the pipe
-     * its swan neck and coil, the boiler, the cooling tub, and the brick firebox the boiler sits on.
+     * its swan neck and coil, the boiler, the cooling tub, and the brick firebox the boiler sits on. The
+     * three that are not the pipe also place as blocks, and built that way in the world, the boiler on
+     * the firebox, the tub beside it and the pipe joining them, they make the same distiller.
      */
     public static final Item COPPER_DISTILLER = Vanilla.registerBlockItem(ThirstBlocks.COPPER_DISTILLER,
             new Item.Properties());
-    public static final Item COPPER_PIPE = Vanilla.registerItem("copper_pipe", Item::new, new Item.Properties());
-    public static final Item DISTILLER_BOILER = Vanilla.registerItem("distiller_boiler", Item::new,
+    public static final Item COPPER_PIPE = Vanilla.registerItem("copper_pipe", CopperPipeItem::new,
             new Item.Properties());
-    public static final Item COOLING_TUB = Vanilla.registerItem("cooling_tub", Item::new, new Item.Properties());
-    public static final Item BRICK_FIREBOX = Vanilla.registerItem("brick_firebox", Item::new, new Item.Properties());
+    public static final Item DISTILLER_BOILER = Vanilla.registerBlockItem(ThirstBlocks.DISTILLER_BOILER,
+            properties -> new DistillerBoilerItem(ThirstBlocks.DISTILLER_BOILER, properties), new Item.Properties());
+    public static final Item COOLING_TUB = Vanilla.registerBlockItem(ThirstBlocks.COOLING_TUB, new Item.Properties());
+    public static final Item BRICK_FIREBOX = Vanilla.registerBlockItem(ThirstBlocks.BRICK_FIREBOX,
+            new Item.Properties());
     public static final ResourceKey<CreativeModeTab> CREATIVE_TAB_KEY = ResourceKey.create(
             Registries.CREATIVE_MODE_TAB, ThirstWasTaken2.id("thirstwastaken2"));
 

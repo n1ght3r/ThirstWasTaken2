@@ -506,6 +506,15 @@
             7.5
           ],
           "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            8.5,
+            11,
+            10
+          ],
+          "texture": "#cut_copper"
         }
       }
     },
@@ -546,6 +555,15 @@
             7.5,
             4.5,
             11.5
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            4.5,
+            4.5,
+            8.5
           ],
           "texture": "#cut_copper"
         }
@@ -606,6 +624,15 @@
             11.5,
             11,
             13
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            3,
+            11,
+            4.5
           ],
           "texture": "#cut_copper"
         }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "thirstwastaken2:block/brick_firebox",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "thirstwastaken2:block/brick_firebox"
+    },
+    "facing=south": {
+      "model": "thirstwastaken2:block/brick_firebox",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "thirstwastaken2:block/brick_firebox",
+      "y": 270
+    }
+  }
+}

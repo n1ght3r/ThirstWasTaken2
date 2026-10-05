@@ -9,8 +9,6 @@
     "basin": "minecraft:block/cauldron_side",
     "basin_top": "minecraft:block/cauldron_top",
     "basin_inner": "minecraft:block/cauldron_inner",
-    "cool_water": "thirstwastaken2:block/copper_hanging_pot_water_purity_1",
-    "fresh_water": "thirstwastaken2:block/copper_hanging_pot_water_purity_3",
     "particle": "minecraft:block/copper_block"
   },
   "elements": [
@@ -360,15 +358,15 @@
       }
     },
     {
-      "name": "cool_water",
+      "name": "tub_floor_inside",
       "from": [
         3.0,
-        12.5,
+        3.0,
         5.5
       ],
       "to": [
         13.0,
-        12.5,
+        3.0,
         14.5
       ],
       "faces": {
@@ -379,7 +377,7 @@
             12,
             14
           ],
-          "texture": "#cool_water"
+          "texture": "#tub_floor"
         }
       }
     },
@@ -585,6 +583,558 @@
             3,
             11,
             4.5
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_west",
+      "from": [
+        10.5,
+        8.0,
+        6.5
+      ],
+      "to": [
+        12.0,
+        12.0,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            6,
+            6.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            3,
+            6,
+            10,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            9.5,
+            6,
+            11,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            6,
+            6,
+            13,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            9.5,
+            6,
+            11,
+            13
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            9.5,
+            3,
+            11,
+            10
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_north_6",
+      "from": [
+        4.0,
+        8.0,
+        6.5
+      ],
+      "to": [
+        10.5,
+        9.0,
+        8.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            9,
+            13,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            8.5,
+            9,
+            10,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            9,
+            9.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            6,
+            9,
+            7.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            6,
+            9.5,
+            7.5
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            8.5,
+            9.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_east_6",
+      "from": [
+        4.0,
+        8.0,
+        8.0
+      ],
+      "to": [
+        5.5,
+        9.0,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11.5,
+            9,
+            13,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            4.5,
+            9,
+            8.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            9,
+            4.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            7.5,
+            9,
+            11.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            7.5,
+            4.5,
+            11.5
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            4.5,
+            4.5,
+            8.5
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_south_6",
+      "from": [
+        4.0,
+        8.0,
+        12.0
+      ],
+      "to": [
+        10.5,
+        9.0,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            9,
+            13,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            3,
+            9,
+            4.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            9,
+            9.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            11.5,
+            9,
+            13,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            11.5,
+            9.5,
+            13
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            3,
+            9.5,
+            4.5
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_north_8",
+      "from": [
+        4.0,
+        10.0,
+        6.5
+      ],
+      "to": [
+        10.5,
+        11.0,
+        8.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            7,
+            13,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            8.5,
+            7,
+            10,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            7,
+            9.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            6,
+            7,
+            7.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            6,
+            9.5,
+            7.5
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            8.5,
+            9.5,
+            10
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_east_8",
+      "from": [
+        4.0,
+        10.0,
+        8.0
+      ],
+      "to": [
+        5.5,
+        11.0,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            11.5,
+            7,
+            13,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            4.5,
+            7,
+            8.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            7,
+            4.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            7.5,
+            7,
+            11.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            7.5,
+            4.5,
+            11.5
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            4.5,
+            4.5,
+            8.5
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_low_south_8",
+      "from": [
+        4.0,
+        10.0,
+        12.0
+      ],
+      "to": [
+        10.5,
+        11.0,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6.5,
+            7,
+            13,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            3,
+            7,
+            4.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            3,
+            7,
+            9.5,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            11.5,
+            7,
+            13,
+            8
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            3,
+            11.5,
+            9.5,
+            13
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            3,
+            3,
+            9.5,
+            4.5
+          ],
+          "texture": "#cut_copper"
+        }
+      }
+    },
+    {
+      "name": "coil_outlet",
+      "from": [
+        7.75,
+        8.0,
+        5.5
+      ],
+      "to": [
+        9.25,
+        9.0,
+        6.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.75,
+            9,
+            9.25,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "east": {
+          "uv": [
+            10,
+            9,
+            11,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "south": {
+          "uv": [
+            6.75,
+            9,
+            8.25,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "west": {
+          "uv": [
+            5,
+            9,
+            6,
+            10
+          ],
+          "texture": "#cut_copper"
+        },
+        "up": {
+          "uv": [
+            6.75,
+            5,
+            8.25,
+            6
+          ],
+          "texture": "#cut_copper"
+        },
+        "down": {
+          "uv": [
+            6.75,
+            10,
+            8.25,
+            11
           ],
           "texture": "#cut_copper"
         }
@@ -1208,30 +1758,6 @@
             15
           ],
           "texture": "#basin"
-        }
-      }
-    },
-    {
-      "name": "basin_water",
-      "from": [
-        7.0,
-        5.0,
-        1.5
-      ],
-      "to": [
-        10.0,
-        5.0,
-        3.5
-      ],
-      "faces": {
-        "up": {
-          "uv": [
-            6,
-            1,
-            9,
-            3
-          ],
-          "texture": "#fresh_water"
         }
       }
     }

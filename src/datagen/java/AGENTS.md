@@ -114,8 +114,8 @@ The generators are the same; the formats they write to are older.
 | `ThirstDamageTypeProvider` | `data/…/damage_type/dehydrate.json` |
 | `ThirstDamageTypeTagProvider` | `data/minecraft/tags/damage_type/bypasses_armor.json` |
 | `ThirstBiomeTagProvider` | `data/…/tags/worldgen/biome/stagnant_water.json` |
-| `ThirstBlockLootProvider` | `data/…/loot_table/blocks/`, as JSON through vanilla's codec; the distiller's only from its boiler half |
-| `ThirstModelProvider` | `assets/…/models/item/`, the definitions for the mod's own items, through `HangingPotModels` the pot's blockstate and generated block models, and through `DistillerModels` the distiller's blockstate and the item models of it and its parts |
+| `ThirstBlockLootProvider` | `data/…/loot_table/blocks/`, as JSON through vanilla's codec; the distiller's only from its boiler half, two parts when it is not yet piped |
+| `ThirstModelProvider` | `assets/…/models/item/`, the definitions for the mod's own items, through `HangingPotModels` the pot's blockstate and generated block models, and through `DistillerModels` the blockstates of the distiller and its three placeable parts and the item models of it and its parts |
 | `ThirstItemModelDefinitionProvider` | the two legacy definitions in `assets/…/items/` that have no item, kept for sea-water bottles and buckets saved up to 1.4; 1.21.4 and later |
 
 `FarmersDelightRecipeProvider` is a plain `DataProvider` because nothing of Farmer's Delight is on
@@ -143,7 +143,7 @@ files each switch should take away.
 ## What is not generated
 
 Textures (the copper pipe's from `tools/distiller/generate_distiller_sprites.py`), the hanging pot's
-three Blockbench models, the distiller's two block models and four `models/item/*_3d` item models (all
+three Blockbench models, the distiller's eight block models (its halves' variants and the three parts alone) and four `models/item/*_3d` item models (all
 written by `tools/distiller/generate_distiller_model.py`), `icon.png`, `font/droplets.json`, the nine `lang/` files and
 `thirstwastaken2.mixins.json` all stay hand-written in `src/main/resources`, and `fabric.mod.json` in
 `src/main/fabric/resources`. The lang files

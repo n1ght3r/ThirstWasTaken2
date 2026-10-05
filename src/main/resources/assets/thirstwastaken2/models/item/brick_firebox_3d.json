@@ -4,8 +4,7 @@
   "textures": {
     "bricks": "minecraft:block/bricks",
     "recess": "minecraft:block/polished_blackstone",
-    "logs": "minecraft:block/campfire_log_lit",
-    "fire": "minecraft:block/fire_0",
+    "cold_logs": "minecraft:block/campfire_log",
     "slab_side": "minecraft:block/smooth_stone_slab_side",
     "slab_top": "minecraft:block/smooth_stone",
     "soot": "minecraft:block/coal_block",
@@ -427,7 +426,7 @@
       }
     },
     {
-      "name": "logs",
+      "name": "logs_cold",
       "from": [
         5.5,
         -0.75,
@@ -446,7 +445,7 @@
             10.5,
             15.5
           ],
-          "texture": "#logs"
+          "texture": "#cold_logs"
         },
         "east": {
           "uv": [
@@ -455,7 +454,7 @@
             13.5,
             15.5
           ],
-          "texture": "#logs"
+          "texture": "#cold_logs"
         },
         "south": {
           "uv": [
@@ -464,7 +463,7 @@
             10.5,
             15.5
           ],
-          "texture": "#logs"
+          "texture": "#cold_logs"
         },
         "west": {
           "uv": [
@@ -473,7 +472,7 @@
             4,
             15.5
           ],
-          "texture": "#logs"
+          "texture": "#cold_logs"
         },
         "up": {
           "uv": [
@@ -482,7 +481,7 @@
             10.5,
             4
           ],
-          "texture": "#logs"
+          "texture": "#cold_logs"
         },
         "down": {
           "uv": [
@@ -491,31 +490,7 @@
             10.5,
             13.5
           ],
-          "texture": "#logs"
-        }
-      }
-    },
-    {
-      "name": "fire",
-      "from": [
-        5.5,
-        -0.25,
-        2.25
-      ],
-      "to": [
-        10.5,
-        2.75,
-        2.25
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            2,
-            7,
-            14,
-            16
-          ],
-          "texture": "#fire"
+          "texture": "#cold_logs"
         }
       }
     },

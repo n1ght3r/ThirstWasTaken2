@@ -19,7 +19,8 @@ thirst, and the client only receives it through the `PlayerData` sync.
 | The mod's own mob effects (Parched) | `effect/ThirstEffects`; what they do lives where they matter, e.g. Parched's drain in `ThirstManager.tickPlayer` |
 | The copper and iron hanging pots: capacity, boiling, filling and drawing | `block/` |
 | The copper distiller, a two-block block placed and broken whole like a bed; no distilling yet | `block/DistillerBlock`; its models from `tools/distiller/generate_distiller_model.py`; checked in a client by `tools/agent/gameplay/distiller.jsonl` |
-| The distiller's four crafting parts (pipe, boiler, cooling tub, brick firebox), plain items under one Mod Items switch | `item/ThirstItems`, `config/ThirstConfig.enableCopperDistiller`; 3D item models from the same generator, the pipe a sprite from `generate_distiller_sprites.py` |
+| The distiller's four parts (pipe, boiler, cooling tub, brick firebox) under one Mod Items switch. Firebox, boiler and tub are blocks too; built in the world, a boiler on a firebox merges into an unpiped boiler half, and the pipe joins it to the tub beside it | `block/DistillerPartBlock`, `block/CoolingTubBlock`, `item/DistillerBoilerItem`, `item/CopperPipeItem`, `config/ThirstConfig.enableCopperDistiller`; models from the same generator, the pipe a sprite from `generate_distiller_sprites.py` |
+| The cooling tub's coolant, poured once from any water container, alone or in the machine | `block/DistillerInteractions`, the `cooled` property |
 | Anything about water cleanliness | `purity/` (has its own AGENTS.md) |
 | A vanilla behaviour hook | `mixin/` (has its own AGENTS.md) |
 | Loot, optional mod integrations | `compat/` (has its own AGENTS.md) |
