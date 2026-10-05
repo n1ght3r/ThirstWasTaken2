@@ -31,7 +31,7 @@ NeoForge release.
 | `1.21.11` | Refabricated | `1.3.0.9-fabric+mc1.21.11`, **frozen** ("1.4+ no longer supported") | `Gns9Xmuq` | yes | no |
 | `26.1.x` | Refabricated | `1.6.0.1-fabric+mc26.1.2` | `OFJxAr0S` | yes | no |
 | `26.2.x` | Refabricated | `1.6.0.1-fabric+mc26.2` | `Y9MqhBRe` | yes | no |
-| `26.3.x` | Refabricated | `1.6.0.1-fabric+mc26.3` | `44IeouBQ` | yes | no |
+| `26.3.x` | Refabricated | `1.6.0.2-fabric+mc26.3` | `Lu4Tg8sD` | yes | no |
 | `1.21.11-neoforge`, `26.x-neoforge` | none | — | — | — | — |
 
 The official mod has no NeoForge build past 1.21.1, so the NeoForge nodes past 1.21.1 get nothing.
@@ -125,8 +125,8 @@ of different Minecraft versions share one version number). Nothing in the other 
 # [fabric."26.3.x"]
 # Kaleidoscope Cookery Refabricated, the unofficial Fabric port with the official team's permission:
 # the official Fabric build stopped at 1.0.1. See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
-# 1.6.0.1-fabric+mc26.3, the Fabric upload.
-deps.kaleidoscope_cookery = "44IeouBQ"
+# 1.6.0.2-fabric+mc26.3, the Fabric upload.
+deps.kaleidoscope_cookery = "Lu4Tg8sD"
 ```
 
 Add to `MODRINTH_DEPS` in `../../../../.github/scripts/update_mc_deps.py`, with `by_id=True`, **under two project

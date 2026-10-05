@@ -107,8 +107,8 @@ deps.farmersdelight = "1.21.1-3.3.6"
 # Fabric and NeoForge uploads share a version number. See src/main/supplementaries/AGENTS.md.
 # 1.21.1-3.9.9, the Fabric upload.
 deps.supplementaries = "h8FyJ2as"
-# 1.21.1-3.7.0, the Fabric upload.
-deps.moonlight = "FrIMIBv6"
+# 1.21.1-3.7.1, the Fabric upload.
+deps.moonlight = "przKUDWo"
 # Kaleidoscope Cookery Refabricated, the unofficial Fabric port with the official team's permission:
 # the official Fabric build stopped at 1.0.1, before the teapot. Same mod id and package as the NeoForge
 # original, so one integration serves both. Pinned by Modrinth version id, since the Fabric uploads of
@@ -207,8 +207,8 @@ deps.sophisticated_storage = "Hhf1IKFI"
 # Supplementaries and Moonlight Lib, the same integration the Fabric table builds; see there.
 # 1.21.1-3.9.9, the NeoForge upload.
 deps.supplementaries = "WrZWfRjP"
-# 1.21.1-3.7.0, the NeoForge upload.
-deps.moonlight = "t6iFh4M3"
+# 1.21.1-3.7.1, the NeoForge upload.
+deps.moonlight = "YfHkk7hg"
 # Kaleidoscope Cookery, the official NeoForge build, which the Fabric tables' Refabricated is a port of.
 # It has no NeoForge build past 1.21.1, so no other NeoForge table sets this.
 # 1.6.0-neoforge+mc1.21.1, the NeoForge upload.
@@ -477,8 +477,8 @@ deps.farmersdelight = "26.3-3.6.27"
 # No `deps.create_fly`: Create Fly has no 26.3 port yet, so this node does not compile the Sand
 # Filter. See src/main/createfly/AGENTS.md.
 # Kaleidoscope Cookery Refabricated, as in the 26.1.x table.
-# 1.6.0.1-fabric+mc26.3, the Fabric upload.
-deps.kaleidoscope_cookery = "44IeouBQ"
+# 1.6.0.2-fabric+mc26.3, the Fabric upload.
+deps.kaleidoscope_cookery = "Lu4Tg8sD"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.7, the Fabric upload.
 deps.serene_seasons = "V9PxJPuw"
@@ -490,7 +490,7 @@ deps.glitchcore = "aaUghyGp"
 mod.mc_compat = "[26.3,26.4)"
 
 # NeoForge has published only betas for 26.3. This is the newest, and the lower bound players need.
-deps.neoforge = "26.3.0.48-beta"
+deps.neoforge = "26.3.0.51-beta"
 # 3.0.10+mc26.3, the NeoForge upload. Pinned by Modrinth version id for the reason the 26.2 table gives.
 deps.appleskin = "6vok7cLb"
 deps.jade = "26.3.5+neoforge"
