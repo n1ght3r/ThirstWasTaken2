@@ -1,6 +1,10 @@
 package com.thirstwastaken2.client.compat;
 
 import com.thirstwastaken2.ThirstWasTaken2;
+import com.thirstwastaken2.block.CoolingTubBlock;
+import com.thirstwastaken2.block.DistillerBlock;
+import com.thirstwastaken2.block.DistillerBlockEntity;
+import com.thirstwastaken2.block.DistillerSalt;
 import com.thirstwastaken2.block.HangingPotBlock;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
@@ -27,7 +31,8 @@ import java.util.function.Function;
 
 /**
  * Adds the grade of the water under the crosshair to Jade's overlay, for water in the world, a
- * waterlogged block, a water cauldron and the mod's own hanging pot alike.
+ * waterlogged block, a water cauldron and the mod's own hanging pot alike; and, for the copper
+ * distiller, both its tanks, its coolant and the salt it is counting toward.
  *
  * <p>Jade is a compile-only dependency and resolves this class through the {@code jade} entrypoint,
  * which it reads on the dedicated server too. Only {@link #registerClient} touches client classes, so
@@ -55,6 +60,55 @@ public final class JadeIntegration implements IWailaPlugin {
         // Registered on Block rather than LiquidBlock, because a waterlogged block holds water that a
         // bottle can be filled from just the same.
         registration.registerBlockComponent(WaterPurityProvider.INSTANCE, Block.class);
+        registration.registerBlockComponent(DistillerProvider.INSTANCE, DistillerBlock.class);
+        registration.registerBlockComponent(DistillerProvider.INSTANCE, CoolingTubBlock.class);
+    }
+
+    /**
+     * The copper distiller, either half: the boiler's servings and what they are, the basin's, the
+     * coolant when the tub is dry, and the salty servings counted toward the next salt when there is a
+     * salt to make. The machine tells the client its tanks whenever they change; the coolant is the
+     * tub's blockstate. A lone cooling tub shows only whether it is dry.
+     */
+    private enum DistillerProvider implements IBlockComponentProvider {
+        INSTANCE;
+
+        private static final Identifier UID = ThirstWasTaken2.id("copper_distiller");
+
+        @Override
+        public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
+            BlockState state = accessor.getBlockState();
+            if (state.getBlock() instanceof CoolingTubBlock) {
+                if (!state.getValue(CoolingTubBlock.COOLED)) tooltip.add(dry());
+                return;
+            }
+            DistillerBlockEntity machine = DistillerBlock.machine(accessor.getLevel(), accessor.getPosition(), state);
+            if (machine == null) return;
+            int tank = DistillerBlockEntity.tank();
+            WaterQuality boiled = machine.boilerQuality();
+            net.minecraft.network.chat.MutableComponent boiler = Component.translatable(
+                    "container.thirstwastaken2.copper_distiller.boiler", machine.boilerServings(), tank);
+            if (boiled != null) boiler.append(" ").append(WaterPurityProvider.line(boiled));
+            tooltip.add(boiler);
+            net.minecraft.network.chat.MutableComponent basin = Component.translatable(
+                    "container.thirstwastaken2.copper_distiller.basin", machine.basinServings(), tank);
+            if (machine.basinServings() > 0) basin.append(" ").append(WaterPurity.purityName(WaterPurity.MAX));
+            tooltip.add(basin);
+            if (!machine.cooled()) tooltip.add(dry());
+            if (DistillerSalt.item() != null) {
+                tooltip.add(Component.translatable("container.thirstwastaken2.copper_distiller.salt",
+                        machine.saltServings(), DistillerBlockEntity.SALT_SERVINGS));
+            }
+        }
+
+        private static Component dry() {
+            return Component.translatable("container.thirstwastaken2.copper_distiller.dry");
+        }
+
+        @Override
+        public Identifier getUid() {
+            return UID;
+        }
     }
 
     /**

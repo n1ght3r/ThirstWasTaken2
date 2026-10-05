@@ -36,6 +36,8 @@ public final class ThirstConfig {
     public static final int MAX_EFFECT_SECONDS = 300;
     /** The longest a serving may be set to take to boil, in a pot or in hand. */
     public static final int MAX_BOIL_SECONDS = 60;
+    /** The most servings a distiller tank may hold: ten buckets. */
+    public static final int MAX_DISTILLER_TANK = 30;
     /** The range of a season's drain factor, which is also the config screen's slider range. */
     public static final double MIN_SEASON_DRAIN = 0.25;
     public static final double MAX_SEASON_DRAIN = 4.0;
@@ -103,6 +105,10 @@ public final class ThirstConfig {
     public int ironFlaskBoilSeconds = 4;
     public int copperHangingPotBoilSeconds = 4;
     public int ironHangingPotBoilSeconds = 6;
+    /** Seconds the copper distiller takes to distil a serving, while its fire burns. */
+    public int distillerServingSeconds = 8;
+    /** Servings each of the copper distiller's two tanks holds; at least a bucket's three. */
+    public int distillerTankServings = 9;
 
     // ---- water sickness ---------------------------------------------------
     // This replaced quenchWhenDebuffed, nauseaChance, poisonChance and nauseaSeconds in the sickness
@@ -348,6 +354,8 @@ public final class ThirstConfig {
         ironFlaskBoilSeconds = clamp(ironFlaskBoilSeconds, 1, MAX_BOIL_SECONDS);
         copperHangingPotBoilSeconds = clamp(copperHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
         ironHangingPotBoilSeconds = clamp(ironHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
+        distillerServingSeconds = clamp(distillerServingSeconds, 1, MAX_BOIL_SECONDS);
+        distillerTankServings = clamp(distillerTankServings, 3, MAX_DISTILLER_TANK);
         distillerSaltItem = distillerSaltItem == null ? "" : distillerSaltItem.trim();
         // Gson reads a name it does not know, including a hand typo, as null.
         if (appleskinQuenchedOverlay == null) appleskinQuenchedOverlay = QuenchedOverlay.DIAMOND;

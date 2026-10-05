@@ -165,7 +165,14 @@ enum ConfigCategory {
                             (config, value) -> config.copperHangingPotBoilSeconds = value),
                     ConfigEntry.number("iron_hanging_pot_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.ironHangingPotBoilSeconds,
-                            (config, value) -> config.ironHangingPotBoilSeconds = value))));
+                            (config, value) -> config.ironHangingPotBoilSeconds = value))),
+            ConfigSection.of("containers.distiller", List.of(
+                    ConfigEntry.number("distiller_serving_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
+                            config -> config.distillerServingSeconds,
+                            (config, value) -> config.distillerServingSeconds = value),
+                    ConfigEntry.number("distiller_tank_servings", 3, ThirstConfig.MAX_DISTILLER_TANK, ConfigEntry::servings,
+                            config -> config.distillerTankServings,
+                            (config, value) -> config.distillerTankServings = value))));
 
     private final String key;
     private final Identifier icon;

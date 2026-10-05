@@ -6,6 +6,11 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Added
 
+- The Copper Distiller, a two-block still that turns any water into Pure water, sea water included.
+  It burns furnace fuel and works with hoppers. Craft it from its four parts, or build it in the world
+  and join it with a Copper Pipe. Its cooling tub needs filling once, with any water.
+- When another mod adds salt, distilling sea water leaves some of it behind.
+- With Jade installed, looking at a distiller shows both its tanks and whether its cooling tub is dry.
 - Miner's Delight, on NeoForge 1.21.1 and Forge 1.20.1:
   - Its soups and the Milk Cup restore thirst. A cup of soup restores half what a bowl does.
   - Copper cups keep the grade of their water, like a bucket. A cup filled from the sea stays salty
@@ -16,6 +21,14 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
   water inside, for example a Dirty bottle clicked on a full cauldron of Pure water.
+
+<details>
+<summary>Configuration file details</summary>
+
+- New: `enableCopperDistiller`, `distillerServingSeconds` (default `8`), `distillerTankServings`
+  (default `9`) and `distillerSaltItem`, which picks one salt when several mods add one.
+
+</details>
 
 ## [1.6.2] - 2026-10-03
 

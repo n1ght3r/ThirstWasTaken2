@@ -117,8 +117,9 @@ give the same bottles, Clean twice as often as Pure. See `compat/LootIntegration
 ## Cleaning water
 
 "Up two grades" is `PURIFY_TABLE` in `ThirstRecipeProvider`: Dirty becomes Clean, Murky and Clean
-become Pure. Nothing takes the salt out of sea water; distillation is on the [roadmap](ROADMAP.md).
-With Spelunkery, a furnace boils a sea water bucket down to a salt bucket, and nothing to drink.
+become Pure. Only the Copper Distiller takes the salt out of sea water, and it makes any water Pure;
+see [DISTILLATION-PLAN.md](DISTILLATION-PLAN.md). With Spelunkery, a furnace boils a sea water bucket
+down to a salt bucket, and nothing to drink.
 
 | Method | Time | Servings | Result | Fuel | Notes |
 |---|---|---|---|---|---|
@@ -132,6 +133,7 @@ With Spelunkery, a furnace boils a sea water bucket down to a salt bucket, and n
 | Iron Flask, held on a campfire | 4 s a serving, 24 s full | 6 | Pure | no | `ironFlaskBoilSeconds` |
 | Copper Hanging Pot | 4 s a serving, 12 s full | 3 | Pure | no | over a lit campfire; `copperHangingPotBoilSeconds` |
 | Iron Hanging Pot | 6 s a serving, 18 s full | 3 | Pure | no | the same; `ironHangingPotBoilSeconds` |
+| Copper Distiller | 8 s a serving, 72 s full | up to 9 | Pure, sea water included | furnace fuel | coal runs ten servings; the cooling tub filled once; a bucket of sea water leaves one salt when another mod has salt; `distillerServingSeconds`, `distillerTankServings` |
 | Cooking Pot (Farmer's Delight) | 10 s | 1 | Pure | heat below | only with Farmer's Delight |
 | Boiler (Cold Sweat) | 10 s a grade, 30 s Dirty to Pure | up to 27 | up one grade a pass, to Pure | yes | only with Cold Sweat |
 | Cold Sweat's Waterskin, furnace or smoker | 10 s / 5 s | 1 | up two grades | yes | hand-written recipes in `src/main/coldsweat` |

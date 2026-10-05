@@ -77,7 +77,7 @@ public final class DistillerInteractions {
         boolean sneaking = player.isSecondaryUseActive();
         if (carried ? sneaking : !sneaking) {
             int water = DistillerWater.held(held);
-            int room = DistillerBlockEntity.TANK - machine.boilerServings();
+            int room = DistillerBlockEntity.tank() - machine.boilerServings();
             if (water > 0 && room > 0 && (carried || water <= room)) {
                 if (level.isClientSide()) return InteractionResult.SUCCESS;
                 int poured = machine.pour(Math.min(water, room), WaterPurity.quality(held));

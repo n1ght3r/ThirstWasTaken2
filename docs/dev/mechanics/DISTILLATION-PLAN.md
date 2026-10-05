@@ -1,10 +1,11 @@
 # Distillation: the Copper Distiller at work
 
-**Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
+**Status: done** (2026-10-05). Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
 what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 2, the machine, which
 distils; steps 3 and 4, its GUI; step 5, building it in the world; step 6, the fire in the model;
-step 7, salt; and step 8, the cooling tub. Still to come: the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+step 7, salt; step 8, the cooling tub; step 9, the config; the tests (10); the docs (11); and Jade.
+Left: screenshots for the docs site, and the hand checks in a client. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -231,7 +232,9 @@ models and item use only, on every node, and gives something to see while the se
    the slot shown only when it resolves. The gametest mod tags sugar as salt.
 8. **The cooling tub** (done): `cooled`, filled by a right-click (`block/DistillerInteractions`, any
    water container, a skin pouring up to a bucket), required to condense.
-9. **Config**: the serving time and tank sizes on the Containers page (lang keys in all nine files).
+9. **Config** (done): `distillerServingSeconds` and `distillerTankServings`, one size for both tanks,
+   at least a bucket, in a Copper Distiller tab of the Containers page. The menu reads the tank size
+   from the server through a data slot, so a client with another config still draws the gauges right.
 10. **Tests.** Gametests: fill from each container, distil a bucket of sea water and get three Pure and
    one salt with a salt item tagged by a test data pack (done), no salt with the tag empty (done, on
    `DistillerSalt.resolve`, since the test pack's tag is never empty), fuel not burnt with
@@ -240,10 +243,17 @@ models and item use only, on every node, and gives something to see while the se
    and is spent, and does nothing to a pair facing apart or a tub on the wrong side; each break drops
    what the table above says.
    An agent script (`tools/agent/gameplay/distiller.jsonl`, extended) opens the GUI with a real click,
-   reads `client.slots`, and captures the screen.
-11. **Docs.** WATER-REFERENCE.md (a Pure source, sea water no longer a dead end), ROADMAP.md §2 marked
-    done, this file's status, the CHANGELOG and the docs site.
+   reads `client.slots`, and captures the screen. As built (done): every item above has a gametest in
+   `DistillerMachineGameTest` or `DistillerGameTest`, and the config's clamps one in `ThirstApiGameTest`.
+11. **Docs** (done). WATER-REFERENCE.md (a Pure source, sea water no longer a dead end), ROADMAP.md §2 marked
+    done, this file's status, the CHANGELOG and the docs site (the Copper Distiller section of the water
+    page, and four keys on the configuration page). No screenshots yet.
 
-## Still open
+## Jade (done)
 
-- Jade: show both tanks, the coolant and the salt counter (later, in `compat/`).
+`client/compat/JadeIntegration` shows, on either half, the boiler's servings and what they are, the
+basin's, "The cooling tub is dry" when it is, and the salty servings counted toward the next salt when
+there is a salt; on a lone cooling tub, only whether it is dry. Jade lists it as its own plugin entry.
+The machine tells the client what it saves, but only when the tanks, the boiler's water or the salt
+count change, at most a few packets a serving; the fire and the progress, which change every tick, are
+the menu's alone. The tank size shown is the client's config.

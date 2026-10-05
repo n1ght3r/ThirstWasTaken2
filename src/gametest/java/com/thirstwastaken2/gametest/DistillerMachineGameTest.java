@@ -64,6 +64,34 @@ public final class DistillerMachineGameTest {
     }
 
     @GameTest
+    public void eachWaterContainerPoursIntoTheBoiler(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        ItemStack bowl = WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), WaterQuality.fresh(0));
+        ItemStack canteen = new ItemStack(ThirstItems.COPPER_CANTEEN);
+        WaterskinItem.addWater(canteen, WaterQuality.fresh(1), 2);
+        ItemStack flask = new ItemStack(ThirstItems.IRON_FLASK);
+        WaterskinItem.addWater(flask, SALT, 1);
+        ItemStack skin = new ItemStack(ThirstItems.WATERSKIN);
+        WaterskinItem.addWater(skin, WaterQuality.fresh(2), WaterskinItem.capacity(skin));
+
+        ItemStack[] poured = {
+                pouredFrom(machine, TestFixtures.waterBottle()), pouredFrom(machine, bowl),
+                pouredFrom(machine, canteen), pouredFrom(machine, flask), pouredFrom(machine, skin),
+        };
+
+        TestFixtures.check(helper, poured[0].is(Items.GLASS_BOTTLE) && poured[1].is(ThirstItems.TERRACOTTA_BOWL),
+                "a bottle and a bowl should be left empty, got " + poured[0] + " and " + poured[1]);
+        TestFixtures.check(helper, WaterskinItem.servings(poured[2]) == 0 && WaterskinItem.servings(poured[3]) == 0
+                        && WaterskinItem.servings(poured[4]) == 0,
+                "a canteen, a flask and a waterskin should each pour out all they held");
+        int expected = 1 + 1 + 2 + 1 + WaterskinItem.capacity(skin);
+        TestFixtures.check(helper, machine.boilerServings() == expected && SALT.equals(machine.boilerQuality()),
+                "the boiler should hold " + expected + " servings, salty for the flask's sea water, got "
+                        + machine.boilerServings() + " of " + machine.boilerQuality());
+        helper.succeed();
+    }
+
+    @GameTest
     public void aBucketWaitsForRoomForAllThree(GameTestHelper helper) {
         DistillerBlockEntity machine = machine(helper, true);
         machine.pour(7, WaterQuality.fresh(2));
@@ -84,7 +112,7 @@ public final class DistillerMachineGameTest {
         machine.pour(3, SALT);
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
 
-        tick(machine, 3 * DistillerBlockEntity.SERVING_TICKS - 1);
+        tick(machine, 3 * DistillerBlockEntity.servingTicks() - 1);
         TestFixtures.check(helper, machine.basinServings() == 2,
                 "a tick short of the third serving the basin should hold 2, got " + machine.basinServings());
         machine.tick();
@@ -95,7 +123,7 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, machine.saltServings() == DistillerBlockEntity.SALT_SERVINGS,
                 "three salty servings should be counted toward salt, got " + machine.saltServings());
         TestFixtures.check(helper, machine.getItem(DistillerBlockEntity.FUEL).isEmpty()
-                        && machine.burnLeft() == 1600 - 3 * DistillerBlockEntity.SERVING_TICKS,
+                        && machine.burnLeft() == 1600 - 3 * DistillerBlockEntity.servingTicks(),
                 "one coal should have been lit and burnt for three servings, " + machine.burnLeft() + " ticks left");
         helper.succeed();
     }
@@ -106,7 +134,7 @@ public final class DistillerMachineGameTest {
         machine.pour(3, SALT);
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
 
-        tick(machine, 3 * DistillerBlockEntity.SERVING_TICKS + 1);
+        tick(machine, 3 * DistillerBlockEntity.servingTicks() + 1);
 
         ItemStack salt = machine.getItem(DistillerBlockEntity.SALT_OUT);
         TestFixtures.check(helper, salt.is(Items.SUGAR) && salt.getCount() == 1 && machine.saltServings() == 0,
@@ -135,7 +163,7 @@ public final class DistillerMachineGameTest {
         machine.pour(6, SALT);
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
 
-        tick(machine, 5 * DistillerBlockEntity.SERVING_TICKS);
+        tick(machine, 5 * DistillerBlockEntity.servingTicks());
 
         TestFixtures.check(helper, machine.basinServings() == 3 && machine.boilerServings() == 3,
                 "with no room for its salt the second bucket should wait, the basin holds " + machine.basinServings());
@@ -193,7 +221,7 @@ public final class DistillerMachineGameTest {
         machine.pour(3, SALT);
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
 
-        tick(machine, DistillerBlockEntity.SERVING_TICKS * 2);
+        tick(machine, DistillerBlockEntity.servingTicks() * 2);
 
         TestFixtures.check(helper, machine.basinServings() == 0 && machine.boilerServings() == 3,
                 "without coolant nothing should condense, the basin holds " + machine.basinServings());
@@ -231,7 +259,7 @@ public final class DistillerMachineGameTest {
     @GameTest
     public void aLitFireWaitsWhenTheBasinIsFull(GameTestHelper helper) {
         DistillerBlockEntity machine = machine(helper, true);
-        distil(machine, DistillerBlockEntity.TANK);
+        distil(machine, DistillerBlockEntity.tank());
         machine.pour(1, WaterQuality.fresh(0));
         int left = machine.burnLeft();
 
@@ -245,7 +273,7 @@ public final class DistillerMachineGameTest {
     @GameTest
     public void theBasinFillsEachContainer(GameTestHelper helper) {
         DistillerBlockEntity machine = machine(helper, true);
-        distil(machine, DistillerBlockEntity.TANK);
+        distil(machine, DistillerBlockEntity.tank());
 
         ItemStack bucket = filledFrom(machine, new ItemStack(Items.BUCKET));
         ItemStack bottle = filledFrom(machine, new ItemStack(Items.GLASS_BOTTLE));
@@ -258,7 +286,7 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, bowl.is(ThirstItems.TERRACOTTA_WATER_BOWL) && pure(bowl), "a bowl should come out Pure water, got " + bowl);
         TestFixtures.check(helper, WaterskinItem.servings(skin) == WaterskinItem.capacity(skin) && pure(skin),
                 "a waterskin should come out full of Pure water, got " + WaterskinItem.servings(skin));
-        TestFixtures.check(helper, machine.basinServings() == DistillerBlockEntity.TANK - 3 - 1 - 1 - WaterskinItem.capacity(skin),
+        TestFixtures.check(helper, machine.basinServings() == DistillerBlockEntity.tank() - 3 - 1 - 1 - WaterskinItem.capacity(skin),
                 "each should have drawn its own servings, the basin holds " + machine.basinServings());
         helper.succeed();
     }
@@ -358,6 +386,8 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, player.containerMenu instanceof DistillerMenu,
                 "an empty hand on the tub should open the distiller's menu, got " + player.containerMenu);
         DistillerMenu menu = (DistillerMenu) player.containerMenu;
+        TestFixtures.check(helper, menu.tank() == DistillerBlockEntity.tank(),
+                "the menu should read the server's tank size, got " + menu.tank());
         TestFixtures.check(helper, menu.boilerServings() == 4 && SALT.equals(menu.boilerQuality()) && menu.cooled(),
                 "the menu should read the machine's boiler and tub, got " + menu.boilerServings() + " of "
                         + menu.boilerQuality());
@@ -414,6 +444,8 @@ public final class DistillerMachineGameTest {
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL, 5));
         machine.setItem(DistillerBlockEntity.EMPTY_IN, new ItemStack(Items.GLASS_BOTTLE, 2));
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        // Batches can reuse a test's spot (seen on Forge 1.20.1), where an earlier test's drops still lie.
+        around(helper).forEach(ItemEntity::discard);
 
         player.gameMode.destroyBlock(helper.absolutePos(TUB));
 
@@ -460,7 +492,14 @@ public final class DistillerMachineGameTest {
     private static void distil(DistillerBlockEntity machine, int servings) {
         machine.pour(servings, WaterQuality.fresh(1));
         machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL, 2));
-        tick(machine, servings * DistillerBlockEntity.SERVING_TICKS);
+        tick(machine, servings * DistillerBlockEntity.servingTicks());
+    }
+
+    /** Puts {@code water} in the water slot, ticks once and takes back what is left of it. */
+    private static ItemStack pouredFrom(DistillerBlockEntity machine, ItemStack water) {
+        machine.setItem(DistillerBlockEntity.WATER_IN, water);
+        machine.tick();
+        return machine.removeItemNoUpdate(DistillerBlockEntity.WATER_IN);
     }
 
     /** Puts {@code empty} in the input, ticks once and takes out what was filled. */
@@ -479,11 +518,16 @@ public final class DistillerMachineGameTest {
     }
 
     private static int dropped(GameTestHelper helper, Item item) {
-        AABB around = new AABB(helper.absolutePos(BOILER)).inflate(3.0);
-        return helper.getLevel().getEntitiesOfClass(ItemEntity.class, around).stream()
+        return around(helper).stream()
                 .filter(entity -> entity.getItem().is(item))
                 .mapToInt(entity -> entity.getItem().getCount())
                 .sum();
+    }
+
+    /** The dropped items round the distiller. */
+    private static List<ItemEntity> around(GameTestHelper helper) {
+        AABB around = new AABB(helper.absolutePos(BOILER)).inflate(3.0);
+        return helper.getLevel().getEntitiesOfClass(ItemEntity.class, around);
     }
 
     /** Uses the held item on top of the block at {@code pos} through the game mode, where both loaders fire their hooks. */

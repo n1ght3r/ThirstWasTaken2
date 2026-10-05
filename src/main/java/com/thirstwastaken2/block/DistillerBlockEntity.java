@@ -1,5 +1,6 @@
 package com.thirstwastaken2.block;
 
+import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.platform.Loader;
 import com.thirstwastaken2.platform.SavedBlockEntity;
 import com.thirstwastaken2.platform.Vanilla;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <p>Each tick on the server it pours the container in {@link #WATER_IN} into the boiler, fills the one
  * in {@link #EMPTY_IN} from the basin, and boils: while the boiler holds water, the basin has room and
- * the tub holds its coolant, the fire burns and every {@link #SERVING_TICKS} one serving moves from the
+ * the tub holds its coolant, the fire burns and every {@link #servingTicks} one serving moves from the
  * boiler to the basin, Pure whatever it was. With nothing to do the fire waits rather than burning down,
  * so no fuel is wasted. Its block is {@code lit} while fuel is alight.
  *
@@ -45,6 +46,10 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  * <p>It is also the menu a player opens on either half, {@link DistillerMenu}, whose gauges read
  * {@link #data}.
+ *
+ * <p>The client is told what it saves, for Jade's overlay, but only when the tanks or the salt count
+ * change, a few times a serving at most: the fire and the progress tick every tick, and only the menu
+ * shows those.
  */
 public final class DistillerBlockEntity extends SavedBlockEntity implements WorldlyContainer, MenuProvider {
     public static final int WATER_IN = 0;
@@ -53,10 +58,6 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
     public static final int FILLED_OUT = 3;
     public static final int SALT_OUT = 4;
     public static final int SLOTS = 5;
-    /** Servings each tank holds: three buckets. */
-    public static final int TANK = 9;
-    /** Ticks a serving takes to distil: 8 seconds, so coal's 80 runs ten. */
-    public static final int SERVING_TICKS = 160;
     /** Salty servings that leave one salt behind: a bucket of sea water. */
     public static final int SALT_SERVINGS = 3;
 
@@ -77,6 +78,8 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
     private int progress;
     /** Salty servings distilled toward the next salt, up to {@link #SALT_SERVINGS}. */
     private int saltServings;
+    /** What the client was last sent, {@link #synced()}; -1 before anything was. */
+    private long lastSynced = -1;
 
     /** What the menu shows, read live on the server and sent to the client by the menu, by {@code DistillerMenu}'s indices. */
     private final ContainerData data = new ContainerData() {
@@ -90,7 +93,9 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
                 case DistillerMenu.PROGRESS:
                     return progress;
                 case DistillerMenu.SERVING:
-                    return SERVING_TICKS;
+                    return servingTicks();
+                case DistillerMenu.TANK:
+                    return tank();
                 case DistillerMenu.BOILER:
                     return boilerServings;
                 case DistillerMenu.BOILER_QUALITY:
@@ -117,6 +122,19 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
 
     public DistillerBlockEntity(BlockPos pos, BlockState state) {
         super(ThirstBlockEntities.COPPER_DISTILLER, pos, state);
+    }
+
+    /**
+     * Servings each tank holds, {@code distillerTankServings}: by default 9, three buckets. A tank that
+     * holds more after the config shrinks it keeps its water and takes no more until it drops below.
+     */
+    public static int tank() {
+        return ThirstConfig.get().distillerTankServings;
+    }
+
+    /** Ticks a serving takes to distil, {@code distillerServingSeconds}: by default 8 seconds, so coal's 80 runs ten. */
+    public static int servingTicks() {
+        return ThirstConfig.get().distillerServingSeconds * 20;
     }
 
     /** Servings waiting in the boiler. */
@@ -150,12 +168,39 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
         return saltServings;
     }
 
+    /** Whether the tub beside it holds its coolant, without which nothing condenses. */
+    public boolean cooled() {
+        return tubCooled();
+    }
+
+    @Override
+    protected boolean syncsToClient() {
+        return true;
+    }
+
+    /** Saves always, and tells the client only when what Jade shows has changed. */
+    @Override
+    protected void changed() {
+        long synced = synced();
+        if (synced == lastSynced) {
+            setChanged();
+            return;
+        }
+        lastSynced = synced;
+        super.changed();
+    }
+
+    /** The tanks, the boiler's quality and the salt count, packed into one number to compare. */
+    private long synced() {
+        return (long) boilerServings | (long) boilerQuality << 16 | (long) basinServings << 24 | (long) saltServings << 40;
+    }
+
     /**
      * Pours up to {@code servings} of {@code quality} into the boiler, mixed the way a cauldron mixes:
      * salt stays salt, fresh water keeps the worse grade. Returns how many went in.
      */
     public int pour(int servings, WaterQuality quality) {
-        int poured = Math.min(servings, TANK - boilerServings);
+        int poured = Math.min(servings, tank() - boilerServings);
         if (poured <= 0) return 0;
         WaterQuality held = boilerQuality();
         boilerQuality = WaterPurity.storedValue(held == null ? quality : WaterQuality.worse(held, quality));
@@ -184,7 +229,7 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
             if (burnLeft == 0) changed |= lightFuel();
             if (burnLeft > 0) {
                 burnLeft--;
-                if (++progress >= SERVING_TICKS) distilOne();
+                if (++progress >= servingTicks()) distilOne();
                 changed = true;
             }
         } else if (boilerServings == 0 && progress > 0) {
@@ -200,7 +245,7 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
      * for salt water, room for the salt it leaves.
      */
     private boolean canDistil() {
-        return boilerServings > 0 && basinServings < TANK && tubCooled()
+        return boilerServings > 0 && basinServings < tank() && tubCooled()
                 && !(saltServings >= SALT_SERVINGS && WaterQuality.SALT.equals(boilerQuality()) && DistillerSalt.item() != null);
     }
 
@@ -245,7 +290,7 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
     private boolean takeWater() {
         ItemStack stack = items.get(WATER_IN);
         int held = DistillerWater.held(stack);
-        int room = TANK - boilerServings;
+        int room = Math.max(0, tank() - boilerServings);
         if (held == 0 || room == 0 || stack.getCount() != 1 || DistillerWater.whole(stack) && held > room) {
             return false;
         }

@@ -102,6 +102,7 @@ public final class DistillerGameTest {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         player.setGameMode(mode);
 
+        clearDrops(helper);
         player.gameMode.destroyBlock(helper.absolutePos(target));
 
         TestFixtures.check(helper, helper.getLevel().getBlockState(helper.absolutePos(BOILER)).isAir()
@@ -203,6 +204,7 @@ public final class DistillerGameTest {
         helper.setBlock(BOILER, ThirstBlocks.COPPER_DISTILLER.unpiped(Direction.NORTH));
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
 
+        clearDrops(helper);
         player.gameMode.destroyBlock(helper.absolutePos(BOILER));
 
         int fireboxes = dropped(helper, ThirstItems.BRICK_FIREBOX);
@@ -219,6 +221,7 @@ public final class DistillerGameTest {
         unjoined(helper, BOILER.west(), Direction.NORTH, true);
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
 
+        clearDrops(helper);
         player.gameMode.destroyBlock(helper.absolutePos(BOILER.west()));
 
         TestFixtures.check(helper, dropped(helper, ThirstItems.COOLING_TUB) == 1,
@@ -292,10 +295,21 @@ public final class DistillerGameTest {
         helper.succeed();
     }
 
+    /**
+     * Clears the ground round the distiller before something is broken. Batches can reuse a test's spot
+     * (seen on Forge 1.20.1), and an earlier test's drops still lying there would be counted.
+     */
+    private static void clearDrops(GameTestHelper helper) {
+        helper.getLevel().getEntitiesOfClass(ItemEntity.class, around(helper)).forEach(ItemEntity::discard);
+    }
+
+    private static AABB around(GameTestHelper helper) {
+        return new AABB(helper.absolutePos(BOILER)).inflate(3.0);
+    }
+
     /** How many of {@code item} lie on the ground around the distiller. */
     private static int dropped(GameTestHelper helper, Item item) {
-        AABB around = new AABB(helper.absolutePos(BOILER)).inflate(3.0);
-        return helper.getLevel().getEntitiesOfClass(ItemEntity.class, around).stream()
+        return helper.getLevel().getEntitiesOfClass(ItemEntity.class, around(helper)).stream()
                 .filter(entity -> entity.getItem().is(item))
                 .mapToInt(entity -> entity.getItem().getCount())
                 .sum();

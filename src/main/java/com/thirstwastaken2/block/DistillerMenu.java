@@ -43,7 +43,9 @@ public final class DistillerMenu extends AbstractContainerMenu {
     public static final int COOLED = 7;
     /** 1 when the distiller makes salt, so its slot shows. */
     public static final int SALT = 8;
-    public static final int DATA = 9;
+    /** Servings each tank holds, the server's config, which the client's may not match. */
+    public static final int TANK = 9;
+    public static final int DATA = 10;
 
     private static final int MACHINE_SLOTS = DistillerBlockEntity.SLOTS;
     private static final int INVENTORY_END = MACHINE_SLOTS + 27;
@@ -122,7 +124,7 @@ public final class DistillerMenu extends AbstractContainerMenu {
 
     /** Servings each tank holds. */
     public int tank() {
-        return DistillerBlockEntity.TANK;
+        return Math.max(1, data.get(TANK));
     }
 
     public boolean cooled() {
