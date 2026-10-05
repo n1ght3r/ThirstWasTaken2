@@ -28,12 +28,19 @@ public final class ModItemsGameTest {
     /** A switch, and the data files that should follow it. */
     private record Switch(String name, BiConsumer<ThirstConfig, Boolean> set, List<String> files) { }
 
+    /** The waterskin's recipe, and from 26.1, when villager trades became data, the leatherworker's trade. */
+    //? if >=26.1 {
+    private static final List<String> WATERSKIN_FILES =
+            List.of("recipe/waterskin", "villager_trade/leatherworker/1/emerald_waterskin");
+    //?} else
+    //private static final List<String> WATERSKIN_FILES = List.of("recipe/waterskin");
+
     private static final List<Switch> SWITCHES = List.of(
             new Switch("enableBowls", (config, on) -> config.enableBowls = on, List.of(
                     "recipe/clay_bowl", "recipe/terracotta_bowl_from_smelting", "recipe/terracotta_water_bowl",
                     "recipe/purify_water_bowl_0_smelting", "recipe/purify_water_bowl_2_campfire",
                     "advancement/recipes/misc/purify_water_bowl")),
-            new Switch("enableWaterskin", (config, on) -> config.enableWaterskin = on, List.of("recipe/waterskin")),
+            new Switch("enableWaterskin", (config, on) -> config.enableWaterskin = on, WATERSKIN_FILES),
             new Switch("enableCopperCanteen", (config, on) -> config.enableCopperCanteen = on,
                     List.of("recipe/copper_canteen")),
             new Switch("enableIronFlask", (config, on) -> config.enableIronFlask = on, List.of(

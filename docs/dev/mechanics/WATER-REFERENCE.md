@@ -114,6 +114,20 @@ A water bottle in a pool added to mineshaft, bastion, Nether fortress, shipwreck
 chests: one in two chests gives 1 to 3 bottles, Clean or Pure in equal odds. Piglin bartering can
 give the same bottles, Clean twice as often as Pure. See `compat/LootIntegration`.
 
+Desert pyramid chests and desert and savanna village house chests have a pool of their own: one in two
+gives 1 to 3 bottles, Dirty or Murky in equal odds. The dry surface is where water is scarcest, so
+water is there to find, but not water to drink without boiling it.
+
+### Villager trades
+
+| Villager | Level | Price | Gives | Uses before restock |
+|---|---|---|---|---|
+| Leatherworker | Novice | 3 emeralds | an empty Waterskin (none while `enableWaterskin` is off) | 12 |
+| Cleric | Novice | 1 emerald | a Clean water bottle | 16 |
+
+Each joins the two novice trades vanilla draws from its pool, so about half of all novice
+leatherworkers, and two clerics in three, offer it. See `compat/TradeIntegration`.
+
 ## Cleaning water
 
 "Up two grades" is `PURIFY_TABLE` in `ThirstRecipeProvider`: Dirty becomes Clean, Murky and Clean
@@ -150,7 +164,7 @@ nothing.
 
 ### Where Pure water comes from today
 
-Cold mountain water above y 100, a dripstone cauldron, Spelunkery's Spring Water, loot, and every row above that ends in Pure or
+Cold mountain water above y 100, a dripstone cauldron, Spelunkery's Spring Water, underground and Nether loot, and every row above that ends in Pure or
 "up two grades" from Murky or Clean. That last part is why plain heat is being capped; see
 [PURIFICATION-REWORK.md](PURIFICATION-REWORK.md).
 

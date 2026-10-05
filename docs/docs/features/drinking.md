@@ -82,6 +82,12 @@ Water bottles, Clean or Pure, turn up one to three at a time in:
 - Abandoned mineshaft, dungeon, shipwreck supply, nether bridge and bastion chests.
 - Piglin bartering, more rarely.
 
+Desert pyramid chests and desert and savanna village houses hold one to three bottles too, but that
+water is Dirty or Murky. Boil it before drinking.
+
+Villagers trade for water as well. Some novice Leatherworkers sell an empty Waterskin for 3 emeralds,
+and some novice Clerics sell a Clean water bottle for 1 emerald.
+
 ## Advancements
 
 | Advancement | How to earn it |

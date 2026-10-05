@@ -254,6 +254,31 @@ public final class Loader {
     }
 
     /**
+     * Adds a trade to the pool {@code profession} draws from at {@code level}, 1 (novice) to 5 (master).
+     * {@code offer} is asked each time a villager draws the trade and may return {@code null} to offer
+     * nothing.
+     *
+     * <p>From 26.1 villager trades are data, which datagen writes, and NeoForge has no trade event, so
+     * there this does nothing.
+     */
+    public static void addVillagerTrade(Identifier profession, int level,
+                                        Supplier<net.minecraft.world.item.trading.MerchantOffer> offer) {
+        //? if >=1.21.5 <26.1 {
+        /*NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.village.VillagerTradesEvent event) -> {
+            if (event.getType().identifier().equals(profession)) {
+                event.getTrades().get(level).add((world, entity, random) -> offer.get());
+            }
+        });
+        *///?} elif <1.21.5 {
+        /*NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.village.VillagerTradesEvent event) -> {
+            if (profession.equals(net.minecraft.core.registries.BuiltInRegistries.VILLAGER_PROFESSION.getKey(event.getType()))) {
+                event.getTrades().get(level).add((entity, random) -> offer.get());
+            }
+        });
+        *///?}
+    }
+
+    /**
      * Runs {@code handler} on every server data load, at startup and on {@code /reload}, with the
      * resource manager of the packs being loaded. It runs on the server thread, after vanilla's own
      * listeners have been handed the same packs; tags are bound only after it.

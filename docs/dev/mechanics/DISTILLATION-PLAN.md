@@ -5,7 +5,7 @@ recipes are built (`block/DistillerBlock`, commit "feat: add the copper distille
 what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 2, the machine, which
 distils; steps 3 and 4, its GUI; step 5, building it in the world; step 6, the fire in the model;
 step 7, salt; step 8, the cooling tub; step 9, the config; the tests (10); the docs (11); and Jade.
-Left: screenshots for the docs site, and the hand checks in a client. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+Left: screenshots for the docs site, and the hand checks in a client. It answered the roadmap's "Sea water is a dead end" (the roadmap is done and gone), and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -245,8 +245,8 @@ models and item use only, on every node, and gives something to see while the se
    An agent script (`tools/agent/gameplay/distiller.jsonl`, extended) opens the GUI with a real click,
    reads `client.slots`, and captures the screen. As built (done): every item above has a gametest in
    `DistillerMachineGameTest` or `DistillerGameTest`, and the config's clamps one in `ThirstApiGameTest`.
-11. **Docs** (done). WATER-REFERENCE.md (a Pure source, sea water no longer a dead end), ROADMAP.md §2 marked
-    done, this file's status, the CHANGELOG and the docs site (the Copper Distiller section of the water
+11. **Docs** (done). WATER-REFERENCE.md (a Pure source, sea water no longer a dead end), the roadmap's item marked
+    done (the roadmap has since been deleted), this file's status, the CHANGELOG and the docs site (the Copper Distiller section of the water
     page, and four keys on the configuration page). No screenshots yet.
 
 ## Jade (done)

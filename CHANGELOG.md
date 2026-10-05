@@ -9,6 +9,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - The Copper Distiller, a two-block still that turns any water into Pure water, sea water included.
   It burns furnace fuel and works with hoppers. Craft it from its four parts, or build it in the world
   and join it with a Copper Pipe. Its cooling tub needs filling once, with any water.
+- Desert pyramids and desert and savanna village houses can hold water bottles. The water there is
+  Dirty or Murky, so it needs boiling.
+- Novice Leatherworkers can sell a Waterskin, and novice Clerics a Clean water bottle, so emeralds buy
+  water before a player can boil any.
 - When another mod adds salt, distilling sea water leaves some of it behind.
 - With Jade installed, looking at a distiller shows both its tanks and whether its cooling tub is dry.
 - Miner's Delight, on NeoForge 1.21.1 and Forge 1.20.1:

@@ -189,6 +189,20 @@ public final class Loader {
     }
 
     /**
+     * Adds a trade to the pool {@code profession} draws from at {@code level}, 1 (novice) to 5 (master).
+     * {@code offer} is asked each time a villager draws the trade and may return {@code null} to offer
+     * nothing.
+     */
+    public static void addVillagerTrade(Identifier profession, int level,
+                                        Supplier<net.minecraft.world.item.trading.MerchantOffer> offer) {
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.village.VillagerTradesEvent event) -> {
+            if (profession.equals(net.minecraft.core.registries.BuiltInRegistries.VILLAGER_PROFESSION.getKey(event.getType()))) {
+                event.getTrades().get(level).add((entity, random) -> offer.get());
+            }
+        });
+    }
+
+    /**
      * Runs {@code handler} on every server data load, at startup and on {@code /reload}, with the
      * resource manager of the packs being loaded. Forge 47 takes listeners without a name.
      */

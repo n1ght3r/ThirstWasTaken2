@@ -37,6 +37,9 @@ public final class ThirstDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(ThirstFluidTagProvider::new);
         pack.addProvider(ThirstItemTagProvider::new);
         pack.addProvider(ThirstBlockLootProvider::new);
+        // Villager trades are data from 26.1; before it they are code, see compat/TradeIntegration.
+        //? if >=26.1
+        pack.addProvider(ThirstVillagerTradeProvider::new);
         pack.addProvider(ThirstModelProvider::new);
         // Item model definitions arrived in 1.21.4, and the provider for them with it.
         //? if >=1.21.4

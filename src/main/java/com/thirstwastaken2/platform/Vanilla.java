@@ -527,6 +527,22 @@ public final class Vanilla {
         *///?}
     }
 
+    /**
+     * A villager offer of {@code gives} for {@code emeralds} emeralds. 1.20.5 priced offers in
+     * {@code ItemCost}; before it the price was a stack.
+     */
+    public static net.minecraft.world.item.trading.MerchantOffer emeraldOffer(int emeralds, ItemStack gives,
+                                                                              int maxUses, int xp, float priceMultiplier) {
+        //? if >=1.20.5 {
+        return new net.minecraft.world.item.trading.MerchantOffer(
+                new net.minecraft.world.item.trading.ItemCost(net.minecraft.world.item.Items.EMERALD, emeralds),
+                gives, maxUses, xp, priceMultiplier);
+        //?} else {
+        /*return new net.minecraft.world.item.trading.MerchantOffer(
+                new ItemStack(net.minecraft.world.item.Items.EMERALD, emeralds), gives, maxUses, xp, priceMultiplier);
+        *///?}
+    }
+
     /** Whether a stack's potion contents are plain water, whatever the item. */
     public static boolean holdsWaterPotion(ItemStack stack) {
         //? if >=1.20.5 {

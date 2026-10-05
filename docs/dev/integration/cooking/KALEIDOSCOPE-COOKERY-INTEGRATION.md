@@ -466,7 +466,7 @@ Moonlight, Create, Create Fly and Kaleidoscope Cookery. Tick them on the nodes t
 - **The NeoForge nodes past 1.21.1.** No build exists.
 - **Purifying water in the pot, the stockpot or the steamer.** The mod's purification is 27 recipes and
   one balance pass. Boiling plain water in the teapot to get Pure water is a new mechanic and belongs
-  with the distillation idea in `../../mechanics/ROADMAP.md`.
+  with the Copper Distiller, `../../mechanics/DISTILLATION-PLAN.md`.
 - **The bamboo tray's `wetting`, the enamel basin, the oil pot, lava and milk soup bases.** Not water, or
   they do not hold water.
 - **Dishes eaten off a placed block** (`FoodBiteBlock`). Solid food, no thirst.

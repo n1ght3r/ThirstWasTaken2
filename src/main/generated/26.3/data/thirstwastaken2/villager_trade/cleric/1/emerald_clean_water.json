@@ -1,0 +1,18 @@
+{
+  "gives": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "minecraft:water"
+      },
+      "thirstwastaken2:water_purity": 2,
+      "thirstwastaken2:water_salty": false
+    },
+    "id": "minecraft:potion"
+  },
+  "max_uses": 16,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:emerald"
+  },
+  "xp": 1
+}

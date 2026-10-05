@@ -167,7 +167,7 @@ and an action bar warning shortly before.
 ## Step 7: salt and oral rehydration salts
 
 - **Salt** item, left when sea water boils away in a hanging pot or a heated cauldron. Design with the
-  distillation idea in [ROADMAP.md](ROADMAP.md).
+  Copper Distiller, which leaves another mod's salt behind, in [DISTILLATION-PLAN.md](DISTILLATION-PLAN.md).
 - **Oral Rehydration Salts**, Pure water + sugar + salt: more thirst than a bottle, halves the time
   left on Dysentery and Upset Stomach, pauses the fever for 60 s. One grey tooltip line in
   `ThirstTooltip`.

@@ -96,7 +96,10 @@ It is the one optional integration **both loaders** compile, since Moonlight is 
 `Loader.onLootTable` replacing the original's Forge global loot modifiers (Fabric's
 `LootTableEvents.MODIFY` underneath). One extra pool is appended to five vanilla chest tables
 (`SIMPLE_DUNGEON`, `ABANDONED_MINESHAFT`, `SHIPWRECK_SUPPLY`, `NETHER_BRIDGE`, `BASTION_OTHER`) and to
-`PIGLIN_BARTERING`, with different weights for each case.
+`PIGLIN_BARTERING`, with different weights for each case, graded Clean or Pure. A second pool, graded
+Dirty or Murky, goes on three dry surface chests (`DESERT_PYRAMID`, `VILLAGE_DESERT_HOUSE`,
+`VILLAGE_SAVANNA_HOUSE`). Trail ruins have no chest, and an archaeology table may yield only one item,
+so an added pool there would be dropped with a warning; they get none.
 
 The pool is added to a table with one of those ids whoever wrote it, a data pack's replacement
 included. The mod used to skip replaced tables, but a loader cannot tell a player's pack from one of
@@ -107,3 +110,22 @@ few water bottles are an addition any pack can live with; a rule that differs pe
 Water bottles are emitted as `minecraft:potion` + `SetPotionFunction` + the functions
 `ItemWaterData.stampFreshLoot` adds, which stamp `water_purity` and `water_salty`, so loot water arrives
 already stamped rather than falling back to `defaultPurity`.
+
+## TradeIntegration
+
+Novice leatherworkers sell an empty waterskin for 3 emeralds and novice clerics a Clean water bottle
+for 1. `TRADES` is the one table, read two ways, because villager trades changed shape in 26.1:
+
+- **Up to 1.21.11 trades are code.** `register` hands each trade to `Loader.addVillagerTrade`: Fabric
+  API's `TradeOfferHelper` (both its vanilla and its trade rebalance pools), NeoForge's and Forge's
+  `VillagerTradesEvent`. The offer is built when a villager draws the trade, so a waterskin switched
+  off in the config is not sold; on 1.20.1 that leaves the villager one novice trade short, since
+  vanilla does not draw again there.
+- **From 26.1 trades are data**, `villager_trade` files gathered into per-level tags that each
+  profession's trade set draws from. `ThirstVillagerTradeProvider` in `src/datagen` writes one file per
+  trade and adds it, optionally, to vanilla's tag (`minecraft:leatherworker/level_1`), and the waterskin
+  trade carries the `item_enabled` load condition like its recipe. `addVillagerTrade` does nothing there,
+  and Fabric API has no trade helper on those versions.
+
+A trade describes what it gives (an item, and a grade for a water bottle) rather than holding a stack,
+because datagen runs before an item can make one. `TradeGameTest` asks real villagers on every node.

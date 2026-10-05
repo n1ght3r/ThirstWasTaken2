@@ -114,6 +114,7 @@ The generators are the same; the formats they write to are older.
 | `ThirstDamageTypeProvider` | `data/…/damage_type/dehydrate.json` |
 | `ThirstDamageTypeTagProvider` | `data/minecraft/tags/damage_type/bypasses_armor.json` |
 | `ThirstBiomeTagProvider` | `data/…/tags/worldgen/biome/stagnant_water.json` |
+| `ThirstVillagerTradeProvider` | from 26.1, when trades became data: `data/…/villager_trade/`, one file per trade in `compat/TradeIntegration.TRADES`, and an optional entry in vanilla's per-level tag, `data/minecraft/tags/villager_trade/<profession>/level_<n>.json`. Written as JSON, since `VillagerTrade`'s constructors changed in 26.3; only the item goes through a codec |
 | `ThirstBlockLootProvider` | `data/…/loot_table/blocks/`, as JSON through vanilla's codec; the distiller's only from its boiler half, two parts when it is not yet piped |
 | `ThirstModelProvider` | `assets/…/models/item/`, the definitions for the mod's own items, through `HangingPotModels` the pot's blockstate and generated block models, and through `DistillerModels` the blockstates of the distiller and its three placeable parts and the item models of it and its parts |
 | `ThirstItemModelDefinitionProvider` | the two legacy definitions in `assets/…/items/` that have no item, kept for sea-water bottles and buckets saved up to 1.4; 1.21.4 and later |

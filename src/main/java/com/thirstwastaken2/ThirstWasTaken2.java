@@ -9,6 +9,7 @@ import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.block.ThirstMenus;
 import com.thirstwastaken2.command.ThirstCommands;
 import com.thirstwastaken2.compat.LootIntegration;
+import com.thirstwastaken2.compat.TradeIntegration;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.data.DataPackDrinks;
 import com.thirstwastaken2.data.ThirstData;
@@ -57,6 +58,7 @@ public final class ThirstWasTaken2 {
         Loader.onRegister(Registries.MOB_EFFECT, ThirstEffects::register);
         Loader.onRegister(Registries.MENU, ThirstMenus::register);
         LootIntegration.register();
+        TradeIntegration.register();
         Loader.registerResourceConditions();
 
         Loader.onServerTickEnd(ThirstManager::tick);

@@ -36,6 +36,7 @@
       "com.thirstwastaken2.gametest.CommandGameTest",
       "com.thirstwastaken2.gametest.WaterInteractionsGameTest",
       "com.thirstwastaken2.gametest.LootGameTest",
+      "com.thirstwastaken2.gametest.TradeGameTest",
       "com.thirstwastaken2.gametest.ItemAppearanceGameTest",
       "com.thirstwastaken2.gametest.ContainerFluidGameTest"
     ]

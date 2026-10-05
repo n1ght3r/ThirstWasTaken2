@@ -39,7 +39,8 @@ thirst, and the client only receives it through the `PlayerData` sync.
 order matters:
 `ThirstConfig.load()` → `ThirstData.register()` → `ThirstBlocks.register()` →
 `ItemWaterData.register()` → `ThirstItems.register()` → `ThirstItems.registerCreativeTab()` →
-`ThirstEffects.register()` → `LootIntegration.register()` → `Loader.registerResourceConditions()` → events.
+`ThirstEffects.register()` → `LootIntegration.register()` → `TradeIntegration.register()` →
+`Loader.registerResourceConditions()` → events.
 Nothing in this source set may import a mod loader's API; it goes through `platform/Loader` (see
 `platform/AGENTS.md`).
 

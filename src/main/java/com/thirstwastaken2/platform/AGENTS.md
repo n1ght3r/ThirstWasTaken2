@@ -111,6 +111,7 @@ What crosses the network is described in common code as a plain record with `wri
 | `creativeTabBuilder` | a tab builder that places itself in the tab list |
 | `onServerTickEnd`, `onUseBlock`, `onUseItem`, `onRegisterCommands`, `onTagsLoaded` | the event bus |
 | `onLootTable` | loot table modification, on every table whoever wrote it |
+| `addVillagerTrade` | a trade added to a profession's pool at a level, up to 1.21.11; from 26.1 trades are data and it does nothing |
 | `onServerDataReload` | a server data reload listener, run at startup and on `/reload` |
 | `registerResourceConditions` | the `thirstwastaken2:item_enabled` load condition the mod's recipes carry |
 | `onDataPackSync`, `clientboundPayload` | telling each client what a data pack decided: when to, and the payload's registration, which returns the `Clientbound` that sends it only to a client that can take it |
@@ -133,6 +134,7 @@ What crosses the network is described in common code as a plain record with `wri
 | `onTagsLoaded` | `CommonLifecycleEvents.TAGS_LOADED` | `TagsUpdatedEvent` |
 | `onRegisterCommands` | `CommandRegistrationCallback` | `RegisterCommandsEvent` |
 | `onLootTable` | `LootTableEvents.MODIFY` | `LootTableLoadEvent`, `getTable().addPool` |
+| `addVillagerTrade` | `TradeOfferHelper.registerVillagerOffers`, by `ResourceKey` from 1.21.5 and with the trade rebalance pool from 1.21; nothing from 26.1 | `VillagerTradesEvent`, matching `getType()`; nothing from 26.1 |
 | `onServerDataReload` | `ResourceLoader.get(SERVER_DATA).registerReloadListener`, a `ResourceManagerReloadListener` | `AddServerReloadListenersEvent.addListener(id, ...)` |
 | `onDataPackSync` | `ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS` | `OnDatapackSyncEvent.getRelevantPlayers()` |
 | `registerResourceConditions` | `ResourceConditions.register` of `platform/ItemEnabledCondition`, whose `test` takes a `RegistryInfoLookup` from 1.21.2 and a `HolderLookup.Provider` before it, hence its place in `platform/` | `neoforge/ItemEnabledCondition`'s `MapCodec` into `CONDITION_SERIALIZERS` through `onRegister`. The recipe files name it under `condition`, Fabric's key; the build moves it to `type` (`neoForgeConditions`) |
@@ -149,7 +151,7 @@ What crosses the network is described in common code as a plain record with `wri
 Forge 47, the `1.20.1-forge` node's loader, is NeoForge's parent one generation back, and answers most
 seams the way the NeoForge column does, under `net.minecraftforge` names: `onRegister` queues for
 `RegisterEvent` the same way, and `onUseBlock`, `onUseItem`, `onTagsLoaded`, `onRegisterCommands` and
-`onLootTable` use the events of the same names. Where it differs:
+`onLootTable` and `addVillagerTrade` use the events of the same names. Where it differs:
 
 | Seam | Forge 47 |
 |---|---|

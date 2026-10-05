@@ -501,8 +501,8 @@ No hard dependency, ever, and the two 1.21.1 jars must behave identically with n
   nothing to do with water quality, and Supplementaries registers no food or drink item that would want
   a value in `ThirstConfig`.
 - **Purifying water inside a jar.** Purification is 27 cooking recipes over item stacks. A jar over a
-  campfire is a different mechanism and would need its own balance pass; the distillation idea in
-  `../../mechanics/ROADMAP.md` is where that conversation belongs.
+  campfire is a different mechanism and would need its own balance pass; the Copper Distiller,
+  `../../mechanics/DISTILLATION-PLAN.md`, is where that conversation belongs.
 - **Lumisene and Supplementaries' other fluids.** Not water, no grade, nothing to keep.
 - **Forge.** Supplementaries still publishes a Forge 1.21.1 jar. This mod does not, and that does not
   change.

@@ -161,6 +161,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 | Model texture mappings take a `Material` | `ThirstModelProvider` |
 | NeoForge stopped throwing when an attachment syncs to a connection that never negotiated the channel, and answers for a fake player's channelless connection rather than throwing | NeoForge `Loader.syncsTo` |
 | Gametests gained padding between them, and `TestEnvironmentDefinition` a type parameter | NeoForge `ThirstWasTaken2GameTests` |
+| Villager trades became data: `villager_trade` files in per-level tags that each profession's `trade_set` draws from. Fabric API dropped `TradeOfferHelper` and NeoForge `VillagerTradesEvent` | `ThirstVillagerTradeProvider` writes `compat/TradeIntegration.TRADES` from 26.1; `Loader.addVillagerTrade` adds them before it |
 
 Result: 1.21.11 writes shorter recipe files, because a live `ItemStack` omits components the item
 already has by default. The stack the furnace hands out is the same; see
@@ -176,6 +177,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Game rules became typed values in their own package, `naturalRegeneration` renamed `NATURAL_HEALTH_REGENERATION` | `Vanilla.naturalRegeneration` |
 | The window handle accessor was renamed from `getWindow` to `handle` | `AgentClientVanilla.windowHandle` (written `>1.21.1`) |
 | A connection's send listener became Netty's own | NeoForge `CapturingConnection` (written `>1.21.1`) |
+| Villagers and their trades moved to `entity.npc.villager` | `TestFixtures.noviceOffers` (written `>=1.21.11`) |
 | A screenshot is read back from the GPU asynchronously and handed to a callback, takes a downscale factor, and `NativeImage` answers ARGB rather than ABGR | `AgentClientVanilla.screenshot`, `AgentClientVanilla.readFrame` (written `>1.21.1`, since no node sits between) |
 
 ### 1.21.9 (affects 1.21.1)
@@ -213,6 +215,7 @@ already has by default. The stack the furnace hands out is the same; see
 | A `CompoundTag`'s getters answer with an `Optional` or a fallback | `Vanilla.getString`, `getInt`, which `DrinkingUpgradeContainer.handlePacket` (Sophisticated) calls |
 | A block entity saves through `ValueOutput` and loads through `ValueInput`, and `ContainerHelper` takes those | `platform/SavedBlockEntity` |
 | A block entity that is a container spills its contents itself when removed; before, the block did it in `onRemove` | `SupportedBlock`, which does it before 1.21.5 for any such block entity |
+| A villager profession is a registry key, and a trade's `getOffer` takes the level | `Loader.addVillagerTrade`, `TestFixtures.noviceOffers` |
 
 ### 1.21.4 (affects 1.21.1)
 

@@ -283,6 +283,38 @@ final class TestFixtures {
     }
 
     /**
+     * What a newly spawned novice villager of {@code profession} offers, the result of each trade. Each
+     * call is a new villager, so a new draw of two trades from the level's pool; the villager is gone
+     * again afterwards. Villagers moved to {@code npc.villager} in 1.21.11, where a profession is a
+     * registry key, and the entity type constants moved to {@code EntityTypes} in 26.2.
+     */
+    static java.util.List<ItemStack> noviceOffers(GameTestHelper helper, net.minecraft.resources.Identifier profession) {
+        //? if >=26.2 {
+        net.minecraft.world.entity.npc.villager.Villager villager =
+                helper.spawn(net.minecraft.world.entity.EntityTypes.VILLAGER, new BlockPos(1, 2, 1));
+        //?} elif >=1.21.11 {
+        /*net.minecraft.world.entity.npc.villager.Villager villager = helper.spawn(EntityType.VILLAGER, new BlockPos(1, 2, 1));
+        *///?} else {
+        /*net.minecraft.world.entity.npc.Villager villager = helper.spawn(EntityType.VILLAGER, new BlockPos(1, 2, 1));
+        *///?}
+        //? if >=1.21.11 {
+        villager.setVillagerData(villager.getVillagerData().withProfession(helper.getLevel().registryAccess(),
+                net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.VILLAGER_PROFESSION,
+                        profession)).withLevel(1));
+        //?} else {
+        /*villager.setVillagerData(villager.getVillagerData()
+                .setProfession(net.minecraft.core.registries.BuiltInRegistries.VILLAGER_PROFESSION.get(profession))
+                .setLevel(1));
+        *///?}
+        java.util.List<ItemStack> results = new java.util.ArrayList<>();
+        for (net.minecraft.world.item.trading.MerchantOffer offer : villager.getOffers()) {
+            results.add(offer.getResult());
+        }
+        villager.discard();
+        return results;
+    }
+
+    /**
      * A survival player standing above the water and looking straight down at it.
      *
      * <p>Survival matters: {@code ItemUtils.createFilledResult} hands the filled container back
