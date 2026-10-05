@@ -66,6 +66,14 @@ means the exact release a call changed in was not pinned down; with no node betw
 `SupportedBlock` hands a block one `supportChanged` call when the block below it changes, and breaks the
 block first when `canSurvive` no longer holds.
 
+`SavedBlockEntity` is a class for the same reason: a block entity's save and load are overrides, whose
+shape changed in 1.20.5 and again in 1.21.5. It hands the mod's block entities one `save` and `load`
+over a small `Output` and `Input` of named values and one list of items, and sends what it saves to the
+client when it `syncsToClient`. Block entity and menu types are built and registered by
+`Vanilla.registerBlockEntity` and `registerMenu`, from their registries' `Loader.onRegister`; their
+constructors are private in vanilla, opened on Fabric by the mod's access widener and made public by
+NeoForge's and Forge's access transformers (see VERSION-DIFFERENCES.md, "Differences in Fabric API").
+
 `ItemWaterData` is the one class that knows how an item stack stores its water: servings, grade and salt,
 as the `ThirstComponents` data components. `WaterPurity` and `WaterskinItem` decide what the values mean;
 this only reads and writes them, and makes item properties and loot functions that preset them. A
@@ -109,6 +117,8 @@ What crosses the network is described in common code as a plain record with `wri
 | `ClientLoader.addRightStatusBar` | HUD layer registration and the right-hand status bar height |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | AppleSkin's own setting, which it keeps in a different class shape on each loader |
 | `ClientLoader.renderCutout` | drawing a block with its transparent pixels cut out |
+| `burnTime` | how long an item burns as furnace fuel, counting the fuel a loader adds of its own |
+| `ClientLoader.registerScreen` | the screen a menu opens on the client |
 
 ### How each loader answers
 
@@ -130,6 +140,8 @@ What crosses the network is described in common code as a plain record with `wri
 | sending, through the returned `Clientbound` | `ServerPlayNetworking.canSend`, then `send` | `hasChannel`, then `PacketDistributor.sendToPlayer`; never to a fake player, for the reason `syncsTo` gives |
 | `ClientLoader.addRightStatusBar` | `HudElementRegistry.attachElementAfter(FOOD_BAR)` plus `HudStatusBarHeightRegistry.addRight`; `GuiMixin` on 1.21.1 | a layer `registerAbove(VanillaGuiLayers.FOOD_LEVEL)` that draws at `guiHeight() - hud.rightHeight` and advances `Hud.rightHeight` only when it drew, and only when the player can be hurt, which is when vanilla draws the food bar |
 | `ClientLoader.renderCutout` | `BlockRenderLayerMap` before 26.1, nothing from 26.1, where the game reads the layer off the textures | nothing: the model's `render_type` before 26.1, the textures from 26.1. It runs during mod construction, so it never asks for the block |
+| `burnTime` | `Vanilla.burnTime`: Fabric's fuel registry feeds vanilla's table and fuel values | `Vanilla.burnTime`, NeoForge feeding its fuel data map into the fuel values; on 1.21.1 `ItemStack#getBurnTime`, the only reader of that data map there |
+| `ClientLoader.registerScreen` | `MenuScreens.register`, opened by the mod's access widener, at client initialization | `RegisterMenuScreensEvent` on the mod bus |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | `ModConfig.INSTANCE.showFoodExhaustionHudUnderlay` | `ModConfig.SPEC.isLoaded() && ModConfig.SHOW_FOOD_EXHAUSTION_UNDERLAY.get()`; reading a NeoForge config value before FML loads it throws |
 
 ### How Forge 47 answers
@@ -151,6 +163,8 @@ seams the way the NeoForge column does, under `net.minecraftforge` names: `onReg
 | `registerResourceConditions` | `CraftingHelper.register` of a serializer (`platform/ItemEnabledCondition` in `src/main/forge`). The build moves the condition under `conditions` and `type` (`forgeConditions`) |
 | `ClientLoader.addRightStatusBar` | `RegisterGuiOverlaysEvent.registerAbove(VanillaGuiOverlay.FOOD_LEVEL)`, drawing at `screenHeight - ForgeGui.rightHeight` and advancing it when it drew, only when `shouldDrawSurvivalElements` |
 | `ClientLoader.renderCutout` | `ItemBlockRenderTypes.setRenderLayer(..., cutout())` from `FMLClientSetupEvent`, once the block exists |
+| `burnTime` | `ForgeHooks.getBurnTime`, which asks the item before vanilla's table |
+| `ClientLoader.registerScreen` | `MenuScreens.register`, public under Forge's access transformer, from `FMLClientSetupEvent` on the main thread |
 | `ClientLoader.appleSkinShowsExhaustionUnderlay` | the same as NeoForge |
 
 The fluid capability is `IFluidHandlerItem`, attached through `AttachCapabilitiesEvent<ItemStack>` once

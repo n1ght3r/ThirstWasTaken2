@@ -26,6 +26,7 @@
     "modmenu": ["com.thirstwastaken2.client.compat.ModMenuIntegration"],
     "jade": ["com.thirstwastaken2.client.compat.JadeIntegration"]
   },
+  "accessWidener": "thirstwastaken2.accesswidener",
   "mixins": [
     "thirstwastaken2.mixins.json",
     { "config": "thirstwastaken2.client.mixins.json", "environment": "client" },

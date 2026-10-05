@@ -1,5 +1,8 @@
 package com.thirstwastaken2.platform;
 
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.Container;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import com.thirstwastaken2.ThirstWasTaken2;
@@ -95,6 +98,14 @@ public final class Loader {
             listening = true;
         }
         PENDING.computeIfAbsent(registry, key -> new ArrayList<>()).add(registration);
+    }
+
+    /**
+     * How long {@code fuel} burns in a furnace, in ticks; 0 for anything that is not fuel. Forge lets an
+     * item say its own burn time, which vanilla's table never sees, so Forge's hook is asked.
+     */
+    public static <T extends BlockEntity & Container> int burnTime(T entity, ItemStack fuel) {
+        return net.minecraftforge.common.ForgeHooks.getBurnTime(fuel, net.minecraft.world.item.crafting.RecipeType.SMELTING);
     }
 
     /**

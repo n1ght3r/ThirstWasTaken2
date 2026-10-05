@@ -3,6 +3,7 @@ package com.thirstwastaken2;
 import com.thirstwastaken2.api.ThirstApi;
 import com.thirstwastaken2.block.DistillerInteractions;
 import com.thirstwastaken2.block.HangingPotInteractions;
+import com.thirstwastaken2.block.ThirstBlockEntities;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.command.ThirstCommands;
 import com.thirstwastaken2.compat.LootIntegration;
@@ -45,8 +46,9 @@ public final class ThirstWasTaken2 {
         ThirstConfig.load();
         ThirstData.register();
         // Blocks and items take a registry holder when they are built, so a loader that freezes the
-        // registries before mods start needs all four of these deferred to its registration phase.
+        // registries before mods start needs all of these deferred to its registration phase.
         Loader.onRegister(Registries.BLOCK, ThirstBlocks::register);
+        Loader.onRegister(Registries.BLOCK_ENTITY_TYPE, ThirstBlockEntities::register);
         ItemWaterData.register();
         Loader.onRegister(Registries.ITEM, ThirstItems::register);
         Loader.onRegister(Registries.CREATIVE_MODE_TAB, ThirstItems::registerCreativeTab);

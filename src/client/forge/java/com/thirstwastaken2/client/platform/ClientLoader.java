@@ -1,5 +1,10 @@
 package com.thirstwastaken2.client.platform;
 
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import com.thirstwastaken2.ThirstWasTaken2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -46,6 +51,17 @@ public final class ClientLoader {
                     renderer.render(graphics, screenHeight - gui.rightHeight);
                     gui.rightHeight += height;
                 }));
+    }
+
+    /**
+     * Opens {@code factory}'s screen on the client whenever the server opens a menu of {@code type}.
+     * Forge 47 makes vanilla's {@code MenuScreens.register} public; it is called from client setup,
+     * on the main thread, once the type exists.
+     */
+    public static <M extends AbstractContainerMenu, S extends Screen & MenuAccess<M>> void registerScreen(
+            Supplier<MenuType<M>> type, ScreenFactory<M, S> factory) {
+        modBus().addListener((FMLClientSetupEvent event) ->
+                event.enqueueWork(() -> MenuScreens.register(type.get(), factory::create)));
     }
 
     /**

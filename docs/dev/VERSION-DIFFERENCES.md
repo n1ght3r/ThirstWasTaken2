@@ -122,6 +122,7 @@ never see it.
 | `MouseHandler#onMove` takes two more arguments with SDL | none: the agent client's `MouseMoveMixin` matches it by name and takes none of them |
 | A gametest's `TestData` names the dimension it runs in | NeoForge `ThirstWasTaken2GameTests` |
 | `ResourceManager#listResources` filters with a `ResourceManager.Selector` rather than a `Predicate` | none needed: `DataPackDrinks` lists its files through `FileToIdConverter#listMatchingResources`, the same on every version |
+| Furnace fuel is the item's cooking fuel component, its burn time resolved in a loot context that names the block entity as the container at work; the level's fuel values are gone | `Vanilla.burnTime`, which takes a block entity that is a container for it |
 
 Result: 26.3 writes its recipe unlocks with a `recipes` key holding the recipe id, where earlier
 versions write `recipe`. Nothing else in the generated files moved.
@@ -207,6 +208,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Blockstate generators hand over a parsed definition rather than JSON | `HangingPotModels` |
 | Tests register through the test function registry, and the server writes its own JUnit report with `--report` | NeoForge `ThirstWasTaken2GameTests` and `build.neoforge.gradle.kts`; before it the harness registers and reports itself |
 | A `CompoundTag`'s getters answer with an `Optional` or a fallback | `Vanilla.getString`, `getInt`, which `DrinkingUpgradeContainer.handlePacket` (Sophisticated) calls |
+| A block entity saves through `ValueOutput` and loads through `ValueInput`, and `ContainerHelper` takes those | `platform/SavedBlockEntity` |
 
 ### 1.21.4 (affects 1.21.1)
 
@@ -238,6 +240,8 @@ already has by default. The stack the furnace hands out is the same; see
 | The shapeless recipe builder can give its result components | `ThirstRecipeProvider`; on 1.21.1 the filled-bowl recipe is written out by hand |
 | Use animations became `ItemUseAnimation` | `Vanilla.isDrinkAnimation`, which `DrinkingUpgradeWrapper.canFilter` calls; `AlchemyUpgradeWrapperMixin` (Sophisticated, NeoForge only) |
 | A recipe names an ingredient by id or `#tag` rather than as an object | the Drinking upgrade's recipes, one copy per generation in `src/main/sophisticated-fluidhandler` and `-transfer` |
+| A block entity type is built by a public constructor where a builder did | `Vanilla.blockEntityType`; the constructor and its supplier are widened on Fabric (below) |
+| Furnace fuel is the level's fuel values, where it was a static table | `Vanilla.burnTime` |
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
 
@@ -260,6 +264,7 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
 | Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
 | `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
+| A block entity saves to a tag alone and loads through `load`, and its update tag takes no registries | `platform/SavedBlockEntity`; `MachineSeamsGameTest` saves and loads one the way the chunk does |
 | `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |
 | Hover text is handed the level; `FoodData` adds food through `eat(int, float)`; the cauldron is told its weather by a predicate | `ItemStackMixin`, `FoodDataMixin`, `BlocksMixin` |
 | No GUI sprite atlas: vanilla's HUD icons are regions of `textures/gui/icons.png` | `ClientVanilla.blitSprite` knows the food icons the config preview draws; the dev `GuiDrawMixin` records food and air from `blit` |
@@ -319,6 +324,12 @@ it makes no difference to any jar.
 - **A resource condition's `test`** takes a `RegistryOps.RegistryInfoLookup` from 1.21.2 and a
   `HolderLookup.Provider` on 1.21.1. `platform/ItemEnabledCondition` in `src/main/fabric` forks for it
   (written `>=1.21.2`); it reads neither. `FabricRecipeProvider.withConditions` is the same on every node.
+- **What Fabric API opens to itself only**: the menu type's constructor and supplier, the block entity
+  type's supplier and, from 1.21.2, its constructor, and `MenuScreens.register` with its constructor
+  interface. NeoForge's and Forge's access transformers make all of them public, so common code calls
+  them as they are. On Fabric the mod's own access widener opens them, written for each node by
+  build-logic's `AccessWidener.kt`: an access widener in `named` names before 26.1, a class tweaker in
+  `official` names from it, and the block entity type's constructor only where it takes two arguments.
 
 ## Differences in Forge 47 rather than Minecraft
 

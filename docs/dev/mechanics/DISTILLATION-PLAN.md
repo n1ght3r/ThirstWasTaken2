@@ -2,9 +2,10 @@
 
 **Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
-what makes it distil. Done so far (2026-10-05): step 5, building it in the world, and of step 8 the
-`cooled` property and the pour that sets it; the tub does not yet stop the machine, which has no
-block entity. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 5, building it in the
+world; and of step 8 the `cooled` property and the pour that sets it. The block entity type is
+registered and saves its state, but the block does not create it yet and nothing ticks it, so the
+tub does not yet stop the machine. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -170,13 +171,13 @@ versions. Every difference goes into `platform/` (common) or `client/platform/` 
 
 | Need | Where it differs | Seam |
 |---|---|---|
-| Register a block entity type | `BlockEntityType` built through a builder before 1.21.2, a constructor after; Fabric's own builder on older Fabric | `Vanilla.registerBlockEntity` |
+| Register a block entity type | `BlockEntityType` built through a builder before 1.21.2, a constructor after; both take a supplier interface vanilla keeps private | `Vanilla.registerBlockEntity` |
 | Save and load a block entity | `CompoundTag` (1.20.1); `CompoundTag` plus registries (1.20.5–1.21.4); `ValueInput`/`ValueOutput` (1.21.5+) | an abstract `platform/SavedBlockEntity` with one `save`/`load` pair over a small reader/writer |
 | Sync the block entity to the client (the gauges in the model, if any) | `getUpdatePacket`/`getUpdateTag` signatures | in `SavedBlockEntity` |
-| Register a menu type | `MenuType` constructor arguments; NeoForge and Forge register through their own registries | `Loader.registerMenu` |
+| Register a menu type | the constructor is private in vanilla on every version; NeoForge and Forge make it public, Fabric API opens it to itself only | `Vanilla.registerMenu`, the same call everywhere once the mod's Fabric access widener opens it (built: no loader seam needed) |
 | Register a screen for it | Fabric `MenuScreens.register` (or `HandledScreens`), NeoForge `RegisterMenuScreensEvent`, Forge client setup | `ClientLoader.registerScreen` |
-| Draw the screen | `GuiGraphics` → `GuiGraphicsExtractor` (a replacement already), `blit` gained a render type in 1.21.2 | `ClientVanilla.blit`, beside `blitSprite` |
-| Burn time of a fuel | a static map before 1.21.2, `FuelValues` from the level after | `Vanilla.burnTime(level, stack)` |
+| Draw the screen | `GuiGraphics` → `GuiGraphicsExtractor` (a replacement already), `blit` gained a render type in 1.21.2 | `ClientVanilla.blit`, beside `blitSprite` (it was already there, tinted) |
+| Burn time of a fuel | a static map before 1.21.2, `FuelValues` from the level after, the item's cooking fuel component in a container loot context from 26.3; NeoForge 1.21.1 and Forge add fuel of their own | `Loader.burnTime(entity, stack)` over `Vanilla.burnTime`, taking the block entity, which must be a container (built) |
 | Hoppers | `WorldlyContainer` is the same everywhere; NeoForge also offers capabilities, not needed | none |
 
 The water side needs nothing new: `WaterPurity`, `ItemWaterData` and `WaterContainers` already read a
@@ -187,9 +188,12 @@ container's quality and servings and fill one with a given quality.
 Step 5, building it in the world, needs no block entity or GUI and can go first: it is blockstates,
 models and item use only, on every node, and gives something to see while the seams are built.
 
-1. **Seams first**, each with a gametest that only registers and round-trips: `Vanilla.registerBlockEntity`,
-   `SavedBlockEntity`, `Loader.registerMenu`, `ClientLoader.registerScreen`, `ClientVanilla.blit`,
-   `Vanilla.burnTime`. Build every node; this is where the version work is.
+1. **Seams first** (done), each with a gametest that only registers and round-trips: `Vanilla.registerBlockEntity`,
+   `SavedBlockEntity`, `Vanilla.registerMenu`, `ClientLoader.registerScreen`, `ClientVanilla.blit`,
+   `Loader.burnTime`. Build every node; this is where the version work is. A block entity type cannot
+   be built once the registries are frozen (26.3 gives it an intrusive holder), so the distiller's is
+   registered for real, with `DistillerBlockEntity` holding and saving its state and slots for step 2
+   to run; `MachineSeamsGameTest` covers the four server-side seams.
 2. **`DistillerBlockEntity`** on the boiler half: tanks, fuel, progress, salt counter, the tick, and the
    `WorldlyContainer` faces. `DistillerBlock` becomes an `EntityBlock`; the tub half forwards use to it.
 3. **`DistillerMenu`** with its slots and a `ContainerData` for fuel, progress and both tank levels.

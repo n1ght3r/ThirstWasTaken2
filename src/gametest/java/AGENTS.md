@@ -155,6 +155,8 @@ cauldron bottle draw.
 | `PlayerStateGameTest` | the sprint gate, exhaustion mirroring waiting for the tick, small exhaustion being carried until it crosses a sync step, the Hunger effect cancelling out, and that riding does not dehydrate |
 | `CauldronGameTest` | the cauldron blockstate property (water cauldron only, old powder snow saves still load, a fresh cauldron is not sea water), the deferred quality transfer, and the grades rain and dripstone leave behind |
 | `HangingPotGameTest` | the copper hanging pot through the real use path: filling, a full pot, mixing grades, drawing a bottle or a waterskin, the frame following the campfire, boiling per serving, topping up, rain and the Nether; the iron pot filling and boiling the same way, and each pot's boil time |
+| `DistillerGameTest` | the copper distiller as a two-block structure (placing, a taken spot, mining either half, creative), building it in the world (a boiler merging into a firebox, the pipe joining a lined-up pair and refusing any other), what each piece drops, and the tub's coolant |
+| `MachineSeamsGameTest` | the version seams a machine stands on: the distiller's block entity type registered for it, a block entity's values and items coming back from a save as the chunk loads one, a menu type building its menu, and fuel burning as long as in a furnace through `Loader.burnTime` |
 | `PurificationGameTest` | which water the furnace accepts: looted bottles yes, salt water never |
 | `EnvironmentGameTest` | the datapack damage type and its tags, and the version-forked environment call |
 | `CreativeTabGameTest` | the creative tab has the right icon and holds every item the mod adds |

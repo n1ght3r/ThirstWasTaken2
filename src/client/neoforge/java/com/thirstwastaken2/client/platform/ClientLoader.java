@@ -1,5 +1,10 @@
 package com.thirstwastaken2.client.platform;
 
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.client.gui.screens.Screen;
 import com.thirstwastaken2.ThirstWasTaken2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
@@ -51,6 +56,16 @@ public final class ClientLoader {
                             renderer.render(graphics, graphics.guiHeight() - hud.rightHeight);
                             hud.rightHeight += height;
                         }));
+    }
+
+    /**
+     * Opens {@code factory}'s screen on the client whenever the server opens a menu of {@code type}.
+     * NeoForge takes it from {@code RegisterMenuScreensEvent} on the mod bus, once the type exists.
+     */
+    public static <M extends AbstractContainerMenu, S extends Screen & MenuAccess<M>> void registerScreen(
+            Supplier<MenuType<M>> type, ScreenFactory<M, S> factory) {
+        ModList.get().getModContainerById(ThirstWasTaken2.MOD_ID).orElseThrow().getEventBus()
+                .addListener((RegisterMenuScreensEvent event) -> event.register(type.get(), factory::create));
     }
 
     /**
