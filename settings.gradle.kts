@@ -23,7 +23,7 @@ plugins {
     // NeoForge's build plugin, for the one NeoForge node. Resolved here and applied only by
     // build.neoforge.gradle.kts: applying it to a Fabric node would put a second Minecraft provider
     // on a project Loom already owns.
-    id("net.neoforged.moddev") version "2.0.147" apply false
+    id("net.neoforged.moddev") version "2.0.148" apply false
     // The same plugin family for MinecraftForge, for the 1.20.1 Forge node, applied only by
     // build.forge.gradle.kts. It remaps Minecraft and mod dependencies to Mojang's names for development
     // and the jar back to SRG names for players.
