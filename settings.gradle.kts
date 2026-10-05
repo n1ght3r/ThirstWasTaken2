@@ -27,7 +27,7 @@ plugins {
     // The same plugin family for MinecraftForge, for the 1.20.1 Forge node, applied only by
     // build.forge.gradle.kts. It remaps Minecraft and mod dependencies to Mojang's names for development
     // and the jar back to SRG names for players.
-    id("net.neoforged.moddev.legacyforge") version "2.0.147" apply false
+    id("net.neoforged.moddev.legacyforge") version "2.0.148" apply false
     // Provisions the JDK a version needs when it is not installed locally: 26.1+ wants Java 25,
     // 1.21.x wants Java 21.
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
