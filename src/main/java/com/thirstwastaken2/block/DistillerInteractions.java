@@ -20,9 +20,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
- * Filling a cooling tub with its coolant, alone or as the distiller's tub half. Any water does, sea
- * water too, and whatever grade: it only carries heat off the coil and never reaches the distillate,
- * so it costs no drinking water. It is poured once and stays. A bucket, a bottle or a terracotta bowl
+ * Filling a cooling tub with its coolant, alone or as the distiller's tub half, and the right-click
+ * shortcuts on a whole distiller that pour water into its boiler and draw it from its basin.
+ *
+ * <p>For the coolant any water does, sea water too, and whatever grade: it only carries heat off the
+ * coil and never reaches the distillate, so it costs no drinking water. It is poured once and stays. A bucket, a bottle or a terracotta bowl
  * empties into it; a waterskin, canteen or flask pours what it holds, up to a bucket. Where water
  * evaporates, as in the Nether, the tub refuses it the way a hanging pot does.
  */
@@ -51,6 +53,54 @@ public final class DistillerInteractions {
         level.playSound(null, pos, pour.sound(), SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
         return InteractionResult.SUCCESS_SERVER;
+    }
+
+    /**
+     * The shortcuts on either half of a whole distiller: a container of water pours into the boiler, an
+     * empty one draws Pure water from the basin, as at a hanging pot. A bucket moves its three servings
+     * or nothing. A waterskin, canteen or flask draws, and pours when its holder is sneaking, the way its
+     * sneak-use pours it out anywhere else. A tub still without its coolant takes the water as that
+     * first, in {@link #fillTub}, which runs before this.
+     */
+    public static InteractionResult useMachine(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
+        BlockPos pos = hit.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+        if (!state.is(ThirstBlocks.COPPER_DISTILLER) || !DistillerBlock.isWhole(state) || player.isSpectator()) {
+            return InteractionResult.PASS;
+        }
+        DistillerBlockEntity machine = DistillerBlock.machine(level, pos, state);
+        if (machine == null) return InteractionResult.PASS;
+
+        ItemStack held = player.getItemInHand(hand);
+        boolean carried = WaterskinItem.is(held);
+        boolean sneaking = player.isSecondaryUseActive();
+        if (carried ? sneaking : !sneaking) {
+            int water = DistillerWater.held(held);
+            int room = DistillerBlockEntity.TANK - machine.boilerServings();
+            if (water > 0 && room > 0 && (carried || water <= room)) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                int poured = machine.pour(Math.min(water, room), WaterPurity.quality(held));
+                ItemStack emptied = DistillerWater.emptied(held, poured);
+                level.playSound(null, pos, DistillerWater.pourSound(held), SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.setItemInHand(hand, carried ? emptied : ItemUtils.createFilledResult(held, player, emptied));
+                level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
+                return InteractionResult.SUCCESS_SERVER;
+            }
+        }
+        if (!sneaking) {
+            int room = DistillerWater.room(held);
+            int needed = carried ? 1 : room;
+            if (room > 0 && machine.basinServings() >= needed) {
+                if (level.isClientSide()) return InteractionResult.SUCCESS;
+                int drawn = machine.draw(Math.min(room, machine.basinServings()));
+                ItemStack filled = DistillerWater.filled(held, drawn);
+                level.playSound(null, pos, DistillerWater.fillSound(held), SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.setItemInHand(hand, carried ? filled : ItemUtils.createFilledResult(held, player, filled));
+                level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
+                return InteractionResult.SUCCESS_SERVER;
+            }
+        }
+        return InteractionResult.PASS;
     }
 
     /** What {@code held} pours into a tub, or {@code null} when it holds no water. */

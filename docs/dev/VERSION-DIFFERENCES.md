@@ -144,6 +144,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 
 | Difference | Code |
 |---|---|
+| An item's crafting remainder is a template, which may be missing | `Vanilla.craftingRemainder`, for the distiller's lava bucket |
 | The cauldron interaction maps became `CauldronInteractions`' dispatchers, asked with the stack and answering a do-nothing default; before, `CauldronInteraction`'s maps by item (`InteractionMap.map()`, a plain map on 1.20.1) | `Vanilla.cauldronHasInteraction` |
 | A player's action bar message has its own method, `sendOverlayMessage` | `Vanilla.sendOverlayMessage`, which the Kaleidoscope Cookery Teapot's sea water refusal calls |
 | The HUD draw target was renamed `GuiGraphicsExtractor` | replacement |
@@ -209,6 +210,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Tests register through the test function registry, and the server writes its own JUnit report with `--report` | NeoForge `ThirstWasTaken2GameTests` and `build.neoforge.gradle.kts`; before it the harness registers and reports itself |
 | A `CompoundTag`'s getters answer with an `Optional` or a fallback | `Vanilla.getString`, `getInt`, which `DrinkingUpgradeContainer.handlePacket` (Sophisticated) calls |
 | A block entity saves through `ValueOutput` and loads through `ValueInput`, and `ContainerHelper` takes those | `platform/SavedBlockEntity` |
+| A block entity that is a container spills its contents itself when removed; before, the block did it in `onRemove` | `SupportedBlock`, which does it before 1.21.5 for any such block entity |
 
 ### 1.21.4 (affects 1.21.1)
 
@@ -242,6 +244,7 @@ already has by default. The stack the furnace hands out is the same; see
 | A recipe names an ingredient by id or `#tag` rather than as an object | the Drinking upgrade's recipes, one copy per generation in `src/main/sophisticated-fluidhandler` and `-transfer` |
 | A block entity type is built by a public constructor where a builder did | `Vanilla.blockEntityType`; the constructor and its supplier are widened on Fabric (below) |
 | Furnace fuel is the level's fuel values, where it was a static table | `Vanilla.burnTime` |
+| An item's crafting remainder is a stack, where it was an item | `Vanilla.craftingRemainder` |
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
 

@@ -6,16 +6,23 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.WorldlyContainerHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -43,10 +50,12 @@ import java.util.function.IntConsumer;
  * {@link ThirstBlocks#COOLING_TUB} beside it, which becomes the {@link Part#TUB} half; from then on it
  * is the same as a distiller crafted whole. See {@code item/CopperPipeItem}.
  *
- * <p>Distilling is not built yet: for now a piped distiller is the machine's look, its fire always
- * burning. The models are written by {@code tools/distiller/generate_distiller_model.py}.
+ * <p>A piped boiler half holds the machine, a {@link DistillerBlockEntity}, and ticks it on the server.
+ * Either half of a whole distiller hands that machine to a hopper, and to the right-click shortcuts in
+ * {@link DistillerInteractions}. Its fire is still always drawn burning. The models are written by
+ * {@code tools/distiller/generate_distiller_model.py}.
  */
-public final class DistillerBlock extends SupportedBlock {
+public final class DistillerBlock extends SupportedBlock implements EntityBlock, WorldlyContainerHolder {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     /** Whether the swan neck joins the boiler to its tub. Only the boiler half is ever without it. */
@@ -158,6 +167,31 @@ public final class DistillerBlock extends SupportedBlock {
         BlockPos boiler = pos.relative(towardOtherHalf(state));
         BlockState other = level.getBlockState(boiler);
         if (other.is(this) && other.getValue(PART) == Part.BOILER) level.destroyBlock(boiler, false, player);
+    }
+
+    /** The machine on a piped boiler half; the other half and an unpiped boiler have none. */
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return state.getValue(PART) == Part.BOILER && isWhole(state) ? new DistillerBlockEntity(pos, state) : null;
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        if (level.isClientSide() || type != ThirstBlockEntities.COPPER_DISTILLER) return null;
+        return (tickLevel, pos, tickState, entity) -> ((DistillerBlockEntity) entity).tick();
+    }
+
+    /** The machine of the distiller that {@code pos}, either half, belongs to, or {@code null} when it has none. */
+    public static DistillerBlockEntity machine(BlockGetter level, BlockPos pos, BlockState state) {
+        if (!state.hasProperty(PART)) return null;
+        BlockPos boiler = state.getValue(PART) == Part.BOILER ? pos : pos.relative(towardOtherHalf(state));
+        return level.getBlockEntity(boiler) instanceof DistillerBlockEntity machine ? machine : null;
+    }
+
+    /** What a hopper reaches through either half: the machine on the boiler half. */
+    @Override
+    public WorldlyContainer getContainer(BlockState state, LevelAccessor level, BlockPos pos) {
+        return machine(level, pos, state);
     }
 
     /** Smoke out of the chimney now and then, once it is a machine. */

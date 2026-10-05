@@ -2,10 +2,9 @@
 
 **Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
-what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 5, building it in the
-world; and of step 8 the `cooled` property and the pour that sets it. The block entity type is
-registered and saves its state, but the block does not create it yet and nothing ticks it, so the
-tub does not yet stop the machine. It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 2, the machine, which
+distils; step 5, building it in the world; and step 8, the cooling tub. Still to come: the GUI (steps
+3 and 4), the fire in the model (6), salt (7) and the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -194,8 +193,16 @@ models and item use only, on every node, and gives something to see while the se
    be built once the registries are frozen (26.3 gives it an intrusive holder), so the distiller's is
    registered for real, with `DistillerBlockEntity` holding and saving its state and slots for step 2
    to run; `MachineSeamsGameTest` covers the four server-side seams.
-2. **`DistillerBlockEntity`** on the boiler half: tanks, fuel, progress, salt counter, the tick, and the
+2. **`DistillerBlockEntity`** (done) on the boiler half: tanks, fuel, progress, salt counter, the tick, and the
    `WorldlyContainer` faces. `DistillerBlock` becomes an `EntityBlock`; the tub half forwards use to it.
+   As built: either half is a `WorldlyContainerHolder`, so a hopper works on both; the right-click
+   shortcuts (`DistillerInteractions.useMachine`) draw into a carried container on a plain click and
+   pour it on a sneaking one, as at a hanging pot, and a bucket moves its three servings or nothing,
+   both ways. A lit fire holds rather than burns down while there is nothing to do. Salty servings are
+   counted, up to three, and wait for step 7 to become salt. The bottom face also gives back what is
+   spent in the water and fuel slots, an emptied bucket or bottle, as a furnace's does. Breaking it
+   spills the slots (`SupportedBlock` before 1.21.5, vanilla from it); the tanks' water is lost, as a
+   cauldron's is.
 3. **`DistillerMenu`** with its slots and a `ContainerData` for fuel, progress and both tank levels.
 4. **`DistillerScreen`** and its texture, `textures/gui/container/copper_distiller.png`, in the style of
    the furnace's (drawn from vanilla's palette, checked beside it).
@@ -204,8 +211,8 @@ models and item use only, on every node, and gives something to see while the se
 6. **`lit`** in the blockstate: the generator writes a cold firebox (logs unlit, no fire plane) beside the
    burning one; light and smoke follow.
 7. **Salt**: the `distiller_salt` tag in datagen, the config option, the slot shown only when it resolves.
-8. **The cooling tub**: `cooled`, filled by a right-click (done: `block/DistillerInteractions`, any
-   water container, a skin pouring up to a bucket), required to condense (with step 2).
+8. **The cooling tub** (done): `cooled`, filled by a right-click (`block/DistillerInteractions`, any
+   water container, a skin pouring up to a bucket), required to condense.
 9. **Config**: the serving time and tank sizes on the Containers page (lang keys in all nine files).
 10. **Tests.** Gametests: fill from each container, distil a bucket of sea water and get three Pure and
    one salt with a salt item tagged by a test data pack, no salt with the tag empty, fuel not burnt with

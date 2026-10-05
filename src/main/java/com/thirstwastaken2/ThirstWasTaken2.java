@@ -61,6 +61,7 @@ public final class ThirstWasTaken2 {
         Loader.onUseBlock(ThirstManager::drinkByHand);
         Loader.onUseBlock(HangingPotInteractions::use);
         Loader.onUseBlock(DistillerInteractions::fillTub);
+        Loader.onUseBlock(DistillerInteractions::useMachine);
         Loader.onUseBlock(WaterInteractions::emptyWaterskinOnBlock);
         Loader.onUseBlock(WaterInteractions::fillWaterskinFromCauldron);
         Loader.onUseBlock(WaterInteractions::transferCauldronPurity);

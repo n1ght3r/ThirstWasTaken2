@@ -24,6 +24,9 @@ import java.util.function.IntConsumer;
  * and about a player breaking it through {@link #beforePlayerBreaks}, whose override lost its void
  * return in 1.20.2.
  *
+ * <p>A block whose block entity is a container spills what it holds when broken, which vanilla leaves to
+ * each block before 1.21.5 and does itself from then on.
+ *
  * <p>A class rather than a method for the same reason as {@link DrinkItem}: what differs is an override.
  */
 public abstract class SupportedBlock extends Block {
@@ -92,6 +95,32 @@ public abstract class SupportedBlock extends Block {
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         beforePlayerBreaks(level, pos, state, player);
         super.playerWillDestroy(level, pos, state, player);
+    }
+    *///?}
+
+    // A block entity that is a container spills what it holds when its block goes. From 1.21.5 the
+    // block entity does that itself, in preRemoveSideEffects; before it the block's onRemove does, as
+    // a chest's or a furnace's does, and only when the block itself is replaced, not a state of it.
+    //? if >=1.20.5 <1.21.5 {
+    /*@Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
+        dropContents(state, level, pos, newState);
+        super.onRemove(state, level, pos, newState, moved);
+    }
+    *///?}
+    //? if <1.20.5 {
+    /*@Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
+        dropContents(state, level, pos, newState);
+        super.onRemove(state, level, pos, newState, moved);
+    }
+    *///?}
+    //? if <1.21.5 {
+    /*private static void dropContents(BlockState state, Level level, BlockPos pos, BlockState newState) {
+        if (!state.is(newState.getBlock())
+                && level.getBlockEntity(pos) instanceof net.minecraft.world.Container container) {
+            net.minecraft.world.Containers.dropContents(level, pos, container);
+        }
     }
     *///?}
 

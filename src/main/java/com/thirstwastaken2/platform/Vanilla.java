@@ -340,6 +340,22 @@ public final class Vanilla {
     }
 
     /**
+     * What is left of {@code stack}'s item once it is used up, as a lava bucket leaves a bucket; empty for
+     * most items. Before 1.21.2 an item, then a stack, and from 26.1 a template, which may be missing.
+     */
+    public static ItemStack craftingRemainder(ItemStack stack) {
+        //? if >=26.1 {
+        net.minecraft.world.item.ItemStackTemplate remainder = stack.getItem().getCraftingRemainder();
+        return remainder == null ? ItemStack.EMPTY : remainder.create();
+        //?} elif >=1.21.2 {
+        /*return stack.getItem().getCraftingRemainder();
+        *///?} else {
+        /*Item remainder = stack.getItem().getCraftingRemainingItem();
+        return remainder == null ? ItemStack.EMPTY : new ItemStack(remainder);
+        *///?}
+    }
+
+    /**
      * Whether the position is Nether-like, i.e. water placed there boils away. Replaced
      * {@code DimensionType#ultraWarm} and moved to environment attributes in 1.21.9.
      */
