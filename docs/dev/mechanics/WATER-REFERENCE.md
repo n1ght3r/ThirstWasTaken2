@@ -150,6 +150,7 @@ down to a salt bucket, and nothing to drink.
 | Copper Distiller | 8 s a serving, 72 s full | up to 9 | Pure, sea water included | furnace fuel | coal runs ten servings; the cooling tub filled once; a bucket of sea water leaves one salt when another mod has salt; `distillerServingSeconds`, `distillerTankServings` |
 | Cooking Pot (Farmer's Delight) | 10 s | 1 | Pure | heat below | only with Farmer's Delight |
 | Boiler (Cold Sweat) | 10 s a grade, 30 s Dirty to Pure | up to 27 | up one grade a pass, to Pure | yes | only with Cold Sweat |
+| Sand Filter (Create, Create Fly) | 10 mB a tick, 1.25 s a serving | continuous | up one grade a pass, to Pure; sea water passes salty | none of its own; the pumps feeding it need rotation | only with Create (NeoForge 1.21.1, Forge 1.20.1) or Create Fly (Fabric 26.1.x, 26.2.x); filters in series for more than one grade |
 | Cold Sweat's Waterskin, furnace or smoker | 10 s / 5 s | 1 | up two grades | yes | hand-written recipes in `src/main/coldsweat` |
 | Cold Sweat's Waterskin, campfire | 60 s | 1 | up two grades | no | Cold Sweat's own recipe; `CampfireWaterskinMixin` stamps the grade |
 | Teapot (Kaleidoscope Cookery) | 12 s | 4 teacups | safe tea, not water | heat below, a tea bag | a teacup restores its fixed value whatever the grade; sea water refused |
@@ -161,6 +162,40 @@ hanging pot, a cauldron, or bottles and buckets boiled elsewhere.
 
 Moving water (Create, Sophisticated tanks and pumps, Supplementaries jars) keeps its grade and cleans
 nothing.
+
+### Input to output, by grade
+
+The same methods by what each grade of water comes out as. A step is one grade: Dirty to Murky is +1,
+Dirty to Pure +3. A grade never passes Pure (`WaterQuality.Fresh` clamps), so "up two grades" on Clean
+water gives only +1. Names are the game's today; the rework renames Clean to Clear.
+
+There are three kinds of rule:
+
+- **Up by N**: the input plus N grades. Furnace, smoker and campfire slots, Cold Sweat's Waterskin (+2);
+  Cold Sweat's Boiler and the Sand Filter (+1 a pass).
+- **Set to a grade**: whatever goes in comes out Pure, so the steps depend on the input. The vessels,
+  the hanging pots, Farmer's Delight's Cooking Pot, the Copper Distiller.
+- **Pass through**: keeps the grade. Tanks, pumps, jars, a Spout, an Item Drain. Mixing in a cauldron,
+  a hanging pot or a waterskin only lowers.
+
+| Method | Rule | Dirty | Murky | Clean | Pure | Sea water |
+|---|---|---|---|---|---|---|
+| Furnace, smoker: bottle, bowl, bucket, Iron Flask | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe (a salt bucket with Spelunkery) |
+| Campfire slots: bottle, bowl, bucket | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe |
+| Copper Canteen, Iron Flask held on a campfire | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | kept | refused |
+| Copper and Iron Hanging Pots | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | kept | refused |
+| Copper Distiller | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | Pure | **Pure**, and salt when another mod has it |
+| Cooking Pot (Farmer's Delight) | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | no recipe | refused, or salt with Hearth and Harvest or Expanded Delight |
+| Boiler (Cold Sweat) | +1 a pass | Murky, then Clean, then Pure | Clean, then Pure | Pure (+1) | kept | refused |
+| Cold Sweat's Waterskin, furnace or smoker | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe |
+| Cold Sweat's Waterskin, campfire | +2 | Clean (+2) | Pure (+2) | kept | kept | refused |
+| Sand Filter (Create, Create Fly) | +1 a pass | Murky (+1) | Clean (+1) | Pure (+1) | Pure | passes through salty |
+| Teapot, Farm & Charm and Candlelight Cooking Pot, HerbalBrews Tea Kettle | | tea, not water: a fixed value whatever the grade | | | | refused |
+
+So the same Dirty bottle comes out Clean from a furnace, Pure from a pot and Murky after one Boiler
+pass. The rework makes heat uniform (every kind stops at Clean, to be named Clear) and leaves Pure to
+the distiller and, with Create, the Sand Filter; see
+[PURIFICATION-REWORK.md](PURIFICATION-REWORK.md#rules).
 
 ### Where Pure water comes from today
 

@@ -1,208 +1,222 @@
-# Purification rework: plain heat stops at Clean
+# Purification rework: boiling stops at Clear, only distilling makes Pure
 
-**Status: planned, not started.** Agreed on 2026-09-30; to be discussed once more before any code.
-Read [WATER-REFERENCE.md](WATER-REFERENCE.md) first: it describes how things are today, and this plan
-changes it.
+**Status: planned, not started.** [WATER-REFERENCE.md](WATER-REFERENCE.md) describes the game today;
+this plan changes it. Grade names below are the new ones: today's Clean is Clear here.
 
-## Why
+## Goal
 
-Progression is flat. A furnace costs eight cobblestone and already takes Murky and Clean water to Pure,
-so copper and iron gear only make boiling more convenient and unlock nothing. The furnace's flat 10 s
-per item makes a full Iron Flask (six servings) its best input by far, and the campfire's four slots
-turn four buckets into twelve servings every 30 s with no fuel, beating everything else.
+Each step of progression does one thing of its own:
 
-## The rule
+| Step | How | Gives |
+|---|---|---|
+| 1 | No metal: water as found, rain, loot, a cleric's trade | whatever it is |
+| 2 | Boiling: Copper Canteen or Iron Flask held on a campfire, Copper and Iron Hanging Pots | Clear |
+| 3 | Distilling: the Copper Distiller, any water, sea water included | Pure |
 
-- **Plain heat (furnace, smoker) raises water at most to Clean** (grade 2), for every container:
-  bottle, terracotta bowl, bucket, Copper Canteen, Iron Flask.
-- **Pure (grade 3) comes only from a dedicated boiling vessel:** the Copper Canteen or Iron Flask
-  held on a campfire, the Copper and Iron Hanging Pots, Farmer's Delight's Cooking Pot and Cold
-  Sweat's Boiler. These cost metal or a block of their own.
-- **The campfire's slots stop purifying water.** They go back to cooking food. The campfire stays a
-  water block as the heat under the pots and the vessels held on it.
-- The waterskin still cannot be boiled at all. Pure water gets into it only from a clean source: a
-  hanging pot, or bottles and buckets boiled elsewhere.
+Today a furnace (eight cobblestone) already makes Pure, so copper and iron unlock nothing and the
+distiller is only for sea water.
 
-Clean is still worth improving on. On Normal it gives Poisoning 2% and Upset Stomach 10% a drink, and
-Pure gives nothing ([WATER-SICKNESS.md](WATER-SICKNESS.md)).
+## Names and colours
 
-## Where Pure water comes from after
+Grades: **Dirty → Murky → Clear → Pure**. Only grade 2 changes, Clean to Clear: boiled water is free of
+germs but not of what is dissolved in it, and still carries a small risk, so the name says how it
+looks, not that it is safe. The scale's name, wherever a player reads it, is **water quality**, not
+water purity (it also covers salt water). On the site, Pure is the game's name for distilled water,
+not a claim that it is healthier than other safe water.
 
-| Source | Why it stays |
-|---|---|
-| Water sampled in cold mountain biomes above y 100 (`WaterPurity.sampleAt` scores it Pure) | found, not made |
-| A cauldron filled by a pointed dripstone (`dripstonePurity`, 3) | **kept on purpose**: a reward for building the drip, and the only unattended Pure without metal |
-| Copper Canteen / Iron Flask held on a campfire | dedicated vessel |
-| Copper / Iron Hanging Pot | dedicated vessel |
-| Farmer's Delight's Cooking Pot, Cold Sweat's Boiler | dedicated blocks |
-| Loot: water bottles in five structure chests, Piglin bartering | found, not made |
+Colours read brighter and more vivid the safer the water, warm to cool, salt off the ramp:
 
-Everything else stops at Clean: furnace, smoker (and Sophisticated's Smoking upgrades), Cold Sweat's
-Waterskin on a campfire or in a furnace. Moving water (Create, Sophisticated tanks and pumps,
-Supplementaries jars) keeps its grade and makes nothing Pure, today and after.
-
-## The numbers after
-
-| Method | Time | Servings | Result |
+| Grade | Tooltip | Sprite | Reads as |
 |---|---|---|---|
-| Furnace, bottle / bowl | 10 s | 1 | Dirty → Clean, Murky → Clean |
-| Furnace, bucket | 10 s | 3 | the same |
-| Smoker, any of those | 5 s | 1 or 3 | the same |
-| **Furnace, Copper Canteen (new)** | **3 s a serving, 12 s full** | 1 to 4 | the same |
-| **Furnace, Iron Flask** | **4 s a serving, 24 s full** (was a flat 10 s) | 1 to 6 | the same |
-| Canteen / Flask held on a campfire | 3 s / 4 s a serving | 4 / 6 | Pure (unchanged) |
-| Copper / Iron Hanging Pot | 4 s / 6 s a serving | 3 | Pure (unchanged) |
-| Campfire slots | removed | | |
+| Dirty | `0xB0632E` | `0x5E3E20` | mud brown |
+| Murky | `0xBDB878` | `0x808C4C` | olive: silt and algae |
+| Clear | `0x8FA6B4` | `0x3F76E4` | tooltip a greyed blue; sprite vanilla's water blue |
+| Pure | `0x4FD6FF` | `0x3FB4E8` | the brightest of the scale |
+| Salt | `0xE6DFC8` | `0x25817A` | unchanged |
 
-Per serving in a furnace a bucket (about 3.3 s), the canteen (3 s) and the flask (4 s) are now close,
-so no input dominates. The trade is clear: stand holding use for Pure, or leave it in a furnace and
-walk away for Clean.
+- Clear and Pure must be easy to tell apart, colour-blind players included: these give a ΔE of about
+  28 (22 in a red-green simulation), and every tooltip colour keeps 4.5:1 contrast.
+- The tooltip is `WaterPurity.purityColor`. The sprites are the four `terracotta_water_bowl_purity_*`
+  and the four animated `copper_hanging_pot_water_purity_*` textures: recolour the water, keep the
+  shading. Anything that later shows water by grade uses the sprite column.
+- Tune the hex in game before settling.
 
-**The bucket keeps its flat 10 s on purpose.** A player who has found iron and made a bucket has
-earned a furnace input close to the canteen and the flask, which nudges them off boiling bottles and
-bowls one at a time (10 s a serving). Making it 30 s to match bottles was considered and turned down.
+**Renamed** (text only):
 
-## The terracotta bowl
+| What | From | To |
+|---|---|---|
+| Grade lang keys | `thirst.purity.dirty`, `.slightly_dirty`, `.acceptable`, `.purified` | `thirst.water.dirty`, `.murky`, `.clear`, `.pure` |
+| Quenched config lang key | `quenched_percent_clean` | `quenched_percent_clear` |
+| Config lang keys | `default_purity`, `rainwater_purity`, `dripstone_purity` | `*_quality`, values "… Quality" |
+| Sophisticated button | `upgrades.buttons.min_purity` | `min_quality`, "Drinks %s water or better" |
+| Sickness key in `thirstwastaken2.json` | `clean` | `clear`, migrated |
+| Values only | "Water Purity" (Jade), "The water is boiled clean" | "Water Quality", "The water has boiled" |
 
-Bowls are the early, clay-age container, and hard to come by. Two changes make them easier to live
-with without letting them replace the carried vessels:
+**Kept**, because worlds, configs, other mods or the API store them: the `water_purity` and
+`water_salty` components, the `purity` blockstate, the `purified_water` advancement, the Jade plugin id,
+`drink_min_purity`, the `pure_water` tag, config field names, `ThirstApi` and `WaterPurity`.
 
-- **A filled Terracotta Water Bowl stacks to 4.** Sixteen was considered and turned down: 64 thirst
-  in a slot would leave the waterskin, canteen and flask no purpose. A side benefit: a furnace's
-  output slot takes several bowls, so a hopper can feed it; today it stalls after one.
-  **To re-decide:** 4 was chosen on a wrong number. A vessel's serving is 4 thirst, not a bottle's 6,
-  so a full waterskin is 12 thirst (canteen 16, flask 24), and four bowls (16) beat the waterskin and
-  tie the canteen. Three bowls tie the waterskin (12); two (8) stay under it.
-- **Empty Terracotta Bowls in village chests**, so a player can find them before they dig clay.
-- **The bowl-and-bucket crafting recipe gives a Dirty bowl.** Today it always gives Clean, whatever
-  the bucket held, because a crafting recipe cannot see the bucket's grade. With Clean as the
-  furnace's ceiling that would turn a Dirty bucket into a Clean bowl with no boiling. The cost: a
-  bucket that was already Clean or Pure also comes out Dirty, so the recipe becomes a way to fill
-  bowls, not to keep water clean. Pour from a cauldron or pot for that.
+**Migration:** in `sanitizeSickness`, a difficulty's table with `clean` and no `clear` is old; move
+`clean` to `clear`. The new names never write `clean`, so no version field is needed.
 
-## Clean water makes you ill a little less
+## Real-world basis
 
-Clean becomes the most a furnace gives, so it is what most players drink before they have copper or
-iron. Its Upset Stomach and Poison chances come down a little; the durations and levels stay:
+Player-facing text about treating water stays within this:
 
-| Clean, Upset Stomach | Easy | Normal | Hard |
+| Real world | Source | In game |
+|---|---|---|
+| Boiling kills bacteria, viruses and parasites (1 minute at a rolling boil) | CDC | boiling gives Clear |
+| Boiling leaves chemicals, heavy metals and salt, more concentrated as water boils off; algal toxins survive it | CDC, EPA | boiling stops at Clear, sea water stays salty |
+| Distillation removes germs and most chemicals, not some volatile organics | CDC | the distiller gives Pure from any water |
+
+The game simplifies one thing: Clear's small, immediate sickness risk stands in for harm that is really
+long-term. The site says so in a line.
+
+Sources: [CDC, water in an emergency](https://www.cdc.gov/water-emergency/about/index.html),
+[EPA, emergency disinfection](https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water),
+[CDC, home water treatment](https://www.cdc.gov/drinking-water/about/about-home-water-treatment-systems.html),
+[CDC, backcountry treatment](https://stacks.cdc.gov/view/cdc/12378),
+[EPA, cyanotoxins](https://www.epa.gov/sites/default/files/2017-06/documents/cyanotoxin-management-drinking-water.pdf).
+
+## Rules
+
+- **Heat sets water to Clear**, whatever heats it: a held vessel, a hanging pot, Farmer's Delight's
+  Cooking Pot, the furnace and smoker (only with the switch). Clear and Pure water is not boiled, and
+  nothing lowers a grade.
+- **The distiller sets any water to Pure**, sea water included, and is the only thing that makes sea
+  water drinkable.
+- **No furnace or smoker water recipes** by default; `enableFurnaceBoiling` brings them back, to Clear.
+- **Campfire slots never boil water**, switch or not.
+- **Waterskins cannot be boiled** (the mod's and Cold Sweat's), switch or not.
+
+Every treatment after the rework (today's are in WATER-REFERENCE.md, "Input to output, by grade"):
+
+| Method | Rule | Dirty | Murky | Clear | Pure | Salt |
+|---|---|---|---|---|---|---|
+| All heat, as above | to Clear | Clear | Clear | not boiled | kept | refused, or salt where a mod makes it |
+| Boiler (Cold Sweat) | +1 a pass, to Clear | Murky, then Clear | Clear | kept | kept | refused |
+| Cold Sweat's Waterskin on a campfire | to Clear | Clear | Clear | kept | kept | refused |
+| Copper Distiller | to Pure | Pure | Pure | Pure | Pure | Pure |
+| Sand Filter (Create, Create Fly) | +1 a pass, to Pure | Murky | Clear | Pure | Pure | passes salty |
+| Tanks, pumps, jars, Spout, Item Drain | pass through | kept | kept | kept | kept | kept |
+
+**The Sand Filter is the one exception to "only the distiller makes Pure"**, unchanged: it needs a
+running Create setup, Dirty to Pure takes three filters in series, and it never touches salt. Pure from
+sand is a gameplay allowance, not a real-world claim.
+
+**Other Pure sources** stay: cold mountain water above y 100, Spelunkery's Spring Water, loot, and a
+dripstone cauldron (about 6.5 minutes a serving, too slow to compete; `dripstonePurity` set to 2 makes
+it Clear).
+
+## Balance
+
+| Grade | Quenched | Upset Stomach (Easy / Normal / Hard) | Poison |
 |---|---|---|---|
-| Now (`SicknessEffect.defaults()`) | 5% | 12% | 20% |
-| After | 3% | 8% | 15% |
+| Dirty | 0% | unchanged | unchanged |
+| Murky | 50% | unchanged | unchanged |
+| Clear | **85%** (100% today) | **3 / 8 / 15%** (5 / 12 / 20% today) | **none** (3 / 5 / 10% today) |
+| Pure | 100% | none | none |
 
-| Clean, Poison | Easy | Normal | Hard |
-|---|---|---|---|
-| Now | 3% | 5% | 10% |
-| After | 2% | 3% | 6% |
+| Container | Servings | Boils |
+|---|---|---|
+| Waterskin | **5** (3 today) | no |
+| Copper Canteen | 4 | to Clear, on a campfire |
+| Iron Flask | 6 | to Clear, on a campfire |
 
-Numbers to tune. Clean stays worse than Pure (0%), so boiling to Pure is still worth it.
+- The Waterskin keeps its four sprites: 0 empty, 1 or 2 `waterskin_1`, 3 or 4 `waterskin_2`, 5 full.
+  `MAX_CAPACITY` stays 6; old skins need no migration.
+- A filled Terracotta Water Bowl stacks to 4. Empty Terracotta Bowls appear in village chests.
+- The bowl-and-bucket crafting recipe gives a Dirty bowl: a crafting recipe cannot read the bucket's
+  grade.
+- `boil_water` is earned by having a Copper Canteen, Iron Flask or either Hanging Pot in the inventory
+  (`inventory_changed`). `purified_water` points at the distiller.
+- The distiller stays at 8 s a serving.
+
+With the switch on:
+
+| Method | Time | Servings |
+|---|---|---|
+| Furnace, bottle or bowl | 10 s | 1 |
+| Furnace, bucket | 10 s | 3 |
+| Smoker, any of those | 5 s | 1 or 3 |
+| Furnace, Copper Canteen | 3 s a serving | 1 to 4 |
+| Furnace, Iron Flask | 4 s a serving | 1 to 6 |
 
 ## Steps
 
-### 1. Datagen, `ThirstRecipeProvider`
+### 1. Names and colours
 
-- `PURIFY_TABLE` `{2, 3, 3}` becomes `{2, 2}`; loops over purity 0 and 1 only. No recipe for Clean
-  input any more. Bottle, bowl and bucket keep 10 s in a furnace and 5 s in a smoker.
-- Remove `Heat.CAMPFIRE` and `CAMPFIRE_TIME`. The unlock advancements' recipe lists shrink with it.
-- Iron Flask: cooking time per recipe is `servings × 4 s` instead of `SMELTING_TIME`.
-- Copper Canteen: new smelting recipes, one per fill level 1 to 4 and purity 0 and 1, `servings × 3 s`,
-  gated on `enabled(COPPER_CANTEEN)`, with its own unlock. Turn `flaskPurifyRecipes` into one method
-  taking the item, capacity and seconds a serving.
-- Still smelting only for the two vessels: a smoking recipe is possible but not asked for, and a
-  campfire recipe would swallow the vessel into a slot instead of boiling it in hand.
-- Update the class Javadoc ("raises two grades and stops at PURIFIED").
-- `FarmersDelightRecipeProvider` keeps its Pure result; it loops to `PURIFIED` on its own.
+Ships on its own; it changes no behaviour.
 
-### 2. Datagen 1.20.1, `LegacyRecipeProvider`
+- `WaterPurity.purityKey` and `purityColor`; `ConfigCategory`, `ConfigEntry.grade` and
+  `DrinkingUpgradeTab` use the renamed keys.
+- `SicknessEffect.GRADES` becomes `{"dirty", "murky", "clear", "pure"}`; the migration in
+  `sanitizeSickness`.
+- Recolour the eight water textures; check in a client.
+- Nine lang files: renamed keys, grade 2 retranslated (Vietnamese: Trong; "Chất lượng nước" for the
+  scale). `checkLang`.
+- `TooltipGameTest`: check the four grade keys by name, since salt now shares the `thirst.water.`
+  prefix. A gametest for the migration.
+- Dev docs and Javadoc that name a grade; the site (rename `features/water-purity.md` to "Water
+  quality", keeping its URL), store pages, screenshots; CHANGELOG ("Clean is now called Clear").
 
-Mirror step 1: the table, no campfire, the flask's times, the canteen's recipes.
+### 2. Cap heat at Clear
 
-### 3. Cold Sweat (`src/main/coldsweat`)
+- A constant `WaterPurity.BOILED = 2`. `WaterskinItem` and `HangingPotBlock` boil only below it and
+  finish at it. `DistillerWater.PURE` stays `MAX`.
+- Cold Sweat (`coldsweat`, `coldsweatforge`): `BoiledWater` stops at Clear for the Boiler and the
+  campfire skin.
+- `ThirstApi`: check what it documents as boiling's result; bump `API_VERSION` only if a method is
+  added.
 
-Cold Sweat's Waterskin reaches Pure today three ways; all three stop, so it follows the same rule as
-every other container.
+### 3. Config
 
-| Cold Sweat's Waterskin | Now | After |
-|---|---|---|
-| Furnace / smoker, Dirty | Clean | Clean |
-| Furnace / smoker, Murky | Pure | **Clean** |
-| Furnace / smoker, Clean | Pure | **no recipe** |
-| Campfire (Cold Sweat's own warming recipe) | Dirty → Clean, Murky → Pure | **grade unchanged**, only warmed |
+- `enableFurnaceBoiling`, off; a toggle in the Water page's `water.collected` section, lang keys.
+- `quenchedPercent` default `{0, 50, 85, 100}`; `SicknessEffect.defaults()` for Clear as in Balance.
+- `thirstwastaken2:furnace_boiling` resource condition per loader, next to `ItemEnabledCondition`.
+- Existing configs keep their numbers; the CHANGELOG says to reset the Water and sickness pages.
 
-- The hand-written `src/main/coldsweat/resources/data/thirstwastaken2/recipe/cold_sweat/
-  purify_waterskin_{0,1,2}_{smelting,smoking}.json`: delete the `_2` pair, and the `_1` pair's
-  result `water_purity` becomes 2 instead of 3.
-- `CampfireWaterskinMixin` wraps the drop of Cold Sweat's campfire recipe and stamps the skin with
-  `BoiledWater`'s campfire rule. With no campfire rule left, it copies the input's grade and salt onto
-  the output unchanged. It must still stamp: Cold Sweat's recipe hands back a new skin, which would
-  otherwise lose its grade and fall to `defaultPurity`.
-- Update `BoiledWater`, `src/main/coldsweat/AGENTS.md` ("Campfire, furnace, smoker" and the in-game
-  results list) and the gametest or agent script that checks skins off a campfire.
-- The Boiler keeps going to Pure.
-- Sophisticated's Smoking upgrades use smoking recipes and follow on their own.
+### 4. Waterskin
 
-### 4. Terracotta Water Bowl stacks to 4
+`CAPACITY` 5, `ThirstModelProvider.waterskinVariants()` maps five fills onto four sprites.
 
-- `ThirstItems.TERRACOTTA_WATER_BOWL`: `stacksTo(1)` becomes `stacksTo(4)`, and rewrite the comment
-  above it (it says a filled bowl does not stack, and why) with the numbers from "The terracotta
-  bowl" above.
-- Drinking one from a stack must leave the rest and hand the empty bowl back into the inventory, on
-  every version. 1.21.1's `DrinkItem.finishUsingItem` goes through `ItemUtils.createFilledResult`,
-  which does; check the newer versions' consumable remainder does the same.
-- Bowls of different grades must not merge. They carry `water_purity`, so they will not; confirm
-  filling a bowl on top of a partial stack from a source of another grade.
-- Everywhere that fills a bowl (water source, cauldron, hanging pot, the bucket recipe) hands one
-  filled bowl per empty one, as now; check none of them assumes a stack of one.
+### 5. Datagen (`ThirstRecipeProvider`, and `LegacyRecipeProvider` for 1.20.1)
 
-### 5. Empty terracotta bowls in village chests
+- `PURIFY_TABLE` becomes `{2, 2}` (Dirty and Murky only), every recipe gated on `furnace_boiling`.
+- Remove campfire recipes (`Heat.CAMPFIRE`).
+- Iron Flask `servings × 4 s`; new Copper Canteen recipes `servings × 3 s`, one method for both.
+- `FarmersDelightRecipeProvider` gives Clear.
+- Bowl recipe gives Dirty (`bowlResult(0)`).
+- `boil_water`'s new criterion in `ThirstAdvancementProvider` and `LegacyAdvancementProvider`.
 
-- `compat/LootIntegration`: a pool on the five village house chests (plains, desert, savanna, snowy,
-  taiga), empty `TERRACOTTA_BOWL`, 1 to 4, in about a third of chests (to tune).
-- Skip the pool while the config switches the terracotta bowl off (`ThirstConfig.isItemEnabled`), as
-  the creative tab does.
-- `LootGameTest` and `compat/AGENTS.md` ("One extra pool is appended to five vanilla chest tables").
+### 6. Cold Sweat
 
-### 6. The bowl recipe and Clean's sickness
+Delete the six `purify_waterskin_*` furnace and smoker recipes in `src/main/coldsweat`; update its
+`AGENTS.md` and the checks that expect Pure from a skin or the Boiler.
 
-- `ThirstRecipeProvider`: `bowlResult(2)` becomes `bowlResult(0)` in the `terracotta_water_bowl`
-  recipe (both branches), and the comment above it says why. Same in `LegacyRecipeProvider`.
-- `SicknessEffect.defaults()`: the Clean line's `upset(...)` and `poison(...)` chances on easy,
-  normal and hard to the tables above.
-- A fresh config takes the new defaults, but an existing `thirstwastaken2.json` keeps the numbers it
-  wrote. Check whether `ThirstConfig` migrates untouched defaults; if not, say so in the CHANGELOG
-  (reset the sickness page to get them).
-- `WATER-SICKNESS.md`'s chance table is already out of date against the code (it shows Normal Clean
-  as 0 / 2 / 10); rewrite it from `defaults()`.
+### 7. Bowls
 
-### 7. Regenerate and test
+- `TERRACOTTA_WATER_BOWL` `stacksTo(4)`. Drinking from a stack returns one empty bowl; bowls of
+  different grades do not merge; every filler handles a stack.
+- A loot pool of 1 to 4 empty bowls in village house chests, skipped while the bowl is disabled.
+  `LootGameTest`.
 
-- `runDatagen` on a Fabric node, then `checkDatagen` and `checkNeoForgeResources`. The
-  `purify_water_*_campfire` files and the `*_2_*` files disappear from every `src/main/generated/`.
-- Gametests: `PurificationGameTest` (Murky → Clean, no Clean → Pure, a bottle does not go into a
-  campfire slot), `CanteenGameTest` (the canteen smelts, both vessels stop at Clean, the flask's
-  time follows its fill), the advancement test if it names a campfire recipe, a stack of four
-  bowls drunk one at a time, a village chest rolling bowls, and the bowl recipe giving Dirty.
-- Nodes to run: `26.3.x`, `1.21.1-neoforge` (Cold Sweat, Farmer's Delight), `1.20.1` (legacy
-  datagen). Not all ten.
+### 8. Regenerate and test
 
-### 8. Docs
+- `runDatagen`, `checkDatagen`, `checkNeoForgeResources`, `checkDataConditions`.
+- Gametests, switch off: no furnace water recipe; vessels and pots end Clear and leave Pure alone; the
+  distiller gives Pure; Clear quenches 85% and never poisons; 5-serving waterskin; `boil_water` from a
+  canteen. Switch on: Murky to Clear, canteen and flask timed by fill. Cold Sweat; bowl stacks, loot
+  and recipe.
+- Nodes: `26.3.x`, `1.21.1-neoforge`, `1.20.1`, `1.20.1-forge`.
 
-- `WATER-REFERENCE.md`: the purification table, "Where Pure water comes from today", and the sickness
-  tables for Clean. Drop its "describes the game as the code stands today" warning about this plan.
-- Player site: `docs/docs/features/water-purity.md` (lines about a campfire's thirty seconds and the
-  flask in a furnace), `drinking.md` (bowls stack to 4, found in village chests),
-  `integrations/cold-sweat.md`.
-- CHANGELOG through the `write-docs` skill, as a balance change: water already Pure stays Pure.
+### 9. Docs
 
-## Known limit
+`WATER-REFERENCE.md` (then drop its "today" warning), `WATER-SICKNESS.md`, `DISTILLATION-PLAN.md`, the
+site's water, drinking, Cold Sweat, Farmer's Delight and configuration pages, and the CHANGELOG as a
+balance change.
 
-Recipe times are written at datagen from the default `copperCanteenBoilSeconds` (3) and
-`ironFlaskBoilSeconds` (4). Changing those in the config changes boiling in hand only, not the
-furnace. Making the furnace follow them needs a mixin on the furnace's cooking time; not planned.
+## Open
 
-## Still open
-
-- **A config switch letting plain heat reach Pure**, for modpacks that want the old way. Possible with
-  a resource condition like `itemEnabled`, at the cost of a second set of recipes, a widget and lang
-  keys in all nine files. Leaning no.
-- **Smoker for the vessels?** Not planned; the smoker stays for bottles, bowls and buckets.
+- **Is the start too hard?** Before copper there is no way to treat water. If it proves harsh, a
+  terracotta pot on a campfire (to Clear) could fill the gap.
