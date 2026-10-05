@@ -110,6 +110,7 @@ never see it.
 | Every `PushReaction` constant was renamed; `DESTROY` is `POPPED` | replacement |
 | `LootPoolSingletonContainer` split into three classes, of which the entry builders are typed on `UniformContainerBase` | replacement |
 | Loot number providers split into an int and a float family, each behind a `Holder`, so a pool's rolls and a count are built differently | `Vanilla.lootPool`, `Vanilla.setCount` |
+| The block state loot condition is `MatchBlock`, taking a block lookup and writing `match_block`; it was `LootItemBlockStatePropertyCondition` | `ThirstBlockLootProvider.boilerHalf`, for the distiller's drop |
 | `Inventory#placeItemBackInInventory` asks whether the client predicted the call | `Vanilla.placeItemBackInInventory` |
 | Recipes became a registry: a recipe provider bootstraps them alongside their unlock advancements, and the criteria that name a recipe name a holder rather than a key | `ThirstRecipeProvider`, and `RecipeKeys` for the two providers outside that registry set |
 | The advancement builder's `display` split in two, and only `rootDisplay` still takes the tab background | `ThirstAdvancementProvider`, at both call sites. Not a replacement: `display` is still the name a child calls on 26.3, so a rule rewriting it would be reversed onto those too |
@@ -121,6 +122,7 @@ never see it.
 | `MouseHandler#onMove` takes two more arguments with SDL | none: the agent client's `MouseMoveMixin` matches it by name and takes none of them |
 | A gametest's `TestData` names the dimension it runs in | NeoForge `ThirstWasTaken2GameTests` |
 | `ResourceManager#listResources` filters with a `ResourceManager.Selector` rather than a `Predicate` | none needed: `DataPackDrinks` lists its files through `FileToIdConverter#listMatchingResources`, the same on every version |
+| Furnace fuel is the item's cooking fuel component, its burn time resolved in a loot context that names the block entity as the container at work; the level's fuel values are gone | `Vanilla.burnTime`, which takes a block entity that is a container for it; `Vanilla.isFuel` asks whether the item has the component |
 
 Result: 26.3 writes its recipe unlocks with a `recipes` key holding the recipe id, where earlier
 versions write `recipe`. Nothing else in the generated files moved.
@@ -135,12 +137,15 @@ versions write `recipe`. Nothing else in the generated files moved.
 | The main render target moved from the client onto its game renderer | `AgentClientVanilla.mainTarget`, for `screenshot` and `readFrame` |
 | Entity type constants moved from `EntityType` to `EntityTypes` | `TestFixtures.mountType`, `piglinType` |
 | Advancement trigger classes moved into `triggers` | replacement |
+| `StatePropertiesPredicate` moved into `predicates` (it was in `criterion`, `critereon` before 1.21.11) | `ThirstBlockLootProvider.boilerHalf`, one branch per package, since only datagen names it |
 | Serene Seasons' API says whether a dimension has seasons (`SeasonHelper.hasSeasons`); its builds for older versions keep that only in their internal config, whose class extends GlitchCore's and Night Config's, so the loader scripts compile against those two as well | `SeasonsPlatform.hasSeasons` in Serene Seasons' `platform/` |
 
 ### 26.1 (affects 1.21.11, 1.21.1)
 
 | Difference | Code |
 |---|---|
+| An item's crafting remainder is a template, which may be missing | `Vanilla.craftingRemainder`, for the distiller's lava bucket |
+| A container screen extracts its background in `extractBackground` and its tooltips in `extractTooltip`, takes its size in the constructor, and draws the hovered slot's tooltip itself; before, `renderBg`, two size fields, and `render` calling `renderTooltip` | `client/platform/MachineScreen`, which `DistillerScreen` extends |
 | The cauldron interaction maps became `CauldronInteractions`' dispatchers, asked with the stack and answering a do-nothing default; before, `CauldronInteraction`'s maps by item (`InteractionMap.map()`, a plain map on 1.20.1) | `Vanilla.cauldronHasInteraction` |
 | A player's action bar message has its own method, `sendOverlayMessage` | `Vanilla.sendOverlayMessage`, which the Kaleidoscope Cookery Teapot's sea water refusal calls |
 | The HUD draw target was renamed `GuiGraphicsExtractor` | replacement |
@@ -192,6 +197,7 @@ already has by default. The stack the furnace hands out is the same; see
 | A block entity saves and loads through `ValueOutput` / `ValueInput` | `StockpotBlockEntityMixin`, `TeapotBlockEntityMixin` (Kaleidoscope Cookery) |
 | Fabric API gained the HUD element and status bar height registries | `ClientLoader.addRightStatusBar`; on 1.21.1 `GuiMixin` draws the bar after the food bar and moves the air bubbles up |
 | Fabric's block render layer map moved into its rendering module and takes a chunk section layer | Fabric `ClientLoader.renderCutout` |
+| A tooltip is queued for the end of the frame (`setComponentTooltipForNextFrame`) where it was drawn on the spot | `ClientVanilla.tooltip` |
 | Saving and loading an entity take a `ValueOutput` / `ValueInput` rather than a `CompoundTag` | `TestFixtures.savePlayer`, `loadPlayer` |
 
 ### 1.21.5 (affects 1.21.1)
@@ -205,6 +211,8 @@ already has by default. The stack the furnace hands out is the same; see
 | Blockstate generators hand over a parsed definition rather than JSON | `HangingPotModels` |
 | Tests register through the test function registry, and the server writes its own JUnit report with `--report` | NeoForge `ThirstWasTaken2GameTests` and `build.neoforge.gradle.kts`; before it the harness registers and reports itself |
 | A `CompoundTag`'s getters answer with an `Optional` or a fallback | `Vanilla.getString`, `getInt`, which `DrinkingUpgradeContainer.handlePacket` (Sophisticated) calls |
+| A block entity saves through `ValueOutput` and loads through `ValueInput`, and `ContainerHelper` takes those | `platform/SavedBlockEntity` |
+| A block entity that is a container spills its contents itself when removed; before, the block did it in `onRemove` | `SupportedBlock`, which does it before 1.21.5 for any such block entity |
 
 ### 1.21.4 (affects 1.21.1)
 
@@ -236,6 +244,9 @@ already has by default. The stack the furnace hands out is the same; see
 | The shapeless recipe builder can give its result components | `ThirstRecipeProvider`; on 1.21.1 the filled-bowl recipe is written out by hand |
 | Use animations became `ItemUseAnimation` | `Vanilla.isDrinkAnimation`, which `DrinkingUpgradeWrapper.canFilter` calls; `AlchemyUpgradeWrapperMixin` (Sophisticated, NeoForge only) |
 | A recipe names an ingredient by id or `#tag` rather than as an object | the Drinking upgrade's recipes, one copy per generation in `src/main/sophisticated-fluidhandler` and `-transfer` |
+| A block entity type is built by a public constructor where a builder did | `Vanilla.blockEntityType`; the constructor and its supplier are widened on Fabric (below) |
+| Furnace fuel is the level's fuel values, where it was a static table | `Vanilla.burnTime`, `Vanilla.isFuel` |
+| An item's crafting remainder is a stack, where it was an item | `Vanilla.craftingRemainder` |
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
 
@@ -257,6 +268,9 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | `ResourceLocation` has public constructors instead of `fromNamespaceAndPath`, `withDefaultNamespace` and `parse` | `replacements` in `stonecutter.gradle.kts` (below 1.21) |
 | No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
 | Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
+| A container screen does not dim the world behind itself; `renderBackground` is asked to | `client/platform/MachineScreen` |
+| `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
+| A block entity saves to a tag alone and loads through `load`, and its update tag takes no registries | `platform/SavedBlockEntity`; `MachineSeamsGameTest` saves and loads one the way the chunk does |
 | `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |
 | Hover text is handed the level; `FoodData` adds food through `eat(int, float)`; the cauldron is told its weather by a predicate | `ItemStackMixin`, `FoodDataMixin`, `BlocksMixin` |
 | No GUI sprite atlas: vanilla's HUD icons are regions of `textures/gui/icons.png` | `ClientVanilla.blitSprite` knows the food icons the config preview draws; the dev `GuiDrawMixin` records food and air from `blit` |
@@ -316,6 +330,12 @@ it makes no difference to any jar.
 - **A resource condition's `test`** takes a `RegistryOps.RegistryInfoLookup` from 1.21.2 and a
   `HolderLookup.Provider` on 1.21.1. `platform/ItemEnabledCondition` in `src/main/fabric` forks for it
   (written `>=1.21.2`); it reads neither. `FabricRecipeProvider.withConditions` is the same on every node.
+- **What Fabric API opens to itself only**: the menu type's constructor and supplier, the block entity
+  type's supplier and, from 1.21.2, its constructor, and `MenuScreens.register` with its constructor
+  interface. NeoForge's and Forge's access transformers make all of them public, so common code calls
+  them as they are. On Fabric the mod's own access widener opens them, written for each node by
+  build-logic's `AccessWidener.kt`: an access widener in `named` names before 26.1, a class tweaker in
+  `official` names from it, and the block entity type's constructor only where it takes two arguments.
 
 ## Differences in Forge 47 rather than Minecraft
 

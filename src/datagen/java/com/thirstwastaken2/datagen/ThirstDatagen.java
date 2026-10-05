@@ -35,6 +35,7 @@ public final class ThirstDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(ThirstDamageTypeTagProvider::new);
         pack.addProvider(ThirstBiomeTagProvider::new);
         pack.addProvider(ThirstFluidTagProvider::new);
+        pack.addProvider(ThirstItemTagProvider::new);
         pack.addProvider(ThirstBlockLootProvider::new);
         pack.addProvider(ThirstModelProvider::new);
         // Item model definitions arrived in 1.21.4, and the provider for them with it.

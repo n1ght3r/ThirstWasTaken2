@@ -1,0 +1,244 @@
+{
+  "variants": {
+    "facing=east,part=boiler,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 90
+    },
+    "facing=east,part=boiler,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 90
+    },
+    "facing=east,part=tub,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 90
+    },
+    "facing=north,part=boiler,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped"
+    },
+    "facing=north,part=boiler,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped"
+    },
+    "facing=north,part=boiler,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped"
+    },
+    "facing=north,part=boiler,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped"
+    },
+    "facing=north,part=boiler,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold"
+    },
+    "facing=north,part=boiler,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler"
+    },
+    "facing=north,part=boiler,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold"
+    },
+    "facing=north,part=boiler,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler"
+    },
+    "facing=north,part=tub,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty"
+    },
+    "facing=north,part=tub,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub_empty"
+    },
+    "facing=north,part=tub,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub"
+    },
+    "facing=north,part=tub,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub"
+    },
+    "facing=north,part=tub,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty"
+    },
+    "facing=north,part=tub,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty"
+    },
+    "facing=north,part=tub,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub"
+    },
+    "facing=north,part=tub,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub"
+    },
+    "facing=south,part=boiler,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 180
+    },
+    "facing=south,part=boiler,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 180
+    },
+    "facing=south,part=tub,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 180
+    },
+    "facing=west,part=boiler,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_unpiped",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler_cold",
+      "y": 270
+    },
+    "facing=west,part=boiler,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_boiler",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=false,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=false,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub_empty",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=false,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=false,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/cooling_tub",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=true,cooled=false,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=true,cooled=false,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub_empty",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=true,cooled=true,lit=false": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 270
+    },
+    "facing=west,part=tub,piped=true,cooled=true,lit=true": {
+      "model": "thirstwastaken2:block/copper_distiller_tub",
+      "y": 270
+    }
+  }
+}

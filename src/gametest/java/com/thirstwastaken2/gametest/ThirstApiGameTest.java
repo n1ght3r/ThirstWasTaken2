@@ -143,6 +143,9 @@ public final class ThirstApiGameTest {
             config.drinks.remove("farmersdelight:milk_bottle");
             config.foods.remove("farmersdelight:bone_broth");
             config.drinkTagValue = new int[] {3};
+            config.distillerTankServings = 1;
+            config.distillerServingSeconds = 0;
+            config.distillerSaltItem = null;
         }, () -> {
             ThirstConfig config = ThirstConfig.get();
             TestFixtures.check(helper, config.defaultPurity == 3, "default_purity should clamp to 3, got " + config.defaultPurity);
@@ -156,6 +159,9 @@ public final class ThirstApiGameTest {
                     "a config file written before the added Farmer's Delight entries should have them merged back in");
             TestFixtures.check(helper, config.drinkTagValue.length == 2,
                     "a drink tag value of the wrong length should be reset, got " + Arrays.toString(config.drinkTagValue));
+            TestFixtures.check(helper, config.distillerTankServings == 3 && config.distillerServingSeconds == 1
+                            && "".equals(config.distillerSaltItem),
+                    "a distiller tank should hold at least a bucket, a serving take at least a second, and a missing salt pin be empty");
         });
         helper.succeed();
     }

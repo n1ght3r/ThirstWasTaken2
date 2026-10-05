@@ -1,5 +1,9 @@
 package com.thirstwastaken2.platform;
 
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.Container;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -65,6 +69,19 @@ public final class Loader {
      */
     public static void onRegister(ResourceKey<? extends Registry<?>> registry, Runnable registration) {
         registration.run();
+    }
+
+    /**
+     * How long {@code fuel} burns in a furnace, in ticks; 0 for anything that is not fuel. Fabric's
+     * fuel registry feeds vanilla's own table, so vanilla's answer counts modded fuel too.
+     */
+    public static <T extends BlockEntity & Container> int burnTime(T entity, ItemStack fuel) {
+        return Vanilla.burnTime(entity, fuel);
+    }
+
+    /** Whether {@code fuel} burns in a furnace, asked without one, as a slot on the client asks. */
+    public static boolean isFuel(Level level, ItemStack fuel) {
+        return Vanilla.isFuel(level, fuel);
     }
 
     /**

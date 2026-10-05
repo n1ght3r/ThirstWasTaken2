@@ -219,6 +219,17 @@ public final class ClientVanilla {
     }
 
     /**
+     * Shows {@code lines} as a tooltip at the mouse. From 1.21.6 a tooltip is queued for the end of the
+     * frame; before it is drawn on the spot, so call this after everything it must cover.
+     */
+    public static void tooltip(GuiGraphicsExtractor graphics, Font font, java.util.List<Component> lines, int x, int y) {
+        //? if >=1.21.6 {
+        graphics.setComponentTooltipForNextFrame(font, lines, x, y);
+        //?} else
+        //graphics.renderComponentTooltip(font, lines, x, y);
+    }
+
+    /**
      * Opens a folder or file in the player's file manager. 26.3 moved this off {@code Util.OS}, which
      * took a {@code File} before 1.20.5.
      */

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "thirstwastaken2:block/distiller_boiler",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "thirstwastaken2:block/distiller_boiler"
+    },
+    "facing=south": {
+      "model": "thirstwastaken2:block/distiller_boiler",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "thirstwastaken2:block/distiller_boiler",
+      "y": 270
+    }
+  }
+}

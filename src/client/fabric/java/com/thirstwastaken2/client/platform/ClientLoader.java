@@ -1,5 +1,10 @@
 package com.thirstwastaken2.client.platform;
 
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -44,6 +49,16 @@ public final class ClientLoader {
         // rows at the point vanilla is about to draw the air bubbles, and moves the bubbles up.
         RIGHT_STATUS_BARS.add(new RightStatusBar(height, visible, renderer));
         *///?}
+    }
+
+    /**
+     * Opens {@code factory}'s screen on the client whenever the server opens a menu of {@code type}.
+     * Vanilla's {@code MenuScreens.register} is private; the mod's access widener opens it. Fabric
+     * runs client initialization after the menus are registered, so the type is asked for here.
+     */
+    public static <M extends AbstractContainerMenu, S extends Screen & MenuAccess<M>> void registerScreen(
+            Supplier<MenuType<M>> type, ScreenFactory<M, S> factory) {
+        MenuScreens.register(type.get(), factory::create);
     }
 
     /**

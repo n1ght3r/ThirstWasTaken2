@@ -42,7 +42,10 @@ public final class ModItemsGameTest {
             new Switch("enableCopperHangingPot", (config, on) -> config.enableCopperHangingPot = on,
                     List.of("recipe/copper_hanging_pot")),
             new Switch("enableIronHangingPot", (config, on) -> config.enableIronHangingPot = on,
-                    List.of("recipe/iron_hanging_pot")));
+                    List.of("recipe/iron_hanging_pot")),
+            new Switch("enableCopperDistiller", (config, on) -> config.enableCopperDistiller = on, List.of(
+                    "recipe/copper_distiller", "recipe/copper_pipe", "recipe/distiller_boiler", "recipe/cooling_tub",
+                    "recipe/brick_firebox", "advancement/recipes/misc/copper_distiller")));
 
     /** Recipes for vanilla containers, which no switch touches. */
     private static final List<String> UNSWITCHED = List.of(

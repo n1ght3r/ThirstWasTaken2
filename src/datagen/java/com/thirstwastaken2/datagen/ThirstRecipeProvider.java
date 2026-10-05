@@ -167,6 +167,10 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         private ShapedRecipeBuilder shaped(ItemLike result, int count) {
             return ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, result, count);
         }
+
+        private ShapelessRecipeBuilder shapeless(ItemLike result) {
+            return ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, result);
+        }
     //?} elif >=1.21.2 {
     /*static final class Recipes extends RecipeProvider {
         private final HolderGetter<Item> items;
@@ -181,6 +185,10 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         private ShapedRecipeBuilder shaped(ItemLike result, int count) {
             return ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, result, count);
         }
+
+        private ShapelessRecipeBuilder shapeless(ItemLike result) {
+            return ShapelessRecipeBuilder.shapeless(items, RecipeCategory.MISC, result);
+        }
     *///?} else {
     /*static final class Recipes {
         private final RecipeOutput output;
@@ -193,6 +201,10 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
 
         private ShapedRecipeBuilder shaped(ItemLike result, int count) {
             return ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count);
+        }
+
+        private ShapelessRecipeBuilder shapeless(ItemLike result) {
+            return ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result);
         }
     *///?}
 
@@ -269,6 +281,56 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .define('I', IRON_INGOTS)
                     .unlockedBy("has_iron_ingot", has(IRON_INGOTS))
                     .save(enabled(ThirstItems.IRON_FLASK), recipe("iron_flask"));
+
+            // The distiller is assembled from four parts, each one piece of the machine, so building one
+            // is a small project rather than one recipe. The pipe starts the chain and unlocks the rest.
+            // A single row of copper, clear of the U the pots, canteen and flask are made in.
+            shaped(ThirstItems.COPPER_PIPE, 4)
+                    .pattern("CCC")
+                    .define('C', COPPER_INGOTS)
+                    .unlockedBy("has_copper_ingot", has(COPPER_INGOTS))
+                    .save(enabled(ThirstItems.COPPER_PIPE), recipe("copper_pipe"));
+
+            // The copper hanging pot, closed up under a pipe: the boiler is the pot grown up.
+            shaped(ThirstItems.DISTILLER_BOILER, 1)
+                    .pattern(" P ")
+                    .pattern("CHC")
+                    .define('P', ThirstItems.COPPER_PIPE)
+                    .define('C', COPPER_INGOTS)
+                    .define('H', ThirstItems.COPPER_HANGING_POT)
+                    .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                    .save(enabled(ThirstItems.DISTILLER_BOILER), recipe("distiller_boiler"));
+
+            // The coil wound round a barrel, and the cauldron is the basin under the tap.
+            shaped(ThirstItems.COOLING_TUB, 1)
+                    .pattern("PPP")
+                    .pattern("PBP")
+                    .pattern(" U ")
+                    .define('P', ThirstItems.COPPER_PIPE)
+                    .define('B', Items.BARREL)
+                    .define('U', Items.CAULDRON)
+                    .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                    .save(enabled(ThirstItems.COOLING_TUB), recipe("cooling_tub"));
+
+            // Bricks round a campfire under a stone ledge, as the model draws it.
+            shaped(ThirstItems.BRICK_FIREBOX, 1)
+                    .pattern("SSS")
+                    .pattern("XFX")
+                    .pattern("XXX")
+                    .define('S', Items.SMOOTH_STONE_SLAB)
+                    .define('X', Items.BRICKS)
+                    .define('F', Items.CAMPFIRE)
+                    .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
+                    .save(enabled(ThirstItems.BRICK_FIREBOX), recipe("brick_firebox"));
+
+            // The four parts, and a pipe for the swan neck between boiler and tub.
+            shapeless(ThirstItems.COPPER_DISTILLER)
+                    .requires(ThirstItems.BRICK_FIREBOX)
+                    .requires(ThirstItems.DISTILLER_BOILER)
+                    .requires(ThirstItems.COOLING_TUB)
+                    .requires(ThirstItems.COPPER_PIPE)
+                    .unlockedBy("has_distiller_boiler", has(ThirstItems.DISTILLER_BOILER))
+                    .save(enabled(ThirstItems.COPPER_DISTILLER), recipe("copper_distiller"));
 
             // A bucket of fresh water poured into a fired bowl. The result is graded 2 rather than
             // sampled, because the bucket's own grade is gone by the time a recipe sees it.

@@ -1,5 +1,6 @@
 import com.thirstwastaken2.buildlogic.Loader
 import com.thirstwastaken2.buildlogic.OptionalRunMods
+import com.thirstwastaken2.buildlogic.fabricAccessWidener
 import com.thirstwastaken2.buildlogic.flightRecorder
 import com.thirstwastaken2.buildlogic.integrations
 import com.thirstwastaken2.buildlogic.integrationsFor
@@ -178,6 +179,21 @@ sourceSets.named("client") {
     java.srcDir("src/client/$loader/java")
     resources.srcDir("src/client/$loader/resources")
 }
+
+/**
+ * The mod's access widener, written for this node as it is configured: what Fabric API opens only to
+ * itself and NeoForge and Forge already make public, such as the menu type's constructor. Its namespace
+ * and one of its entries depend on the Minecraft version; see build-logic's AccessWidener.kt. The
+ * manifest names it, and Loom applies it to the game the mod compiles against.
+ */
+val accessWidener = layout.buildDirectory.file("generated/accesswidener/thirstwastaken2.accesswidener").get().asFile
+accessWidener.parentFile.mkdirs()
+accessWidener.writeText(fabricAccessWidener(
+    unobfuscated = sc.current.parsed >= "26.1",
+    blockEntityTypeConstructor = sc.current.parsed >= "1.21.2",
+))
+sourceSets.main { resources.srcDir(accessWidener.parentFile) }
+loom { accessWidenerPath = accessWidener }
 /**
  * Player data sync and clientbound payloads, one directory per generation of Fabric's networking:
  * payload types and attachments that sync themselves from 1.20.5, plain channels before it. Each holds

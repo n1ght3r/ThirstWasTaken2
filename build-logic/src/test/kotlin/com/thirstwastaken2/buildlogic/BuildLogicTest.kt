@@ -147,4 +147,16 @@ class BuildLogicTest {
         assertEquals(listOf("jade", "thirstwastaken2:createfly", "thirstwastaken2:createfly_client", "thirstwastaken2:integration"),
             entrypoints.keys.toList())
     }
+
+    @Test
+    fun theAccessWidenerFollowsTheNamespaceAndTheBlockEntityConstructor() {
+        val old = fabricAccessWidener(unobfuscated = false, blockEntityTypeConstructor = false).lines()
+        assertEquals("accessWidener\tv2\tnamed", old.first())
+        assertFalse(old.any { it.contains("BlockEntityType\t<init>") })
+        val new = fabricAccessWidener(unobfuscated = true, blockEntityTypeConstructor = true).lines()
+        assertEquals("classTweaker\tv1\tofficial", new.first())
+        assertTrue(new.any { it.contains("BlockEntityType\t<init>") })
+        // Every entry is one of the three accesses, a kind and a class, then a name and descriptor.
+        assertTrue(new.drop(1).filter { it.isNotEmpty() }.all { it.startsWith("accessible\t") && it.split('\t').size in setOf(3, 5) })
+    }
 }

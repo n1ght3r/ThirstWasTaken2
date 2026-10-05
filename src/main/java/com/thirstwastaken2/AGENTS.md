@@ -18,6 +18,12 @@ thirst, and the client only receives it through the `PlayerData` sync.
 | Bowls, waterskin, copper canteen, iron flask, creative tab | `item/` (the three carried containers are one class, `WaterskinItem`) |
 | The mod's own mob effects (Parched) | `effect/ThirstEffects`; what they do lives where they matter, e.g. Parched's drain in `ThirstManager.tickPlayer` |
 | The copper and iron hanging pots: capacity, boiling, filling and drawing | `block/` |
+| The copper distiller, a two-block block placed and broken whole like a bed | `block/DistillerBlock`; its models from `tools/distiller/generate_distiller_model.py`; checked in a client by `tools/agent/gameplay/distiller.jsonl` |
+| The distiller at work: tanks, fire, distilling to Pure, the slots and hopper faces, the right-click pour and draw | `block/DistillerBlockEntity` on the boiler half, `block/DistillerWater` for which containers it takes and fills, `block/DistillerInteractions.useMachine`. See `docs/dev/mechanics/DISTILLATION-PLAN.md` |
+| The distiller's fire drawn, lit and smoking only while fuel burns | the boiler half's `lit` property, set by `DistillerBlockEntity`; `DistillerBlock.burning` for light and smoke; the cold model from the same generator |
+| The salt sea water leaves, only when another mod has salt | `block/DistillerSalt` over the `thirstwastaken2:distiller_salt` item tag (`ThirstItemTagProvider`, optional entries only) and `ThirstConfig.distillerSaltItem` |
+| The distiller's four parts (pipe, boiler, cooling tub, brick firebox) under one Mod Items switch. Firebox, boiler and tub are blocks too; built in the world, a boiler on a firebox merges into an unpiped boiler half, and the pipe joins it to the tub beside it | `block/DistillerPartBlock`, `block/CoolingTubBlock`, `item/DistillerBoilerItem`, `item/CopperPipeItem`, `config/ThirstConfig.enableCopperDistiller`; models from the same generator, the pipe a sprite from `generate_distiller_sprites.py` |
+| The cooling tub's coolant, poured once from any water container, alone or in the machine | `block/DistillerInteractions`, the `cooled` property |
 | Anything about water cleanliness | `purity/` (has its own AGENTS.md) |
 | A vanilla behaviour hook | `mixin/` (has its own AGENTS.md) |
 | Loot, optional mod integrations | `compat/` (has its own AGENTS.md) |
@@ -60,7 +66,8 @@ Events registered there, in registration order per event:
 - `Loader.onUseItem` → `WaterInteractions.fillFromWater`.
 - `Loader.onRegisterCommands` → `ThirstCommands.register`.
 - `Loader.onTagsLoaded` → `ThirstApi.clearCache`, because an item's value can come from the `c:drinks`
-  tag and tags are rebound on every reload and server join.
+  tag and tags are rebound on every reload and server join; and → `DistillerSalt.clearCache`, for the
+  distiller's salt comes from a tag too.
 - `Loader.onServerDataReload` → `DataPackDrinks.reload`, which parses the data pack files and drops the
   `ThirstApi` cache itself when the values changed. `DataPackDrinks.registerPayload` declares
   `DrinkValuesPayload` through `Loader.clientboundPayload`, received by `DataPackDrinks.receive`, and `Loader.onDataPackSync` →

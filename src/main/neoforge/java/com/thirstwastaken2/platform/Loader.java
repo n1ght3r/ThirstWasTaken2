@@ -1,5 +1,9 @@
 package com.thirstwastaken2.platform;
 
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.Container;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import com.thirstwastaken2.ThirstWasTaken2;
@@ -110,6 +114,26 @@ public final class Loader {
             listening = true;
         }
         PENDING.computeIfAbsent(registry, key -> new ArrayList<>()).add(registration);
+    }
+
+    /**
+     * How long {@code fuel} burns in a furnace, in ticks; 0 for anything that is not fuel. NeoForge
+     * 1.21.1 keeps fuel in a data map that only its own stack method reads; later NeoForge feeds that
+     * data map into vanilla's fuel values, so vanilla's answer counts modded fuel there.
+     */
+    public static <T extends BlockEntity & Container> int burnTime(T entity, ItemStack fuel) {
+        //? if >1.21.1 {
+        return Vanilla.burnTime(entity, fuel);
+        //?} else
+        //return fuel.getBurnTime(net.minecraft.world.item.crafting.RecipeType.SMELTING);
+    }
+
+    /** Whether {@code fuel} burns in a furnace, asked without one, as a slot on the client asks. */
+    public static boolean isFuel(Level level, ItemStack fuel) {
+        //? if >1.21.1 {
+        return Vanilla.isFuel(level, fuel);
+        //?} else
+        //return fuel.getBurnTime(net.minecraft.world.item.crafting.RecipeType.SMELTING) > 0;
     }
 
     /**

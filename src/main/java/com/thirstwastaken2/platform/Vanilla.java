@@ -14,15 +14,23 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -252,6 +260,114 @@ public final class Vanilla {
         return registerItem(name, factory::apply, properties.useBlockDescriptionPrefix());
         //?} else
         //return registerItem(name, factory::apply, properties);
+    }
+
+    /**
+     * Registers a block entity type for {@code blocks} under the mod's id {@code name}. Run it from the
+     * block entity type registry's {@code Loader.onRegister}, after the blocks exist.
+     */
+    public static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(
+            String name, BiFunction<BlockPos, BlockState, T> factory, Block... blocks) {
+        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ThirstWasTaken2.id(name),
+                blockEntityType(factory, blocks));
+    }
+
+    /**
+     * A block entity type for {@code blocks}, not registered. 1.21.2 replaced the builder with a public
+     * constructor. Both take vanilla's supplier interface, which the Fabric nodes' access widener opens
+     * and NeoForge and Forge make public, as they do the constructor.
+     */
+    public static <T extends BlockEntity> BlockEntityType<T> blockEntityType(
+            BiFunction<BlockPos, BlockState, T> factory, Block... blocks) {
+        //? if >=1.21.2 {
+        return new BlockEntityType<>(factory::apply, java.util.Set.of(blocks));
+        //?} else
+        //return BlockEntityType.Builder.of(factory::apply, blocks).build(null);
+    }
+
+    /**
+     * Registers a menu type under the mod's id {@code name}, made from the window id and the player's
+     * inventory alone: whatever else the client shows comes through the menu's own data slots. Run it
+     * from the menu registry's {@code Loader.onRegister}.
+     */
+    public static <T extends AbstractContainerMenu> MenuType<T> registerMenu(
+            String name, BiFunction<Integer, Inventory, T> factory) {
+        return Registry.register(BuiltInRegistries.MENU, ThirstWasTaken2.id(name), menuType(factory));
+    }
+
+    /**
+     * A menu type, not registered. Its constructor is private in vanilla on every version; the Fabric
+     * nodes' access widener opens it, and NeoForge's and Forge's access transformers make it public.
+     */
+    public static <T extends AbstractContainerMenu> MenuType<T> menuType(BiFunction<Integer, Inventory, T> factory) {
+        return new MenuType<>(factory::apply, net.minecraft.world.flag.FeatureFlags.VANILLA_SET);
+    }
+
+    /**
+     * How long {@code fuel} burns in a furnace, in ticks, judged in {@code entity}'s level: 0 for
+     * anything that is not fuel, or with no level to ask. Before 1.21.2 a static table; then the
+     * level's fuel values; from 26.3 the item's cooking fuel component, resolved in the loot context a
+     * furnace gives it, which names the block entity as the container doing the work. On NeoForge
+     * 1.21.1 and Forge the loader has fuel of its own, so callers go through {@code Loader.burnTime}.
+     */
+    public static <T extends BlockEntity & Container> int burnTime(T entity, ItemStack fuel) {
+        Level level = entity.getLevel();
+        if (fuel.isEmpty() || level == null) return 0;
+        //? if >=26.3 {
+        if (!(level instanceof ServerLevel server)) return 0;
+        net.minecraft.world.level.storage.loot.LootContext context =
+                new net.minecraft.world.level.storage.loot.LootContext.Builder(
+                        new net.minecraft.world.level.storage.loot.LootParams.Builder(server)
+                                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_STATE,
+                                        entity.getBlockState())
+                                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.BLOCK_ENTITY,
+                                        entity)
+                                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN,
+                                        net.minecraft.world.phys.Vec3.atCenterOf(entity.getBlockPos()))
+                                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.CONTAINER,
+                                        entity)
+                                .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.CONTAINER_PROCESS))
+                        .create(java.util.Optional.empty());
+        return net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt.getFromItem(fuel,
+                net.minecraft.core.component.DataComponents.COOKING_FUEL,
+                net.minecraft.world.item.component.CookingFuel::burnTime, context, 0);
+        //?} elif >=1.21.2 {
+        /*return level.fuelValues().burnDuration(fuel);
+        *///?} else {
+        /*return net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.getFuel()
+                .getOrDefault(fuel.getItem(), 0);
+        *///?}
+    }
+
+    /**
+     * Whether {@code fuel} burns in a furnace, asked without a furnace, as a slot asks on the client:
+     * the static table before 1.21.2, the level's fuel values until 26.3, the cooking fuel component
+     * from then. Callers go through {@code Loader.isFuel}, for the same reason as {@link #burnTime}.
+     */
+    public static boolean isFuel(Level level, ItemStack fuel) {
+        //? if >=26.3 {
+        return fuel.has(net.minecraft.core.component.DataComponents.COOKING_FUEL);
+        //?} elif >=1.21.2 {
+        /*return level.fuelValues().isFuel(fuel);
+        *///?} else {
+        /*return net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.isFuel(fuel);
+        *///?}
+    }
+
+    /**
+     * What is left of {@code stack}'s item once it is used up, as a lava bucket leaves a bucket; empty for
+     * most items. Before 1.21.2 an item, then a stack, and from 26.1 a template, which may be missing.
+     */
+    public static ItemStack craftingRemainder(ItemStack stack) {
+        //? if >=26.1 {
+        net.minecraft.world.item.ItemStackTemplate remainder = stack.getItem().getCraftingRemainder();
+        return remainder == null ? ItemStack.EMPTY : remainder.create();
+        //?} elif >=1.21.2 {
+        /*return stack.getItem().getCraftingRemainder();
+        *///?} else {
+        /*Item remainder = stack.getItem().getCraftingRemainingItem();
+        return remainder == null ? ItemStack.EMPTY : new ItemStack(remainder);
+        *///?}
     }
 
     /**

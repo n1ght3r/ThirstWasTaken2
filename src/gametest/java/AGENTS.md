@@ -51,7 +51,9 @@ underscore rather than a hyphen because NeoForge mod ids cannot contain one.
 - **Water in the world comes from `TestFixtures.water`,** which makes its patch plains with `/fillbiome`
   first. Where a test lands depends on the seed and on how many tests run before it, so an unpinned
   fixture can stand in an ocean and get salt water: 1.20.1 on Forge failed four drinking and
-  filling tests that way once tests were added. A test that needs another biome sets it the same way.
+  filling tests that way once tests were added. A test that needs another biome sets it the same way,
+  5 blocks past the block on every axis: `getBiome` picks one of the eight 4x4x4 cells around a block
+  by seeded noise, so a tighter box passes or fails by where the test lands (it once read cold ocean).
 - Use survival mode for anything that fills a container. `ItemUtils.createFilledResult` behaves
   differently once the player has infinite materials.
 
@@ -153,6 +155,9 @@ cauldron bottle draw.
 | `PlayerStateGameTest` | the sprint gate, exhaustion mirroring waiting for the tick, small exhaustion being carried until it crosses a sync step, the Hunger effect cancelling out, and that riding does not dehydrate |
 | `CauldronGameTest` | the cauldron blockstate property (water cauldron only, old powder snow saves still load, a fresh cauldron is not sea water), the deferred quality transfer, and the grades rain and dripstone leave behind |
 | `HangingPotGameTest` | the copper hanging pot through the real use path: filling, a full pot, mixing grades, drawing a bottle or a waterskin, the frame following the campfire, boiling per serving, topping up, rain and the Nether; the iron pot filling and boiling the same way, and each pot's boil time |
+| `DistillerGameTest` | the copper distiller as a two-block structure (placing, a taken spot, mining either half, creative), building it in the world (a boiler merging into a firebox, the pipe joining a lined-up pair and refusing any other), what each piece drops, and the tub's coolant |
+| `MachineSeamsGameTest` | the version seams a machine stands on: the distiller's block entity type registered for it, a block entity's values and items coming back from a save as the chunk loads one, a menu type building its menu, and fuel burning as long as in a furnace through `Loader.burnTime` |
+| `DistillerMachineGameTest` | the distiller at work, ticked by hand: water poured from its slot (a bucket only when all three fit), a bucket of sea water distilled to three Pure servings and counted toward salt, no coolant or nothing to boil burning no fuel, a lit fire holding when the basin is full, the basin filling each container, each face's slots and a real hopper above the tub and below the boiler, the right-click pour and draw, breaking it spilling its slots, and the pipe starting the machine; the fire drawn and giving light only while it burns; a bucket of sea water leaving one salt, fresh water none, a full salt slot holding the sea water, and which item is the salt (the gametest mod tags sugar `thirstwastaken2:distiller_salt` for it, so the salt slot always shows here) |
 | `PurificationGameTest` | which water the furnace accepts: looted bottles yes, salt water never |
 | `EnvironmentGameTest` | the datapack damage type and its tags, and the version-forked environment call |
 | `CreativeTabGameTest` | the creative tab has the right icon and holds every item the mod adds |

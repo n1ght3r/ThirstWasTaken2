@@ -145,9 +145,10 @@ final class HangingPotModels {
     }
 
     // The blockstate generator became a pair of block and parsed definition in 1.21.5, and the
-    // definition class was replaced in 26.1. Before 1.21.5 it hands over the JSON itself.
+    // definition class was replaced in 26.1. Before 1.21.5 it hands over the JSON itself. DistillerModels
+    // hands its blockstate over through this too.
     //? if >=26.1 {
-    private static net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator blockState(Block block, JsonObject json) {
+    static net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator blockState(Block block, JsonObject json) {
         var definition = net.minecraft.client.renderer.block.dispatch.BlockStateModelDispatcher.CODEC
                 .parse(com.mojang.serialization.JsonOps.INSTANCE, json).getOrThrow();
         return new net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator() {
@@ -164,7 +165,7 @@ final class HangingPotModels {
     }
     //?}
     //? if >=1.21.5 <26.1 {
-    /*private static net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator blockState(Block block, JsonObject json) {
+    /*static net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator blockState(Block block, JsonObject json) {
         var definition = net.minecraft.client.renderer.block.model.BlockModelDefinition.CODEC
                 .parse(com.mojang.serialization.JsonOps.INSTANCE, json).getOrThrow();
         return new net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator() {
@@ -181,7 +182,7 @@ final class HangingPotModels {
     }
     *///?}
     //? if <1.21.5 {
-    /*private static net.minecraft.client.data.models.blockstates.BlockStateGenerator blockState(Block block, JsonObject json) {
+    /*static net.minecraft.client.data.models.blockstates.BlockStateGenerator blockState(Block block, JsonObject json) {
         return new net.minecraft.client.data.models.blockstates.BlockStateGenerator() {
             @Override
             public Block getBlock() {

@@ -1,0 +1,38 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:copper_distiller"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_distiller_boiler": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thirstwastaken2:distiller_boiler"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thirstwastaken2:copper_distiller"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_distiller_boiler"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thirstwastaken2:copper_distiller"
+    ]
+  }
+}

@@ -22,7 +22,9 @@ AppleSkin's own config names its classes, so that part stays client-side in
 the grade of the water under the crosshair: world water, waterlogged blocks and water cauldrons. It is
 reached only through the `jade` entrypoint in `fabric.mod.json`, which Jade resolves on the dedicated
 server too, so the plugin class itself names no client class outside `registerClient`. Jade toggles it
-under `config.jade.plugin_thirstwastaken2.water_purity`. Why client-side sampling is safe is in
+under `config.jade.plugin_thirstwastaken2.water_purity`. A second provider,
+`config.jade.plugin_thirstwastaken2.copper_distiller`, shows the copper distiller's tanks, coolant and
+salt count from its block entity, which syncs to the client only when those change. Why client-side sampling is safe is in
 [purity/AGENTS.md](../purity/AGENTS.md).
 
 A block that keeps its water somewhere common code may not name, a Supplementaries jar for instance,

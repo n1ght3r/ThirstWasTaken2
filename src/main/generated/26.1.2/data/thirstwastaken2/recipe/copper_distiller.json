@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:copper_distiller"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "thirstwastaken2:brick_firebox",
+    "thirstwastaken2:distiller_boiler",
+    "thirstwastaken2:cooling_tub",
+    "thirstwastaken2:copper_pipe"
+  ],
+  "result": {
+    "id": "thirstwastaken2:copper_distiller"
+  }
+}

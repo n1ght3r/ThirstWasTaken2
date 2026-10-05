@@ -50,6 +50,8 @@ Every setting at its default. The long lists are cut short here; see
   "ironFlaskBoilSeconds": 4,
   "copperHangingPotBoilSeconds": 4,
   "ironHangingPotBoilSeconds": 6,
+  "distillerServingSeconds": 8,
+  "distillerTankServings": 9,
   "sicknessEffects": {
     "normal": {
       "dirty": [
@@ -83,7 +85,9 @@ Every setting at its default. The long lists are cut short here; see
   "enableCopperCanteen": true,
   "enableIronFlask": true,
   "enableCopperHangingPot": true,
-  "enableIronHangingPot": true
+  "enableIronHangingPot": true,
+  "enableCopperDistiller": true,
+  "distillerSaltItem": ""
 }
 ```
 
@@ -250,6 +254,10 @@ Default `true`. The Iron Flask, and cleaning its water in a furnace.
 
 Default `true`. One switch for each hanging pot.
 
+### enableCopperDistiller
+
+Default `true`. The Copper Distiller and its four parts, together.
+
 ## Containers
 
 ### copperCanteenCapacity and ironFlaskCapacity
@@ -267,3 +275,18 @@ Default `3` and `4`. Seconds per drink over a campfire.
 ### copperHangingPotBoilSeconds and ironHangingPotBoilSeconds
 
 Default `4` and `6`. Seconds per drink in a hanging pot.
+
+### distillerServingSeconds
+
+Default `8`, from `1` to `60`. Seconds the [Copper Distiller](/docs/features/water-purity#copper-distiller)
+takes per drink while its fire burns.
+
+### distillerTankServings
+
+Default `9`, from `3` to `30`. Drinks the distiller's boiler and basin each hold. Three make a bucket.
+
+### distillerSaltItem
+
+Default `""`. The item id of the salt the distiller leaves from sea water, for a pack with more than
+one salt mod, for example `"croptopia:salt"`. Empty picks one of the installed mods' salts. Not on
+the config screen.

@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:brick_firebox"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "minecraft:campfire",
+    "S": "minecraft:smooth_stone_slab",
+    "X": "minecraft:bricks"
+  },
+  "pattern": [
+    "SSS",
+    "XFX",
+    "XXX"
+  ],
+  "result": {
+    "id": "thirstwastaken2:brick_firebox"
+  }
+}

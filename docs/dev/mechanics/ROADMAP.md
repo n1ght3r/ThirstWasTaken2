@@ -21,6 +21,10 @@ have none.
 
 ## 2. Sea water is a dead end
 
+**Done** (2026-10-05): the Copper Distiller, a fuelled two-block still, makes sea water Pure and leaves
+another mod's salt behind. What was built differs from the proposal below; see
+[DISTILLATION-PLAN.md](DISTILLATION-PLAN.md).
+
 **Today.** Sea water is a kind of its own, not a grade of fresh water — see `WaterQuality.SALT` in
 [WaterPurity.java](../../../src/main/java/com/thirstwastaken2/purity/WaterPurity.java). It never quenches
 thirst, and boiling does not desalinate it: the purify recipes only move fresh water up a grade. A

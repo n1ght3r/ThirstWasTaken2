@@ -1,8 +1,12 @@
 package com.thirstwastaken2;
 
 import com.thirstwastaken2.api.ThirstApi;
+import com.thirstwastaken2.block.DistillerInteractions;
+import com.thirstwastaken2.block.DistillerSalt;
 import com.thirstwastaken2.block.HangingPotInteractions;
+import com.thirstwastaken2.block.ThirstBlockEntities;
 import com.thirstwastaken2.block.ThirstBlocks;
+import com.thirstwastaken2.block.ThirstMenus;
 import com.thirstwastaken2.command.ThirstCommands;
 import com.thirstwastaken2.compat.LootIntegration;
 import com.thirstwastaken2.config.ThirstConfig;
@@ -44,12 +48,14 @@ public final class ThirstWasTaken2 {
         ThirstConfig.load();
         ThirstData.register();
         // Blocks and items take a registry holder when they are built, so a loader that freezes the
-        // registries before mods start needs all four of these deferred to its registration phase.
+        // registries before mods start needs all of these deferred to its registration phase.
         Loader.onRegister(Registries.BLOCK, ThirstBlocks::register);
+        Loader.onRegister(Registries.BLOCK_ENTITY_TYPE, ThirstBlockEntities::register);
         ItemWaterData.register();
         Loader.onRegister(Registries.ITEM, ThirstItems::register);
         Loader.onRegister(Registries.CREATIVE_MODE_TAB, ThirstItems::registerCreativeTab);
         Loader.onRegister(Registries.MOB_EFFECT, ThirstEffects::register);
+        Loader.onRegister(Registries.MENU, ThirstMenus::register);
         LootIntegration.register();
         Loader.registerResourceConditions();
 
@@ -57,12 +63,15 @@ public final class ThirstWasTaken2 {
         Loader.onServerTickEnd(WaterInteractions::tick);
         Loader.onUseBlock(ThirstManager::drinkByHand);
         Loader.onUseBlock(HangingPotInteractions::use);
+        Loader.onUseBlock(DistillerInteractions::fillTub);
+        Loader.onUseBlock(DistillerInteractions::useMachine);
         Loader.onUseBlock(WaterInteractions::emptyWaterskinOnBlock);
         Loader.onUseBlock(WaterInteractions::fillWaterskinFromCauldron);
         Loader.onUseBlock(WaterInteractions::transferCauldronPurity);
         Loader.onUseItem(WaterInteractions::fillFromWater);
         Loader.onRegisterCommands(ThirstCommands::register);
         Loader.onTagsLoaded(ThirstApi::clearCache);
+        Loader.onTagsLoaded(DistillerSalt::clearCache);
         // Data pack thirst values: parsed by the server, handed to each client on join and after /reload.
         Loader.onServerDataReload(DataPackDrinks.RELOAD_ID, DataPackDrinks::reload);
         DataPackDrinks.registerPayload();

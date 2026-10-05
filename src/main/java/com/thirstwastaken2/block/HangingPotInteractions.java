@@ -131,7 +131,7 @@ public final class HangingPotInteractions {
      * refuses it rather than eating it. Drawing needs no such check, because a pot there never has
      * anything in it to draw.
      */
-    private static boolean evaporates(Level level, BlockPos pos) {
+    static boolean evaporates(Level level, BlockPos pos) {
         if (!Vanilla.waterEvaporates(level, pos)) return false;
         if (level instanceof ServerLevel server) {
             server.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F,
@@ -143,7 +143,7 @@ public final class HangingPotInteractions {
     }
 
     /** Ends a refused pour on each side, so the click is spent and the player swings. */
-    private static InteractionResult hissed(Level level) {
+    static InteractionResult hissed(Level level) {
         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
     }
 

@@ -36,7 +36,8 @@ uses [defaultPurity](/docs/configuration#defaultpurity).
 ![Jade showing Murky for the river water under the crosshair](/screenshots/water/jade-water.png)
 
 With ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade](https://modrinth.com/mod/jade) installed, looking at water, a waterlogged block, a water
-cauldron or a hanging pot shows its grade, or Salty. It can be turned off in Jade's plugin settings.
+cauldron or a hanging pot shows its grade, or Salty. On a [Copper Distiller](#copper-distiller) it
+shows both tanks and whether the cooling tub is dry. Each can be turned off in Jade's plugin settings.
 
 ## Salt water
 
@@ -44,7 +45,7 @@ Oceans and beaches give salt water. It has its own icon and tooltip line. On Min
 1.21.1 only the bowl has its own icon.
 
 - Drinking it costs thirst, causes eight seconds of Nausea and 30 seconds of Parched II.
-- It cannot be boiled clean.
+- It cannot be boiled clean. Only a [Copper Distiller](#copper-distiller) makes it drinkable.
 - One salty drink makes a whole waterskin, cauldron or hanging pot salty.
 
 ### Parched
@@ -144,6 +145,7 @@ too, however full it is. Other ways to clean water:
 - A [Copper Canteen or Iron Flask](#boiling-in-a-canteen-or-flask) boils its water Pure over a
   campfire.
 - A [Hanging Pot](#copper-hanging-pot) boils a whole bucket Pure.
+- A [Copper Distiller](#copper-distiller) turns any water Pure, sea water included.
 - The Farmer's Delight [Cooking Pot](/docs/integrations/farmers-delight/#boiling-water-in-the-cooking-pot)
   makes bottles and bowls Pure in one pass.
 - The Create [Sand Filter](/docs/integrations/create#sand-filter) cleans water pumped through it.
@@ -195,3 +197,37 @@ On Minecraft 1.21 and 1.21.1 the recipe uses a chain instead of an iron chain.
 Works like the Copper Hanging Pot but boils slower: 6 seconds a serving.
 
 ![Two sticks and a chain across the top, five iron ingots in a U below, make an Iron Hanging Pot](/screenshots/recipes/iron-hanging-pot-recipe.png)
+
+## Copper Distiller
+
+A two-block still that turns any water into Pure water, sea water included. It burns furnace fuel
+and runs on its own, so hoppers can keep it going.
+
+It is made of four parts: a Brick Firebox, a Distiller Boiler, a Cooling Tub and a Copper Pipe.
+Craft the four together into a whole distiller, or build it in the world:
+
+1. Place the Distiller Boiler on top of the Brick Firebox.
+2. Place the Cooling Tub to its right, as seen from the front, facing the same way.
+3. Use a Copper Pipe on either of them to join the two.
+
+Before it works, fill the cooling tub once with any water container. Sea water will do. Without it
+nothing condenses, and the arrow in the distiller's screen turns red.
+
+- Right-click with an empty hand to open its screen: water in, fuel, an empty container to fill, and
+  the two tanks.
+- Right-click with a water container to pour it into the boiler, and with an empty one to draw
+  Pure water from the basin under the tap. A waterskin, canteen or flask draws on a click and pours
+  when sneaking.
+- Each serving takes 8 seconds while the fire burns. Coal runs ten servings. The fire only burns
+  while there is water to boil and room in the basin, so no fuel is wasted.
+- The boiler and the basin each hold 9 servings, three buckets.
+- Hoppers feed water in from above and fuel or empty containers from the sides, and take filled
+  containers and salt out from below.
+- Breaking it drops the distiller and whatever its slots held. The water in its tanks is lost.
+
+### Salt
+
+When another mod in the pack adds salt, such as Croptopia, Spelunkery, Expanded Delight or Hearth
+and Harvest, every bucket of sea water distilled leaves one of that salt behind. The distiller then
+shows a salt slot. Without such a mod there is no salt and no slot. When the salt slot is full, the
+sea water waits until it is emptied.
