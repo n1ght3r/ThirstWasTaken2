@@ -8,10 +8,15 @@ import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,8 +37,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * {@link #FUEL} or {@link #EMPTY_IN}, whichever takes the item, and from below out of
  * {@link #FILLED_OUT}, {@link #SALT_OUT}, and whatever is left in the other two once it is spent, an
  * empty bucket or bottle, as a furnace gives back a lava bucket's bucket.
+ *
+ * <p>It is also the menu a player opens on either half, {@link DistillerMenu}, whose gauges read
+ * {@link #data}.
  */
-public final class DistillerBlockEntity extends SavedBlockEntity implements WorldlyContainer {
+public final class DistillerBlockEntity extends SavedBlockEntity implements WorldlyContainer, MenuProvider {
     public static final int WATER_IN = 0;
     public static final int FUEL = 1;
     public static final int EMPTY_IN = 2;
@@ -64,6 +72,43 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
     private int progress;
     /** Salty servings distilled toward the next salt, up to {@link #SALT_SERVINGS}. */
     private int saltServings;
+
+    /** What the menu shows, read live on the server and sent to the client by the menu, by {@code DistillerMenu}'s indices. */
+    private final ContainerData data = new ContainerData() {
+        @Override
+        public int get(int index) {
+            switch (index) {
+                case DistillerMenu.BURN_LEFT:
+                    return burnLeft;
+                case DistillerMenu.BURN_TOTAL:
+                    return burnTotal;
+                case DistillerMenu.PROGRESS:
+                    return progress;
+                case DistillerMenu.SERVING:
+                    return SERVING_TICKS;
+                case DistillerMenu.BOILER:
+                    return boilerServings;
+                case DistillerMenu.BOILER_QUALITY:
+                    return boilerServings == 0 ? 0 : boilerQuality;
+                case DistillerMenu.BASIN:
+                    return basinServings;
+                case DistillerMenu.COOLED:
+                    return tubCooled() ? 1 : 0;
+                case DistillerMenu.SALT:
+                    return 0;
+                default:
+                    return 0;
+            }
+        }
+
+        @Override
+        public void set(int index, int value) { }
+
+        @Override
+        public int getCount() {
+            return DistillerMenu.DATA;
+        }
+    };
 
     public DistillerBlockEntity(BlockPos pos, BlockState state) {
         super(ThirstBlockEntities.COPPER_DISTILLER, pos, state);
@@ -274,19 +319,36 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
         return slot == FILLED_OUT || slot == SALT_OUT;
     }
 
-    /** What each slot takes: water to pour, fuel to burn, a container to fill; nothing into the outputs. */
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        return getLevel() != null && accepts(getLevel(), slot, stack);
+    }
+
+    /**
+     * What each slot takes: water to pour, fuel to burn, a container to fill; nothing into the outputs.
+     * The menu asks the same on the client, where there is no machine, only the level.
+     */
+    static boolean accepts(Level level, int slot, ItemStack stack) {
         switch (slot) {
             case WATER_IN:
                 return DistillerWater.held(stack) > 0;
             case FUEL:
-                return Loader.burnTime(this, stack) > 0;
+                return Loader.isFuel(level, stack);
             case EMPTY_IN:
                 return DistillerWater.room(stack) > 0;
             default:
                 return false;
         }
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return getBlockState().getBlock().getName();
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        return new DistillerMenu(id, inventory, this, data);
     }
 
     @Override

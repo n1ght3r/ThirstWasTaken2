@@ -340,6 +340,21 @@ public final class Vanilla {
     }
 
     /**
+     * Whether {@code fuel} burns in a furnace, asked without a furnace, as a slot asks on the client:
+     * the static table before 1.21.2, the level's fuel values until 26.3, the cooking fuel component
+     * from then. Callers go through {@code Loader.isFuel}, for the same reason as {@link #burnTime}.
+     */
+    public static boolean isFuel(Level level, ItemStack fuel) {
+        //? if >=26.3 {
+        return fuel.has(net.minecraft.core.component.DataComponents.COOKING_FUEL);
+        //?} elif >=1.21.2 {
+        /*return level.fuelValues().isFuel(fuel);
+        *///?} else {
+        /*return net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity.isFuel(fuel);
+        *///?}
+    }
+
+    /**
      * What is left of {@code stack}'s item once it is used up, as a lava bucket leaves a bucket; empty for
      * most items. Before 1.21.2 an item, then a stack, and from 26.1 a template, which may be missing.
      */

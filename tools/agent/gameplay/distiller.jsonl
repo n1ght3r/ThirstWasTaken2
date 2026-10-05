@@ -6,7 +6,9 @@
 // Then python tools/agent/drive.py run/<node>/agent/client tools/agent/gameplay/distiller.jsonl --verify,
 // read the five recipe lines in run/<node>/agent/client/out.jsonl, and look at the captures in run/<node>/agent/client/screenshots/: the placed machine from the front
 // and from behind, with the distiller and its four parts in the hotbar; then a second one built in the
-// world by real clicks, its parts alone, the boiler on its firebox beside a dry tub, and joined. Placing,
+// world by real clicks, its parts alone, the boiler on its firebox beside a dry tub, and joined; then its
+// GUI opened by a real click with an empty hand, distilling a bucket of sea water (client.slots names the
+// menu and its slots). Placing,
 // breaking, dropping and joining are gametests (DistillerGameTest); this covers what they cannot, the
 // click and the drawing.
 
@@ -117,3 +119,19 @@
 {"id": "built", "command": "server.command", "args": {"command": "tp @p 4.0 200.5 -3.5 0 20"}}
 {"id": "settleBuilt", "command": "wait", "args": {"ticks": 40}}
 {"id": "captureBuilt", "command": "client.capture", "args": {"name": "distiller-built"}}
+
+// The GUI: coal and a bucket of sea water into the machine built above, then a real click with an
+// empty hand opens it. A few seconds in, the bucket has poured, the flame burns and the arrow fills.
+{"id": "coal", "command": "server.command", "args": {"command": "item replace block 4 200 0 container.1 with minecraft:coal 4"}}
+{"id": "seaWater", "command": "server.command", "args": {"command": "item replace block 4 200 0 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "bottles", "command": "server.command", "args": {"command": "item replace block 4 200 0 container.2 with minecraft:glass_bottle 3"}}
+{"id": "emptyHand", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:air"}}
+{"id": "aimGui", "command": "server.command", "args": {"command": "tp @p 4.5 200 -2.5 0 28"}}
+{"id": "settleGui", "command": "wait", "args": {"ticks": 10}}
+{"id": "pressGui", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedGui", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseGui", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "opened", "command": "wait", "args": {"ticks": 100}}
+{"id": "screen", "command": "client.screen"}
+{"id": "slots", "command": "client.slots"}
+{"id": "captureGui", "command": "client.capture", "args": {"name": "distiller-gui"}}

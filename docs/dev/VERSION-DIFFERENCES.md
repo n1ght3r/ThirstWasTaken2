@@ -122,7 +122,7 @@ never see it.
 | `MouseHandler#onMove` takes two more arguments with SDL | none: the agent client's `MouseMoveMixin` matches it by name and takes none of them |
 | A gametest's `TestData` names the dimension it runs in | NeoForge `ThirstWasTaken2GameTests` |
 | `ResourceManager#listResources` filters with a `ResourceManager.Selector` rather than a `Predicate` | none needed: `DataPackDrinks` lists its files through `FileToIdConverter#listMatchingResources`, the same on every version |
-| Furnace fuel is the item's cooking fuel component, its burn time resolved in a loot context that names the block entity as the container at work; the level's fuel values are gone | `Vanilla.burnTime`, which takes a block entity that is a container for it |
+| Furnace fuel is the item's cooking fuel component, its burn time resolved in a loot context that names the block entity as the container at work; the level's fuel values are gone | `Vanilla.burnTime`, which takes a block entity that is a container for it; `Vanilla.isFuel` asks whether the item has the component |
 
 Result: 26.3 writes its recipe unlocks with a `recipes` key holding the recipe id, where earlier
 versions write `recipe`. Nothing else in the generated files moved.
@@ -145,6 +145,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 | Difference | Code |
 |---|---|
 | An item's crafting remainder is a template, which may be missing | `Vanilla.craftingRemainder`, for the distiller's lava bucket |
+| A container screen extracts its background in `extractBackground` and its tooltips in `extractTooltip`, takes its size in the constructor, and draws the hovered slot's tooltip itself; before, `renderBg`, two size fields, and `render` calling `renderTooltip` | `client/platform/MachineScreen`, which `DistillerScreen` extends |
 | The cauldron interaction maps became `CauldronInteractions`' dispatchers, asked with the stack and answering a do-nothing default; before, `CauldronInteraction`'s maps by item (`InteractionMap.map()`, a plain map on 1.20.1) | `Vanilla.cauldronHasInteraction` |
 | A player's action bar message has its own method, `sendOverlayMessage` | `Vanilla.sendOverlayMessage`, which the Kaleidoscope Cookery Teapot's sea water refusal calls |
 | The HUD draw target was renamed `GuiGraphicsExtractor` | replacement |
@@ -196,6 +197,7 @@ already has by default. The stack the furnace hands out is the same; see
 | A block entity saves and loads through `ValueOutput` / `ValueInput` | `StockpotBlockEntityMixin`, `TeapotBlockEntityMixin` (Kaleidoscope Cookery) |
 | Fabric API gained the HUD element and status bar height registries | `ClientLoader.addRightStatusBar`; on 1.21.1 `GuiMixin` draws the bar after the food bar and moves the air bubbles up |
 | Fabric's block render layer map moved into its rendering module and takes a chunk section layer | Fabric `ClientLoader.renderCutout` |
+| A tooltip is queued for the end of the frame (`setComponentTooltipForNextFrame`) where it was drawn on the spot | `ClientVanilla.tooltip` |
 | Saving and loading an entity take a `ValueOutput` / `ValueInput` rather than a `CompoundTag` | `TestFixtures.savePlayer`, `loadPlayer` |
 
 ### 1.21.5 (affects 1.21.1)
@@ -243,7 +245,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Use animations became `ItemUseAnimation` | `Vanilla.isDrinkAnimation`, which `DrinkingUpgradeWrapper.canFilter` calls; `AlchemyUpgradeWrapperMixin` (Sophisticated, NeoForge only) |
 | A recipe names an ingredient by id or `#tag` rather than as an object | the Drinking upgrade's recipes, one copy per generation in `src/main/sophisticated-fluidhandler` and `-transfer` |
 | A block entity type is built by a public constructor where a builder did | `Vanilla.blockEntityType`; the constructor and its supplier are widened on Fabric (below) |
-| Furnace fuel is the level's fuel values, where it was a static table | `Vanilla.burnTime` |
+| Furnace fuel is the level's fuel values, where it was a static table | `Vanilla.burnTime`, `Vanilla.isFuel` |
 | An item's crafting remainder is a stack, where it was an item | `Vanilla.craftingRemainder` |
 
 ### 1.20.5 and 1.21 (affect 1.20.1)
@@ -266,6 +268,7 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | `ResourceLocation` has public constructors instead of `fromNamespaceAndPath`, `withDefaultNamespace` and `parse` | `replacements` in `stonecutter.gradle.kts` (below 1.21) |
 | No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
 | Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
+| A container screen does not dim the world behind itself; `renderBackground` is asked to | `client/platform/MachineScreen` |
 | `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
 | A block entity saves to a tag alone and loads through `load`, and its update tag takes no registries | `platform/SavedBlockEntity`; `MachineSeamsGameTest` saves and loads one the way the chunk does |
 | `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |

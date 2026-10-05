@@ -5,6 +5,7 @@ import com.thirstwastaken2.block.DistillerInteractions;
 import com.thirstwastaken2.block.HangingPotInteractions;
 import com.thirstwastaken2.block.ThirstBlockEntities;
 import com.thirstwastaken2.block.ThirstBlocks;
+import com.thirstwastaken2.block.ThirstMenus;
 import com.thirstwastaken2.command.ThirstCommands;
 import com.thirstwastaken2.compat.LootIntegration;
 import com.thirstwastaken2.config.ThirstConfig;
@@ -53,6 +54,7 @@ public final class ThirstWasTaken2 {
         Loader.onRegister(Registries.ITEM, ThirstItems::register);
         Loader.onRegister(Registries.CREATIVE_MODE_TAB, ThirstItems::registerCreativeTab);
         Loader.onRegister(Registries.MOB_EFFECT, ThirstEffects::register);
+        Loader.onRegister(Registries.MENU, ThirstMenus::register);
         LootIntegration.register();
         Loader.registerResourceConditions();
 

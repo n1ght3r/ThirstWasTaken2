@@ -3,8 +3,8 @@
 **Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
 what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 2, the machine, which
-distils; step 5, building it in the world; and step 8, the cooling tub. Still to come: the GUI (steps
-3 and 4), the fire in the model (6), salt (7) and the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+distils; steps 3 and 4, its GUI; step 5, building it in the world; and step 8, the cooling tub. Still
+to come: the fire in the model (6), salt (7) and the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -203,9 +203,18 @@ models and item use only, on every node, and gives something to see while the se
    spent in the water and fuel slots, an emptied bucket or bottle, as a furnace's does. Breaking it
    spills the slots (`SupportedBlock` before 1.21.5, vanilla from it); the tanks' water is lost, as a
    cauldron's is.
-3. **`DistillerMenu`** with its slots and a `ContainerData` for fuel, progress and both tank levels.
-4. **`DistillerScreen`** and its texture, `textures/gui/container/copper_distiller.png`, in the style of
-   the furnace's (drawn from vanilla's palette, checked beside it).
+3. **`DistillerMenu`** (done) with its slots and a `ContainerData` for fuel, progress and both tank levels.
+   As built the data also carries the boiler's quality, whether the tub is cooled, and whether there is
+   salt to make, which shows the salt slot. A click with anything the shortcuts do not use, an empty hand
+   included, opens it from either half; sneaking leaves the click to the item, as at a furnace. Its slots
+   refuse on the client what the machine would, through `Loader.isFuel`, so a click is never undone.
+4. **`DistillerScreen`** (done) and its texture, `textures/gui/container/copper_distiller.png`, in the style of
+   the furnace's (drawn from vanilla's palette, checked beside it). The texture is written by
+   `tools/distiller/generate_distiller_gui.py`; nothing is copied from another texture, and the gauges
+   show the mod's own water sprites. In place of a furnace's flame, a small bar of fuel between the water
+   and the fuel slot empties as the fire burns. The screen stands on `client/platform/MachineScreen`. The
+   gauges name their servings and the boiler's water when hovered, and the arrow turns red, saying why,
+   while the tub is dry.
 5. **Building it in the world** (done): the three part blocks, the merge on placing a boiler on a firebox,
    `piped`, the pipe joining them, the drops, and the extra models.
 6. **`lit`** in the blockstate: the generator writes a cold firebox (logs unlit, no fire plane) beside the

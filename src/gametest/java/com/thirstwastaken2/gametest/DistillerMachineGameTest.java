@@ -3,6 +3,7 @@ package com.thirstwastaken2.gametest;
 import com.thirstwastaken2.block.CoolingTubBlock;
 import com.thirstwastaken2.block.DistillerBlock;
 import com.thirstwastaken2.block.DistillerBlockEntity;
+import com.thirstwastaken2.block.DistillerMenu;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
@@ -245,6 +246,68 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, drawn.is(Items.WATER_BUCKET) && pure(drawn) && machine.basinServings() == 0,
                 "an empty bucket should draw the basin's 3 Pure servings, got " + drawn + " with "
                         + machine.basinServings() + " left");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void anEmptyHandOpensTheMenuOnEitherHalf(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        machine.pour(4, SALT);
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        // Standing in front of it, within reach, as a player clicking it does.
+        player.setPos(Vec3.atBottomCenterOf(helper.absolutePos(TUB.north(2))));
+
+        use(helper, player, TUB);
+
+        TestFixtures.check(helper, player.containerMenu instanceof DistillerMenu,
+                "an empty hand on the tub should open the distiller's menu, got " + player.containerMenu);
+        DistillerMenu menu = (DistillerMenu) player.containerMenu;
+        TestFixtures.check(helper, menu.boilerServings() == 4 && SALT.equals(menu.boilerQuality()) && menu.cooled(),
+                "the menu should read the machine's boiler and tub, got " + menu.boilerServings() + " of "
+                        + menu.boilerQuality());
+        TestFixtures.check(helper, menu.stillValid(player), "a player beside it should keep the menu open");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void theMenusSlotsTakeOnlyWhatTheMachineDoes(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        DistillerMenu menu = (DistillerMenu) machine.createMenu(1, player.getInventory(), player);
+
+        TestFixtures.check(helper, menu.getSlot(DistillerBlockEntity.WATER_IN).mayPlace(new ItemStack(Items.WATER_BUCKET))
+                        && !menu.getSlot(DistillerBlockEntity.WATER_IN).mayPlace(new ItemStack(Items.COAL)),
+                "the water slot should take water and nothing else");
+        TestFixtures.check(helper, menu.getSlot(DistillerBlockEntity.FUEL).mayPlace(new ItemStack(Items.COAL))
+                        && !menu.getSlot(DistillerBlockEntity.FUEL).mayPlace(new ItemStack(Items.GLASS_BOTTLE)),
+                "the fuel slot should take fuel and nothing else");
+        TestFixtures.check(helper, !menu.getSlot(DistillerBlockEntity.FILLED_OUT).mayPlace(new ItemStack(Items.BUCKET)),
+                "nothing should be put into the output");
+        TestFixtures.check(helper, !menu.getSlot(DistillerBlockEntity.SALT_OUT).isActive(),
+                "with no salt to make the salt slot should not show");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void shiftClickingSendsEachItemToItsSlot(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        player.getInventory().setItem(9, new ItemStack(Items.WATER_BUCKET));
+        player.getInventory().setItem(10, new ItemStack(Items.COAL, 8));
+        player.getInventory().setItem(11, new ItemStack(Items.GLASS_BOTTLE, 4));
+        DistillerMenu menu = (DistillerMenu) machine.createMenu(1, player.getInventory(), player);
+
+        // The inventory's first row starts after the machine's five slots.
+        menu.quickMoveStack(player, DistillerBlockEntity.SLOTS);
+        menu.quickMoveStack(player, DistillerBlockEntity.SLOTS + 1);
+        menu.quickMoveStack(player, DistillerBlockEntity.SLOTS + 2);
+
+        TestFixtures.check(helper, machine.getItem(DistillerBlockEntity.WATER_IN).is(Items.WATER_BUCKET)
+                        && machine.getItem(DistillerBlockEntity.FUEL).getCount() == 8
+                        && machine.getItem(DistillerBlockEntity.EMPTY_IN).getCount() == 4,
+                "the bucket, the coal and the bottles should each go to their own slot, got "
+                        + machine.getItem(DistillerBlockEntity.WATER_IN) + ", " + machine.getItem(DistillerBlockEntity.FUEL)
+                        + ", " + machine.getItem(DistillerBlockEntity.EMPTY_IN));
         helper.succeed();
     }
 

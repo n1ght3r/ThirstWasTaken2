@@ -23,6 +23,7 @@ alone (`ThirstData.STORAGE`), and only the config screen's AppleSkin settings ar
 | `config/ConfigTheme` | the screen's colours and small drawing helpers |
 | `config/ConfigPreview` | the live thirst bar, food bar and tooltip on the AppleSkin page |
 | `platform/ClientVanilla` | client vanilla calls whose shape differs between Minecraft versions |
+| `platform/MachineScreen`, `screen/DistillerScreen` | a container screen drawn the same way on every version, and the copper distiller's GUI on it, from `textures/gui/container/copper_distiller.png` (written by `tools/distiller/generate_distiller_gui.py`) |
 | `platform/StatusBarRenderer` | the shape `ClientLoader` draws a HUD row through |
 | `compat/AppleSkinIntegration` | reads AppleSkin's own settings, only after `AppleSkin.isLoaded()` |
 | `compat/JadeIntegration` | the `jade` entrypoint: the grade of the water under the crosshair, see `compat/AGENTS.md` |

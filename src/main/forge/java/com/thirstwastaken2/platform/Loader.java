@@ -1,5 +1,6 @@
 package com.thirstwastaken2.platform;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.Container;
@@ -106,6 +107,11 @@ public final class Loader {
      */
     public static <T extends BlockEntity & Container> int burnTime(T entity, ItemStack fuel) {
         return net.minecraftforge.common.ForgeHooks.getBurnTime(fuel, net.minecraft.world.item.crafting.RecipeType.SMELTING);
+    }
+
+    /** Whether {@code fuel} burns in a furnace, asked without one, as a slot on the client asks. */
+    public static boolean isFuel(Level level, ItemStack fuel) {
+        return net.minecraftforge.common.ForgeHooks.getBurnTime(fuel, net.minecraft.world.item.crafting.RecipeType.SMELTING) > 0;
     }
 
     /**

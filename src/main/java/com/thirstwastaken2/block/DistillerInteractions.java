@@ -60,7 +60,8 @@ public final class DistillerInteractions {
      * empty one draws Pure water from the basin, as at a hanging pot. A bucket moves its three servings
      * or nothing. A waterskin, canteen or flask draws, and pours when its holder is sneaking, the way its
      * sneak-use pours it out anywhere else. A tub still without its coolant takes the water as that
-     * first, in {@link #fillTub}, which runs before this.
+     * first, in {@link #fillTub}, which runs before this. Any other click that is not sneaking opens the
+     * distiller's GUI.
      */
     public static InteractionResult useMachine(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
         BlockPos pos = hit.getBlockPos();
@@ -99,6 +100,11 @@ public final class DistillerInteractions {
                 level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
                 return InteractionResult.SUCCESS_SERVER;
             }
+            // Anything else, an empty hand included, opens the GUI, as a furnace does; sneaking leaves
+            // the click to the item, so a block can still be placed against it.
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
+            player.openMenu(machine);
+            return InteractionResult.SUCCESS_SERVER;
         }
         return InteractionResult.PASS;
     }
