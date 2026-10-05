@@ -3,8 +3,8 @@
 **Status: in progress.** Written 2026-10-04; decisions settled 2026-10-05. The block, its four parts and their
 recipes are built (`block/DistillerBlock`, commit "feat: add the copper distiller block…"); this plan is
 what makes it distil. Done so far (2026-10-05): step 1, the version seams; step 2, the machine, which
-distils; steps 3 and 4, its GUI; step 5, building it in the world; and step 8, the cooling tub. Still
-to come: the fire in the model (6), salt (7) and the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
+distils; steps 3 and 4, its GUI; step 5, building it in the world; step 6, the fire in the model;
+step 7, salt; and step 8, the cooling tub. Still to come: the config (9). It answers [ROADMAP.md](ROADMAP.md) §2, "Sea water is a dead end", and fits the
 [purification rework](PURIFICATION-REWORK.md): the distiller is a dedicated vessel, so it makes Pure.
 
 ## How a real still works, and what the model already shows
@@ -81,7 +81,8 @@ opens the same menu.
   exists. Fresh water leaves nothing.
 - **The fire in the model** follows the machine: a `lit` blockstate property on the boiler half picks a
   firebox drawn burning or cold (the generator writes both), and the light level and chimney smoke follow
-  it. Today the fire always burns; that changes here.
+  it. As built: `lit` follows the fuel, burning while a fire is alight (held as well as burning down),
+  so a new or idle distiller is cold. The unpiped boiler and the lone firebox stay cold whatever.
 - **Hoppers.** The block entity is a `WorldlyContainer`: from above into **water in**, from the sides into
   **fuel**, and from below out of **filled out** and **salt out**, as a furnace is automated.
 
@@ -114,8 +115,15 @@ The mod adds no salt. A salt item is looked up through a tag of the mod's own,
   `distillerSaltItem` (an item id, empty for automatic), can pin one in a modpack.
 - The tag is written by datagen with `required: false` on every entry, so a pack without those mods
   loads it cleanly (`checkDataConditions` stays happy: it names no mod id outside a tag reference).
-- 1.20.1's conventional tag names differ (`c:salt` there may be spelled otherwise): check the jars for
-  that node when writing the generator.
+- 1.20.1's conventional tag names differ: the Fabric mods there use `c:` as now, Forge mods `forge:`.
+  The 1.20.1 node's tag adds `#forge:dusts/salt` and `#forge:salt` (none of the jars here fills them,
+  but Forge packs do). Hearth and Harvest for 1.20.1 tags its salt nowhere, hence its own entry; its
+  1.21.1 build puts it in `c:dusts/salt`.
+- As built: `block/DistillerSalt` resolves the salt once and keeps it until the tags reload or the
+  config changes. A pin that names no item falls back to the tag. With a salt, every third salty
+  serving puts one in the salt slot; a full slot (or one holding another item) holds the salt water,
+  fresh water still runs. With none, the salty servings wait counted at three, so a salt added later
+  comes out at once. `distillerSaltItem` is in the file only, like the keyword lists: no widget.
 
 ## Building it in the world
 
@@ -217,14 +225,16 @@ models and item use only, on every node, and gives something to see while the se
    while the tub is dry.
 5. **Building it in the world** (done): the three part blocks, the merge on placing a boiler on a firebox,
    `piped`, the pipe joining them, the drops, and the extra models.
-6. **`lit`** in the blockstate: the generator writes a cold firebox (logs unlit, no fire plane) beside the
-   burning one; light and smoke follow.
-7. **Salt**: the `distiller_salt` tag in datagen, the config option, the slot shown only when it resolves.
+6. **`lit`** (done) in the blockstate: the generator writes a cold firebox (logs unlit, no fire plane),
+   `copper_distiller_boiler_cold`, beside the burning one; light and smoke follow.
+7. **Salt** (done): the `distiller_salt` tag in datagen (`ThirstItemTagProvider`), the config option,
+   the slot shown only when it resolves. The gametest mod tags sugar as salt.
 8. **The cooling tub** (done): `cooled`, filled by a right-click (`block/DistillerInteractions`, any
    water container, a skin pouring up to a bucket), required to condense.
 9. **Config**: the serving time and tank sizes on the Containers page (lang keys in all nine files).
 10. **Tests.** Gametests: fill from each container, distil a bucket of sea water and get three Pure and
-   one salt with a salt item tagged by a test data pack, no salt with the tag empty, fuel not burnt with
+   one salt with a salt item tagged by a test data pack (done), no salt with the tag empty (done, on
+   `DistillerSalt.resolve`, since the test pack's tag is never empty), fuel not burnt with
    nothing to do, the basin filling each container type, hoppers in and out, breaking drops the slots.
    Building: a boiler placed on a firebox merges, anywhere else does not; a pipe joins a lined-up pair
    and is spent, and does nothing to a pair facing apart or a tub on the wrong side; each break drops

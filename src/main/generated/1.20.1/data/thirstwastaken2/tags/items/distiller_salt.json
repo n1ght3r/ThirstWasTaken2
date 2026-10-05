@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#c:dusts/salt",
+      "required": false
+    },
+    {
+      "id": "#c:salt",
+      "required": false
+    },
+    {
+      "id": "#c:salts",
+      "required": false
+    },
+    {
+      "id": "#forge:dusts/salt",
+      "required": false
+    },
+    {
+      "id": "#forge:salt",
+      "required": false
+    },
+    {
+      "id": "hearthandharvest:salt",
+      "required": false
+    }
+  ]
+}

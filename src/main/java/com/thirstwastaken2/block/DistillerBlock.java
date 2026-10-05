@@ -52,8 +52,8 @@ import java.util.function.IntConsumer;
  *
  * <p>A piped boiler half holds the machine, a {@link DistillerBlockEntity}, and ticks it on the server.
  * Either half of a whole distiller hands that machine to a hopper, and to the right-click shortcuts in
- * {@link DistillerInteractions}. Its fire is still always drawn burning. The models are written by
- * {@code tools/distiller/generate_distiller_model.py}.
+ * {@link DistillerInteractions}. Its fire is drawn burning, gives light and smokes only while the machine
+ * has fuel alight, {@link #LIT}. The models are written by {@code tools/distiller/generate_distiller_model.py}.
  */
 public final class DistillerBlock extends SupportedBlock implements EntityBlock, WorldlyContainerHolder {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -62,6 +62,8 @@ public final class DistillerBlock extends SupportedBlock implements EntityBlock,
     public static final BooleanProperty PIPED = BooleanProperty.create("piped");
     /** Whether the tub holds its coolant. Only the tub half's counts. */
     public static final BooleanProperty COOLED = BooleanProperty.create("cooled");
+    /** Whether the firebox burns. Only a piped boiler half's counts; its machine sets it. */
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     /** The halves' outlines facing north, in each half's own pixels; the models' boxes, simplified. */
     static final double[] FIREBOX_BOX = { 0.5, 0, 1.5, 15.5, 7, 15.5 };    // firebox and ledge
@@ -94,12 +96,12 @@ public final class DistillerBlock extends SupportedBlock implements EntityBlock,
     public DistillerBlock(Properties properties) {
         super(properties, DistillerBlock::new);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, Part.BOILER)
-                .setValue(PIPED, true).setValue(COOLED, false));
+                .setValue(PIPED, true).setValue(COOLED, false).setValue(LIT, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, PART, PIPED, COOLED);
+        builder.add(FACING, PART, PIPED, COOLED, LIT);
     }
 
     /** Whether {@code state} is a whole machine's half, rather than a boiler set on its firebox. */
@@ -110,6 +112,11 @@ public final class DistillerBlock extends SupportedBlock implements EntityBlock,
     /** A boiler set on a firebox facing {@code facing}, before the pipe joins it to a tub. */
     public BlockState unpiped(Direction facing) {
         return defaultBlockState().setValue(FACING, facing).setValue(PIPED, false);
+    }
+
+    /** Whether {@code state} is a machine's boiler half with its fire alight: it gives light and smokes. */
+    public static boolean burning(BlockState state) {
+        return state.getValue(PART) == Part.BOILER && isWhole(state) && state.getValue(LIT);
     }
 
     /** The way from {@code state}'s half to the other one. */
@@ -194,10 +201,10 @@ public final class DistillerBlock extends SupportedBlock implements EntityBlock,
         return machine(level, pos, state);
     }
 
-    /** Smoke out of the chimney now and then, once it is a machine. */
+    /** Smoke out of the chimney now and then, while the fire burns. */
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (state.getValue(PART) != Part.BOILER || !isWhole(state) || random.nextInt(3) != 0) return;
+        if (!burning(state) || random.nextInt(3) != 0) return;
         double[] mouth = rotate(CHIMNEY_TOP[0], CHIMNEY_TOP[2], state.getValue(FACING));
         double x = pos.getX() + (mouth[0] + random.nextDouble() * 2 - 1) / 16.0;
         double z = pos.getZ() + (mouth[1] + random.nextDouble() * 2 - 1) / 16.0;

@@ -152,6 +152,13 @@ public final class ThirstConfig {
     public boolean enableIronHangingPot = true;
     /** The copper distiller and the four parts it is crafted from, which are good for nothing else. */
     public boolean enableCopperDistiller = true;
+    /**
+     * The item id of the salt the copper distiller leaves behind from sea water, for a pack whose mods
+     * add more than one salt. Empty takes the first item in the {@code thirstwastaken2:distiller_salt}
+     * tag, which names other mods' salt only; with none of them the distiller makes no salt. An id that
+     * names no item is ignored. See {@code block/DistillerSalt}.
+     */
+    public String distillerSaltItem = "";
 
     private transient Pattern keywordBlacklistPattern;
     private transient Pattern drinkKeywordPattern;
@@ -341,6 +348,7 @@ public final class ThirstConfig {
         ironFlaskBoilSeconds = clamp(ironFlaskBoilSeconds, 1, MAX_BOIL_SECONDS);
         copperHangingPotBoilSeconds = clamp(copperHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
         ironHangingPotBoilSeconds = clamp(ironHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
+        distillerSaltItem = distillerSaltItem == null ? "" : distillerSaltItem.trim();
         // Gson reads a name it does not know, including a hand typo, as null.
         if (appleskinQuenchedOverlay == null) appleskinQuenchedOverlay = QuenchedOverlay.DIAMOND;
         thirstDepletionModifier = clamp(thirstDepletionModifier, 0.0, 10.0);

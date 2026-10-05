@@ -2,6 +2,7 @@ package com.thirstwastaken2;
 
 import com.thirstwastaken2.api.ThirstApi;
 import com.thirstwastaken2.block.DistillerInteractions;
+import com.thirstwastaken2.block.DistillerSalt;
 import com.thirstwastaken2.block.HangingPotInteractions;
 import com.thirstwastaken2.block.ThirstBlockEntities;
 import com.thirstwastaken2.block.ThirstBlocks;
@@ -70,6 +71,7 @@ public final class ThirstWasTaken2 {
         Loader.onUseItem(WaterInteractions::fillFromWater);
         Loader.onRegisterCommands(ThirstCommands::register);
         Loader.onTagsLoaded(ThirstApi::clearCache);
+        Loader.onTagsLoaded(DistillerSalt::clearCache);
         // Data pack thirst values: parsed by the server, handed to each client on join and after /reload.
         Loader.onServerDataReload(DataPackDrinks.RELOAD_ID, DataPackDrinks::reload);
         DataPackDrinks.registerPayload();

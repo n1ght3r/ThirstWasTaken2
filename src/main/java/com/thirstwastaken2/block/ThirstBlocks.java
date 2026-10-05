@@ -37,8 +37,8 @@ public final class ThirstBlocks {
 
     /**
      * The copper distiller, two blocks wide. Slower to mine than a pot, by hand too. A piston breaks
-     * it rather than pushing one half away from the other. Once piped its firebox is always lit for
-     * now, and glows like a furnace that is; a boiler on a firebox not yet piped is cold.
+     * it rather than pushing one half away from the other. While its fire burns it glows like a lit
+     * furnace; cold, and a boiler on a firebox not yet piped is always cold, it gives no light.
      */
     public static final DistillerBlock COPPER_DISTILLER = Vanilla.registerBlock("copper_distiller",
             DistillerBlock::new,
@@ -47,8 +47,7 @@ public final class ThirstBlocks {
                     .strength(2.0F)
                     .sound(SoundType.COPPER)
                     .noOcclusion()
-                    .lightLevel(state -> state.getValue(DistillerBlock.PART) == DistillerBlock.Part.BOILER
-                            && DistillerBlock.isWhole(state) ? 13 : 0)
+                    .lightLevel(state -> DistillerBlock.burning(state) ? 13 : 0)
                     .pushReaction(PushReaction.POPPED));
     // The distiller's parts, each placeable alone and mined like the stuff it is made of. A boiler set
     // on a firebox becomes the distiller's boiler half; see DistillerBlock.

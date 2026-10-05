@@ -27,25 +27,30 @@ final class DistillerModels {
     private DistillerModels() { }
 
     /**
-     * The distiller's blockstate and its three parts'. A piped boiler half is the machine's, an unpiped
-     * one the boiler on its firebox before the pipe; a tub half is drawn with its coolant or dry. A tub
-     * half that is not piped never exists, but every state needs a model, so it is drawn as the lone tub.
+     * The distiller's blockstate and its three parts'. A piped boiler half is the machine's, its fire
+     * burning or cold; an unpiped one is the boiler on its firebox before the pipe, always cold. A tub
+     * half is drawn with its coolant or dry. A tub half that is not piped never exists, but every state
+     * needs a model, so it is drawn as the lone tub. Only the boiler half reads {@code lit}, and only the
+     * tub half {@code cooled}.
      */
     static void generate(BlockModelGenerators generators) {
         JsonObject variants = new JsonObject();
         for (DistillerBlock.Part part : DistillerBlock.Part.values()) {
             for (boolean piped : new boolean[] { true, false }) {
                 for (boolean cooled : new boolean[] { true, false }) {
-                    String model;
-                    if (part == DistillerBlock.Part.BOILER) {
-                        model = NAME + "_boiler" + (piped ? "" : "_unpiped");
-                    } else {
-                        model = (piped ? NAME + "_tub" : "cooling_tub") + (cooled ? "" : "_empty");
+                    for (boolean lit : new boolean[] { true, false }) {
+                        String model;
+                        if (part == DistillerBlock.Part.BOILER) {
+                            model = NAME + "_boiler" + (!piped ? "_unpiped" : lit ? "" : "_cold");
+                        } else {
+                            model = (piped ? NAME + "_tub" : "cooling_tub") + (cooled ? "" : "_empty");
+                        }
+                        String key = DistillerBlock.PART.getName() + "=" + part.getSerializedName() + ","
+                                + DistillerBlock.PIPED.getName() + "=" + piped + ","
+                                + DistillerBlock.COOLED.getName() + "=" + cooled + ","
+                                + DistillerBlock.LIT.getName() + "=" + lit;
+                        facings(variants, key, model);
                     }
-                    String key = DistillerBlock.PART.getName() + "=" + part.getSerializedName() + ","
-                            + DistillerBlock.PIPED.getName() + "=" + piped + ","
-                            + DistillerBlock.COOLED.getName() + "=" + cooled;
-                    facings(variants, key, model);
                 }
             }
         }

@@ -18,7 +18,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -30,8 +32,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * in {@link #EMPTY_IN} from the basin, and boils: while the boiler holds water, the basin has room and
  * the tub holds its coolant, the fire burns and every {@link #SERVING_TICKS} one serving moves from the
  * boiler to the basin, Pure whatever it was. With nothing to do the fire waits rather than burning down,
- * so no fuel is wasted. A salty serving is counted toward the salt it leaves behind; making that salt is
- * still to come.
+ * so no fuel is wasted. Its block is {@code lit} while fuel is alight.
+ *
+ * <p>Every {@link #SALT_SERVINGS} salty servings leave one salt in {@link #SALT_OUT}, when another mod
+ * has salt ({@link DistillerSalt}); with none, nothing. When that slot is full the salty water waits, as
+ * a furnace waits on a full output; fresh water, which leaves nothing, still runs.
  *
  * <p>Hoppers reach it through either half: from above into {@link #WATER_IN}, from the sides into
  * {@link #FUEL} or {@link #EMPTY_IN}, whichever takes the item, and from below out of
@@ -95,7 +100,7 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
                 case DistillerMenu.COOLED:
                     return tubCooled() ? 1 : 0;
                 case DistillerMenu.SALT:
-                    return 0;
+                    return DistillerSalt.item() != null ? 1 : 0;
                 default:
                     return 0;
             }
@@ -174,6 +179,7 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
         if (level == null || level.isClientSide()) return;
         boolean changed = takeWater();
         changed |= fillContainer();
+        changed |= makeSalt();
         if (canDistil()) {
             if (burnLeft == 0) changed |= lightFuel();
             if (burnLeft > 0) {
@@ -186,11 +192,45 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
             changed = true;
         }
         if (changed) changed();
+        showFire(level);
     }
 
-    /** Whether there is water to boil, room for it in the basin, and coolant in the tub to condense it. */
+    /**
+     * Whether there is water to boil, room for it in the basin, coolant in the tub to condense it, and,
+     * for salt water, room for the salt it leaves.
+     */
     private boolean canDistil() {
-        return boilerServings > 0 && basinServings < TANK && tubCooled();
+        return boilerServings > 0 && basinServings < TANK && tubCooled()
+                && !(saltServings >= SALT_SERVINGS && WaterQuality.SALT.equals(boilerQuality()) && DistillerSalt.item() != null);
+    }
+
+    /** Draws the fire in the firebox, with its light and smoke, while fuel is alight, and puts it out after. */
+    private void showFire(Level level) {
+        BlockState state = getBlockState();
+        boolean lit = burnLeft > 0;
+        if (!state.is(ThirstBlocks.COPPER_DISTILLER) || state.getValue(DistillerBlock.LIT) == lit) return;
+        level.setBlock(getBlockPos(), state.setValue(DistillerBlock.LIT, lit), Block.UPDATE_ALL);
+    }
+
+    /**
+     * Puts one salt in {@link #SALT_OUT} once {@link #SALT_SERVINGS} salty servings are counted, when
+     * there is a salt and room for it. Without a salt the count waits at its top, so a salt added later
+     * by a data pack comes out at once.
+     */
+    private boolean makeSalt() {
+        if (saltServings < SALT_SERVINGS) return false;
+        Item salt = DistillerSalt.item();
+        if (salt == null) return false;
+        ItemStack out = items.get(SALT_OUT);
+        if (out.isEmpty()) {
+            items.set(SALT_OUT, new ItemStack(salt));
+        } else if (out.is(salt) && out.getCount() < out.getMaxStackSize()) {
+            out.grow(1);
+        } else {
+            return false;
+        }
+        saltServings -= SALT_SERVINGS;
+        return true;
     }
 
     private boolean tubCooled() {

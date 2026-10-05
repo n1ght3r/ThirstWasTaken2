@@ -4,6 +4,7 @@ import com.thirstwastaken2.block.CoolingTubBlock;
 import com.thirstwastaken2.block.DistillerBlock;
 import com.thirstwastaken2.block.DistillerBlockEntity;
 import com.thirstwastaken2.block.DistillerMenu;
+import com.thirstwastaken2.block.DistillerSalt;
 import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
@@ -12,6 +13,7 @@ import com.thirstwastaken2.purity.WaterQuality;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -27,12 +29,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
+
 /**
  * The distiller at work: water poured in from its slot, a serving at a time distilled to Pure while the
  * fire burns, the fire waiting when there is nothing to do or no coolant, the basin filling each kind of
  * container, hoppers in and out through either half, the right-click shortcuts, and breaking it giving
- * back what its slots held. The machine is ticked by hand, as many times as the test needs, rather than
- * waited for: a bucket takes 24 seconds.
+ * back what its slots held; the fire drawn only while it burns, and the salt sea water leaves. The
+ * machine is ticked by hand, as many times as the test needs, rather than waited for: a bucket takes 24
+ * seconds.
+ *
+ * <p>The gametest mod tags sugar {@code thirstwastaken2:distiller_salt}, so here the distiller always
+ * has a salt to make; with the tag empty, as in a pack without a salt mod, {@link DistillerSalt#resolve}
+ * finds none.
  */
 public final class DistillerMachineGameTest {
     private static final BlockPos BOILER = new BlockPos(3, 2, 3);
@@ -88,6 +97,93 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, machine.getItem(DistillerBlockEntity.FUEL).isEmpty()
                         && machine.burnLeft() == 1600 - 3 * DistillerBlockEntity.SERVING_TICKS,
                 "one coal should have been lit and burnt for three servings, " + machine.burnLeft() + " ticks left");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aBucketOfSeaWaterLeavesOneSalt(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        machine.pour(3, SALT);
+        machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
+
+        tick(machine, 3 * DistillerBlockEntity.SERVING_TICKS + 1);
+
+        ItemStack salt = machine.getItem(DistillerBlockEntity.SALT_OUT);
+        TestFixtures.check(helper, salt.is(Items.SUGAR) && salt.getCount() == 1 && machine.saltServings() == 0,
+                "three salty servings should leave one of the tagged salt, got " + salt + " with "
+                        + machine.saltServings() + " counted");
+        TestFixtures.check(helper, machine.canTakeItemThroughFace(DistillerBlockEntity.SALT_OUT, salt, Direction.DOWN),
+                "a hopper below should be able to take the salt");
+        helper.succeed();
+    }
+
+    @GameTest
+    public void freshWaterLeavesNoSalt(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        distil(machine, 6);
+        machine.tick();
+
+        TestFixtures.check(helper, machine.getItem(DistillerBlockEntity.SALT_OUT).isEmpty() && machine.saltServings() == 0,
+                "fresh water should leave nothing, got " + machine.getItem(DistillerBlockEntity.SALT_OUT));
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aFullSaltSlotHoldsTheSeaWater(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        machine.setItem(DistillerBlockEntity.SALT_OUT, new ItemStack(Items.SUGAR, 64));
+        machine.pour(6, SALT);
+        machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.COAL));
+
+        tick(machine, 5 * DistillerBlockEntity.SERVING_TICKS);
+
+        TestFixtures.check(helper, machine.basinServings() == 3 && machine.boilerServings() == 3,
+                "with no room for its salt the second bucket should wait, the basin holds " + machine.basinServings());
+        int left = machine.burnLeft();
+        machine.tick();
+        TestFixtures.check(helper, machine.burnLeft() == left, "while it waits the fire should hold at " + left);
+
+        machine.removeItemNoUpdate(DistillerBlockEntity.SALT_OUT);
+        machine.tick();
+        TestFixtures.check(helper, machine.getItem(DistillerBlockEntity.SALT_OUT).getCount() == 1 && machine.burnLeft() == left - 1,
+                "once the slot is emptied the salt should come out and the fire burn on, got "
+                        + machine.getItem(DistillerBlockEntity.SALT_OUT));
+        helper.succeed();
+    }
+
+    @GameTest
+    public void theSaltIsThePinnedItemOrTheFirstTagged(GameTestHelper helper) {
+        List<Holder<Item>> none = List.of();
+        List<Holder<Item>> tagged = List.of(Holder.direct(Items.SUGAR), Holder.direct(Items.BONE_MEAL));
+
+        TestFixtures.check(helper, DistillerSalt.resolve("", none) == null, "with the tag empty there should be no salt");
+        TestFixtures.check(helper, DistillerSalt.resolve("", tagged) == Items.SUGAR, "the first tagged item should be the salt");
+        TestFixtures.check(helper, DistillerSalt.resolve("minecraft:bone_meal", tagged) == Items.BONE_MEAL,
+                "a pinned item should win over the tag");
+        TestFixtures.check(helper, DistillerSalt.resolve("nomod:salt", tagged) == Items.SUGAR
+                        && DistillerSalt.resolve("not an id", none) == null,
+                "a pin naming no item should fall back to the tag");
+        TestFixtures.check(helper, DistillerSalt.item() == Items.SUGAR,
+                "the gametest mod's tag should make sugar the salt, got " + DistillerSalt.item());
+        helper.succeed();
+    }
+
+    @GameTest
+    public void theFireIsDrawnOnlyWhileItBurns(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        TestFixtures.check(helper, !burning(helper), "a new distiller should be cold");
+        machine.pour(1, SALT);
+        // A stick burns 5 seconds, less than the serving takes.
+        machine.setItem(DistillerBlockEntity.FUEL, new ItemStack(Items.STICK));
+
+        machine.tick();
+        TestFixtures.check(helper, burning(helper), "lit, the boiler half should be drawn burning and give light");
+        TestFixtures.check(helper, machine.getBlockState().getValue(DistillerBlock.LIT),
+                "the machine should keep its own block's state");
+
+        tick(machine, 100);
+        TestFixtures.check(helper, machine.burnLeft() == 0 && !burning(helper),
+                "burnt out with no more fuel it should go cold, " + machine.burnLeft() + " ticks left");
         helper.succeed();
     }
 
@@ -283,8 +379,9 @@ public final class DistillerMachineGameTest {
                 "the fuel slot should take fuel and nothing else");
         TestFixtures.check(helper, !menu.getSlot(DistillerBlockEntity.FILLED_OUT).mayPlace(new ItemStack(Items.BUCKET)),
                 "nothing should be put into the output");
-        TestFixtures.check(helper, !menu.getSlot(DistillerBlockEntity.SALT_OUT).isActive(),
-                "with no salt to make the salt slot should not show");
+        TestFixtures.check(helper, menu.getSlot(DistillerBlockEntity.SALT_OUT).isActive()
+                        && !menu.getSlot(DistillerBlockEntity.SALT_OUT).mayPlace(new ItemStack(Items.SUGAR)),
+                "with a salt to make the salt slot should show, and take nothing put in");
         helper.succeed();
     }
 
@@ -343,6 +440,12 @@ public final class DistillerMachineGameTest {
         TestFixtures.check(helper, helper.getLevel().getBlockEntity(helper.absolutePos(TUB)) == null,
                 "the tub half should hold none of its own");
         helper.succeed();
+    }
+
+    /** Whether the boiler half is drawn burning and gives light. */
+    private static boolean burning(GameTestHelper helper) {
+        BlockState state = helper.getLevel().getBlockState(helper.absolutePos(BOILER));
+        return state.getValue(DistillerBlock.LIT) && state.getLightEmission() > 0;
     }
 
     /** A whole distiller facing north, its tub {@code cooled} or dry, and its machine. */
