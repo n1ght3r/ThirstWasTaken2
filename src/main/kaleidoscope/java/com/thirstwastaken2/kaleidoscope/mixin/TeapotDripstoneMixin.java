@@ -21,6 +21,6 @@ abstract class TeapotDripstoneMixin {
     @Inject(method = "receiveDripstoneFluid", at = @At("RETURN"))
     private void thirst$gradeDripstone(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValueZ()) return;
-        ((BrewedWater) this).thirst$holdWater(fluid == Fluids.WATER ? WaterQuality.fresh(WaterPurity.dripstonePurity()) : null);
+        ((BrewedWater) this).thirst$holdWater(fluid == Fluids.WATER ? WaterQuality.fresh(WaterPurity.dripstoneQuality()) : null);
     }
 }

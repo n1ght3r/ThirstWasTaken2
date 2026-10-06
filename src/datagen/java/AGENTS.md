@@ -49,8 +49,8 @@ the codec that omits a field on write supplies the same value on read.
 Two of these are worth knowing before reading a diff and thinking something broke:
 
 - **`cookingtime` is omitted when it is the default**, which is 200 for smelting and 100 for
-  smoking and campfire cooking. The campfire recipes are 600, so they always write it; the smelting
-  ones are 200 and the smoking ones 100, so on 26.2 neither does.
+  smoking. The water recipes take 160 and 80 (bottle, bowl), 480 and 240 (bucket), and the
+  vessels' a default fill's time, so they always write it; the clay bowl's 200 does not on 26.2.
 - **Before 26.1 a recipe result is a live `ItemStack`**, whose components serialize as the delta from
   the item's own defaults. `ThirstItems.TERRACOTTA_WATER_BOWL` defaults to grade 3, fresh, custom
   model data `[0, 3]`, so on 1.21.11 a bowl result that sets exactly those writes no components at
@@ -137,7 +137,13 @@ purification recipes carry none. `Recipes` is a static class and cannot call the
 output with it; every `save` and `accept` for one of the mod's items goes through that. The Cooking Pot
 bowl recipe adds the same condition to its `fabric:all_mods_loaded` list by hand.
 
-The condition class is `platform/ItemEnabledCondition` in `src/main/fabric`, which datagen can see. A
+Every furnace and smoker water recipe, bottles and buckets included, and its unlock also carries
+`{"condition": "thirstwastaken2:config_enabled", "setting": "enableFurnaceBoiling"}`, through
+`Recipes.furnace(item)`. `ThirstConfig.isSettingEnabled` names the switches it knows. The canteen and
+flask have one smelting recipe per grade that matches any fill: no recipe per serving count, so a
+capacity of 64 costs no extra recipes; `CookingRecipeMixin` keeps the servings and `FurnaceMixin` times them.
+
+The condition classes are `platform/ItemEnabledCondition` and `platform/ConfigEnabledCondition` in `src/main/fabric`, which datagen can see. A
 new recipe for one of the mod's items goes through `enabled(...)` too, and `ModItemsGameTest` lists the
 files each switch should take away.
 

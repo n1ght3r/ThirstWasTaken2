@@ -55,6 +55,7 @@ final class BenchmarkWorld {
     private int chunkX;
     private int chunkZ;
     private BlockPos water;
+    private BlockPos coveredWater;
     private BlockPos cauldron;
     private String description = "not set up";
 
@@ -85,6 +86,11 @@ final class BenchmarkWorld {
 
     BlockPos water() {
         return water;
+    }
+
+    /** A water source with a block over it, so no sky above. */
+    BlockPos coveredWater() {
+        return coveredWater;
     }
 
     BlockPos cauldron() {
@@ -249,6 +255,14 @@ final class BenchmarkWorld {
         place(base.offset(1, 0, 1), Blocks.COMPOSTER.defaultBlockState());
         water = base;
         place(water, Blocks.WATER.defaultBlockState());
+        // A second source under a roof, for sampling water the sky does not reach. Walled in on the sides
+        // the floor and the cauldron leave open, so it has nowhere to flow either.
+        coveredWater = base.offset(3, 0, -1);
+        place(base.offset(2, 0, -1), stone);
+        place(base.offset(4, 0, -1), stone);
+        place(base.offset(3, 0, -2), stone);
+        place(coveredWater.above(), stone);
+        place(coveredWater, Blocks.WATER.defaultBlockState());
         cauldron = base.offset(3, 0, 0);
         place(cauldron, Blocks.WATER_CAULDRON.defaultBlockState()
                 .setValue(LayeredCauldronBlock.LEVEL, LayeredCauldronBlock.MAX_FILL_LEVEL));

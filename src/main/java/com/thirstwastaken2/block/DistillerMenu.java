@@ -195,5 +195,11 @@ public final class DistillerMenu extends AbstractContainerMenu {
         public boolean mayPlace(ItemStack stack) {
             return DistillerBlockEntity.accepts(level, getContainerSlot(), stack);
         }
+
+        /** The water slot pours one container at a time; water bowls stack. */
+        @Override
+        public int getMaxStackSize() {
+            return getContainerSlot() == DistillerBlockEntity.WATER_IN ? 1 : super.getMaxStackSize();
+        }
     }
 }

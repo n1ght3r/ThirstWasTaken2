@@ -1,0 +1,92 @@
+// The container recipe images in docs/public/screenshots/recipes/ that changed with the purification
+// rework: clay-bowl (three clay balls, three bowls), waterskin (four leather in a ring), copper-canteen
+// (string over three copper) and distiller-boiler (copper round an iron ingot). Each grid is filled
+// through client.slot and captured unhovered; tools/agent/shots/recipe_images.py crops the panel and
+// draws the result's tooltip beside it from the "*Tooltip" answers. Shot on 26.2, in any world:
+//     python tools/agent/new_world.py 26.2.x RecipeShots --from "New World"
+//     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/recipes.jsonl -Pquickplay=RecipeShots
+// Turn Jade's itemModNameTooltip off first (run/26.2.x/config/jade/jade.json), or the tooltip answers
+// gain a mod name line. Grid slots are 1 to 9, row by row.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "quiet", "command": "server.command", "args": {"command": "gamerule sendCommandFeedback false"}}
+{"id": "peaceful", "command": "server.command", "args": {"command": "difficulty peaceful"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -2 200 -2 2 203 2 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -2 199 -2 2 199 2 minecraft:stone"}}
+{"id": "table", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:crafting_table"}}
+{"id": "stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 -0.5 0 35"}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "settle", "command": "wait", "args": {"ticks": 60}}
+
+{"id": "bowlClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "bowlGive", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:clay_ball 3"}}
+{"id": "bowlSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowlOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "bowlOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowlTake", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "bowlPut1", "command": "client.slot", "args": {"slot": 1, "button": 1}}
+{"id": "bowlPut3", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "bowlPut5", "command": "client.slot", "args": {"slot": 5, "button": 1}}
+{"id": "bowlGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:clay_bowl", "result.slots.0.count": 3}}
+{"id": "bowlRecipe", "command": "client.capture", "args": {"name": "clay-bowl-recipe"}}
+{"id": "bowlTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:clay_bowl"}}
+{"id": "bowlClose", "command": "client.screen", "args": {"open": "none"}}
+
+{"id": "skinClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "skinGive", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:leather 4"}}
+{"id": "skinSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "skinOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "skinOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "skinTake", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "skinPut2", "command": "client.slot", "args": {"slot": 2, "button": 1}}
+{"id": "skinPut4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "skinPut6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "skinPut8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "skinGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:waterskin"}}
+{"id": "skinRecipe", "command": "client.capture", "args": {"name": "waterskin-recipe"}}
+{"id": "skinTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:waterskin"}}
+{"id": "skinClose", "command": "client.screen", "args": {"open": "none"}}
+
+{"id": "canteenClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "canteenGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 3"}}
+{"id": "canteenGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:string 1"}}
+{"id": "canteenSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "canteenOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "canteenOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "canteenTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "canteenPut4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "canteenPut6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "canteenPut8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "canteenTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "canteenPut2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "canteenGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:copper_canteen"}}
+{"id": "canteenRecipe", "command": "client.capture", "args": {"name": "copper-canteen-recipe"}}
+{"id": "canteenTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_canteen"}}
+{"id": "canteenClose", "command": "client.screen", "args": {"open": "none"}}
+
+{"id": "boilerClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "boilerGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 7"}}
+{"id": "boilerGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with thirstwastaken2:copper_pipe 1"}}
+{"id": "boilerGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:iron_ingot 1"}}
+{"id": "boilerSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "boilerOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "boilerOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "boilerTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "boilerPut1", "command": "client.slot", "args": {"slot": 1, "button": 1}}
+{"id": "boilerPut3", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "boilerPut4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "boilerPut6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "boilerPut7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
+{"id": "boilerPut8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "boilerPut9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
+{"id": "boilerTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "boilerPut2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "boilerTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "boilerPut5", "command": "client.slot", "args": {"slot": 5}}
+{"id": "boilerGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:distiller_boiler"}}
+{"id": "boilerRecipe", "command": "client.capture", "args": {"name": "distiller-boiler-recipe"}}
+{"id": "boilerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:distiller_boiler"}}
+{"id": "boilerClose", "command": "client.screen", "args": {"open": "none"}}
+{"id": "info", "command": "client.info"}

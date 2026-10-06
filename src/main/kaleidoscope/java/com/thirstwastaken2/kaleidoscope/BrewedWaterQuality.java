@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 /**
  * The only place that reads a grade off what goes into a stockpot or a teapot, and reads and writes it on
  * the block entity and on a teapot item. Both blocks keep only a fluid id of their own, so without this
- * a Dirty bucket poured in came back out at {@code defaultPurity} and sea water came back out fresh.
+ * a Dirty bucket poured in came back out at {@code defaultQuality} and sea water came back out fresh.
  */
 public final class BrewedWaterQuality {
     /** One int, {@link WaterPurity#storedValue}: 1-4 for the four grades, 5 for sea water, absent for none. */

@@ -32,7 +32,7 @@ abstract class ItemStackMixin {
                                                  InteractionHand hand,
                                                  CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (WaterPurity.isPlainWaterDrink(stack) && !ThirstManager.canDrinkWater(player)) {
+        if (WaterPurity.isPlainWaterDrink(stack) && !ThirstManager.canDrinkWater(player, stack)) {
             cir.setReturnValue(InteractionResult.FAIL);
         }
     }
@@ -41,7 +41,7 @@ abstract class ItemStackMixin {
     private void thirst$preventDrinkingWhenFull(Level level, Player player, InteractionHand hand,
             CallbackInfoReturnable<net.minecraft.world.InteractionResultHolder<ItemStack>> cir) {
         ItemStack stack = (ItemStack) (Object) this;
-        if (WaterPurity.isPlainWaterDrink(stack) && !ThirstManager.canDrinkWater(player)) {
+        if (WaterPurity.isPlainWaterDrink(stack) && !ThirstManager.canDrinkWater(player, stack)) {
             cir.setReturnValue(net.minecraft.world.InteractionResultHolder.fail(stack));
         }
     }

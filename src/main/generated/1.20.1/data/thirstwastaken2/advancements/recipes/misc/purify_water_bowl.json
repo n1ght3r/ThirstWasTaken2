@@ -3,6 +3,10 @@
     {
       "condition": "thirstwastaken2:item_enabled",
       "item": "thirstwastaken2:terracotta_water_bowl"
+    },
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
     }
   ],
   "parent": "minecraft:recipes/root",
@@ -49,13 +53,8 @@
     "recipes": [
       "thirstwastaken2:purify_water_bowl_0_smelting",
       "thirstwastaken2:purify_water_bowl_0_smoking",
-      "thirstwastaken2:purify_water_bowl_0_campfire",
       "thirstwastaken2:purify_water_bowl_1_smelting",
-      "thirstwastaken2:purify_water_bowl_1_smoking",
-      "thirstwastaken2:purify_water_bowl_1_campfire",
-      "thirstwastaken2:purify_water_bowl_2_smelting",
-      "thirstwastaken2:purify_water_bowl_2_smoking",
-      "thirstwastaken2:purify_water_bowl_2_campfire"
+      "thirstwastaken2:purify_water_bowl_1_smoking"
     ]
   },
   "sends_telemetry_event": false

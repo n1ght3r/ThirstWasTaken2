@@ -34,7 +34,8 @@ public final class ThirstApiGameTest {
         restores(helper, Items.POTION, config.drinks.get("minecraft:potion"));
         restores(helper, Items.MILK_BUCKET, config.drinks.get("minecraft:milk_bucket"));
         restores(helper, Items.APPLE, config.foods.get("minecraft:apple"));
-        restores(helper, ThirstItems.TERRACOTTA_WATER_BOWL, config.drinks.get("thirstwastaken2:terracotta_water_bowl"));
+        // The mod's own water containers restore the plain water serving, not an entry of their own.
+        restores(helper, ThirstItems.TERRACOTTA_WATER_BOWL, config.plainWaterValue);
         TestFixtures.check(helper, ThirstApi.thirstValues(new ItemStack(Items.STONE)) == null,
                 "stone should restore nothing");
         helper.succeed();
@@ -46,9 +47,8 @@ public final class ThirstApiGameTest {
         TestFixtures.check(helper, ThirstApi.thirstValues(skin) == null, "an empty waterskin should restore nothing");
 
         WaterskinItem.addWater(skin, WaterQuality.fresh(2), 1);
-        TestFixtures.check(helper, Arrays.equals(ThirstApi.thirstValues(skin),
-                        ThirstConfig.get().drinks.get("thirstwastaken2:waterskin")),
-                "a filled waterskin should restore its configured value, got "
+        TestFixtures.check(helper, Arrays.equals(ThirstApi.thirstValues(skin), ThirstConfig.get().plainWaterValue),
+                "a filled waterskin should restore a serving of plain water, got "
                         + Arrays.toString(ThirstApi.thirstValues(skin)));
         helper.succeed();
     }
@@ -136,19 +136,19 @@ public final class ThirstApiGameTest {
     @GameTest
     public void aHandEditedConfigIsClampedBackIntoRange(GameTestHelper helper) {
         TestFixtures.withConfig(config -> {
-            config.defaultPurity = 99;
+            config.defaultQuality = 99;
             config.thirstDepletionModifier = 50.0;
             config.sicknessEffects = null;
             config.drinks.remove("minecraft:milk_bucket");
             config.drinks.remove("farmersdelight:milk_bottle");
             config.foods.remove("farmersdelight:bone_broth");
             config.drinkTagValue = new int[] {3};
-            config.distillerTankServings = 1;
+            config.distillerTankServings = 0;
             config.distillerServingSeconds = 0;
             config.distillerSaltItem = null;
         }, () -> {
             ThirstConfig config = ThirstConfig.get();
-            TestFixtures.check(helper, config.defaultPurity == 3, "default_purity should clamp to 3, got " + config.defaultPurity);
+            TestFixtures.check(helper, config.defaultQuality == 3, "default_purity should clamp to 3, got " + config.defaultQuality);
             TestFixtures.check(helper, config.thirstDepletionModifier == 10.0, "thirst_depletion_modifier should clamp to 10");
             TestFixtures.check(helper, config.sicknessEffects.equals(SicknessEffect.defaults()),
                     "missing sickness tables should fall back to the defaults, got " + config.sicknessEffects);
@@ -159,9 +159,9 @@ public final class ThirstApiGameTest {
                     "a config file written before the added Farmer's Delight entries should have them merged back in");
             TestFixtures.check(helper, config.drinkTagValue.length == 2,
                     "a drink tag value of the wrong length should be reset, got " + Arrays.toString(config.drinkTagValue));
-            TestFixtures.check(helper, config.distillerTankServings == 3 && config.distillerServingSeconds == 1
+            TestFixtures.check(helper, config.distillerTankServings == 1 && config.distillerServingSeconds == 1
                             && "".equals(config.distillerSaltItem),
-                    "a distiller tank should hold at least a bucket, a serving take at least a second, and a missing salt pin be empty");
+                    "a distiller tank should hold at least a serving, a serving take at least a second, and a missing salt pin be empty");
         });
         helper.succeed();
     }
@@ -366,14 +366,14 @@ public final class ThirstApiGameTest {
         ThirstConfig defaults = new ThirstConfig();
         String[] namespaces = {"minersdelight:", "miners_delight:"};
         for (String mod : namespaces) {
-            TestFixtures.check(helper, Arrays.equals(defaults.drinks.get(mod + "milk_cup"), new int[]{6, 8}),
-                    mod + "milk_cup should be the milk bottle's 6, 8");
-            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "cave_soup"), new int[]{4, 5}),
-                    mod + "cave_soup should be a stew's 4, 5");
-            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "beef_stew_cup"), new int[]{2, 3}),
-                    mod + "beef_stew_cup should be half a stew, 2, 3");
-            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "bone_broth_cup"), new int[]{3, 4}),
-                    mod + "bone_broth_cup should be half a broth, 3, 4");
+            TestFixtures.check(helper, Arrays.equals(defaults.drinks.get(mod + "milk_cup"), new int[]{4, 0}),
+                    mod + "milk_cup should be plain milk's 4, 0");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "cave_soup"), new int[]{6, 4}),
+                    mod + "cave_soup should be a soup's 6, 4");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "beef_stew_cup"), new int[]{3, 2}),
+                    mod + "beef_stew_cup should be half a stew, 3, 2");
+            TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "bone_broth_cup"), new int[]{3, 2}),
+                    mod + "bone_broth_cup should be half a broth, 3, 2");
             for (String none : new String[]{"water_cup", "powder_snow_cup", "copper_cup", "baked_squid"}) {
                 TestFixtures.check(helper, !defaults.foods.containsKey(mod + none) && !defaults.drinks.containsKey(mod + none),
                         mod + none + " restores no thirst and should not be listed");
@@ -390,9 +390,9 @@ public final class ThirstApiGameTest {
         }, () -> {
             ThirstConfig config = ThirstConfig.get();
             for (String mod : namespaces) {
-                TestFixtures.check(helper, Arrays.equals(config.drinks.get(mod + "milk_cup"), new int[]{6, 8}),
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(mod + "milk_cup"), new int[]{4, 0}),
                         mod + "milk_cup should be merged back, got " + Arrays.toString(config.drinks.get(mod + "milk_cup")));
-                TestFixtures.check(helper, Arrays.equals(config.foods.get(mod + "insect_stew_cup"), new int[]{2, 3}),
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(mod + "insect_stew_cup"), new int[]{3, 2}),
                         mod + "insect_stew_cup should be merged back, got "
                                 + Arrays.toString(config.foods.get(mod + "insect_stew_cup")));
             }
@@ -409,7 +409,7 @@ public final class ThirstApiGameTest {
         ThirstConfig defaults = new ThirstConfig();
         String[] drinks = {"cherry_juice", "goat_milk_bottle", "mead", "red_grape_wine", "moonshine", "syrup_bottle"};
         String[] foods = {"corn_stew", "onion_soup", "red_grapes", "caramel_apple"};
-        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("hearthandharvest:red_grape_wine"), new int[]{3, 4}),
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("hearthandharvest:red_grape_wine"), new int[]{3, 1}),
                 "a wine should restore what Brewin' and Chewin's do, not upstream's 10, 14");
         for (String dry : new String[]{"grape_jam", "pickled_carrots", "cheddar_cheese_slice", "sap_bucket", "macaroni_and_cheese"}) {
             TestFixtures.check(helper, !defaults.foods.containsKey("hearthandharvest:" + dry)
@@ -551,8 +551,8 @@ public final class ThirstApiGameTest {
             TestFixtures.check(helper, defaults.foods.containsKey("nomansland:" + food),
                     "the default foods should list nomansland:" + food);
         }
-        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("nomansland:pesto_bottle"), new int[]{1, 2}),
-                "the pesto should restore 1, 2, got " + Arrays.toString(defaults.drinks.get("nomansland:pesto_bottle")));
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("nomansland:pesto_bottle"), new int[]{1, 0}),
+                "the pesto should restore 1, 0, got " + Arrays.toString(defaults.drinks.get("nomansland:pesto_bottle")));
         for (String dry : new String[]{"resin_oil_bottle", "awkward_residue", "trail_mix", "pear_cobbler_slice"}) {
             TestFixtures.check(helper, !defaults.foods.containsKey("nomansland:" + dry)
                             && !defaults.drinks.containsKey("nomansland:" + dry),

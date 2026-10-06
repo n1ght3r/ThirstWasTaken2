@@ -5,7 +5,7 @@ import com.thirstwastaken2.client.platform.ClientVanilla;
 import com.thirstwastaken2.compat.AppleSkin;
 import com.thirstwastaken2.config.QuenchedOverlay;
 import com.thirstwastaken2.config.ThirstConfig;
-import com.thirstwastaken2.item.WaterskinItem;
+import com.thirstwastaken2.data.ThirstData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -35,10 +35,14 @@ enum ConfigCategory {
                             config -> config.preventSprintingWhenThirsty, (config, value) -> config.preventSprintingWhenThirsty = value),
                     ConfigEntry.toggle("dehydration_halts_health_regen",
                             config -> config.dehydrationHaltsHealthRegen, (config, value) -> config.dehydrationHaltsHealthRegen = value),
+                    ConfigEntry.toggle("illness_halts_health_regen",
+                            config -> config.illnessHaltsHealthRegen, (config, value) -> config.illnessHaltsHealthRegen = value),
+                    ConfigEntry.number("food_heal_min_thirst_percent", 0, 100, ConfigEntry::wholePercent,
+                            config -> config.foodHealMinThirstPercent, (config, value) -> config.foodHealMinThirstPercent = value),
                     ConfigEntry.percent("quenched_health_regen", 0, 100,
                             config -> config.quenchedHealthRegen, (config, value) -> config.quenchedHealthRegen = value),
-                    ConfigEntry.number("quenched_heal_min_food", 0, 20, food -> Component.literal(Integer.toString(food)),
-                            config -> config.quenchedHealMinFood, (config, value) -> config.quenchedHealMinFood = value),
+                    ConfigEntry.number("quenched_heal_min_food_percent", 0, 100, ConfigEntry::wholePercent,
+                            config -> config.quenchedHealMinFoodPercent, (config, value) -> config.quenchedHealMinFoodPercent = value),
                     // Only Cold Sweat measures the temperature this reads, so without it the switch is left off the page.
                     ConfigEntry.toggle("cold_sweat_climate",
                             config -> config.coldSweatClimate, (config, value) -> config.coldSweatClimate = value)
@@ -59,8 +63,17 @@ enum ConfigCategory {
 
     WATER("water", ThirstWasTaken2.id("textures/item/terracotta_water_bowl_purity_3.png"),
             ConfigSection.of("water.drinking", List.of(
-                    ConfigEntry.grade("default_purity",
-                            config -> config.defaultPurity, (config, value) -> config.defaultPurity = value),
+                    ConfigEntry.grade("default_quality",
+                            config -> config.defaultQuality, (config, value) -> config.defaultQuality = value),
+                    // One serving of plain water, the same from every container; two values of one array,
+                    // set in place like the quenched shares.
+                    ConfigEntry.number("plain_water_thirst", 0, ThirstData.MAX, ConfigEntry::points,
+                            config -> config.plainWaterValue[0], (config, value) -> config.plainWaterValue[0] = value),
+                    ConfigEntry.number("plain_water_quenched", 0, ThirstData.MAX, ConfigEntry::points,
+                            config -> config.plainWaterValue[1], (config, value) -> config.plainWaterValue[1] = value),
+                    ConfigEntry.number("plain_water_drink_ticks", ThirstConfig.MIN_DRINK_TICKS,
+                            ThirstConfig.MAX_DRINK_TICKS, ConfigEntry::ticks,
+                            config -> config.plainWaterDrinkTicks, (config, value) -> config.plainWaterDrinkTicks = value),
                     ConfigEntry.toggle("can_drink_by_hand",
                             config -> config.canDrinkByHand, (config, value) -> config.canDrinkByHand = value))),
             ConfigSection.of("water.quenched", List.of(
@@ -78,10 +91,10 @@ enum ConfigCategory {
             ConfigSection.of("water.collected", List.of(
                     ConfigEntry.toggle("enable_rain_collection",
                             config -> config.enableRainCollection, (config, value) -> config.enableRainCollection = value),
-                    ConfigEntry.grade("rainwater_purity",
-                            config -> config.rainwaterPurity, (config, value) -> config.rainwaterPurity = value),
-                    ConfigEntry.grade("dripstone_purity",
-                            config -> config.dripstonePurity, (config, value) -> config.dripstonePurity = value)))),
+                    ConfigEntry.grade("rainwater_quality",
+                            config -> config.rainwaterQuality, (config, value) -> config.rainwaterQuality = value),
+                    ConfigEntry.grade("dripstone_quality",
+                            config -> config.dripstoneQuality, (config, value) -> config.dripstoneQuality = value)))),
 
     // What bad water does to the drinker is a subject of its own: how effects add up, then one tab per
     // difficulty since each has its own table. The tables are edited line by line (SicknessRows) and
@@ -148,18 +161,32 @@ enum ConfigCategory {
 
     CONTAINERS("containers", ThirstWasTaken2.id("textures/item/iron_flask.png"),
             ConfigSection.of("containers.capacity", List.of(
-                    ConfigEntry.number("copper_canteen_capacity", 1, WaterskinItem.MAX_CAPACITY, ConfigEntry::servings,
+                    capacity("waterskin_capacity",
+                            config -> config.waterskinCapacity, (config, value) -> config.waterskinCapacity = value),
+                    capacity("copper_canteen_capacity",
                             config -> config.copperCanteenCapacity, (config, value) -> config.copperCanteenCapacity = value),
-                    ConfigEntry.number("iron_flask_capacity", 1, WaterskinItem.MAX_CAPACITY, ConfigEntry::servings,
+                    capacity("iron_flask_capacity",
                             config -> config.ironFlaskCapacity, (config, value) -> config.ironFlaskCapacity = value))),
+            // How many filled bowls share a slot, which is a different thing from how much one
+            // holds: each is still a single serving.
+            ConfigSection.of("containers.stacks", List.of(
+                    ConfigEntry.number("terracotta_water_bowl_stack_size", 1, ThirstConfig.MAX_CONTAINER, ConfigEntry::points,
+                            config -> config.terracottaWaterBowlStackSize,
+                            (config, value) -> config.terracottaWaterBowlStackSize = value))),
             ConfigSection.of("containers.boiling", List.of(
                     ConfigEntry.toggle("enable_boiling_in_hand",
                             config -> config.enableBoilingInHand, (config, value) -> config.enableBoilingInHand = value),
+                    ConfigEntry.toggle("enable_furnace_boiling",
+                            config -> config.enableFurnaceBoiling, (config, value) -> config.enableFurnaceBoiling = value),
                     ConfigEntry.number("copper_canteen_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.copperCanteenBoilSeconds, (config, value) -> config.copperCanteenBoilSeconds = value),
                     ConfigEntry.number("iron_flask_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.ironFlaskBoilSeconds, (config, value) -> config.ironFlaskBoilSeconds = value))),
             ConfigSection.of("containers.hanging_pots", List.of(
+                    capacity("copper_hanging_pot_capacity",
+                            config -> config.copperHangingPotCapacity, (config, value) -> config.copperHangingPotCapacity = value),
+                    capacity("iron_hanging_pot_capacity",
+                            config -> config.ironHangingPotCapacity, (config, value) -> config.ironHangingPotCapacity = value),
                     ConfigEntry.number("copper_hanging_pot_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.copperHangingPotBoilSeconds,
                             (config, value) -> config.copperHangingPotBoilSeconds = value),
@@ -170,7 +197,7 @@ enum ConfigCategory {
                     ConfigEntry.number("distiller_serving_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.distillerServingSeconds,
                             (config, value) -> config.distillerServingSeconds = value),
-                    ConfigEntry.number("distiller_tank_servings", 3, ThirstConfig.MAX_DISTILLER_TANK, ConfigEntry::servings,
+                    capacity("distiller_tank_servings",
                             config -> config.distillerTankServings,
                             (config, value) -> config.distillerTankServings = value))));
 
@@ -187,6 +214,12 @@ enum ConfigCategory {
         List<ConfigEntry<?>> all = new ArrayList<>();
         for (ConfigSection section : this.sections) all.addAll(section.entries());
         this.entries = List.copyOf(all);
+    }
+
+    /** Servings a container holds, 1 to {@link ThirstConfig#MAX_CONTAINER}. */
+    private static ConfigEntry<Integer> capacity(String key, Function<ThirstConfig, Integer> getter,
+                                                 BiConsumer<ThirstConfig, Integer> setter) {
+        return ConfigEntry.number(key, 1, ThirstConfig.MAX_CONTAINER, ConfigEntry::servings, getter, setter);
     }
 
     /** A season's factor on the drain, shown on the Seasons tab only while Serene Seasons is installed. */

@@ -406,6 +406,9 @@ public final class DistillerBlockEntity extends SavedBlockEntity implements Worl
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        // One container at a time in the water slot, as in the menu: a hopper moves one item per transfer
+        // but would merge it into a stack of water bowls, which the slot cannot pour.
+        if (slot == WATER_IN && !items.get(WATER_IN).isEmpty()) return false;
         return getLevel() != null && accepts(getLevel(), slot, stack);
     }
 

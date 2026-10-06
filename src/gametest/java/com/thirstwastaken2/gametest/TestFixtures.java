@@ -8,6 +8,7 @@ import com.thirstwastaken2.purity.WaterPurity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +21,6 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 //?}
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 
 import java.io.IOException;
@@ -70,16 +70,23 @@ final class TestFixtures {
      * passes or fails by where the test lands, which is how 1.20.1 on Forge once read cold ocean.
      */
     static BlockPos water(GameTestHelper helper) {
+        return water(helper, "minecraft:plains");
+    }
+
+    /** {@link #water(GameTestHelper)} in {@code biome} rather than plains. */
+    static BlockPos water(GameTestHelper helper, String biome) {
         for (int x = 1; x <= 3; x++) {
             for (int z = 1; z <= 3; z++) {
                 helper.setBlock(new BlockPos(x, WATER.getY() - 1, z), Blocks.STONE);
             }
         }
         BlockPos water = helper.absolutePos(WATER);
-        fillPlains(helper, water.offset(-BIOME_REACH, -BIOME_REACH, -BIOME_REACH), water.offset(BIOME_REACH, BIOME_REACH, BIOME_REACH));
+        fillBiome(helper, water.offset(-BIOME_REACH, -BIOME_REACH, -BIOME_REACH), water.offset(BIOME_REACH, BIOME_REACH, BIOME_REACH),
+                biome);
         helper.setBlock(WATER, Blocks.WATER);
-        check(helper, helper.getLevel().getBiome(water).is(Biomes.PLAINS),
-                "the water fixture should stand in plains, got " + helper.getLevel().getBiome(water));
+        check(helper, helper.getLevel().getBiome(water).is(net.minecraft.resources.ResourceKey.create(
+                        net.minecraft.core.registries.Registries.BIOME, Identifier.parse(biome))),
+                "the water fixture should stand in " + biome + ", got " + helper.getLevel().getBiome(water));
         return water;
     }
 
@@ -87,9 +94,9 @@ final class TestFixtures {
      * Runs {@code fillbiome} over the box through the dispatcher rather than
      * {@code performPrefixedCommand}, which swallows a failure such as an unloaded chunk.
      */
-    private static void fillPlains(GameTestHelper helper, BlockPos from, BlockPos to) {
+    private static void fillBiome(GameTestHelper helper, BlockPos from, BlockPos to, String biome) {
         String command = "fillbiome " + from.getX() + " " + from.getY() + " " + from.getZ()
-                + " " + to.getX() + " " + to.getY() + " " + to.getZ() + " minecraft:plains";
+                + " " + to.getX() + " " + to.getY() + " " + to.getZ() + " " + biome;
         try {
             helper.getLevel().getServer().getCommands().getDispatcher().execute(command,
                     helper.getLevel().getServer().createCommandSourceStack().withLevel(helper.getLevel()).withSuppressedOutput());
@@ -141,6 +148,32 @@ final class TestFixtures {
         /*return player.getFoodData().getFoodLevel() > 6
                 && com.thirstwastaken2.data.ThirstManager.allowsSprinting(player);
         *///?}
+    }
+
+    /**
+     * Puts {@code player} in one known state: thirst and quenched, food and health, and only
+     * {@code effect}, or no effect at all when it is {@code null}. Saturation is filled to the food
+     * level, the most vanilla allows, so a heal from it is always available. Thirst's exhaustion starts
+     * from nothing; food's has no setter outside the client and is left as it is.
+     */
+    static void setState(ServerPlayer player, int thirst, int quenched, int food, float health,
+                         net.minecraft.world.effect.MobEffectInstance effect) {
+        player.removeAllEffects();
+        com.thirstwastaken2.data.ThirstManager.tickPlayer(player);
+        com.thirstwastaken2.data.ThirstManager.set(player,
+                com.thirstwastaken2.data.ThirstData.full().withLevels(thirst, quenched).withExhaustion(0.0F));
+        player.getFoodData().setFoodLevel(food);
+        player.getFoodData().setSaturation(food);
+        player.setHealth(health);
+        if (effect != null) player.addEffect(effect);
+    }
+
+    /** Whether {@code a} and {@code b} would merge into one stack: the same item and the same data. */
+    static boolean sameData(ItemStack a, ItemStack b) {
+        //? if >=1.20.5 {
+        return ItemStack.isSameItemSameComponents(a, b);
+        //?} else
+        //return ItemStack.isSameItemSameTags(a, b);
     }
 
     /** A vanilla water bottle: a potion whose contents are plain water. */

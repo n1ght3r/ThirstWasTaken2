@@ -13,7 +13,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:glass_bottle"
+      "item": "thirstwastaken2:copper_distiller"
     },
     "show_toast": true,
     "title": {

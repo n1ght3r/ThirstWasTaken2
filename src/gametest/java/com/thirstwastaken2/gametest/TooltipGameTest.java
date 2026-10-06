@@ -34,7 +34,7 @@ public final class TooltipGameTest {
     public void waterContainerShowsPurity(GameTestHelper helper) {
         List<Component> lines = linesFor(bowl(WaterQuality.fresh(3)));
 
-        TestFixtures.check(helper, hasKeyStartingWith(lines, "thirst.purity."),
+        TestFixtures.check(helper, hasGradeLine(lines),
                 "a water container should get a purity line, got " + keys(lines));
         helper.succeed();
     }
@@ -50,11 +50,11 @@ public final class TooltipGameTest {
 
         TestFixtures.check(helper, hasKey(salty, "thirst.water.salty"),
                 "salt water should get a salinity line, got " + keys(salty));
-        TestFixtures.check(helper, !hasKeyStartingWith(salty, "thirst.purity."),
+        TestFixtures.check(helper, !hasGradeLine(salty),
                 "salt water has no grade to report, got " + keys(salty));
         TestFixtures.check(helper, salty.stream().allMatch(line -> line.getContents() instanceof TranslatableContents),
                 "salt water restores nothing, so it should get no droplet rows, got " + keys(salty));
-        TestFixtures.check(helper, hasKeyStartingWith(fresh, "thirst.purity.")
+        TestFixtures.check(helper, hasGradeLine(fresh)
                         && !hasKey(fresh, "thirst.water.salty"),
                 "fresh water should report a grade and no salinity, got " + keys(fresh));
         helper.succeed();
@@ -123,7 +123,7 @@ public final class TooltipGameTest {
         List<Component> lines = new ArrayList<>();
         ThirstTooltip.appendTo(bowl(WaterQuality.fresh(3)), lines::add);
 
-        TestFixtures.check(helper, hasKeyStartingWith(lines, "thirst.purity."),
+        TestFixtures.check(helper, hasGradeLine(lines),
                 "the grade does not depend on AppleSkin, got " + keys(lines));
         TestFixtures.check(helper, lines.stream().allMatch(line -> line.getContents() instanceof TranslatableContents),
                 "without AppleSkin there should be no droplet rows, got " + keys(lines));
@@ -185,8 +185,10 @@ public final class TooltipGameTest {
         return lines.stream().anyMatch(line -> keyOf(line).equals(key));
     }
 
-    private static boolean hasKeyStartingWith(List<Component> lines, String prefix) {
-        return lines.stream().anyMatch(line -> keyOf(line).startsWith(prefix));
+    /** Whether one of the lines names a fresh water grade. Salt water's line shares the prefix, not the key. */
+    private static boolean hasGradeLine(List<Component> lines) {
+        return hasKey(lines, "thirst.water.dirty") || hasKey(lines, "thirst.water.murky")
+                || hasKey(lines, "thirst.water.clean") || hasKey(lines, "thirst.water.pure");
     }
 
     private static String keyOf(Component line) {

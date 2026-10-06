@@ -38,13 +38,14 @@ public final class ModItemsGameTest {
     private static final List<Switch> SWITCHES = List.of(
             new Switch("enableBowls", (config, on) -> config.enableBowls = on, List.of(
                     "recipe/clay_bowl", "recipe/terracotta_bowl_from_smelting", "recipe/terracotta_water_bowl",
-                    "recipe/purify_water_bowl_0_smelting", "recipe/purify_water_bowl_2_campfire",
+                    "recipe/purify_water_bowl_0_smelting", "recipe/purify_water_bowl_1_smoking",
                     "advancement/recipes/misc/purify_water_bowl")),
             new Switch("enableWaterskin", (config, on) -> config.enableWaterskin = on, WATERSKIN_FILES),
-            new Switch("enableCopperCanteen", (config, on) -> config.enableCopperCanteen = on,
-                    List.of("recipe/copper_canteen")),
+            new Switch("enableCopperCanteen", (config, on) -> config.enableCopperCanteen = on, List.of(
+                    "recipe/copper_canteen", "recipe/purify_water_copper_canteen_1_smelting",
+                    "advancement/recipes/misc/purify_water_copper_canteen")),
             new Switch("enableIronFlask", (config, on) -> config.enableIronFlask = on, List.of(
-                    "recipe/iron_flask", "recipe/purify_water_iron_flask_1_0_smelting",
+                    "recipe/iron_flask", "recipe/purify_water_iron_flask_0_smelting",
                     "advancement/recipes/misc/purify_water_iron_flask")),
             new Switch("enableCopperHangingPot", (config, on) -> config.enableCopperHangingPot = on,
                     List.of("recipe/copper_hanging_pot")),
@@ -83,6 +84,30 @@ public final class ModItemsGameTest {
                 }
             });
         }
+        helper.succeed();
+    }
+
+    /** Every furnace and smoker water recipe, which {@code enableFurnaceBoiling} switches as one. */
+    private static final List<String> FURNACE_WATER = List.of(
+            "recipe/purify_water_bottle_0_smelting", "recipe/purify_water_bottle_1_smoking",
+            "recipe/purify_water_bowl_0_smelting", "recipe/purify_water_bucket_1_smoking",
+            "recipe/purify_water_copper_canteen_0_smelting", "recipe/purify_water_iron_flask_1_smelting");
+
+    @GameTest
+    public void theFurnaceSwitchTakesEveryWaterRecipeAndNothingElse(GameTestHelper helper) {
+        for (String file : FURNACE_WATER) {
+            TestFixtures.check(helper, LoadConditions.hold(read(helper, file)), file + " should load by default");
+        }
+        TestFixtures.withConfig(config -> config.enableFurnaceBoiling = false, () -> {
+            for (String file : FURNACE_WATER) {
+                TestFixtures.check(helper, !LoadConditions.hold(read(helper, file)),
+                        file + " should not load with enableFurnaceBoiling off");
+            }
+            for (String file : List.of("recipe/clay_bowl", "recipe/terracotta_bowl_from_smelting", "recipe/iron_flask")) {
+                TestFixtures.check(helper, LoadConditions.hold(read(helper, file)),
+                        file + " is not water boiling and should still load with enableFurnaceBoiling off");
+            }
+        });
         helper.succeed();
     }
 

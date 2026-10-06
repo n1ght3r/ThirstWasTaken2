@@ -1,4 +1,4 @@
-// The Copper Canteen and Iron Flask in a real client: holding use on a lit campfire boils them Pure
+// The Copper Canteen and Iron Flask in a real client: holding use on a lit campfire boils them Clean
 // through the real right click, salt water stays salty, a boiled vessel is not drunk while use is
 // still held, and both crafting recipes fill a real crafting table. Run it unattended in a
 // singleplayer world:
@@ -27,23 +27,23 @@
 {"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
 {"id": "settle", "command": "wait", "args": {"ticks": 40}}
 
-// Two dirty servings in the canteen take 2 x 3 s. Hold half of it, look, then the rest with room to spare.
+// Two dirty servings in the canteen take 2 x 2 s. Hold most of it, look, then the rest with room to spare.
 {"id": "canteen", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2,thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
 {"id": "canteenBefore", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "boilHalf", "command": "client.hold", "args": {"keys": ["use"], "ticks": 60}}
 {"id": "canteenBoiling", "command": "client.capture", "args": {"name": "canteen-boiling"}}
 {"id": "stillDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_purity=0]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
 {"id": "boilRest", "command": "client.hold", "args": {"keys": ["use"], "ticks": 80}}
-{"id": "canteenPure", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_purity=3,thirstwastaken2:water_servings=2]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
-// Still holding use on the fire once it is Pure must not start drinking it.
+{"id": "canteenClean", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_purity=2,thirstwastaken2:water_servings=2]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
+// Still holding use on the fire once it is Clean must not start drinking it.
 {"id": "keepHolding", "command": "client.hold", "args": {"keys": ["use"], "ticks": 60}}
 {"id": "notDrunk", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
 {"id": "canteenAfter", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 
-// Three murky servings in the flask take 3 x 4 s.
+// Three murky servings in the flask take 3 x 3 s.
 {"id": "flask", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:iron_flask[thirstwastaken2:water_servings=3,thirstwastaken2:water_purity=1,thirstwastaken2:water_salty=false]"}}
 {"id": "flaskBoil", "command": "client.hold", "args": {"keys": ["use"], "ticks": 280}}
-{"id": "flaskPure", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:iron_flask[thirstwastaken2:water_purity=3,thirstwastaken2:water_servings=3]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
+{"id": "flaskClean", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:iron_flask[thirstwastaken2:water_purity=2,thirstwastaken2:water_servings=3]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
 
 // Salt water is refused, with a line on the action bar.
 {"id": "salty", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:iron_flask[thirstwastaken2:water_servings=6,thirstwastaken2:water_salty=true]"}}
@@ -54,19 +54,17 @@
 // The recipes, in a real crafting table where the campfire was. Grid slots are 1 to 9, row by row.
 {"id": "tableClear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "table", "command": "server.command", "args": {"command": "setblock 0 200 0 minecraft:crafting_table"}}
-{"id": "copper", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 5"}}
-{"id": "leather", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:leather"}}
+{"id": "copper", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 3"}}
+{"id": "string", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:string"}}
 {"id": "canteenOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
 {"id": "canteenOpened", "command": "wait", "args": {"ticks": 10}}
 {"id": "takeCopper", "command": "client.slot", "args": {"inventory": 9}}
 {"id": "copper4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
 {"id": "copper6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
-{"id": "copper7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
 {"id": "copper8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
-{"id": "copper9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
-{"id": "takeLeather", "command": "client.slot", "args": {"inventory": 10}}
-{"id": "leather2", "command": "client.slot", "args": {"slot": 2}}
-{"id": "canteenGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:copper_canteen"]]}
+{"id": "takeString", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "string2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "canteenGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:copper_canteen"}}
 {"id": "canteenRecipe", "command": "client.capture", "args": {"name": "canteen-recipe"}}
 {"id": "canteenTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_canteen"}}
 {"id": "canteenClose", "command": "client.screen", "args": {"open": "none"}}

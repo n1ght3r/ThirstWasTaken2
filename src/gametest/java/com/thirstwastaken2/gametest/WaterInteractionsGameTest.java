@@ -56,7 +56,7 @@ public final class WaterInteractionsGameTest {
         use(player, new ItemStack(ThirstItems.WATERSKIN));
 
         ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
-        TestFixtures.check(helper, WaterskinItem.servings(held) == WaterskinItem.CAPACITY,
+        TestFixtures.check(helper, WaterskinItem.servings(held) == com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity,
                 "a waterskin used on water should be filled, got " + WaterskinItem.servings(held));
         TestFixtures.check(helper, WaterPurity.quality(held).equals(expected),
                 "the waterskin should carry the sampled " + expected + ", got " + WaterPurity.quality(held));
@@ -85,8 +85,10 @@ public final class WaterInteractionsGameTest {
         WaterInteractions.fillWaterskinFromCauldron(player, helper.getLevel(), InteractionHand.MAIN_HAND, aimAt(pos));
 
         ItemStack skin = player.getItemInHand(InteractionHand.MAIN_HAND);
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == WaterskinItem.CAPACITY,
-                "drawing from a full cauldron should fill the waterskin, got " + WaterskinItem.servings(skin));
+        int expected = Math.min(3, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == expected,
+                "drawing from a full cauldron should take all three levels the skin has room for, got "
+                        + WaterskinItem.servings(skin));
         TestFixtures.check(helper, WaterPurity.quality(skin).equals(stored),
                 "the serving should carry the cauldron's " + stored + ", got " + WaterPurity.quality(skin));
         TestFixtures.check(helper, helper.getLevel().getBlockState(pos).is(Blocks.CAULDRON),
@@ -131,11 +133,11 @@ public final class WaterInteractionsGameTest {
         BlockPos pos = helper.absolutePos(CAULDRON);
         ServerPlayer player = TestFixtures.mockPlayer(helper);
         ItemStack skin = new ItemStack(ThirstItems.WATERSKIN);
-        WaterskinItem.addWater(skin, WaterQuality.fresh(2), WaterskinItem.CAPACITY);
+        WaterskinItem.addWater(skin, WaterQuality.fresh(2), com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
         player.setItemInHand(InteractionHand.MAIN_HAND, skin);
 
         WaterInteractions.emptyWaterskinOnBlock(player, helper.getLevel(), InteractionHand.MAIN_HAND, aimAt(pos));
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == WaterskinItem.CAPACITY,
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity,
                 "a standing player should not pour the waterskin out");
 
         player.setPose(Pose.CROUCHING);

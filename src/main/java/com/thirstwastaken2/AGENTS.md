@@ -12,6 +12,7 @@ thirst, and the client only receives it through the `PlayerData` sync.
 | What data packs say an item restores, and syncing it to clients | `data/DataPackDrinks`, `data/DrinkValuesPayload` |
 | Anything another mod calls | `api/` only: `ThirstApi`, `ThirstEvents`. Public API; see `docs/docs/developers/`, the site's developer pages |
 | Drain rate, climate, damage, full-bar drinking rules, hand drinking | `data/ThirstManager` |
+| Natural healing: food's thirst and illness gate, and quenched's own heal once saturation is spent | `data/HealthRegen`, from `mixin/FoodDataMixin` and `ThirstManager.tickPlayer` |
 | The state record itself (thirst, quenched, exhaustion) | `data/ThirstData` |
 | A new config key | `config/ThirstConfig` (field + `sanitize()`), then the client config screen |
 | Switching off the mod's own items (Mod Items page) | `config/ThirstConfig.isItemEnabled`, read by the `item_enabled` recipe condition (`platform/Loader.registerResourceConditions`, the generators in `src/datagen`) and by the creative tab |
@@ -120,22 +121,26 @@ Events registered there, in registration order per event:
 
 `block/HangingPotBlock` is adapted from Dehydration's campfire cauldron (GPL-3.0; see `CREDITS.md`).
 The copper and iron pots are two registrations of it that differ in look, sound, recipe and the
-boil time they read from the config at each step (`copperHangingPotBoilSeconds` and
-`ironHangingPotBoilSeconds`, 4 and 6 by default; the numbers are argued in `../../../../../docs/dev/mechanics/WATER-REFERENCE.md`), so
-code that asks whether a block is a pot checks `instanceof HangingPotBlock`, never one of the two.
-It holds `CAPACITY` servings and stores their quality in `WaterPurity.BLOCK_PURITY`, like a cauldron,
-and `HangingPotInteractions` does all the filling and drawing itself, inline, because vanilla has no
-interaction for the block to defer to. It refuses every pour where `Vanilla.waterEvaporates`, so a
-pot never holds water in the Nether. Keep that handler ahead of `emptyWaterskinOnBlock`: a sneaking
-player's waterskin pours into the pot rather than onto the ground.
+boil time and capacity they read from the config whenever needed (`copperHangingPotBoilSeconds`
+and `ironHangingPotBoilSeconds`, 3 and 4 by default; `copperHangingPotCapacity` and
+`ironHangingPotCapacity`, 3 and 6, up to 64), so code that asks whether a block is a pot checks
+`instanceof HangingPotBlock`, never one of the two. Its quality is in `WaterPurity.BLOCK_PURITY`,
+like a cauldron, and `HangingPotInteractions` does all the filling and drawing itself, inline,
+because vanilla has no interaction for the block to defer to. It refuses every pour where
+`Vanilla.waterEvaporates`, so a pot never holds water in the Nether. Keep that handler ahead of
+`emptyWaterskinOnBlock`: a sneaking player's waterskin pours into the pot rather than onto the ground.
 
-Boiling has no block entity. The `boil` property counts scheduled ticks done, `STEPS_PER_SERVING`
-per serving, so the time is per serving like a furnace's per item; `onPlace`
-schedules the next one on every state change that still needs boiling over a lit campfire, and
-`supportChanged` schedules one when the campfire below is lit again. A step that finds the fire out
-schedules nothing. So a pot with nothing to do costs nothing. Anything that adds water goes through
-`HangingPotBlock.withPoured`, which keeps what has boiled and counts pure water as boiled, and
-drawing goes through `withLess`; `withWater` sets a pot outright and starts its count at nothing.
+`HangingPotBlockEntity` holds the servings and the boiling steps done, and is storage only: **no
+ticker**. The blockstate's `level` is only how full the pot looks, in thirds (`FILLS`), so 64
+servings need no more blockstates than three. A pot saved before the block entity existed reads its
+servings from that `level` on first access, which counted servings when every pot held three.
+Boiling runs on scheduled ticks, `STEPS_PER_SERVING` per serving, so the time is per serving like a
+furnace's per item; every write schedules the next step while there is something to boil over a lit
+campfire, and `supportChanged` schedules one when the campfire below is lit again. A step that finds
+the fire out schedules nothing, so a pot with nothing to do costs nothing. Anything that adds water
+goes through `HangingPotBlock.pour`, which keeps what has boiled and counts Clean and Pure water as
+boiled; drawing goes through `draw`; `setWater` sets a pot outright and starts its count at nothing.
+A pot over a lowered capacity keeps its water and takes none until it has room (`room`).
 
 ## Tooltip lines
 

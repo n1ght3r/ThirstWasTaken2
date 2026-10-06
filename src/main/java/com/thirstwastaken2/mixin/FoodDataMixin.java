@@ -15,8 +15,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Reproduces the original MixinFoodData: dehydration stops natural regeneration, and the food cost
- * vanilla would have charged for the skipped heal is refunded so hunger is not silently drained.
+ * Natural healing from food, through {@code HealthRegen}: dehydration and Upset Stomach stop it, the food
+ * cost vanilla would have charged for a skipped heal is refunded so hunger is not silently drained, and
+ * a heal that goes through gets the water reserve's bonus. As the original MixinFoodData, without its
+ * slow heal for a nearly hydrated player.
  *
  * <p>Also cuts the saturation food gives while the player has Upset Stomach. {@code FoodData} does not
  * know its player, so the multiplier is read on each tick and applied by the next {@code add}.
@@ -32,9 +34,6 @@ abstract class FoodDataMixin {
     @Shadow public abstract void addExhaustion(float amount);
 
     @Shadow public abstract float getSaturationLevel();
-
-    /** Heals skipped since the last one that was let through. */
-    @Unique private int thirst$dehydratedHealTimer;
 
     /** Upset Stomach's saturation multiplier as of the last tick. */
     @Unique private float thirst$saturationScale = 1.0F;
@@ -62,16 +61,8 @@ abstract class FoodDataMixin {
     private void thirst$healWithSaturation(ServerPlayer player, float amount) {
     //?} else
     //private void thirst$healWithSaturation(Player player, float amount) {
-        if (!HealthRegen.blocksSaturationHeal(player)) {
-            player.heal(amount);
-            return;
-        }
-        if (HealthRegen.allowsSlowHeal(player, ++thirst$dehydratedHealTimer)) {
-            thirst$dehydratedHealTimer = 0;
-            player.heal(amount);
-            return;
-        }
-        addExhaustion(-Math.min(getSaturationLevel(), HealthRegen.MAX_REFUND));
+        if (HealthRegen.blocksFoodHeal(player)) addExhaustion(-Math.min(getSaturationLevel(), HealthRegen.MAX_REFUND));
+        else player.heal(amount);
     }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", ordinal = 1, target = HEAL))
@@ -79,10 +70,7 @@ abstract class FoodDataMixin {
     private void thirst$healWithHunger(ServerPlayer player, float amount) {
     //?} else
     //private void thirst$healWithHunger(Player player, float amount) {
-        if (HealthRegen.blocksHungerHeal(player)) {
-            addExhaustion(-HealthRegen.MAX_REFUND);
-        } else {
-            player.heal(amount);
-        }
+        if (HealthRegen.blocksFoodHeal(player)) addExhaustion(-HealthRegen.MAX_REFUND);
+        else player.heal(amount);
     }
 }

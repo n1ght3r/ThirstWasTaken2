@@ -1,0 +1,33 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:iron_flask"
+    },
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 360,
+  "experience": 0.0,
+  "ingredient": {
+    "fabric:type": "fabric:components",
+    "base": {
+      "item": "thirstwastaken2:iron_flask"
+    },
+    "components": {
+      "thirstwastaken2:water_purity": 0,
+      "thirstwastaken2:water_salty": false
+    }
+  },
+  "result": {
+    "components": {
+      "thirstwastaken2:water_purity": 2,
+      "thirstwastaken2:water_salty": false
+    },
+    "id": "thirstwastaken2:iron_flask"
+  }
+}

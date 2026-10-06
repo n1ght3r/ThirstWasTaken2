@@ -55,7 +55,7 @@ final class HangingPotModels {
     private HangingPotModels() { }
 
     static void generate(BlockModelGenerators generators) {
-        for (int level = 1; level <= HangingPotBlock.CAPACITY; level++) {
+        for (int level = 1; level <= HangingPotBlock.FILLS; level++) {
             for (String water : waters().values()) {
                 JsonElement json = surfaceJson(level, water);
                 generators.modelOutput.accept(surface(level, water), () -> json);
@@ -83,7 +83,7 @@ final class HangingPotModels {
             parts.add(part(when(HangingPotBlock.AXIS.getName(), axis.getSerializedName()), pot, rotation));
         }
 
-        for (int level = 1; level <= HangingPotBlock.CAPACITY; level++) {
+        for (int level = 1; level <= HangingPotBlock.FILLS; level++) {
             for (Map.Entry<String, String> water : waters().entrySet()) {
                 JsonObject condition = when(HangingPotBlock.LEVEL.getName(), Integer.toString(level));
                 condition.addProperty(WaterPurity.BLOCK_PURITY.getName(), water.getKey());

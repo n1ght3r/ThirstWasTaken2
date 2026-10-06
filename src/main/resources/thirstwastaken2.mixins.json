@@ -7,8 +7,11 @@
     "BottleItemMixin",
     "BucketItemMixin",
     "CauldronBlockMixin",
+    "CookingRecipeMixin",
     "FoodDataMixin",
+    "FurnaceMixin",
     "LayeredCauldronBlockMixin",
+    "MilkMixin",
     "ItemStackMixin",
     "PlayerMixin"
   ],

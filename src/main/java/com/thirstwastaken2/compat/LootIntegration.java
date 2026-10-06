@@ -1,5 +1,7 @@
 package com.thirstwastaken2.compat;
 
+import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Loader;
 import com.thirstwastaken2.platform.Vanilla;
@@ -36,6 +38,13 @@ public final class LootIntegration {
             Vanilla.lootTableId(BuiltInLootTables.VILLAGE_DESERT_HOUSE),
             Vanilla.lootTableId(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE));
     private static final Identifier PIGLIN_BARTERING = Vanilla.lootTableId(BuiltInLootTables.PIGLIN_BARTERING);
+    /** Every village house, where a few empty terracotta bowls turn up, on the shelf with the cups. */
+    private static final Set<Identifier> VILLAGE_HOUSES = Set.of(
+            Vanilla.lootTableId(BuiltInLootTables.VILLAGE_PLAINS_HOUSE),
+            Vanilla.lootTableId(BuiltInLootTables.VILLAGE_DESERT_HOUSE),
+            Vanilla.lootTableId(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE),
+            Vanilla.lootTableId(BuiltInLootTables.VILLAGE_SNOWY_HOUSE),
+            Vanilla.lootTableId(BuiltInLootTables.VILLAGE_TAIGA_HOUSE));
 
     private LootIntegration() { }
 
@@ -51,6 +60,8 @@ public final class LootIntegration {
             } else if (PIGLIN_BARTERING.equals(key)) {
                 addPool.accept(waterPool(false));
             }
+            // Read as the tables load, so switching the bowls off takes them out on the next reload.
+            if (VILLAGE_HOUSES.contains(key) && ThirstConfig.get().enableBowls) addPool.accept(bowlPool());
         });
     }
 
@@ -67,6 +78,13 @@ public final class LootIntegration {
                 .add(water(0).setWeight(10))
                 .add(water(1).setWeight(10))
                 .add(EmptyLootItem.emptyItem().setWeight(20));
+    }
+
+    /** Half the time one to four empty terracotta bowls. Not in the original, which had no bowls. */
+    private static LootPool.Builder bowlPool() {
+        return Vanilla.lootPool(1)
+                .add(LootItem.lootTableItem(ThirstItems.TERRACOTTA_BOWL).apply(Vanilla.setCount(1, 4)).setWeight(1))
+                .add(EmptyLootItem.emptyItem().setWeight(1));
     }
 
     private static UniformContainerBase.Builder<?> water(int purity) {

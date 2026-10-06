@@ -9,7 +9,7 @@
   ],
   "type": "farmersdelight:cooking",
   "cookingtime": 200,
-  "experience": 0.35,
+  "experience": 0.0,
   "ingredients": [
     {
       "fabric:type": "fabric:any",
@@ -29,14 +29,6 @@
           },
           "nbt": "{Potion:\"minecraft:water\",thirstwastaken2:{purity:1,salty:0b}}",
           "strict": false
-        },
-        {
-          "fabric:type": "fabric:nbt",
-          "base": {
-            "item": "minecraft:potion"
-          },
-          "nbt": "{Potion:\"minecraft:water\",thirstwastaken2:{purity:2,salty:0b}}",
-          "strict": false
         }
       ]
     }
@@ -44,6 +36,6 @@
   "recipe_book_tab": "drinks",
   "result": {
     "item": "minecraft:potion",
-    "nbt": "{Potion:\"minecraft:water\",thirstwastaken2:{purity:3,salty:0b}}"
+    "nbt": "{Potion:\"minecraft:water\",thirstwastaken2:{purity:2,salty:0b}}"
   }
 }

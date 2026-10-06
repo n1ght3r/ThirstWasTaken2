@@ -44,9 +44,9 @@ public final class ThirstDataGameTest {
     }
 
     @GameTest
-    public void extraThirstTurnsIntoQuenched(GameTestHelper helper) {
-        levels(helper, new ThirstData(18, 0, 0.0F, true).drink(6, 0), ThirstData.MAX, 4,
-                "4 thirst past a full bar becomes 4 quenched, so 18/0 plus 6/0");
+    public void extraThirstIsLost(GameTestHelper helper) {
+        levels(helper, new ThirstData(18, 0, 0.0F, true).drink(6, 0), ThirstData.MAX, 0,
+                "thirst past a full bar is lost rather than turned into quenched, so 18/0 plus 6/0");
         helper.succeed();
     }
 

@@ -49,8 +49,7 @@ import java.util.concurrent.CompletableFuture;
  * gets its own component format. Every file carries a {@code fabric:all_mods_loaded} condition, so
  * without Farmer's Delight the game skips them rather than failing to parse an unknown recipe type.
  *
- * <p>The pot is the better tool: any fresh grade comes out purified in one go, where the furnace and
- * campfire bump it by two. No container is named, so the pot falls back to the result's crafting
+ * <p>The pot boils any fresh grade below Clean to Clean in one go, as every other heat source does. No container is named, so the pot falls back to the result's crafting
  * remainder, the same as for its own drinks. The bowl has none and goes straight to the output slot.
  * From 1.21.2 a potion's remainder is a glass bottle: the pot hands the bottle back when it starts and
  * wants one in its container slot to serve the water, like Farmer's Delight's milk and hot cocoa.
@@ -114,7 +113,7 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
 
     private static JsonObject recipe(Container container, DynamicOps<JsonElement> ops) {
         List<Ingredient> grades = new ArrayList<>();
-        for (int purity = 0; purity < ThirstRecipeProvider.PURIFIED; purity++) {
+        for (int purity = 0; purity < ThirstRecipeProvider.BOILED; purity++) {
             grades.add(ThirstRecipeProvider.Recipes.purifyIngredient(container, purity));
         }
         Ingredient anyGrade = DefaultCustomIngredients.any(grades.toArray(Ingredient[]::new));
@@ -126,7 +125,7 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
         ingredients.add(encode(INGREDIENT_CODEC, anyGrade, ops));
         json.add("ingredients", ingredients);
         json.add("result", encode(RESULT_CODEC,
-                ThirstRecipeProvider.Recipes.purifyResult(container, ThirstRecipeProvider.PURIFIED), ops));
+                ThirstRecipeProvider.Recipes.purifyResult(container, ThirstRecipeProvider.BOILED), ops));
         json.addProperty("experience", ThirstRecipeProvider.PURIFY_EXPERIENCE);
         json.addProperty("cookingtime", COOKING_TIME);
         return json;

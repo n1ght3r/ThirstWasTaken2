@@ -28,14 +28,13 @@ import net.minecraft.world.phys.BlockHitResult;
  * <p>The pot is the mod's own block, so unlike a cauldron nothing in vanilla handles these; everything
  * happens here, inline. A bucket is {@link HangingPotBlock#BUCKET} servings and everything else one.
  * Poured water mixes the way it does in a cauldron, keeping the worse grade, and adds its own boiling
- * time to what is left; see {@link HangingPotBlock#withPoured}.
+ * time to what is left; see {@link HangingPotBlock#pour}. What the pot holds is its block entity's,
+ * which the client is told, so both sides decide a click the same way.
  * Drawn water carries the pot's quality. Where water evaporates, as in the Nether, nothing can be
  * poured in at all. A sneaking player gets vanilla's usual behaviour instead,
  * except with a waterskin, whose sneak-use pours it out: over a pot it pours into the pot.
  */
 public final class HangingPotInteractions {
-    private static final int BLOCK_UPDATE_FLAGS = 3;
-
     private HangingPotInteractions() { }
 
     public static InteractionResult use(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
@@ -45,8 +44,8 @@ public final class HangingPotInteractions {
 
         ItemStack held = player.getItemInHand(hand);
         boolean sneaking = player.isSecondaryUseActive();
-        int servings = state.getValue(HangingPotBlock.LEVEL);
-        int room = HangingPotBlock.CAPACITY - servings;
+        int servings = HangingPotBlock.servings(level, pos);
+        int room = HangingPotBlock.room(level, pos);
 
         if (WaterskinItem.is(held)) {
             int skin = WaterskinItem.servings(held);
@@ -57,7 +56,7 @@ public final class HangingPotInteractions {
                 int poured = Math.min(skin, room);
                 WaterQuality quality = WaterPurity.quality(held);
                 WaterskinItem.removeWater(held, poured);
-                pour(player, level, pos, state, poured, quality, SoundEvents.BOTTLE_EMPTY);
+                pour(player, level, pos, poured, quality, SoundEvents.BOTTLE_EMPTY);
                 return InteractionResult.SUCCESS_SERVER;
             }
             if (servings == 0 || skin >= WaterskinItem.capacity(held)) return InteractionResult.PASS;
@@ -65,7 +64,7 @@ public final class HangingPotInteractions {
             // Fills the skin in one draw, as far as the pot goes, like scooping from water.
             int drawn = Math.min(WaterskinItem.capacity(held) - skin, servings);
             WaterskinItem.addWater(held, HangingPotBlock.quality(state), drawn);
-            draw(player, level, pos, state, drawn, SoundEvents.BOTTLE_FILL);
+            draw(player, level, pos, drawn, SoundEvents.BOTTLE_FILL);
             return InteractionResult.SUCCESS_SERVER;
         }
         if (sneaking) return InteractionResult.PASS;
@@ -79,10 +78,10 @@ public final class HangingPotInteractions {
         if (transfer.pouring()) {
             WaterQuality quality = WaterPurity.quality(held);
             result = transfer.empty();
-            pour(player, level, pos, state, transfer.servings(), quality, transfer.sound());
+            pour(player, level, pos, transfer.servings(), quality, transfer.sound());
         } else {
             result = WaterPurity.setQuality(transfer.filled(), HangingPotBlock.quality(state));
-            draw(player, level, pos, state, transfer.servings(), transfer.sound());
+            draw(player, level, pos, transfer.servings(), transfer.sound());
         }
         player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, result));
         return InteractionResult.SUCCESS_SERVER;
@@ -147,16 +146,16 @@ public final class HangingPotInteractions {
         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
     }
 
-    private static void pour(Player player, Level level, BlockPos pos, BlockState state, int servings,
+    private static void pour(Player player, Level level, BlockPos pos, int servings,
                              WaterQuality poured, SoundEvent sound) {
-        level.setBlock(pos, HangingPotBlock.withPoured(state, servings, poured), BLOCK_UPDATE_FLAGS);
+        HangingPotBlock.pour(level, pos, servings, poured);
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
     }
 
-    private static void draw(Player player, Level level, BlockPos pos, BlockState state, int servings,
+    private static void draw(Player player, Level level, BlockPos pos, int servings,
                              SoundEvent sound) {
-        level.setBlock(pos, HangingPotBlock.withLess(state, servings), BLOCK_UPDATE_FLAGS);
+        HangingPotBlock.draw(level, pos, servings);
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
     }

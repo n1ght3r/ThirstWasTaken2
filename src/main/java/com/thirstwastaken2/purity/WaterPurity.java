@@ -43,6 +43,13 @@ public final class WaterPurity {
     public static final int MIN = 0;
     public static final int MAX = 3;
     /**
+     * Clean, the grade heat leaves water at and never goes past. Boiling kills what makes water unsafe
+     * but leaves what is dissolved in it, so taking water to Pure is the distiller's work, or a sand
+     * filter's. {@link #boil} and {@link #boilStep} are the only two places that know this cap; every
+     * heat source goes through one of them.
+     */
+    public static final int BOILED = 2;
+    /**
      * What a cauldron holds, as one value rather than a grade plus a flag: {@link #BLOCK_UNSET} for
      * a cauldron nothing has been poured into, 1-4 for the four grades, and {@link #BLOCK_SALT} for
      * sea water. A separate boolean could not work, because vanilla hands a freshly placed block the
@@ -68,7 +75,10 @@ public final class WaterPurity {
     private static final TagKey<Fluid> PURE_WATER = TagKey.create(
             Registries.FLUID, ThirstWasTaken2.id("pure_water"));
     private static final int SURFACE_MOUNTAIN_Y = 100;
-    private static final int DEEP_AQUIFER_Y = 32;
+    /** The best grade water out of the sky's reach can have: Murky. */
+    private static final int COVERED_MAX = 1;
+    /** How far up a water column is followed to find its surface. */
+    private static final int COVERED_COLUMN = 16;
     private static final int SALTY_EXHAUSTION = 8;
     /**
      * How hard a drink of sea water leaves the player Parched: II, like vanilla's pufferfish gives
@@ -128,6 +138,14 @@ public final class WaterPurity {
     }
 
     /**
+     * Whether {@code item} is one of the mod's own water containers, the filled bowl or a carried vessel,
+     * which hold plain water and nothing else.
+     */
+    public static boolean isOwnWaterVessel(Item item) {
+        return item == ThirstItems.TERRACOTTA_WATER_BOWL || item instanceof WaterskinItem;
+    }
+
+    /**
      * The grade of the fresh water in {@code stack}. Salt water has no grade, so unless salinity has
      * already been ruled out, ask {@link #quality(ItemStack)} instead of this.
      */
@@ -135,7 +153,7 @@ public final class WaterPurity {
         Integer purity = ItemWaterData.grade(stack);
         if (purity != null) return purity;
         int staticPurity = info(stack.getItem()).staticPurity();
-        return staticPurity == PURITY_FROM_CONFIG ? ThirstConfig.get().defaultPurity : staticPurity;
+        return staticPurity == PURITY_FROM_CONFIG ? ThirstConfig.get().defaultQuality : staticPurity;
     }
 
     public static WaterQuality quality(ItemStack stack) {
@@ -176,6 +194,31 @@ public final class WaterPurity {
         return plain;
     }
 
+    /**
+     * What heat makes of {@code quality} in one go, as a pot or a vessel over a fire does: fresh water
+     * below {@link #BOILED} comes out Clean, and everything else as it went in. Heat never lowers a grade,
+     * never makes Pure water of Clean, and never takes the salt out.
+     */
+    public static WaterQuality boil(WaterQuality quality) {
+        if (quality instanceof WaterQuality.Fresh fresh && fresh.purity() < BOILED) return WaterQuality.fresh(BOILED);
+        return quality;
+    }
+
+    /**
+     * One pass of a heat source that raises water a grade at a time, as Cold Sweat's Boiler does: one
+     * grade up, but not past {@link #BOILED}, and never down.
+     */
+    public static WaterQuality boilStep(WaterQuality quality) {
+        if (!(quality instanceof WaterQuality.Fresh fresh)) return quality;
+        int grade = fresh.purity();
+        return WaterQuality.fresh(Math.max(grade, Math.min(grade + 1, BOILED)));
+    }
+
+    /** Whether heat would still change {@code quality}: fresh water below {@link #BOILED}. */
+    public static boolean boils(WaterQuality quality) {
+        return quality instanceof WaterQuality.Fresh fresh && fresh.purity() < BOILED;
+    }
+
     /** Raises the grade of fresh water. Salt water has no grade to raise and comes back unchanged. */
     public static ItemStack purify(ItemStack stack, int levels) {
         if (isWaterContainer(stack) && quality(stack) instanceof WaterQuality.Fresh fresh) {
@@ -195,7 +238,7 @@ public final class WaterPurity {
 
         ThirstConfig config = ThirstConfig.get();
         FluidState fluid = state.getFluidState();
-        if (!fluid.is(FluidTags.WATER)) return WaterQuality.fresh(config.defaultPurity);
+        if (!fluid.is(FluidTags.WATER)) return WaterQuality.fresh(config.defaultQuality);
         // Before the sea check: a spring is Pure even by the coast.
         if (fluid.is(PURE_WATER)) return WaterQuality.fresh(MAX);
 
@@ -218,10 +261,34 @@ public final class WaterPurity {
         float temperature = biome.value().getBaseTemperature();
         if (temperature >= 1.5F) score += 10;
         else if (temperature <= 0.15F) score -= 10;
-        if (pos.getY() > SURFACE_MOUNTAIN_Y || pos.getY() < DEEP_AQUIFER_Y) score -= 5;
+        // Diverges from 1.x, which also cleaned water below y 32 as a deep aquifer: underground water
+        // is no longer better for being deep.
+        if (pos.getY() > SURFACE_MOUNTAIN_Y) score -= 5;
         if (!fluid.isSource()) score -= 5;
         score += nearbyPollution(level, pos);
-        return WaterQuality.fresh(grade(score));
+        int grade = grade(score);
+        // Not in the original. Water the sky does not reach, a cave pool or a source under a roof, is
+        // at best Murky: rain does not renew it, so it needs treating like any other risky water.
+        // Checked last, as the costliest test, and only when the score left something to cap.
+        if (grade > COVERED_MAX && !openToTheSky(level, pos)) grade = COVERED_MAX;
+        return WaterQuality.fresh(grade);
+    }
+
+    /**
+     * Whether the water at {@code pos} lies open to the sky: the top of its column, at most
+     * {@link #COVERED_COLUMN} blocks up, with nothing above it that the {@code MOTION_BLOCKING} heightmap
+     * sees, leaves included. The client receives that heightmap with every chunk, so Jade grades the
+     * same water the same way the server does.
+     */
+    private static boolean openToTheSky(Level level, BlockPos pos) {
+        BlockPos.MutableBlockPos top = pos.mutable();
+        for (int up = 0; up < COVERED_COLUMN; up++) {
+            if (!level.getFluidState(top.move(0, 1, 0)).is(FluidTags.WATER)) {
+                top.move(0, -1, 0);
+                break;
+            }
+        }
+        return Vanilla.skyAbove(level, top);
     }
 
     /** Makes the player ill, or not, from the water in {@code stack}, and returns whether it quenches. */
@@ -261,15 +328,15 @@ public final class WaterPurity {
 
     /**
      * The grade rain leaves in a cauldron or a hanging pot, Clean by default. Chosen rather than left to
-     * {@code defaultPurity}, so collecting rain is a decision with a known outcome.
+     * {@code defaultQuality}, so collecting rain is a decision with a known outcome.
      */
-    public static int rainwaterPurity() {
-        return ThirstConfig.get().rainwaterPurity;
+    public static int rainwaterQuality() {
+        return ThirstConfig.get().rainwaterQuality;
     }
 
     /** The grade a pointed dripstone leaves in a cauldron, having filtered the water: Pure by default. */
-    public static int dripstonePurity() {
-        return ThirstConfig.get().dripstonePurity;
+    public static int dripstoneQuality() {
+        return ThirstConfig.get().dripstoneQuality;
     }
 
     /** @return a fresh copy of the grade line, see {@link TooltipLines}. */
@@ -327,10 +394,10 @@ public final class WaterPurity {
 
     private static String purityKey(int purity) {
         return switch (purity) {
-            case 0 -> "thirst.purity.dirty";
-            case 1 -> "thirst.purity.slightly_dirty";
-            case 2 -> "thirst.purity.acceptable";
-            default -> "thirst.purity.purified";
+            case 0 -> "thirst.water.dirty";
+            case 1 -> "thirst.water.murky";
+            case 2 -> "thirst.water.clean";
+            default -> "thirst.water.pure";
         };
     }
 
@@ -341,7 +408,7 @@ public final class WaterPurity {
     private static int purityColor(int purity) {
         return switch (purity) {
             case 0 -> 0xB0632E;
-            case 1 -> 0xC2A878;
+            case 1 -> 0xBDB878;
             case 2 -> 0x74B8E0;
             default -> 0x4FD6FF;
         };

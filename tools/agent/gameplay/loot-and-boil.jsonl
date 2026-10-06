@@ -133,8 +133,8 @@
 {"id": "furnaceAward", "command": "server.command", "args": {"command": "execute if entity @p[advancements={thirstwastaken2:boil_water=true}]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
 
 // The same again with a smoker, from a revoked advancement, so the smoking recipes are proved too.
-// Murky in, Pure out: purify_water_bottle_1_smoking raises purity 1 to 3, not to the 2 a dirty
-// bottle boils to.
+// Murky in, Clean out: heat stops at Clean whatever goes in, so purify_water_bottle_1_smoking gives
+// the 2 a dirty bottle boils to.
 {"id": "revokeAgain", "command": "server.command", "args": {"command": "advancement revoke @p only thirstwastaken2:boil_water"}}
 {"id": "emptyAgain", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "noFurnace", "command": "server.command", "args": {"command": "setblock 2 201 0 minecraft:air"}}
@@ -142,7 +142,7 @@
 {"id": "dirtyAgain", "command": "server.command", "args": {"command": "item replace block 2 201 0 container.0 with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=1,thirstwastaken2:water_salty=false] 1"}}
 {"id": "fuelAgain", "command": "server.command", "args": {"command": "item replace block 2 201 0 container.1 with minecraft:coal 8"}}
 {"id": "smoking", "command": "wait", "args": {"ticks": 240}}
-{"id": "smokedPure", "command": "server.command", "args": {"command": "execute if data block 2 201 0 Items[{Slot:2b,components:{\"thirstwastaken2:water_purity\":3}}]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
+{"id": "smokedClean", "command": "server.command", "args": {"command": "execute if data block 2 201 0 Items[{Slot:2b,components:{\"thirstwastaken2:water_purity\":2}}]"}, "expect": {"result.messages.0": "Test passed. Count: 1"}}
 {"id": "lookSmoker", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 -90 0"}}
 {"id": "aimedAgain", "command": "wait", "args": {"ticks": 10}}
 {"id": "openSmoker", "command": "client.hold", "args": {"keys": ["use"], "ticks": 4}}

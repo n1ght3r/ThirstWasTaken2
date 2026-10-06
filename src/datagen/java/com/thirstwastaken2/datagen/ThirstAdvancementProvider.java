@@ -5,7 +5,6 @@ import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.item.ThirstItems;
-import com.thirstwastaken2.item.WaterskinItem;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -109,7 +108,7 @@ public final class ThirstAdvancementProvider implements DataProvider {
         AdvancementHolder boilWater = boilWater(ops, dirtyWater);
         consumer.accept(boilWater);
 
-        awarded(consumer, boilWater, "purified_water", Items.GLASS_BOTTLE, AdvancementType.TASK);
+        awarded(consumer, boilWater, "purified_water", ThirstItems.COPPER_DISTILLER, AdvancementType.TASK);
         awarded(consumer, firstDrink, "sea_water", Items.KELP, AdvancementType.GOAL);
         awarded(consumer, firstDrink, "nether_drink", Items.MAGMA_BLOCK, AdvancementType.GOAL);
     }
@@ -130,28 +129,34 @@ public final class ThirstAdvancementProvider implements DataProvider {
     }
 
     /**
-     * Boiling any of the nine smelting or nine smoking recipes, or any of the iron flask's eighteen, as
-     * an OR. Vanilla sees these without help, because a furnace and a smoker credit the player who
-     * takes the result, which is why this is also the parent of {@code purified_water} rather than a
-     * sibling.
+     * Boiling any of the six smelting or six smoking recipes, or the canteen's or flask's, or carrying
+     * a canteen, a flask or a hanging pot, as an OR. Vanilla sees all of these without help: a furnace
+     * and a smoker credit the player who takes the result. It is the parent of {@code purified_water},
+     * the step after boiling.
      */
     private static AdvancementHolder boilWater(DynamicOps<JsonElement> ops, AdvancementHolder parent) {
         Advancement.Builder builder =
                 childDisplay(builder().parent(parent), Items.FURNACE, "boil_water", AdvancementType.TASK);
 
         for (String container : List.of("bottle", "bowl", "bucket")) {
-            for (int purity = 0; purity < 3; purity++) {
+            for (int purity = 0; purity < ThirstRecipeProvider.BOILED; purity++) {
                 for (String heat : List.of("smelting", "smoking")) {
                     crafted(builder, ops, container + "_" + purity + "_" + heat,
                             ThirstWasTaken2.id("purify_water_" + container + "_" + purity + "_" + heat));
                 }
             }
         }
-        for (int servings = 1; servings <= WaterskinItem.MAX_CAPACITY; servings++) {
-            for (int purity = 0; purity < 3; purity++) {
-                crafted(builder, ops, "iron_flask_" + servings + "_" + purity + "_smelting",
-                        ThirstWasTaken2.id(ThirstRecipeProvider.flaskPurifyName(servings, purity)));
+        for (Item vessel : ThirstRecipeProvider.furnaceVessels()) {
+            for (int purity = 0; purity < ThirstRecipeProvider.BOILED; purity++) {
+                String name = ThirstRecipeProvider.vesselPurifyName(vessel, purity);
+                crafted(builder, ops, name.substring("purify_water_".length()), ThirstWasTaken2.id(name));
             }
+        }
+        // Or carrying something that boils water itself, held over a campfire or hung over one.
+        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
+                ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
+            builder.addCriterion("has_" + com.thirstwastaken2.platform.Vanilla.itemId(boiler).getPath(),
+                    net.minecraft.advancements.triggers.InventoryChangeTrigger.TriggerInstance.hasItems(boiler));
         }
 
         // Any one of them is enough, so one requirements list holding all of them.

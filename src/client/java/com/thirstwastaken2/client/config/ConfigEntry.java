@@ -118,6 +118,16 @@ abstract class ConfigEntry<T> {
         return Component.translatable(PREFIX + "unit.seconds", seconds);
     }
 
+    /** A number of game ticks, a twentieth of a second each, for {@link #number}. */
+    static Component ticks(int ticks) {
+        return Component.translatable(PREFIX + "unit.ticks", ticks);
+    }
+
+    /** A plain count of points, for {@link #number}. */
+    static Component points(int points) {
+        return Component.literal(Integer.toString(points));
+    }
+
     /** A number of drinks a container holds, for {@link #number}. */
     static Component servings(int servings) {
         return Component.translatable(PREFIX + "unit.servings", servings);

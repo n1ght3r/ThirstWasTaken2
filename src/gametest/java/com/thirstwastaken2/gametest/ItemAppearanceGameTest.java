@@ -41,14 +41,17 @@ public final class ItemAppearanceGameTest {
         TestFixtures.check(helper, Vanilla.modelSelectorOf(skin) == null,
                 "an empty waterskin should carry no model data, so it falls back to the empty sprite");
 
-        for (int servings = 1; servings <= WaterskinItem.CAPACITY; servings++) {
+        int capacity = com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity;
+        for (int servings = 1; servings <= capacity; servings++) {
             WaterskinItem.addWater(skin, WaterQuality.fresh(2), 1);
-            TestFixtures.check(helper, Vanilla.selectsModel(skin, ThirstItems.WATERSKIN_MODEL_INDEX, servings),
-                    "a waterskin with " + servings + " servings should select sprite " + servings + ", got "
-                            + Vanilla.modelSelectorOf(skin));
+            // Three sprites whatever the capacity: a third, two thirds and full, rounded up.
+            int sprite = (3 * servings + capacity - 1) / capacity;
+            TestFixtures.check(helper, Vanilla.selectsModel(skin, ThirstItems.WATERSKIN_MODEL_INDEX, sprite),
+                    "a waterskin with " + servings + " of " + capacity + " servings should select sprite " + sprite
+                            + ", got " + Vanilla.modelSelectorOf(skin));
         }
 
-        WaterskinItem.removeWater(skin, WaterskinItem.CAPACITY);
+        WaterskinItem.removeWater(skin, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
         TestFixtures.check(helper, Vanilla.modelSelectorOf(skin) == null,
                 "emptying the waterskin should take the model data away again");
         helper.succeed();
@@ -84,11 +87,12 @@ public final class ItemAppearanceGameTest {
         TestFixtures.check(helper, !skin.isBarVisible(), "an empty waterskin should show no bar");
 
         WaterskinItem.addWater(skin, WaterQuality.fresh(WaterPurity.MAX), 1);
-        TestFixtures.check(helper, skin.isBarVisible() && skin.getBarWidth() == Math.round(13.0F / 3),
-                "one serving should fill a third of the bar, got " + skin.getBarWidth());
+        int capacity = com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity;
+        TestFixtures.check(helper, skin.isBarVisible() && skin.getBarWidth() == Math.round(13.0F / capacity),
+                "one serving should fill 1/" + capacity + " of the bar, got " + skin.getBarWidth());
         int pure = skin.getBarColor();
 
-        WaterskinItem.addWater(skin, WaterQuality.fresh(WaterPurity.MAX), 2);
+        WaterskinItem.addWater(skin, WaterQuality.fresh(WaterPurity.MAX), capacity - 1);
         TestFixtures.check(helper, skin.getBarWidth() == 13, "a full waterskin should fill the bar, got " + skin.getBarWidth());
 
         ItemStack dirty = new ItemStack(ThirstItems.WATERSKIN);

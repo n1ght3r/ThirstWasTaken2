@@ -59,8 +59,8 @@ public abstract class DrinkingUpgradeTab extends UpgradeSettingsTab<DrinkingUpgr
         Map<Integer, ToggleButton.StateData> states = new HashMap<>();
         for (int purity = WaterPurity.MIN; purity <= WaterPurity.MAX; purity++) {
             states.put(purity, new ToggleButton.StateData(icon(purity * 16, 16),
-                    Component.translatable("gui.thirstwastaken2.upgrades.buttons.min_purity", WaterPurity.tooltip(purity)),
-                    Component.translatable("gui.thirstwastaken2.upgrades.buttons.min_purity.detail").withStyle(ChatFormatting.GRAY)));
+                    Component.translatable("gui.thirstwastaken2.upgrades.buttons.min_quality", WaterPurity.tooltip(purity)),
+                    Component.translatable("gui.thirstwastaken2.upgrades.buttons.min_quality.detail").withStyle(ChatFormatting.GRAY)));
         }
         return ButtonDefinitions.createToggleButtonDefinition(states);
     }

@@ -20,8 +20,8 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 /**
- * What drinking water of a given quality does to the player, whatever the roll: the taste Dirty water
- * always leaves, Pure water never doing anything, and salt water. The roll itself, forced into each
+ * What drinking water of a given quality does to the player, whatever the roll: Dirty water never
+ * leaving Hunger or Parched, Pure water never doing anything, and salt water. The roll itself, forced into each
  * range, is {@code WaterSicknessGameTest}.
  */
 public final class WaterEffectsGameTest {
@@ -43,17 +43,15 @@ public final class WaterEffectsGameTest {
     }
 
     @GameTest
-    public void dirtyWaterGivesTheTasteWithoutHungerOrParched(GameTestHelper helper) {
+    public void dirtyWaterGivesNoTasteHungerOrParched(GameTestHelper helper) {
         ServerPlayer player = TestFixtures.mockPlayer(helper);
 
         boolean hydrates = WaterPurity.applyEffects(player, bowl(WaterQuality.fresh(0)));
 
         TestFixtures.check(helper, hydrates, "every drink of fresh water quenches, dirty water included");
-        MobEffectInstance nausea = player.getEffect(MobEffects.NAUSEA);
-        // The default table's first line for Dirty water is the taste, at 100% on every difficulty.
-        int taste = SicknessEffect.defaults(SicknessEffect.key(player.level().getDifficulty()), "dirty").get(0).seconds * 20;
-        TestFixtures.check(helper, nausea != null && nausea.getDuration() == taste,
-                "dirty water should always leave the taste of Nausea, got " + nausea);
+        // The taste of Nausea every Dirty drink used to leave is gone: the illness carries the cost.
+        TestFixtures.check(helper, !player.hasEffect(MobEffects.NAUSEA),
+                "dirty water should no longer leave a taste of Nausea, got " + player.getEffect(MobEffects.NAUSEA));
         TestFixtures.check(helper, !player.hasEffect(MobEffects.HUNGER),
                 "bad water makes the player ill, not hungry, so it must not apply hunger");
         TestFixtures.check(helper, !Vanilla.hasEffect(player, ThirstEffects.PARCHED),
@@ -77,7 +75,7 @@ public final class WaterEffectsGameTest {
     /** Bad water fills the bar but gives little quenched, the way rotten flesh gives little saturation. */
     @GameTest
     public void quenchedFollowsTheGrade(GameTestHelper helper) {
-        int[] percent = {0, 50, 100, 100};
+        int[] percent = {0, 25, 50, 100};
         for (int grade = WaterPurity.MIN; grade <= WaterPurity.MAX; grade++) {
             int expected = 8 * percent[grade] / 100;
             int got = WaterPurity.quenched(WaterQuality.fresh(grade), 8);
@@ -109,8 +107,8 @@ public final class WaterEffectsGameTest {
 
         int full = ThirstManager.get(healthy).quenched();
         int cut = ThirstManager.get(sick).quenched();
-        TestFixtures.check(helper, full > 0 && cut == full / 2,
-                "Upset Stomach II should halve the quenched of a pure drink, got " + cut + " against " + full);
+        TestFixtures.check(helper, full > 0 && cut == full / 4,
+                "Upset Stomach II should leave a quarter of a pure drink's quenched, got " + cut + " against " + full);
         helper.succeed();
     }
 

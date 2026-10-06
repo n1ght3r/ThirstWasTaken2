@@ -49,7 +49,7 @@ public final class ExtraDelightWater {
      * left in the rain gets. Read each time, since the config can change.
      */
     public static WaterQuality meltwater() {
-        return WaterQuality.fresh(WaterPurity.rainwaterPurity());
+        return WaterQuality.fresh(WaterPurity.rainwaterQuality());
     }
 
     /** A copy of {@code stack} stamped with {@code quality} if it is water, else {@code stack} itself. */

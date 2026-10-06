@@ -528,6 +528,29 @@ public final class Vanilla {
     }
 
     /**
+     * Whether nothing above {@code pos} blocks motion, so the sky is open over it. Water itself counts
+     * in the {@code MOTION_BLOCKING} heightmap, so {@code pos} should be the top of a water column.
+     */
+    public static boolean skyAbove(net.minecraft.world.level.LevelReader level, BlockPos pos) {
+        return level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ())
+                <= pos.getY() + 1;
+    }
+
+    /**
+     * An Awkward Potion: a potion that is not water, which has its own thirst value and must never be
+     * mistaken for a water bottle by a lookup that caches per item.
+     */
+    public static ItemStack awkwardPotion() {
+        //? if >=1.20.5 {
+        return net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                net.minecraft.world.item.Items.POTION, net.minecraft.world.item.alchemy.Potions.AWKWARD);
+        //?} else {
+        /*return net.minecraft.world.item.alchemy.PotionUtils.setPotion(
+                new ItemStack(net.minecraft.world.item.Items.POTION), net.minecraft.world.item.alchemy.Potions.AWKWARD);
+        *///?}
+    }
+
+    /**
      * A villager offer of {@code gives} for {@code emeralds} emeralds. 1.20.5 priced offers in
      * {@code ItemCost}; before it the price was a stack.
      */

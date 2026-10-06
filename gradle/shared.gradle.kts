@@ -710,3 +710,14 @@ tasks.register<Copy>("buildAndCollect") {
     description = "Builds the mod jar and copies it to build/libs/"
     into(rootProject.layout.buildDirectory.dir("libs"))
 }
+
+/*
+ * The gametests are written against a fresh config, which is what CI runs them on. A run directory kept
+ * between local runs keeps the file the last run saved, and a value already in that file is never
+ * replaced by a newer default, so without this a local run would test the defaults of whichever version
+ * first wrote it.
+ */
+val gametestConfig = rootProject.file("run/${project.name}/gametest/config/thirstwastaken2.json")
+tasks.matching { it.name == "runGametest" }.configureEach {
+    doFirst { gametestConfig.delete() }
+}

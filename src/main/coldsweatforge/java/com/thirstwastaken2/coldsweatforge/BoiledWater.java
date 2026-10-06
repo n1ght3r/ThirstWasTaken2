@@ -7,15 +7,13 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * What Cold Sweat's heat does to water, the same rules as NeoForge's copy: the Boiler raises what sits
- * in it a grade at a time, and a campfire boils Cold Sweat's waterskin as it boils a bottle. Salt water
- * stays salt everywhere: boiling does not take the salt out.
+ * in it a grade at a time, up to Clean, and a campfire boils Cold Sweat's waterskin Clean, as every other
+ * heat source does. Salt water stays salt everywhere: boiling does not take the salt out.
  */
 public final class BoiledWater {
     /** The Boiler's water slots; 0 is its fuel. */
     private static final int FIRST_SLOT = 1;
     private static final int LAST_SLOT = 9;
-    /** What a campfire makes of Dirty water, as the bottle's campfire recipe. Anything better comes out Pure. */
-    private static final int CAMPFIRE_FROM_DIRTY = 2;
 
     private BoiledWater() { }
 
@@ -36,29 +34,27 @@ public final class BoiledWater {
     }
 
     /**
-     * Raises every container in the Boiler's water slots by one grade, on the Boiler's own purifying
-     * beat. Returns whether anything changed, which is what the Boiler's own purifying reports too.
+     * Raises every container in the Boiler's water slots by one grade, no higher than Clean, on the
+     * Boiler's own purifying beat. Returns whether anything changed, which is what the Boiler's own purifying reports too.
      */
     public static boolean purify(Container boiler) {
         boolean changed = false;
         for (int slot = FIRST_SLOT; slot <= LAST_SLOT; slot++) {
             ItemStack stack = boiler.getItem(slot);
             if (!raisable(stack)) continue;
-            WaterPurity.purify(stack, 1);
+            WaterPurity.setQuality(stack, WaterPurity.boilStep(WaterPurity.quality(stack)));
             changed = true;
         }
         if (changed) boiler.setChanged();
         return changed;
     }
 
-    /** The grade a campfire leaves water at, the bottle's campfire recipes as a rule. */
+    /** The grade a campfire leaves water at: Clean, as every other heat source leaves it. */
     public static WaterQuality campfire(WaterQuality quality) {
-        if (!(quality instanceof WaterQuality.Fresh fresh)) return quality;
-        return WaterQuality.fresh(fresh.purity() == WaterPurity.MIN ? CAMPFIRE_FROM_DIRTY : WaterPurity.MAX);
+        return WaterPurity.boil(quality);
     }
 
     private static boolean raisable(ItemStack stack) {
-        return WaterPurity.isWaterContainer(stack)
-                && WaterPurity.quality(stack) instanceof WaterQuality.Fresh fresh && fresh.purity() < WaterPurity.MAX;
+        return WaterPurity.isWaterContainer(stack) && WaterPurity.boils(WaterPurity.quality(stack));
     }
 }

@@ -11,8 +11,8 @@
     "C": {
       "tag": "c:copper_ingots"
     },
-    "G": {
-      "tag": "c:gold_ingots"
+    "I": {
+      "tag": "c:iron_ingots"
     },
     "P": {
       "item": "thirstwastaken2:copper_pipe"
@@ -20,7 +20,7 @@
   },
   "pattern": [
     "CPC",
-    "CGC",
+    "CIC",
     "CCC"
   ],
   "result": {

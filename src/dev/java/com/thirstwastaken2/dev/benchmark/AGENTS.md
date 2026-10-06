@@ -156,7 +156,7 @@ node and not across nodes.
 
 `sample_water`, `fill_bottle`, `fill_bucket`, `fill_bowl`, `fill_waterskin`, `drink_water_bottle`,
 `drink_waterskin`, `drink_by_hand`, `cauldron_pour`, `full_bar_guard`, `tooltip_water_bottle`,
-`tooltip_waterskin`, `tooltip_food`, `thirst_lookup`, `water_quality_read`, `waterskin_mix`,
+`tooltip_waterskin`, `tooltip_food`, `thirst_lookup`, `thirst_lookup_potion`, `sample_water_covered`, `heal_food`, `water_quality_read`, `waterskin_mix`,
 `exhaustion_mirror`, `thirst_tick_idle`. The report's `description` field says what each one does.
 
 ### With Create Fly

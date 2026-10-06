@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * A faucet over a water source block. Supplementaries offers plain water, which a tank then reads as
- * {@code defaultPurity}, so a faucet over a swamp filled a jar with Clean water where a bottle filled
+ * {@code defaultQuality}, so a faucet over a swamp filled a jar with Clean water where a bottle filled
  * by hand in the same pool comes out Dirty. The water is sampled where it lies instead, which is what
  * every other way of collecting it already does.
  *

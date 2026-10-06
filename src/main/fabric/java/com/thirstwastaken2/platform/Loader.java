@@ -85,11 +85,13 @@ public final class Loader {
     }
 
     /**
-     * Registers the {@code thirstwastaken2:item_enabled} load condition the mod's recipes carry, so a
-     * recipe for an item the config switches off is skipped as it loads. See {@link ItemEnabledCondition}.
+     * Registers the {@code thirstwastaken2:item_enabled} and {@code thirstwastaken2:config_enabled} load
+     * conditions the mod's recipes carry, so a recipe for an item or a feature the config switches off is
+     * skipped as it loads. See {@link ItemEnabledCondition} and {@link ConfigEnabledCondition}.
      */
     public static void registerResourceConditions() {
         ItemEnabledCondition.register();
+        ConfigEnabledCondition.register();
     }
 
     /**

@@ -3,12 +3,16 @@
     {
       "condition": "thirstwastaken2:item_enabled",
       "item": "thirstwastaken2:terracotta_water_bowl"
+    },
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
     }
   ],
   "type": "thirstwastaken2:smoking",
   "category": "misc",
-  "cookingtime": 100,
-  "experience": 0.35,
+  "cookingtime": 80,
+  "experience": 0.0,
   "ingredient": {
     "fabric:type": "fabric:nbt",
     "base": {
@@ -19,6 +23,6 @@
   },
   "result": {
     "item": "thirstwastaken2:terracotta_water_bowl",
-    "nbt": "{CustomModelData:3,thirstwastaken2:{purity:3,salty:0b}}"
+    "nbt": "{CustomModelData:2,thirstwastaken2:{purity:2,salty:0b}}"
   }
 }

@@ -28,7 +28,7 @@ abstract class BottleFluidRegistryMixin {
         return ExtraDelightWater.stamped(fluid, WaterPurity.quality(bottle));
     }
 
-    /** Water with no grade fills the bottle as {@code defaultPurity}, as from any tank. */
+    /** Water with no grade fills the bottle as {@code defaultQuality}, as from any tank. */
     @ModifyReturnValue(method = "getBottleFromFluid", at = @At("RETURN"))
     private static ItemStack thirst$tankIntoBottle(ItemStack bottle, FluidStack fluid) {
         if (!WaterFluids.isWater(fluid)) return bottle;

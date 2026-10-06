@@ -64,12 +64,12 @@ Fabric's empty structure as its template, and `stonecutter.gradle.kts` rewrites 
 the annotation, so no test file changes for it. Write `@GameTest` with no arguments, or that
 replacement stops matching.
 
-The same 195 mod tests run on every node. Runners report one or two more because they also include
+The same mod tests run on every node. Runners report one or two more because they also include
 vanilla smoke tests such as `minecraft:always_pass`; those are not the mod's.
 
 ## The NeoForge harness
 
-The `-neoforge` nodes run the same 195 test methods, with no test body changed and no NeoForge-only
+The `-neoforge` nodes run the same test methods, with no test body changed and no NeoForge-only
 branch in any of them. What stands in for Fabric API lives in `src/gametest/neoforge`:
 
 | | Fabric API | NeoForge node |
@@ -133,32 +133,36 @@ cauldron bottle draw.
 - **Pair a negative assertion with a positive control.** `dehydratedPlayerDoesNotRegenerate` only
   means something next to `hydratedPlayerStillRegenerates`; without it the first would pass even if
   regeneration never triggered.
-- **Datapack behaviour needs a test, because the compiler has no opinion about it.** The 18
+- **Datapack behaviour needs a test, because the compiler has no opinion about it.** The
   purification recipes match on components from a JSON file; nothing fails to build when a container
   stops carrying what they look for. `PurificationGameTest` asks the real recipe manager instead.
-- **Only assert what the config makes deterministic.** Purity tiers 0 and 3 have nausea chances of
-  100 and 0 in the default config and are safe to assert. Tiers 1 and 2 are dice rolls and are
-  deliberately left alone.
+- **Only assert what the config makes deterministic.** Clean and Pure have no sickness lines and are
+  safe to assert; Dirty and Murky are dice rolls, so `WaterSicknessGameTest` forces the roll instead.
 
 ## What is covered
 
 | Class | Covers |
 |---|---|
 | `WaterFillingGameTest` | bottle and bucket filling, that each fill resamples the water, that an abandoned fill leaves nothing behind |
-| `WaterEffectsGameTest` | salt water, the taste dirty water always leaves and that it still quenches, quenched cut by grade and by Upset Stomach, purified water, milk and honey, boiling not desalinating |
-| `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, drinking again extending an effect up to twice its time at the higher level (and not when switched off), the defaults (Dirty always the taste and only it on the best roll, Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in |
-| `UpsetStomachGameTest` | Upset Stomach draining faster than nothing and faster at II, Nausea costing nothing on top of it, the saturation it cuts at I and II, and that it never hurts on its own |
-| `HealthRegenGameTest` | dehydration halting regeneration and the food refund that has to accompany it; quenched healing at the configured share of saturation's and what it costs, and not healing short of full thirst, under `quenchedHealMinFood` or at 0% |
+| `WaterEffectsGameTest` | salt water, that bad water still quenches, quenched cut by grade and by Upset Stomach, Clean and Pure water, milk and honey (milk not curing Upset Stomach), boiling not desalinating |
+| `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, grouped lines sharing one roll and ungrouped ones rolling apart, Upset Stomach extending by half up to 1.5 times and other effects up to twice (and not when switched off), the defaults (no Poison without Upset Stomach, Clean and Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in, a grouped Poison capped at its Upset Stomach |
+| `UpsetStomachGameTest` | Upset Stomach draining 4 and 8 thirst a minute, Nausea costing nothing on top of it, the saturation it cuts at I and II, and that it never hurts on its own |
+| `HealthRegenGameTest` | food healing at half the thirst bar and not below, Upset Stomach, the share as a setting, each switch lifting only its own gate, the refund on both heal paths; quenched healing once saturation is spent, at half speed for 3 exhaustion a heal, needing a full bar, half the food bar and no illness, and off at 0% |
+| `DrainGameTest` | a point a minute standing still, scaled by the global speed and hidden from `EXHAUSTION` listeners; Upset Stomach's 4 and 8 a minute whatever the climate; activity scaled by the climate, and the climate curve never falling as it warms |
+| `RecoveryGameTest` | water told apart from potions per stack, every container restoring the same serving, each grade's quenched, thirst over a full bar lost, the quenched cap, only Clean and Pure topping up a full bar, and tooltip rows showing the actual gain |
+| `CoveredWaterGameTest` | open water keeping its grade, a roof and leaves capping it at Murky, deep open water not covered by itself, stored water keeping its grade under a roof; and milk curing Poison but not Upset Stomach, honey the same |
+| `ConfigMigrationGameTest` | `defaultPurity`, `rainwaterPurity` and `dripstonePurity` read into the `*Quality` keys: legacy only, new only, both (the new wins), and saving only the new ones |
 | `WaterskinGameTest` | mixing, salinity, capacity, emptying |
-| `CanteenGameTest` | the copper canteen and iron flask: capacity, one sprite, boiling on a campfire through the real use path (complete, one step short, kept and restarted progress, soul campfire), salt, unlit and the waterskin not boiling, only the flask in a furnace at every fill level, no campfire recipe, both crafting recipes |
+| `CanteenGameTest` | the copper canteen and iron flask: capacity, one sprite, boiling on a campfire through the real use path (complete, one step short, kept and restarted progress, soul campfire), salt, unlit and the waterskin not boiling, capacities from the config (1, 64, clamped, over a lowered capacity), both vessels in a furnace at 1, 4, 6 and 64 servings and their per-serving time, no smoker or campfire recipe, the crafting recipes (canteen, flask, three clay bowls, four-leather waterskin, iron-centred distiller boiler) |
 | `TooltipGameTest` | the lines the mod adds to a tooltip, droplet row arithmetic, that the rows need AppleSkin, and that cached lines are handed out as copies |
 | `PlayerStateGameTest` | the sprint gate, exhaustion mirroring waiting for the tick, small exhaustion being carried until it crosses a sync step, the Hunger effect cancelling out, and that riding does not dehydrate |
 | `CauldronGameTest` | the cauldron blockstate property (water cauldron only, old powder snow saves still load, a fresh cauldron is not sea water), the deferred quality transfer, and the grades rain and dripstone leave behind |
-| `HangingPotGameTest` | the copper hanging pot through the real use path: filling, a full pot, mixing grades, drawing a bottle or a waterskin, the frame following the campfire, boiling per serving, topping up, rain and the Nether; the iron pot filling and boiling the same way, and each pot's boil time |
+| `HangingPotGameTest` | the copper hanging pot through the real use path: filling, a full pot, mixing grades, drawing a bottle or a waterskin, the frame following the campfire, boiling per serving, topping up, rain and the Nether; the iron pot filling and boiling the same way, and each pot's boil time; a pot saved before its block entity keeping its water, capacities of 1 and 64, a pot over a lowered capacity, and the fill shown in thirds |
 | `DistillerGameTest` | the copper distiller as a two-block structure (placing, a taken spot, mining either half, creative), building it in the world (a boiler merging into a firebox, the pipe joining a lined-up pair and refusing any other), what each piece drops, and the tub's coolant |
 | `MachineSeamsGameTest` | the version seams a machine stands on: the distiller's block entity type registered for it, a block entity's values and items coming back from a save as the chunk loads one, a menu type building its menu, and fuel burning as long as in a furnace through `Loader.burnTime` |
-| `DistillerMachineGameTest` | the distiller at work, ticked by hand: water poured from its slot (a bucket only when all three fit), a bucket of sea water distilled to three Pure servings and counted toward salt, no coolant or nothing to boil burning no fuel, a lit fire holding when the basin is full, the basin filling each container, each face's slots and a real hopper above the tub and below the boiler, the right-click pour and draw, breaking it spilling its slots, and the pipe starting the machine; the fire drawn and giving light only while it burns; a bucket of sea water leaving one salt, fresh water none, a full salt slot holding the sea water, and which item is the salt (the gametest mod tags sugar `thirstwastaken2:distiller_salt` for it, so the salt slot always shows here) |
+| `DistillerMachineGameTest` | the distiller at work, ticked by hand: water poured from its slot (a bucket only when all three fit), a bucket of sea water distilled to three Pure servings and counted toward salt, no coolant or nothing to boil burning no fuel, a lit fire holding when the basin is full, the basin filling each container, each face's slots and a real hopper above the tub and below the boiler, the right-click pour and draw, breaking it spilling its slots, and the pipe starting the machine; the fire drawn and giving light only while it burns; a bucket of sea water leaving one salt, fresh water none, a full salt slot holding the sea water, and which item is the salt (the gametest mod tags sugar `thirstwastaken2:distiller_salt` for it, so the salt slot always shows here); tanks of 1 (no bucket) and 64, and the water slot taking one stacked bowl at a time |
 | `PurificationGameTest` | which water the furnace accepts: looted bottles yes, salt water never |
+| `WaterStackGameTest` | water bowls stacking to `terracottaWaterBowlStackSize` and only with the same water, water bottles not stacking, and drinking from a stack of bowls leaving the rest and one empty |
 | `EnvironmentGameTest` | the datapack damage type and its tags, and the version-forked environment call |
 | `CreativeTabGameTest` | the creative tab has the right icon and holds every item the mod adds |
 | `AdvancementGameTest` | every advancement on the mod's tab loads and hangs off one root, its recipe advancements unlock recipes that exist, and the Cooking Pot files are skipped without Farmer's Delight |

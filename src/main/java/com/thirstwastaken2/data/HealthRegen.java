@@ -1,26 +1,27 @@
 package com.thirstwastaken2.data;
 
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 /**
- * Whether a dehydrated player may still regenerate health, reproducing the original mod's
- * MixinFoodData rules.
+ * Natural healing: when food may heal, through {@code FoodDataMixin}, and the heal quenched gives on its
+ * own, {@link #healWithQuenched}.
  *
- * <p>Vanilla charges food for every point it heals. Blocking a heal therefore has to refund that
- * cost, or hunger drains for a heal the player never received — see {@code FoodDataMixin}.
+ * <p>Vanilla charges food for every point it heals. Blocking a heal therefore has to refund that cost,
+ * or hunger drains for a heal the player never received.
  *
- * <p>Also the heal quenched gives a player whose thirst is full, {@link #healWithQuenched}.
+ * <p>Each bar needs the other: food does not heal with the thirst bar under
+ * {@code foodHealMinThirstPercent}, and quenched does not heal with the food bar under
+ * {@code quenchedHealMinFoodPercent}. Upset Stomach stops both. Saturation goes first: quenched only
+ * heals once the food's saturation is spent, so the two take turns rather than adding up. Diverges
+ * from the original mod, which let a nearly hydrated player heal slowly and had no illness.
  */
 public final class HealthRegen {
-    /** A nearly-hydrated player still regenerates, just this many times slower. */
-    public static final int SLOW_FACTOR = 8;
     /** Ceiling on the refund, matching the exhaustion vanilla spends per heal. */
     public static final float MAX_REFUND = 6.0F;
-    /** Above this the player counts as nearly hydrated and regeneration is only slowed, not stopped. */
-    private static final int NEARLY_HYDRATED = 18;
     /** Vanilla's saturation heal comes every this many ticks; quenched's keeps the same beat. */
     private static final int QUENCHED_HEAL_INTERVAL = 10;
     /** The most one heal draws on, as vanilla caps the saturation one heal spends at 6. */
@@ -29,17 +30,34 @@ public final class HealthRegen {
     private HealthRegen() { }
 
     /**
+     * Whether a natural heal from food has to be withheld from {@code player}: the thirst bar under
+     * {@code foodHealMinThirstPercent} while {@code dehydrationHaltsHealthRegen} is on, or Upset Stomach
+     * while {@code illnessHaltsHealthRegen} is. A player thirst is switched off for keeps healing.
+     */
+    public static boolean blocksFoodHeal(Player player) {
+        ThirstConfig config = ThirstConfig.get();
+        ThirstData data = ThirstManager.get(player);
+        if (config.dehydrationHaltsHealthRegen && data.enabled()
+                && data.thirst() * 100 < ThirstData.MAX * config.foodHealMinThirstPercent) {
+            return true;
+        }
+        return ill(player, config);
+    }
+
+    /**
      * Heals the player from quenched the way vanilla heals from saturation, scaled by
      * {@code quenchedHealthRegen}, and returns the thirst exhaustion that heal costs, zero on a tick that
      * does not heal. Called once per tick by {@code ThirstManager.tickPlayer}, which adds the cost to its
-     * one write. Like vanilla, the heal stacks with the food one: both bars full heal faster.
+     * one write. It needs a full thirst bar, the food bar at {@code quenchedHealMinFoodPercent} or more,
+     * no saturation left, since saturation heals first, and no Upset Stomach.
      */
     static float healWithQuenched(ServerPlayer player, ThirstData data, ExhaustionTracker tracker) {
         ThirstConfig config = ThirstConfig.get();
         double scale = config.quenchedHealthRegen;
         if (scale <= 0.0 || data.thirst() < ThirstData.MAX || data.quenched() <= 0 || !player.isHurt()
-                || player.getFoodData().getFoodLevel() < config.quenchedHealMinFood
-                || !Vanilla.naturalRegeneration(player)) {
+                || player.getFoodData().getSaturationLevel() > 0.0F
+                || player.getFoodData().getFoodLevel() * 100 < ThirstData.MAX * config.quenchedHealMinFoodPercent
+                || !Vanilla.naturalRegeneration(player) || ill(player, config)) {
             tracker.quenchedHealTimer = 0;
             return 0.0F;
         }
@@ -51,20 +69,7 @@ public final class HealthRegen {
         return spent;
     }
 
-    /** Whether the saturation-driven heal has to be withheld from this player. */
-    public static boolean blocksSaturationHeal(Player player) {
-        return ThirstConfig.get().dehydrationHaltsHealthRegen
-                && ThirstManager.get(player).thirst() < ThirstData.MAX;
-    }
-
-    /** Whether a withheld saturation heal is let through anyway, once every {@link #SLOW_FACTOR}. */
-    public static boolean allowsSlowHeal(Player player, int skipped) {
-        return skipped >= SLOW_FACTOR && ThirstManager.get(player).thirst() > NEARLY_HYDRATED;
-    }
-
-    /** Whether the hunger-driven heal has to be withheld from this player. */
-    public static boolean blocksHungerHeal(Player player) {
-        return ThirstConfig.get().dehydrationHaltsHealthRegen
-                && ThirstManager.get(player).thirst() <= NEARLY_HYDRATED;
+    private static boolean ill(Player player, ThirstConfig config) {
+        return config.illnessHaltsHealthRegen && Vanilla.hasEffect(player, ThirstEffects.UPSET_STOMACH);
     }
 }

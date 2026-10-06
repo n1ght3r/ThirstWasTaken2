@@ -33,13 +33,51 @@ import java.util.List;
 public final class CanteenGameTest {
     private static final BlockPos CAMPFIRE = new BlockPos(2, 1, 2);
     private static final WaterQuality DIRTY = WaterQuality.fresh(WaterPurity.MIN);
-    private static final WaterQuality PURE = WaterQuality.fresh(WaterPurity.MAX);
+    private static final WaterQuality CLEAN = WaterQuality.fresh(WaterPurity.BOILED);
 
     @GameTest
     public void eachVesselHoldsItsOwnCapacity(GameTestHelper helper) {
-        checkCapacity(helper, ThirstItems.WATERSKIN, 3);
+        checkCapacity(helper, ThirstItems.WATERSKIN, 4);
         checkCapacity(helper, ThirstItems.COPPER_CANTEEN, 4);
         checkCapacity(helper, ThirstItems.IRON_FLASK, 6);
+        helper.succeed();
+    }
+
+    @GameTest
+    public void eachVesselCapacityIsReadFromTheConfig(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> {
+            config.waterskinCapacity = 1;
+            config.copperCanteenCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
+            config.ironFlaskCapacity = 99;
+        }, () -> {
+            checkCapacity(helper, ThirstItems.WATERSKIN, 1);
+            ItemStack canteen = new ItemStack(ThirstItems.COPPER_CANTEEN);
+            WaterskinItem.addWater(canteen, DIRTY, 99);
+            TestFixtures.check(helper, WaterskinItem.servings(canteen) == 64,
+                    "a canteen set to 64 should hold 64, got " + WaterskinItem.servings(canteen));
+            ItemStack flask = new ItemStack(ThirstItems.IRON_FLASK);
+            WaterskinItem.addWater(flask, DIRTY, 99);
+            TestFixtures.check(helper, WaterskinItem.servings(flask) == 64,
+                    "a capacity over 64 should clamp to 64, got " + WaterskinItem.servings(flask));
+        });
+        helper.succeed();
+    }
+
+    /** A vessel saved holding more than a lowered capacity keeps it: it can be drunk from, but takes nothing. */
+    @GameTest
+    public void aVesselOverALoweredCapacityKeepsItsWater(GameTestHelper helper) {
+        ItemStack flask = filled(ThirstItems.IRON_FLASK, CLEAN, 6);
+        TestFixtures.withConfig(config -> config.ironFlaskCapacity = 2, () -> {
+            TestFixtures.check(helper, WaterskinItem.servings(flask) == 6 && !WaterskinItem.hasRoom(flask),
+                    "lowering the capacity should take no water away and leave no room, got "
+                            + WaterskinItem.servings(flask));
+            TestFixtures.check(helper, !WaterskinItem.addWater(flask, CLEAN, 1),
+                    "a flask over its capacity should take no more water");
+            TestFixtures.check(helper, WaterskinItem.removeWater(flask, 1) && WaterskinItem.servings(flask) == 5,
+                    "a flask over its capacity should still be drunk from, got " + WaterskinItem.servings(flask));
+            TestFixtures.check(helper, WaterskinItem.sprite(9, 4) == 3,
+                    "a skin over its capacity should look full");
+        });
         helper.succeed();
     }
 
@@ -55,7 +93,7 @@ public final class CanteenGameTest {
     }
 
     @GameTest
-    public void aCanteenBoilsPureOverALitCampfire(GameTestHelper helper) {
+    public void aCanteenBoilsCleanOverALitCampfire(GameTestHelper helper) {
         ServerPlayer player = playerAtCampfire(helper, Blocks.CAMPFIRE.defaultBlockState(),
                 filled(ThirstItems.COPPER_CANTEEN, DIRTY, 2));
         int steps = 2 * canteenBoilTicks() / WaterskinItem.BOIL_STEP_TICKS;
@@ -64,8 +102,8 @@ public final class CanteenGameTest {
         TestFixtures.check(helper, WaterPurity.quality(held(player)).equals(DIRTY),
                 "one step short of the boil the water should still be dirty, got " + WaterPurity.quality(held(player)));
         use(helper, player, 1);
-        TestFixtures.check(helper, WaterPurity.quality(held(player)).equals(PURE),
-                "a full boil should leave the canteen Purified, got " + WaterPurity.quality(held(player)));
+        TestFixtures.check(helper, WaterPurity.quality(held(player)).equals(CLEAN),
+                "a full boil should leave the canteen Clean, got " + WaterPurity.quality(held(player)));
         TestFixtures.check(helper, WaterskinItem.servings(held(player)) == 2,
                 "boiling must not change how much water there is, got " + WaterskinItem.servings(held(player)));
         helper.succeed();
@@ -78,7 +116,7 @@ public final class CanteenGameTest {
         ServerPlayer player = playerAtCampfire(helper, Blocks.SOUL_CAMPFIRE.defaultBlockState(),
                 filled(ThirstItems.IRON_FLASK, DIRTY, 1));
         use(helper, player, flaskBoilTicks() / WaterskinItem.BOIL_STEP_TICKS);
-        TestFixtures.check(helper, WaterPurity.quality(held(player)).equals(PURE),
+        TestFixtures.check(helper, WaterPurity.quality(held(player)).equals(CLEAN),
                 "a flask should boil over a soul campfire too, got " + WaterPurity.quality(held(player)));
         helper.succeed();
     }
@@ -123,22 +161,47 @@ public final class CanteenGameTest {
         helper.succeed();
     }
 
+    /**
+     * One furnace recipe per grade takes a canteen or a flask at any fill, and keeps the fill: the
+     * recipe names no servings, so this checks one, the default and 64. The time is each serving's
+     * boil time for every serving it holds.
+     */
     @GameTest
-    public void onlyTheFlaskGoesInAFurnace(GameTestHelper helper) {
-        for (int servings = 1; servings <= WaterskinItem.MAX_CAPACITY; servings++) {
-            ItemStack flask = filled(ThirstItems.IRON_FLASK, DIRTY, servings);
-            ItemStack result = TestFixtures.cook(helper, RecipeType.SMELTING, flask);
-            TestFixtures.check(helper, result.is(ThirstItems.IRON_FLASK) && WaterskinItem.servings(result) == servings
-                            && WaterPurity.quality(result).equals(WaterQuality.fresh(2)),
-                    "a furnace should raise a flask of " + servings + " dirty servings two grades and keep them, got "
-                            + result + " holding " + WaterskinItem.servings(result) + " of " + WaterPurity.quality(result));
-        }
+    public void bothVesselsBoilInAFurnaceAtAnyFill(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> {
+            config.copperCanteenCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
+            config.ironFlaskCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
+        }, () -> {
+            for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK)) {
+                for (int servings : new int[] {1, 4, 6, 64}) {
+                    for (WaterQuality grade : List.of(DIRTY, WaterQuality.fresh(1))) {
+                        ItemStack result = TestFixtures.cook(helper, RecipeType.SMELTING, filled(vessel, grade, servings));
+                        TestFixtures.check(helper, result.is(vessel) && WaterskinItem.servings(result) == servings
+                                        && CLEAN.equals(WaterPurity.quality(result)),
+                                "a furnace should boil " + servings + " servings of " + grade + " in " + vessel
+                                        + " Clean and keep them, got " + result + " holding "
+                                        + WaterskinItem.servings(result) + " of " + WaterPurity.quality(result));
+                    }
+                }
+                TestFixtures.check(helper, WaterskinItem.furnaceTicks(filled(vessel, DIRTY, 5))
+                                == 5 * WaterskinItem.boilTicksPerServing(filled(vessel, DIRTY, 1)),
+                        vessel + " should take its boil time once per serving in a furnace");
+                TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.SMOKING, filled(vessel, DIRTY, 2)).isEmpty(),
+                        vessel + " has no smoker recipe");
+                TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.SMELTING, filled(vessel, CLEAN, 2)).isEmpty()
+                                && WaterskinItem.furnaceTicks(filled(vessel, CLEAN, 2)) == 0,
+                        "Clean water in " + vessel + " has nothing left to boil");
+            }
+        });
+        TestFixtures.check(helper, WaterskinItem.furnaceTicks(filled(ThirstItems.COPPER_CANTEEN, DIRTY, 4)) == 160
+                        && WaterskinItem.furnaceTicks(filled(ThirstItems.IRON_FLASK, DIRTY, 6)) == 360,
+                "a full canteen should take 8 seconds in a furnace and a full flask 18");
         TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.SMELTING,
                         filled(ThirstItems.IRON_FLASK, WaterQuality.SALT, 2)).isEmpty(),
                 "salt water in a flask should not smelt");
         TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.SMELTING,
-                        filled(ThirstItems.COPPER_CANTEEN, DIRTY, 2)).isEmpty(),
-                "the copper canteen has no furnace recipe");
+                        filled(ThirstItems.WATERSKIN, DIRTY, 2)).isEmpty(),
+                "a waterskin has no furnace recipe");
         TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.CAMPFIRE_COOKING,
                         filled(ThirstItems.IRON_FLASK, DIRTY, 2)).isEmpty(),
                 "a campfire recipe would put the flask in the campfire's slots instead of boiling it in hand");
@@ -149,12 +212,43 @@ public final class CanteenGameTest {
     public void bothAreCraftedFromScratch(GameTestHelper helper) {
         ItemStack copper = new ItemStack(Items.COPPER_INGOT);
         ItemStack iron = new ItemStack(Items.IRON_INGOT);
-        ItemStack canteen = TestFixtures.craftGrid(helper, 3, 3, grid(new ItemStack(Items.LEATHER), copper));
+        ItemStack canteen = TestFixtures.craftGrid(helper, 3, 3, new ArrayList<>(List.of(
+                ItemStack.EMPTY, new ItemStack(Items.STRING), ItemStack.EMPTY,
+                copper.copy(), ItemStack.EMPTY, copper.copy(),
+                ItemStack.EMPTY, copper.copy(), ItemStack.EMPTY)));
         ItemStack flask = TestFixtures.craftGrid(helper, 3, 3, grid(new ItemStack(Items.IRON_NUGGET), iron));
-        TestFixtures.check(helper, canteen.is(ThirstItems.COPPER_CANTEEN), "leather over five copper should make a canteen, got " + canteen);
+        TestFixtures.check(helper, canteen.is(ThirstItems.COPPER_CANTEEN), "string over three copper should make a canteen, got " + canteen);
         TestFixtures.check(helper, flask.is(ThirstItems.IRON_FLASK), "a nugget over five iron should make a flask, got " + flask);
         TestFixtures.check(helper, WaterContainers.handles(canteen) && WaterContainers.capacity(flask) == 6,
                 "both should be fluid containers, the flask of six servings");
+        helper.succeed();
+    }
+
+    /** Three clay balls make three bowls, a waterskin is four leather, the boiler's centre is iron. */
+    @GameTest
+    public void theOtherContainersCostWhatTheDesignSays(GameTestHelper helper) {
+        ItemStack clay = new ItemStack(Items.CLAY_BALL);
+        ItemStack bowls = TestFixtures.craftGrid(helper, 3, 3, new ArrayList<>(List.of(
+                clay.copy(), ItemStack.EMPTY, clay.copy(),
+                ItemStack.EMPTY, clay.copy(), ItemStack.EMPTY,
+                ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY)));
+        TestFixtures.check(helper, bowls.is(ThirstItems.CLAY_BOWL) && bowls.getCount() == 3,
+                "three clay balls should make three clay bowls, got " + bowls);
+
+        ItemStack leather = new ItemStack(Items.LEATHER);
+        ItemStack skin = TestFixtures.craftGrid(helper, 3, 3, new ArrayList<>(List.of(
+                ItemStack.EMPTY, leather.copy(), ItemStack.EMPTY,
+                leather.copy(), ItemStack.EMPTY, leather.copy(),
+                ItemStack.EMPTY, leather.copy(), ItemStack.EMPTY)));
+        TestFixtures.check(helper, skin.is(ThirstItems.WATERSKIN), "four leather in a ring should make a waterskin, got " + skin);
+
+        ItemStack copper = new ItemStack(Items.COPPER_INGOT);
+        ItemStack boiler = TestFixtures.craftGrid(helper, 3, 3, new ArrayList<>(List.of(
+                copper.copy(), new ItemStack(ThirstItems.COPPER_PIPE), copper.copy(),
+                copper.copy(), new ItemStack(Items.IRON_INGOT), copper.copy(),
+                copper.copy(), copper.copy(), copper.copy())));
+        TestFixtures.check(helper, boiler.is(ThirstItems.DISTILLER_BOILER),
+                "copper round an iron ingot under a pipe should make the distiller boiler, got " + boiler);
         helper.succeed();
     }
 
@@ -172,7 +266,7 @@ public final class CanteenGameTest {
         return stack;
     }
 
-    /** A U of {@code metal} under {@code top}, the shape both recipes share. */
+    /** A U of {@code metal} under {@code top}, the flask's shape. */
     private static List<ItemStack> grid(ItemStack top, ItemStack metal) {
         return new ArrayList<>(List.of(
                 ItemStack.EMPTY, top.copy(), ItemStack.EMPTY,

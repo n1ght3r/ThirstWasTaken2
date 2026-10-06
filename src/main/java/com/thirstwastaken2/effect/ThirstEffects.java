@@ -16,9 +16,10 @@ public final class ThirstEffects {
      */
     public static final Holder<MobEffect> PARCHED = register("parched", 0xD4B483);
     /**
-     * Bad water's common illness: the thirst bar drains faster, the screen warps now and then, and
-     * food gives less saturation. It never hurts on its own. {@code ThirstManager.tickPlayer} charges
-     * the drain and the Nausea bursts; {@link UpsetStomach} holds the numbers. The particles are the
+     * Bad water's common illness: the thirst bar drains faster, food gives less saturation and drinks
+     * less quenched, and nothing heals naturally while it lasts. It never hurts on its own.
+     * {@code ThirstManager.tickPlayer} charges the drain, {@code HealthRegen} stops the healing;
+     * {@link UpsetStomach} holds the numbers. The particles are the
      * green of the bubble in its icon.
      */
     public static final Holder<MobEffect> UPSET_STOMACH = register("upset_stomach", 0x76DB4C);

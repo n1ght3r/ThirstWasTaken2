@@ -1,8 +1,14 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
   "type": "minecraft:smoking",
   "category": "misc",
-  "cookingtime": 100,
-  "experience": 0.35,
+  "cookingtime": 80,
+  "experience": 0.0,
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "minecraft:potion",
@@ -19,7 +25,7 @@
       "minecraft:potion_contents": {
         "potion": "minecraft:water"
       },
-      "thirstwastaken2:water_purity": 3,
+      "thirstwastaken2:water_purity": 2,
       "thirstwastaken2:water_salty": false
     },
     "id": "minecraft:potion"

@@ -10,7 +10,7 @@
       "translate": "advancements.thirstwastaken2.purified_water.description"
     },
     "icon": {
-      "id": "minecraft:glass_bottle"
+      "id": "thirstwastaken2:copper_distiller"
     },
     "title": {
       "translate": "advancements.thirstwastaken2.purified_water.title"

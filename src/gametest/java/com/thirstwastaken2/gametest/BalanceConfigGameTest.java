@@ -48,11 +48,11 @@ public final class BalanceConfigGameTest {
     @GameTest
     public void naturalWaterGradesFollowTheConfig(GameTestHelper helper) {
         TestFixtures.withConfig(config -> {
-            config.rainwaterPurity = 0;
-            config.dripstonePurity = 1;
-        }, () -> TestFixtures.check(helper, WaterPurity.rainwaterPurity() == 0 && WaterPurity.dripstonePurity() == 1,
-                "rain and dripstone grades should follow the config, got " + WaterPurity.rainwaterPurity()
-                        + " and " + WaterPurity.dripstonePurity()));
+            config.rainwaterQuality = 0;
+            config.dripstoneQuality = 1;
+        }, () -> TestFixtures.check(helper, WaterPurity.rainwaterQuality() == 0 && WaterPurity.dripstoneQuality() == 1,
+                "rain and dripstone grades should follow the config, got " + WaterPurity.rainwaterQuality()
+                        + " and " + WaterPurity.dripstoneQuality()));
         helper.succeed();
     }
 

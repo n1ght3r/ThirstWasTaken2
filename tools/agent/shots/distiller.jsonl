@@ -89,14 +89,14 @@
 {"id": "pipePut0_4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
 {"id": "pipePut0_5", "command": "client.slot", "args": {"slot": 5, "button": 1}}
 {"id": "pipePut0_6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
-{"id": "pipeGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:copper_pipe"]]}
+{"id": "pipeGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:copper_pipe"}}
 {"id": "pipeRecipe", "command": "client.capture", "args": {"name": "pipe-recipe"}}
 {"id": "pipeTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_pipe"}}
 {"id": "pipeClose", "command": "client.screen", "args": {"open": "none"}}
 {"id": "boilerClear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "boilerGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 7"}}
 {"id": "boilerGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with thirstwastaken2:copper_pipe 1"}}
-{"id": "boilerGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:gold_ingot 1"}}
+{"id": "boilerGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:iron_ingot 1"}}
 {"id": "boilerSettle", "command": "wait", "args": {"ticks": 10}}
 {"id": "boilerOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
 {"id": "boilerOpened", "command": "wait", "args": {"ticks": 10}}
@@ -112,7 +112,7 @@
 {"id": "boilerPut1_2", "command": "client.slot", "args": {"slot": 2}}
 {"id": "boilerTake2", "command": "client.slot", "args": {"inventory": 11}}
 {"id": "boilerPut2_5", "command": "client.slot", "args": {"slot": 5}}
-{"id": "boilerGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:distiller_boiler"]]}
+{"id": "boilerGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:distiller_boiler"}}
 {"id": "boilerRecipe", "command": "client.capture", "args": {"name": "boiler-recipe"}}
 {"id": "boilerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:distiller_boiler"}}
 {"id": "boilerClose", "command": "client.screen", "args": {"open": "none"}}
@@ -133,7 +133,7 @@
 {"id": "tubPut1_5", "command": "client.slot", "args": {"slot": 5}}
 {"id": "tubTake2", "command": "client.slot", "args": {"inventory": 11}}
 {"id": "tubPut2_8", "command": "client.slot", "args": {"slot": 8}}
-{"id": "tubGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:cooling_tub"]]}
+{"id": "tubGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:cooling_tub"}}
 {"id": "tubRecipe", "command": "client.capture", "args": {"name": "tub-recipe"}}
 {"id": "tubTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:cooling_tub"}}
 {"id": "tubClose", "command": "client.screen", "args": {"open": "none"}}
@@ -156,7 +156,7 @@
 {"id": "fireboxPut1_9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
 {"id": "fireboxTake2", "command": "client.slot", "args": {"inventory": 11}}
 {"id": "fireboxPut2_5", "command": "client.slot", "args": {"slot": 5}}
-{"id": "fireboxGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:brick_firebox"]]}
+{"id": "fireboxGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:brick_firebox"}}
 {"id": "fireboxRecipe", "command": "client.capture", "args": {"name": "firebox-recipe"}}
 {"id": "fireboxTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:brick_firebox"}}
 {"id": "fireboxClose", "command": "client.screen", "args": {"open": "none"}}
@@ -176,7 +176,7 @@
 {"id": "distillerPut2_7", "command": "client.slot", "args": {"slot": 7}}
 {"id": "distillerTake3", "command": "client.slot", "args": {"inventory": 12}}
 {"id": "distillerPut3_8", "command": "client.slot", "args": {"slot": 8}}
-{"id": "distillerGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:copper_distiller"]]}
+{"id": "distillerGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:copper_distiller"}}
 {"id": "distillerRecipe", "command": "client.capture", "args": {"name": "distiller-recipe"}}
 {"id": "distillerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_distiller"}}
 {"id": "distillerClose", "command": "client.screen", "args": {"open": "none"}}

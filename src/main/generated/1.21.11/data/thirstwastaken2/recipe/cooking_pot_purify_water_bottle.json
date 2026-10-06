@@ -9,7 +9,7 @@
   ],
   "type": "farmersdelight:cooking",
   "cookingtime": 200,
-  "experience": 0.35,
+  "experience": 0.0,
   "ingredients": [
     {
       "fabric:type": "fabric:any",
@@ -35,17 +35,6 @@
             "thirstwastaken2:water_purity": 1,
             "thirstwastaken2:water_salty": false
           }
-        },
-        {
-          "fabric:type": "fabric:components",
-          "base": "minecraft:potion",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:water"
-            },
-            "thirstwastaken2:water_purity": 2,
-            "thirstwastaken2:water_salty": false
-          }
         }
       ]
     }
@@ -56,7 +45,7 @@
       "minecraft:potion_contents": {
         "potion": "minecraft:water"
       },
-      "thirstwastaken2:water_purity": 3,
+      "thirstwastaken2:water_purity": 2,
       "thirstwastaken2:water_salty": false
     },
     "count": 1,

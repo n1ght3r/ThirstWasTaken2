@@ -7,6 +7,9 @@ public final class ThirstBlockEntities {
     /** The distiller's machine, on its boiler half. */
     public static final BlockEntityType<DistillerBlockEntity> COPPER_DISTILLER = Vanilla.registerBlockEntity(
             "copper_distiller", DistillerBlockEntity::new, ThirstBlocks.COPPER_DISTILLER);
+    /** What either hanging pot holds: its servings and how far they have boiled. */
+    public static final BlockEntityType<HangingPotBlockEntity> HANGING_POT = Vanilla.registerBlockEntity(
+            "hanging_pot", HangingPotBlockEntity::new, ThirstBlocks.COPPER_HANGING_POT, ThirstBlocks.IRON_HANGING_POT);
 
     private ThirstBlockEntities() { }
 

@@ -38,7 +38,12 @@
       "com.thirstwastaken2.gametest.LootGameTest",
       "com.thirstwastaken2.gametest.TradeGameTest",
       "com.thirstwastaken2.gametest.ItemAppearanceGameTest",
-      "com.thirstwastaken2.gametest.ContainerFluidGameTest"
+      "com.thirstwastaken2.gametest.ContainerFluidGameTest",
+      "com.thirstwastaken2.gametest.ConfigMigrationGameTest",
+      "com.thirstwastaken2.gametest.RecoveryGameTest",
+      "com.thirstwastaken2.gametest.DrainGameTest",
+      "com.thirstwastaken2.gametest.CoveredWaterGameTest",
+      "com.thirstwastaken2.gametest.WaterStackGameTest"
     ]
   },
   "depends": {

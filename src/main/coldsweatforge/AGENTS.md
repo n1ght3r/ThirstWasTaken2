@@ -1,8 +1,8 @@
 # src/main/coldsweatforge — Cold Sweat on Forge 1.20.1
 
 The Cold Sweat integration of [src/main/coldsweat](../coldsweat/AGENTS.md) on MinecraftForge 47, for
-Cold Sweat's 1.20.1 build. Read that guide first: the climate, the waterskin, the Boiler, the campfire,
-the furnace and smoker recipes and the hot drinks behave the same, for the same reasons. This file only
+Cold Sweat's 1.20.1 build. Read that guide first: the climate, the waterskin, the Boiler, the campfire
+and the hot drinks behave the same, for the same reasons. This file only
 records what differs on Forge 1.20.1.
 
 This directory is **only compiled by nodes that set `deps.cold_sweat` on Forge**: its row in

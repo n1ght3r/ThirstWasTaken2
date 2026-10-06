@@ -49,8 +49,8 @@ public final class PurificationGameTest {
             for (ItemStack stack : table.getRandomItems(params, roll)) {
                 if (!WaterPurity.isWaterContainer(stack)) continue;
                 bottles++;
-                // Purified water is already clean and deliberately has no recipe of its own.
-                boolean needsBoiling = WaterPurity.get(stack) < WaterPurity.MAX;
+                // Clean and Pure water have nothing left for heat to do and deliberately have no recipe.
+                boolean needsBoiling = WaterPurity.boils(WaterPurity.quality(stack));
                 if (!needsBoiling || hasSmeltingRecipe(helper, stack)) cookable++;
             }
         }
@@ -79,32 +79,64 @@ public final class PurificationGameTest {
         helper.succeed();
     }
 
-    /**
-     * The table in ThirstRecipeProvider: two grades up, stopping at pure, the same in a furnace, a smoker
-     * and on a campfire.
-     */
+    /** Heat leaves Dirty and Murky water Clean and goes no further, in a furnace and in a smoker alike. */
     @GameTest
-    public void boilingRaisesTheGradeByTwoAndStopsAtPure(GameTestHelper helper) {
+    public void boilingLeavesWaterClean(GameTestHelper helper) {
         for (ItemStack container : List.of(TestFixtures.waterBottle(),
                 new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), new ItemStack(Items.WATER_BUCKET))) {
-            for (int grade = WaterPurity.MIN; grade < WaterPurity.MAX; grade++) {
+            for (int grade = WaterPurity.MIN; grade < WaterPurity.BOILED; grade++) {
                 ItemStack input = WaterPurity.setQuality(container.copy(), WaterQuality.fresh(grade));
-                WaterQuality expected = WaterQuality.fresh(Math.min(grade + 2, WaterPurity.MAX));
+                WaterQuality expected = WaterQuality.fresh(WaterPurity.BOILED);
                 boiled(helper, input, TestFixtures.cook(helper, RecipeType.SMELTING, input), expected, "a furnace");
                 boiled(helper, input, TestFixtures.cook(helper, RecipeType.SMOKING, input), expected, "a smoker");
-                boiled(helper, input, TestFixtures.cook(helper, RecipeType.CAMPFIRE_COOKING, input), expected, "a campfire");
             }
         }
         helper.succeed();
     }
 
+    /** No water goes on a campfire's slots: the canteen and flask boil over one by being held against it. */
     @GameTest
-    public void pureWaterHasNothingToBoil(GameTestHelper helper) {
-        ItemStack pure = WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL),
-                WaterQuality.fresh(WaterPurity.MAX));
+    public void noWaterCooksInACampfire(GameTestHelper helper) {
+        for (ItemStack container : List.of(TestFixtures.waterBottle(),
+                new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), new ItemStack(Items.WATER_BUCKET))) {
+            ItemStack dirty = WaterPurity.setQuality(container.copy(), WaterQuality.fresh(WaterPurity.MIN));
+            TestFixtures.check(helper, TestFixtures.cook(helper, RecipeType.CAMPFIRE_COOKING, dirty).isEmpty(),
+                    "a campfire should cook no " + dirty.getItem());
+        }
+        helper.succeed();
+    }
 
-        TestFixtures.check(helper, !hasSmeltingRecipe(helper, pure),
-                "pure water deliberately has no recipe, so it cannot be burned for nothing");
+    @GameTest
+    public void cleanAndPureWaterHaveNothingToBoil(GameTestHelper helper) {
+        for (int grade = WaterPurity.BOILED; grade <= WaterPurity.MAX; grade++) {
+            ItemStack treated = WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL),
+                    WaterQuality.fresh(grade));
+            TestFixtures.check(helper, !hasSmeltingRecipe(helper, treated)
+                            && TestFixtures.cook(helper, RecipeType.SMOKING, treated).isEmpty(),
+                    "grade " + grade + " water deliberately has no recipe, so it cannot be burned for nothing");
+        }
+        helper.succeed();
+    }
+
+    /**
+     * The two rules every heat source goes through: one go makes Dirty or Murky water Clean, one Boiler
+     * pass raises it a grade up to Clean, and neither touches Clean, Pure or salt water.
+     */
+    @GameTest
+    public void heatStopsAtCleanAndNeverLowers(GameTestHelper helper) {
+        int[] boiled = {2, 2, 2, 3};
+        int[] stepped = {1, 2, 2, 3};
+        for (int grade = WaterPurity.MIN; grade <= WaterPurity.MAX; grade++) {
+            WaterQuality water = WaterQuality.fresh(grade);
+            TestFixtures.check(helper, WaterPurity.boil(water).equals(WaterQuality.fresh(boiled[grade])),
+                    "boiling grade " + grade + " should give " + boiled[grade] + ", got " + WaterPurity.boil(water));
+            TestFixtures.check(helper, WaterPurity.boilStep(water).equals(WaterQuality.fresh(stepped[grade])),
+                    "one Boiler pass on grade " + grade + " should give " + stepped[grade] + ", got "
+                            + WaterPurity.boilStep(water));
+        }
+        TestFixtures.check(helper, WaterPurity.boil(WaterQuality.SALT) == WaterQuality.SALT
+                        && WaterPurity.boilStep(WaterQuality.SALT) == WaterQuality.SALT,
+                "heat must never take the salt out");
         helper.succeed();
     }
 

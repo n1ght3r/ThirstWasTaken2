@@ -74,7 +74,12 @@ public final class ThirstApi {
     public static int[] thirstValues(ItemStack stack) {
         if (stack.isEmpty()) return null;
         if (WaterskinItem.is(stack) && WaterskinItem.servings(stack) == 0) return null;
-        return thirstValues(stack.getItem());
+        int[] item = thirstValues(stack.getItem());
+        // Plain water is decided per stack, before the per-item answer is used: a water bottle and an
+        // Awkward Potion are the same item, and only the item's own answer is cached, so nothing that
+        // depends on the stack is ever cached under minecraft:potion. A blacklisted item stays off.
+        if (item != null && WaterPurity.isPlainWaterDrink(stack)) return ThirstConfig.get().plainWaterValue;
+        return item;
     }
 
     public static int[] thirstValues(Item item) {
@@ -180,6 +185,9 @@ public final class ThirstApi {
         String id = identifier.toString();
         ThirstConfig config = ThirstConfig.get();
         if (config.itemBlacklist.contains(id)) return NONE;
+        // The mod's own water containers hold plain water and nothing else, so their value is the plain
+        // water serving, which the config no longer lists per item.
+        if (WaterPurity.isOwnWaterVessel(item)) return config.plainWaterValue;
 
         int[] value = config.drinks.get(id);
         if (value == null) value = config.foods.get(id);

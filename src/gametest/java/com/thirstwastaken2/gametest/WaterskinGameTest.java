@@ -1,5 +1,6 @@
 package com.thirstwastaken2.gametest;
 
+import com.thirstwastaken2.block.HangingPotBlock;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.ItemWaterData;
@@ -55,8 +56,8 @@ public final class WaterskinGameTest {
 
         boolean filled = WaterskinItem.addWater(skin, CLEAN, 99);
         TestFixtures.check(helper, filled, "filling an empty waterskin should succeed");
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == WaterskinItem.CAPACITY,
-                "should hold exactly " + WaterskinItem.CAPACITY + ", got " + WaterskinItem.servings(skin));
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity,
+                "should hold exactly " + com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity + ", got " + WaterskinItem.servings(skin));
 
         boolean again = WaterskinItem.addWater(skin, CLEAN, 1);
         TestFixtures.check(helper, !again, "a full waterskin should refuse more water");
@@ -66,9 +67,9 @@ public final class WaterskinGameTest {
     @GameTest
     public void emptyingClearsTheStoredQuality(GameTestHelper helper) {
         ItemStack skin = new ItemStack(ThirstItems.WATERSKIN);
-        WaterskinItem.addWater(skin, DIRTY, WaterskinItem.CAPACITY);
+        WaterskinItem.addWater(skin, DIRTY, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
 
-        WaterskinItem.removeWater(skin, WaterskinItem.CAPACITY);
+        WaterskinItem.removeWater(skin, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
 
         TestFixtures.check(helper, WaterskinItem.servings(skin) == 0,
                 "the waterskin should be empty, got " + WaterskinItem.servings(skin));
@@ -76,8 +77,8 @@ public final class WaterskinGameTest {
                 "an empty waterskin must not remember the water it held");
 
         ItemStack saltySkin = new ItemStack(ThirstItems.WATERSKIN);
-        WaterskinItem.addWater(saltySkin, WaterQuality.SALT, WaterskinItem.CAPACITY);
-        WaterskinItem.removeWater(saltySkin, WaterskinItem.CAPACITY);
+        WaterskinItem.addWater(saltySkin, WaterQuality.SALT, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
+        WaterskinItem.removeWater(saltySkin, com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
         TestFixtures.check(helper, !WaterPurity.isSalty(saltySkin),
                 "an empty waterskin must not stay salty");
         helper.succeed();
@@ -90,8 +91,10 @@ public final class WaterskinGameTest {
      */
     @GameTest
     public void aFilledBowlDoesNotOutclassTheWaterskin(GameTestHelper helper) {
-        TestFixtures.check(helper, !new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL).isStackable(),
-                "a filled water bowl must not stack");
+        int bowls = com.thirstwastaken2.config.ThirstConfig.get().terracottaWaterBowlStackSize;
+        TestFixtures.check(helper, new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL).getMaxStackSize() == bowls,
+                "filled water bowls should stack to " + bowls + ", got "
+                        + new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL).getMaxStackSize());
         TestFixtures.check(helper, !new ItemStack(ThirstItems.WATERSKIN).isStackable(),
                 "the waterskin must not stack either");
         TestFixtures.check(helper, new ItemStack(ThirstItems.TERRACOTTA_BOWL).isStackable(),
@@ -125,9 +128,14 @@ public final class WaterskinGameTest {
 
         clickWith(helper, skin, cursor, ClickAction.SECONDARY);
 
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == WaterskinItem.CAPACITY,
-                "a bucket should fill every serving, got " + WaterskinItem.servings(skin));
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == HangingPotBlock.BUCKET,
+                "a bucket should pour its three servings, got " + WaterskinItem.servings(skin));
         TestFixtures.check(helper, cursor[0].is(Items.BUCKET), "the cursor should be left holding the empty bucket, got " + cursor[0]);
+
+        ItemStack[] last = {WaterPurity.setQuality(TestFixtures.waterBottle(), WaterQuality.fresh(1))};
+        clickWith(helper, skin, last, ClickAction.SECONDARY);
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity,
+                "a bottle should top the skin up to its capacity, got " + WaterskinItem.servings(skin));
 
         ItemStack[] another = {WaterPurity.setQuality(TestFixtures.waterBottle(), WaterQuality.fresh(2))};
         TestFixtures.check(helper, !clickWith(helper, skin, another, ClickAction.SECONDARY),

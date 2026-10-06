@@ -40,9 +40,10 @@ public final class SoftFluidDrinking {
         WaterQuality quality = SoftFluidQuality.quality(fluid);
         ItemStack serving = WaterPurity.setQuality(
                 PotionContents.createItemStack(Items.POTION, Potions.WATER), quality);
-        // Plain water follows vanilla's food rule: a full bar refuses it, as it refuses the same bottle
-        // drunk by hand. Sea water is a water bottle too, so a full bar refuses that as well.
-        if (WaterPurity.isPlainWaterDrink(serving) && !ThirstManager.canDrinkWater(player)) return false;
+        // Plain water follows the bottle's rule: a full bar refuses it, as it refuses the same bottle
+        // drunk by hand, unless it is Clean or Pure and quenched has room. Sea water is a water bottle
+        // too, so a full bar refuses that as well.
+        if (WaterPurity.isPlainWaterDrink(serving) && !ThirstManager.canDrinkWater(player, serving)) return false;
 
         // The block both call sites sit on hands the client a success so the arm swings, and syncs its
         // tank back afterwards, so the client has nothing to do but agree.

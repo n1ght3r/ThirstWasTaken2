@@ -204,12 +204,12 @@ public final class WaterInteractions {
 
     /**
      * A cauldron vanilla filled from the sky. Rain is clean but open to whatever it falls through,
-     * so it lands on its own configured grade rather than inheriting {@code defaultPurity}.
+     * so it lands on its own configured grade rather than inheriting {@code defaultQuality}.
      */
     public static void filledByRain(BlockState before, Level level, BlockPos pos) {
         // Switched off, rain is vanilla's again: the cauldron fills, and the water carries no grade.
         if (!ThirstConfig.get().enableRainCollection) return;
-        naturallyFilled(before, level, pos, WaterPurity.rainwaterPurity());
+        naturallyFilled(before, level, pos, WaterPurity.rainwaterQuality());
     }
 
     /**
@@ -221,7 +221,7 @@ public final class WaterInteractions {
         // Identity, not the water tag: vanilla's own drip check compares against this instance, and
         // Fluid#is(TagKey) is deprecated.
         if (fluid == Fluids.WATER) {
-            naturallyFilled(before, level, pos, WaterPurity.dripstonePurity());
+            naturallyFilled(before, level, pos, WaterPurity.dripstoneQuality());
         }
     }
 

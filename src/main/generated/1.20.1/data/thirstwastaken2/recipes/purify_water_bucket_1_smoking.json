@@ -1,8 +1,14 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
   "type": "thirstwastaken2:smoking",
   "category": "misc",
-  "cookingtime": 100,
-  "experience": 0.35,
+  "cookingtime": 240,
+  "experience": 0.0,
   "ingredient": {
     "fabric:type": "fabric:nbt",
     "base": {
@@ -13,6 +19,6 @@
   },
   "result": {
     "item": "minecraft:water_bucket",
-    "nbt": "{thirstwastaken2:{purity:3,salty:0b}}"
+    "nbt": "{thirstwastaken2:{purity:2,salty:0b}}"
   }
 }

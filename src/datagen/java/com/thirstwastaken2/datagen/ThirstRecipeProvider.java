@@ -1,14 +1,16 @@
 package com.thirstwastaken2.datagen;
 
 import com.thirstwastaken2.ThirstWasTaken2;
+import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.item.ThirstItems;
-import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.Vanilla;
 import com.thirstwastaken2.platform.ThirstComponents;
+import com.thirstwastaken2.purity.WaterPurity;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import com.thirstwastaken2.platform.ConfigEnabledCondition;
 import com.thirstwastaken2.platform.ItemEnabledCondition;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -42,7 +44,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.CampfireCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -58,10 +59,12 @@ import java.util.function.BiFunction;
  * Every recipe the mod ships, and the recipe book unlocks that go with them.
  *
  * <p>Most of them are purification recipes, and they are one shape rather than dozens of decisions:
- * for each container, each input grade below the cap and each heat source, boiling bumps the water
- * two grades and stops at {@link #PURIFIED}. The iron flask adds one smelting recipe per fill level.
- * Reading them out of {@link #PURIFY_TABLE} is the point of generating them — the JSON files they
- * replace had to be kept consistent by hand.
+ * for each container, each input grade below {@link #BOILED} and each heat source, boiling leaves the
+ * water Clean, the most heat does anywhere ({@code WaterPurity.boil}). The copper canteen and the iron
+ * flask add one smelting recipe per grade, matching any fill: {@code CookingRecipeMixin} keeps the
+ * servings and {@code FurnaceMixin} times them, so a capacity of 64 adds no recipes. Writing them from
+ * one rule is the point of generating them — the JSON files they replace had to be kept consistent by
+ * hand. Every one carries {@code thirstwastaken2:config_enabled} for {@code enableFurnaceBoiling}.
  *
  * <p>Salt water carries no {@code water_purity} at all, so an ingredient that demands one already
  * excludes it. Demanding {@code water_salty: false} as well is belt and braces, and it is also what
@@ -72,17 +75,12 @@ import java.util.function.BiFunction;
  * config loses those recipes and their unlocks. The bottle and bucket recipes carry none.
  */
 public final class ThirstRecipeProvider extends FabricRecipeProvider {
-    /** The grade boiling cannot improve on, so the grade with no recipe of its own. */
-    static final int PURIFIED = 3;
-
-    /** Input grade to output grade: a two grade bump, capped. Index is the input grade. */
-    private static final int[] PURIFY_TABLE = { 2, 3, 3 };
+    /** What every boiling recipe makes, and the first grade with no recipe of its own: Clean. */
+    static final int BOILED = WaterPurity.BOILED;
 
     /** Any mod's copper, through the convention tag both loaders fill. */
     private static final TagKey<Item> COPPER_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/copper"));
-    private static final TagKey<Item> GOLD_INGOTS =
-            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/gold"));
     private static final TagKey<Item> IRON_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/iron"));
     private static final TagKey<Item> IRON_NUGGETS =
@@ -93,11 +91,12 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     //?} else
     //private static final Item CHAIN = Items.CHAIN;
 
-    static final float PURIFY_EXPERIENCE = 0.35F;
+    /** None: boiling water is a chore, not something to farm experience from. */
+    static final float PURIFY_EXPERIENCE = 0.0F;
+    /** Firing a clay bowl, vanilla's own smelting time. */
     private static final int SMELTING_TIME = 200;
-    /** Half a furnace's time, as a smoker cooks food, which also suits Sophisticated's Smoking upgrade. */
-    private static final int SMOKING_TIME = 100;
-    private static final int CAMPFIRE_TIME = 600;
+    /** The switch every furnace and smoker water recipe loads under. */
+    static final String FURNACE_BOILING = "enableFurnaceBoiling";
 
     public ThirstRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
@@ -142,13 +141,29 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         return new ItemEnabledCondition(Vanilla.itemId(item));
     }
 
-    /** One purifiable container: what holds the water, and what the recipes call it. */
-    record Container(String name, Item item, boolean potion, boolean bowl) {
-        static final Container BOTTLE = new Container("bottle", Items.POTION, true, false);
-        static final Container BOWL = new Container("bowl", ThirstItems.TERRACOTTA_WATER_BOWL, false, true);
-        static final Container BUCKET = new Container("bucket", Items.WATER_BUCKET, false, false);
+    /**
+     * One purifiable container: what holds the water, what the recipes call it, and the ticks a furnace
+     * takes over it, 8 seconds a serving. A smoker takes half.
+     */
+    record Container(String name, Item item, boolean potion, boolean bowl, int smeltingTicks) {
+        static final Container BOTTLE = new Container("bottle", Items.POTION, true, false, 160);
+        static final Container BOWL = new Container("bowl", ThirstItems.TERRACOTTA_WATER_BOWL, false, true, 160);
+        static final Container BUCKET = new Container("bucket", Items.WATER_BUCKET, false, false, 480);
 
         static final List<Container> ALL = List.of(BOTTLE, BOWL, BUCKET);
+    }
+
+    /** The furnace's time for a default fill of {@code vessel}; {@code FurnaceMixin} times the actual fill. */
+    static int vesselSmeltingTicks(Item vessel) {
+        ThirstConfig defaults = new ThirstConfig();
+        return vessel == ThirstItems.COPPER_CANTEEN
+                ? defaults.copperCanteenCapacity * defaults.copperCanteenBoilSeconds * 20
+                : defaults.ironFlaskCapacity * defaults.ironFlaskBoilSeconds * 20;
+    }
+
+    /** The two vessels a furnace boils, in recipe order. */
+    static List<Item> furnaceVessels() {
+        return List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK);
     }
 
     //? if >=26.3 {
@@ -213,7 +228,8 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         //? if >=1.21.2
         @Override
         public void buildRecipes() {
-            shaped(ThirstItems.CLAY_BOWL, 4)
+            // Three clay balls, three bowls: each fires into one, a full default stack of water bowls.
+            shaped(ThirstItems.CLAY_BOWL, 3)
                     .pattern("C C")
                     .pattern(" C ")
                     .define('C', Items.CLAY_BALL)
@@ -230,11 +246,11 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .unlockedBy("has_clay_bowl", has(ThirstItems.CLAY_BOWL))
                     .save(enabled(ThirstItems.TERRACOTTA_BOWL), recipe("terracotta_bowl_from_smelting"));
 
+            // Four leather sewn round the opening, the top piece its neck.
             shaped(ThirstItems.WATERSKIN, 1)
-                    .pattern(" S ")
+                    .pattern(" L ")
                     .pattern("L L")
                     .pattern(" L ")
-                    .define('S', Items.STRING)
                     .define('L', Items.LEATHER)
                     .unlockedBy("has_leather", has(Items.LEATHER))
                     .save(enabled(ThirstItems.WATERSKIN), recipe("waterskin"));
@@ -263,14 +279,14 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .unlockedBy("has_iron_ingot", has(IRON_INGOTS))
                     .save(enabled(ThirstItems.IRON_HANGING_POT), recipe("iron_hanging_pot"));
 
-            // The canteen and the flask share the waterskin's shape, a U with one thing on top, so a
+            // The canteen and the flask share the waterskin's idea, a vessel with one thing on top, so a
             // player who knows one can guess the others. Their top rows keep them clear of the pots,
-            // the cauldron and the bucket. Leather is the canteen's strap, the nugget the flask's cap.
+            // the cauldron and the bucket. String is the canteen's strap, the nugget the flask's cap.
             shaped(ThirstItems.COPPER_CANTEEN, 1)
-                    .pattern(" L ")
+                    .pattern(" S ")
                     .pattern("C C")
-                    .pattern("CCC")
-                    .define('L', Items.LEATHER)
+                    .pattern(" C ")
+                    .define('S', Items.STRING)
                     .define('C', COPPER_INGOTS)
                     .unlockedBy("has_copper_ingot", has(COPPER_INGOTS))
                     .save(enabled(ThirstItems.COPPER_CANTEEN), recipe("copper_canteen"));
@@ -293,16 +309,16 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .unlockedBy("has_copper_ingot", has(COPPER_INGOTS))
                     .save(enabled(ThirstItems.COPPER_PIPE), recipe("copper_pipe"));
 
-            // A closed copper vessel with the pipe through its lid: a ring of copper round a gold ingot, the
+            // A closed copper vessel with the pipe through its lid: a ring of copper round an iron ingot, the
             // pipe in the top middle. Closed at the top, so it is clear of the U the pots, canteen and flask
-            // are made in.
+            // are made in. Iron rather than gold, so a player settling by the sea need not find gold.
             shaped(ThirstItems.DISTILLER_BOILER, 1)
                     .pattern("CPC")
-                    .pattern("CGC")
+                    .pattern("CIC")
                     .pattern("CCC")
                     .define('P', ThirstItems.COPPER_PIPE)
                     .define('C', COPPER_INGOTS)
-                    .define('G', GOLD_INGOTS)
+                    .define('I', IRON_INGOTS)
                     .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
                     .save(enabled(ThirstItems.DISTILLER_BOILER), recipe("distiller_boiler"));
 
@@ -369,7 +385,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
             *///?}
 
             Container.ALL.forEach(this::purifyRecipes);
-            flaskPurifyRecipes();
+            furnaceVessels().forEach(this::vesselPurifyRecipes);
         }
 
         /**
@@ -380,54 +396,54 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
             return conditions.apply(output, new ResourceCondition[]{itemEnabled(item)});
         }
 
-        /**
-         * The iron flask in a furnace: one recipe per fill level and grade below the cap, because an
-         * ingredient matches exact component values and the result has to keep the servings. Smelting
-         * only; the copper canteen has none, which is what sets the two apart. No campfire recipe
-         * either: vanilla puts anything with one into the campfire's slots, which would swallow the
-         * flask's own boil on a campfire.
-         */
-        private void flaskPurifyRecipes() {
-            List<String> names = new java.util.ArrayList<>();
-            for (int servings = 1; servings <= WaterskinItem.MAX_CAPACITY; servings++) {
-                for (int purity = 0; purity < PURIFIED; purity++) names.add(flaskPurifyName(servings, purity));
-            }
-            java.util.SequencedMap<String, ItemLike> unlocks = new java.util.LinkedHashMap<>();
-            unlocks.put("has_iron_flask", ThirstItems.IRON_FLASK);
-            AdvancementHolder unlock = purifyUnlock("iron_flask", names, unlocks);
-            RecipeOutput flasks = enabled(ThirstItems.IRON_FLASK);
+        /** The output for a furnace or smoker water recipe, and for {@code item}'s switch too when not null. */
+        private RecipeOutput furnace(Item item) {
+            ResourceCondition boiling = new ConfigEnabledCondition(FURNACE_BOILING);
+            return conditions.apply(output, item == null
+                    ? new ResourceCondition[]{boiling}
+                    : new ResourceCondition[]{itemEnabled(item), boiling});
+        }
 
-            boolean first = true;
-            for (int servings = 1; servings <= WaterskinItem.MAX_CAPACITY; servings++) {
-                for (int purity = 0; purity < PURIFIED; purity++) {
-                    var key = recipe(flaskPurifyName(servings, purity));
-                    flasks.accept(key, Heat.SMELTING.create(flaskIngredient(servings, purity),
-                            flaskResult(servings, PURIFY_TABLE[purity])), first ? unlock : null);
-                    first = false;
-                }
+        /**
+         * A copper canteen or iron flask in a furnace: one recipe per grade below the cap, matching any
+         * fill, since the ingredient names no servings. The result names none either and gets the input's
+         * from {@code CookingRecipeMixin}; {@code FurnaceMixin} makes the time each serving's boil time
+         * for every serving. Smelting only. No campfire recipe either: vanilla puts anything with one into
+         * the campfire's slots, which would swallow the vessel's own boil on a campfire.
+         */
+        private void vesselPurifyRecipes(Item vessel) {
+            List<String> names = new java.util.ArrayList<>();
+            for (int purity = 0; purity < BOILED; purity++) names.add(vesselPurifyName(vessel, purity));
+            java.util.SequencedMap<String, ItemLike> unlocks = new java.util.LinkedHashMap<>();
+            unlocks.put("has_" + Vanilla.itemId(vessel).getPath(), vessel);
+            AdvancementHolder unlock = purifyUnlock(Vanilla.itemId(vessel).getPath(), names, unlocks);
+            RecipeOutput vessels = furnace(vessel);
+
+            for (int purity = 0; purity < BOILED; purity++) {
+                vessels.accept(recipe(vesselPurifyName(vessel, purity)), Heat.SMELTING.create(
+                        vesselIngredient(vessel, purity), vesselResult(vessel, BOILED), vesselSmeltingTicks(vessel)),
+                        purity == 0 ? unlock : null);
             }
         }
 
-        static Ingredient flaskIngredient(int servings, int purity) {
-            return DefaultCustomIngredients.components(Ingredient.of(ThirstItems.IRON_FLASK),
-                    flaskComponents(servings, purity));
+        static Ingredient vesselIngredient(Item vessel, int purity) {
+            return DefaultCustomIngredients.components(Ingredient.of(vessel), vesselComponents(purity));
         }
 
         //? if >=26.1 {
-        static ItemStackTemplate flaskResult(int servings, int purity) {
-            return new ItemStackTemplate(ThirstItems.IRON_FLASK, flaskComponents(servings, purity));
+        static ItemStackTemplate vesselResult(Item vessel, int purity) {
+            return new ItemStackTemplate(vessel, vesselComponents(purity));
         }
         //?} else {
-        /*static ItemStack flaskResult(int servings, int purity) {
-            ItemStack stack = new ItemStack(ThirstItems.IRON_FLASK);
-            stack.applyComponents(flaskComponents(servings, purity));
+        /*static ItemStack vesselResult(Item vessel, int purity) {
+            ItemStack stack = new ItemStack(vessel);
+            stack.applyComponents(vesselComponents(purity));
             return stack;
         }
         *///?}
 
-        private static DataComponentPatch flaskComponents(int servings, int purity) {
+        private static DataComponentPatch vesselComponents(int purity) {
             return DataComponentPatch.builder()
-                    .set(ThirstComponents.WATER_SERVINGS, servings)
                     .set(ThirstComponents.WATER_PURITY, purity)
                     .set(ThirstComponents.WATER_SALTY, false)
                     .build();
@@ -440,18 +456,19 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
          */
         private void purifyRecipes(Container container) {
             AdvancementHolder unlock = purifyUnlock(container);
-            // Only the bowl is the mod's own; bottles and buckets are purified whatever the config says.
-            RecipeOutput purified = container.bowl() ? enabled(container.item()) : output;
+            // Only the bowl is the mod's own; bottles and buckets are purified whatever its switch says.
+            RecipeOutput purified = furnace(container.bowl() ? container.item() : null);
 
             boolean first = true;
-            for (int purity = 0; purity < PURIFIED; purity++) {
+            for (int purity = 0; purity < BOILED; purity++) {
                 Ingredient ingredient = purifyIngredient(container, purity);
-                var result = purifyResult(container, PURIFY_TABLE[purity]);
+                var result = purifyResult(container, BOILED);
 
                 for (Heat heat : Heat.values()) {
                     var key = recipe(purifyName(container, purity, heat));
                     // The unlock is one file shared by all six, so only the first accept writes it.
-                    purified.accept(key, heat.create(ingredient, result), first ? unlock : null);
+                    purified.accept(key, heat.create(ingredient, result, heat.ticks(container.smeltingTicks())),
+                            first ? unlock : null);
                     first = false;
                 }
             }
@@ -463,7 +480,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
          */
         private AdvancementHolder purifyUnlock(Container container) {
             List<String> names = new java.util.ArrayList<>();
-            for (int purity = 0; purity < PURIFIED; purity++) {
+            for (int purity = 0; purity < BOILED; purity++) {
                 for (Heat heat : Heat.values()) names.add(purifyName(container, purity, heat));
             }
             return purifyUnlock(container.name(), names, purifyUnlockItems(container));
@@ -593,37 +610,41 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         }
     }
 
-    /** Smelting, smoking and campfire cooking differ only in how long they take. */
+    /**
+     * Smelting and smoking differ only in how long they take: a smoker half a furnace's time, as it cooks
+     * food. No campfire: a campfire's slots would take any water container held against it, the
+     * canteen's and flask's own boil included, and the design keeps water out of them.
+     */
     private enum Heat {
-        SMELTING("smelting", SMELTING_TIME),
-        SMOKING("smoking", SMOKING_TIME),
-        CAMPFIRE("campfire", CAMPFIRE_TIME);
+        SMELTING("smelting"),
+        SMOKING("smoking");
 
         private final String suffix;
-        private final int time;
 
-        Heat(String suffix, int time) {
+        Heat(String suffix) {
             this.suffix = suffix;
-            this.time = time;
+        }
+
+        /** This heat's time for something a furnace takes {@code smeltingTicks} over. */
+        int ticks(int smeltingTicks) {
+            return this == SMOKING ? smeltingTicks / 2 : smeltingTicks;
         }
 
         //? if >=26.1 {
-        AbstractCookingRecipe create(Ingredient ingredient, ItemStackTemplate result) {
+        AbstractCookingRecipe create(Ingredient ingredient, ItemStackTemplate result, int time) {
             Recipe.CommonInfo common = new Recipe.CommonInfo(true);
             AbstractCookingRecipe.CookingBookInfo book =
                     new AbstractCookingRecipe.CookingBookInfo(CookingBookCategory.MISC, "");
             return switch (this) {
                 case SMELTING -> new SmeltingRecipe(common, book, ingredient, result, PURIFY_EXPERIENCE, time);
                 case SMOKING -> new SmokingRecipe(common, book, ingredient, result, PURIFY_EXPERIENCE, time);
-                case CAMPFIRE -> new CampfireCookingRecipe(common, book, ingredient, result, PURIFY_EXPERIENCE, time);
             };
         }
         //?} else {
-        /*AbstractCookingRecipe create(Ingredient ingredient, ItemStack result) {
+        /*AbstractCookingRecipe create(Ingredient ingredient, ItemStack result, int time) {
             return switch (this) {
                 case SMELTING -> new SmeltingRecipe("", CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
                 case SMOKING -> new SmokingRecipe("", CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
-                case CAMPFIRE -> new CampfireCookingRecipe("", CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
             };
         }
         *///?}
@@ -676,9 +697,9 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     }
     //?}
 
-    /** The iron flask's furnace recipe for {@code servings} of water at {@code purity}. */
-    static String flaskPurifyName(int servings, int purity) {
-        return "purify_water_iron_flask_" + servings + "_" + purity + "_smelting";
+    /** A copper canteen's or iron flask's furnace recipe for water at {@code purity}, any fill. */
+    static String vesselPurifyName(Item vessel, int purity) {
+        return "purify_water_" + Vanilla.itemId(vessel).getPath() + "_" + purity + "_smelting";
     }
 
     // Recipes are registry entries with keys from 1.21.2; before it a recipe is known by its id alone.

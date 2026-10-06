@@ -14,8 +14,12 @@ public sealed interface WaterQuality {
     /** Sea water is stateless, so one instance serves every caller. */
     WaterQuality SALT = new Salt();
 
+    /**
+     * Fresh water of {@code purity}, clamped to the grades. One instance per grade, made once: a grade is
+     * asked for on every tooltip frame and every drink, and the record holds nothing else.
+     */
     static WaterQuality fresh(int purity) {
-        return new Fresh(purity);
+        return Fresh.GRADES[Mth.clamp(purity, WaterPurity.MIN, WaterPurity.MAX)];
     }
 
     /**
@@ -36,6 +40,8 @@ public sealed interface WaterQuality {
 
     /** Drinkable water, graded {@code 0..3}: dirty, murky, clean, pure. */
     record Fresh(int purity) implements WaterQuality {
+        private static final Fresh[] GRADES = {new Fresh(0), new Fresh(1), new Fresh(2), new Fresh(3)};
+
         public Fresh {
             purity = Mth.clamp(purity, WaterPurity.MIN, WaterPurity.MAX);
         }

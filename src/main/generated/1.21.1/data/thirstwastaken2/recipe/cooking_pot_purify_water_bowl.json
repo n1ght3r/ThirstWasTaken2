@@ -13,7 +13,7 @@
   ],
   "type": "farmersdelight:cooking",
   "cookingtime": 200,
-  "experience": 0.35,
+  "experience": 0.0,
   "ingredients": [
     {
       "fabric:type": "fabric:any",
@@ -37,22 +37,16 @@
             "thirstwastaken2:water_purity": 1,
             "thirstwastaken2:water_salty": false
           }
-        },
-        {
-          "fabric:type": "fabric:components",
-          "base": {
-            "item": "thirstwastaken2:terracotta_water_bowl"
-          },
-          "components": {
-            "thirstwastaken2:water_purity": 2,
-            "thirstwastaken2:water_salty": false
-          }
         }
       ]
     }
   ],
   "recipe_book_tab": "drinks",
   "result": {
+    "components": {
+      "minecraft:custom_model_data": 2,
+      "thirstwastaken2:water_purity": 2
+    },
     "count": 1,
     "id": "thirstwastaken2:terracotta_water_bowl"
   }

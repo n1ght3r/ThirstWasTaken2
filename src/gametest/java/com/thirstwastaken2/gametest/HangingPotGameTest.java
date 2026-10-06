@@ -49,8 +49,8 @@ public final class HangingPotGameTest {
         use(helper, player, pos);
 
         BlockState after = helper.getLevel().getBlockState(pos);
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == HangingPotBlock.BUCKET,
-                "a bucket should add three servings, the pot holds " + after.getValue(HangingPotBlock.LEVEL));
+        TestFixtures.check(helper, servings(helper, pos) == HangingPotBlock.BUCKET,
+                "a bucket should add three servings, the pot holds " + servings(helper, pos));
         TestFixtures.check(helper, WaterQuality.fresh(1).equals(HangingPotBlock.quality(after)),
                 "the pot should hold the bucket's murky water, got " + HangingPotBlock.quality(after));
         TestFixtures.check(helper, player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.BUCKET),
@@ -60,14 +60,14 @@ public final class HangingPotGameTest {
 
     @GameTest
     public void aFullPotTakesNoMoreWater(GameTestHelper helper) {
-        BlockPos pos = pot(helper, Blocks.STONE.defaultBlockState(), HangingPotBlock.CAPACITY - 2, WaterQuality.fresh(3));
+        int held = ThirstBlocks.COPPER_HANGING_POT.capacity() - 2;
+        BlockPos pos = pot(helper, Blocks.STONE.defaultBlockState(), held, WaterQuality.fresh(3));
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         hold(player, new ItemStack(Items.WATER_BUCKET));
 
         use(helper, player, pos);
 
-        TestFixtures.check(helper, helper.getLevel().getBlockState(pos).getValue(HangingPotBlock.LEVEL)
-                        == HangingPotBlock.CAPACITY - 2,
+        TestFixtures.check(helper, servings(helper, pos) == held,
                 "a bucket should not fit in a pot with room for two servings");
         TestFixtures.check(helper, player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WATER_BUCKET),
                 "the player should keep the full bucket");
@@ -85,9 +85,9 @@ public final class HangingPotGameTest {
         BlockState after = helper.getLevel().getBlockState(pos);
         TestFixtures.check(helper, WaterQuality.fresh(0).equals(HangingPotBlock.quality(after)),
                 "pouring dirty water into pure water should leave it dirty, got " + HangingPotBlock.quality(after));
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.BOIL) == HangingPotBlock.boilSteps(2),
+        TestFixtures.check(helper, HangingPotBlock.boiled(helper.getLevel(), pos) == HangingPotBlock.boilSteps(2),
                 "the two pure servings should count as boiled, leaving one serving's time, got step "
-                        + after.getValue(HangingPotBlock.BOIL));
+                        + HangingPotBlock.boiled(helper.getLevel(), pos));
         TestFixtures.check(helper, player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GLASS_BOTTLE),
                 "the player should be left holding a glass bottle");
         helper.succeed();
@@ -108,7 +108,7 @@ public final class HangingPotGameTest {
         TestFixtures.check(helper, stored.equals(WaterPurity.quality(drawn)),
                 "the bottle should carry the pot's " + stored + ", got " + WaterPurity.quality(drawn));
         BlockState after = helper.getLevel().getBlockState(pos);
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == 0
+        TestFixtures.check(helper, servings(helper, pos) == 0 && after.getValue(HangingPotBlock.LEVEL) == 0
                         && after.getValue(WaterPurity.BLOCK_PURITY) == WaterPurity.BLOCK_UNSET,
                 "an emptied pot should hold nothing and remember no grade, got " + after);
         helper.succeed();
@@ -122,15 +122,13 @@ public final class HangingPotGameTest {
         hold(player, skin);
 
         use(helper, player, pos);
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == 2
-                        && helper.getLevel().getBlockState(pos).getValue(HangingPotBlock.LEVEL) == 0,
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == 2 && servings(helper, pos) == 0,
                 "a waterskin should draw all the pot holds, it holds " + WaterskinItem.servings(skin));
 
         player.setShiftKeyDown(true);
         player.setPose(Pose.CROUCHING);
         use(helper, player, pos);
-        TestFixtures.check(helper, WaterskinItem.servings(skin) == 0
-                        && helper.getLevel().getBlockState(pos).getValue(HangingPotBlock.LEVEL) == 2,
+        TestFixtures.check(helper, WaterskinItem.servings(skin) == 0 && servings(helper, pos) == 2,
                 "a sneaking player should pour the waterskin back into the pot, it holds "
                         + WaterskinItem.servings(skin));
         helper.succeed();
@@ -199,7 +197,7 @@ public final class HangingPotGameTest {
     }
 
     @GameTest
-    public void aPotOverALitCampfireBoilsPure(GameTestHelper helper) {
+    public void aPotOverALitCampfireBoilsClean(GameTestHelper helper) {
         BlockPos pos = pot(helper, Blocks.CAMPFIRE.defaultBlockState(), 3, WaterQuality.fresh(0));
         ServerLevel level = helper.getLevel();
         TestFixtures.check(helper, level.getBlockTicks().hasScheduledTick(pos, ThirstBlocks.COPPER_HANGING_POT),
@@ -210,10 +208,10 @@ public final class HangingPotGameTest {
         }
 
         BlockState after = level.getBlockState(pos);
-        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.MAX).equals(HangingPotBlock.quality(after)),
-                "the water should have boiled pure, got " + HangingPotBlock.quality(after));
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == 3,
-                "boiling should not cost any water, the pot holds " + after.getValue(HangingPotBlock.LEVEL));
+        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.BOILED).equals(HangingPotBlock.quality(after)),
+                "the water should have boiled Clean, got " + HangingPotBlock.quality(after));
+        TestFixtures.check(helper, servings(helper, pos) == 3,
+                "boiling should not cost any water, the pot holds " + servings(helper, pos));
         helper.succeed();
     }
 
@@ -234,9 +232,9 @@ public final class HangingPotGameTest {
         TestFixtures.check(helper, level.getBlockTicks().hasScheduledTick(pos, ThirstBlocks.COPPER_HANGING_POT),
                 "lighting the campfire should pick the boil up");
 
-        helper.setBlock(POT, HangingPotBlock.withWater(level.getBlockState(pos), 3, WaterQuality.SALT));
+        HangingPotBlock.setWater(level, pos, 3, WaterQuality.SALT);
         level.getBlockState(pos).tick(level, pos, level.getRandom());
-        TestFixtures.check(helper, level.getBlockState(pos).getValue(HangingPotBlock.BOIL) == 0
+        TestFixtures.check(helper, HangingPotBlock.boiled(level, pos) == 0
                         && WaterQuality.SALT.equals(HangingPotBlock.quality(level.getBlockState(pos))),
                 "salt water should not boil into anything");
         helper.succeed();
@@ -249,10 +247,10 @@ public final class HangingPotGameTest {
         for (int step = 0; step < HangingPotBlock.boilSteps(1); step++) {
             level.getBlockState(pos).tick(level, pos, level.getRandom());
         }
-        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.MAX).equals(HangingPotBlock.quality(level.getBlockState(pos))),
-                "one serving should boil pure in one serving's steps, got " + level.getBlockState(pos));
+        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.BOILED).equals(HangingPotBlock.quality(level.getBlockState(pos))),
+                "one serving should boil Clean in one serving's steps, got " + level.getBlockState(pos));
 
-        helper.setBlock(POT, HangingPotBlock.withWater(level.getBlockState(pos), 3, WaterQuality.fresh(0)));
+        HangingPotBlock.setWater(level, pos, 3, WaterQuality.fresh(0));
         for (int step = 0; step < HangingPotBlock.boilSteps(1); step++) {
             level.getBlockState(pos).tick(level, pos, level.getRandom());
         }
@@ -274,8 +272,8 @@ public final class HangingPotGameTest {
         use(helper, player, pos);
 
         BlockState after = level.getBlockState(pos);
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == 2
-                        && after.getValue(HangingPotBlock.BOIL) == HangingPotBlock.STEPS_PER_SERVING - 1,
+        TestFixtures.check(helper, servings(helper, pos) == 2
+                        && HangingPotBlock.boiled(level, pos) == HangingPotBlock.STEPS_PER_SERVING - 1,
                 "a bottle poured into a pot that is nearly done should keep its progress, got " + after);
         helper.succeed();
     }
@@ -284,7 +282,9 @@ public final class HangingPotGameTest {
     public void drawingFromAPotNearlyDoneFinishesTheRest(GameTestHelper helper) {
         BlockPos pos = pot(helper, Blocks.CAMPFIRE.defaultBlockState(), 2, WaterQuality.fresh(0));
         ServerLevel level = helper.getLevel();
-        helper.setBlock(POT, level.getBlockState(pos).setValue(HangingPotBlock.BOIL, HangingPotBlock.boilSteps(2) - 1));
+        for (int step = 0; step < HangingPotBlock.boilSteps(2) - 1; step++) {
+            level.getBlockState(pos).tick(level, pos, level.getRandom());
+        }
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         hold(player, new ItemStack(Items.GLASS_BOTTLE));
 
@@ -292,8 +292,8 @@ public final class HangingPotGameTest {
         level.getBlockState(pos).tick(level, pos, level.getRandom());
 
         BlockState after = level.getBlockState(pos);
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == 1
-                        && WaterQuality.fresh(WaterPurity.MAX).equals(HangingPotBlock.quality(after)),
+        TestFixtures.check(helper, servings(helper, pos) == 1
+                        && WaterQuality.fresh(WaterPurity.BOILED).equals(HangingPotBlock.quality(after)),
                 "the serving left should finish on the next step, got " + after);
         helper.succeed();
     }
@@ -303,15 +303,15 @@ public final class HangingPotGameTest {
     public void rainFillsThePotWithRainwater(GameTestHelper helper) {
         BlockPos pos = pot(helper, Blocks.STONE.defaultBlockState(), 0, null);
         ServerLevel level = helper.getLevel();
-        for (int attempt = 0; attempt < 500 && level.getBlockState(pos).getValue(HangingPotBlock.LEVEL) == 0; attempt++) {
+        for (int attempt = 0; attempt < 500 && servings(helper, pos) == 0; attempt++) {
             BlockState before = level.getBlockState(pos);
             before.getBlock().handlePrecipitation(before, level, pos, Biome.Precipitation.RAIN);
         }
 
         BlockState after = level.getBlockState(pos);
-        WaterQuality expected = WaterQuality.fresh(WaterPurity.rainwaterPurity());
-        TestFixtures.check(helper, after.getValue(HangingPotBlock.LEVEL) == 1,
-                "rain should have added one serving in 500 tries, the pot holds " + after.getValue(HangingPotBlock.LEVEL));
+        WaterQuality expected = WaterQuality.fresh(WaterPurity.rainwaterQuality());
+        TestFixtures.check(helper, servings(helper, pos) == 1,
+                "rain should have added one serving in 500 tries, the pot holds " + servings(helper, pos));
         TestFixtures.check(helper, expected.equals(HangingPotBlock.quality(after)),
                 "rainwater should be graded " + expected + ", got " + HangingPotBlock.quality(after));
         helper.succeed();
@@ -333,9 +333,9 @@ public final class HangingPotGameTest {
             player.gameMode.useItemOn(player, nether, player.getItemInHand(InteractionHand.MAIN_HAND),
                     InteractionHand.MAIN_HAND, aimAt(pos));
 
-            TestFixtures.check(helper, nether.getBlockState(pos).getValue(HangingPotBlock.LEVEL) == 0,
+            TestFixtures.check(helper, HangingPotBlock.servings(nether, pos) == 0,
                     "water poured into a pot in the Nether should boil away, the pot holds "
-                            + nether.getBlockState(pos).getValue(HangingPotBlock.LEVEL));
+                            + HangingPotBlock.servings(nether, pos));
             TestFixtures.check(helper, player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WATER_BUCKET),
                     "the player should keep the water bucket, got " + player.getItemInHand(InteractionHand.MAIN_HAND));
         } finally {
@@ -356,7 +356,7 @@ public final class HangingPotGameTest {
         ServerLevel level = helper.getLevel();
         BlockState filled = level.getBlockState(pos);
         TestFixtures.check(helper, filled.is(ThirstBlocks.IRON_HANGING_POT)
-                        && filled.getValue(HangingPotBlock.LEVEL) == HangingPotBlock.BUCKET,
+                        && servings(helper, pos) == HangingPotBlock.BUCKET,
                 "a bucket should add three servings to the iron pot, got " + filled);
         TestFixtures.check(helper, WaterQuality.fresh(1).equals(HangingPotBlock.quality(filled)),
                 "the iron pot should hold the bucket's murky water, got " + HangingPotBlock.quality(filled));
@@ -368,18 +368,123 @@ public final class HangingPotGameTest {
         }
 
         BlockState after = level.getBlockState(pos);
-        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.MAX).equals(HangingPotBlock.quality(after)),
-                "the iron pot should boil its water pure, got " + HangingPotBlock.quality(after));
+        TestFixtures.check(helper, WaterQuality.fresh(WaterPurity.BOILED).equals(HangingPotBlock.quality(after)),
+                "the iron pot should boil its water Clean, got " + HangingPotBlock.quality(after));
         helper.succeed();
     }
 
     @GameTest
     public void eachPotHasItsOwnBoilTime(GameTestHelper helper) {
-        TestFixtures.check(helper, ThirstBlocks.COPPER_HANGING_POT.secondsPerServing() == 4
-                        && ThirstBlocks.IRON_HANGING_POT.secondsPerServing() == 6,
-                "copper should boil a serving in 4 seconds and iron in 6, got copper "
+        TestFixtures.check(helper, ThirstBlocks.COPPER_HANGING_POT.secondsPerServing() == 3
+                        && ThirstBlocks.IRON_HANGING_POT.secondsPerServing() == 4,
+                "copper should boil a serving in 3 seconds and iron in 4, got copper "
                         + ThirstBlocks.COPPER_HANGING_POT.secondsPerServing() + ", iron "
                         + ThirstBlocks.IRON_HANGING_POT.secondsPerServing());
+        helper.succeed();
+    }
+
+    /**
+     * A pot saved before it had a block entity has only its blockstate, whose {@code level} counted
+     * servings then. It comes back with that many servings and its grade, and pours like any other.
+     */
+    @GameTest
+    public void aPotSavedBeforeItsBlockEntityKeepsItsWater(GameTestHelper helper) {
+        helper.setBlock(GROUND, Blocks.STONE);
+        helper.setBlock(FLOOR, Blocks.STONE);
+        helper.setBlock(POT, ThirstBlocks.COPPER_HANGING_POT.defaultBlockState()
+                .setValue(HangingPotBlock.LEVEL, 2)
+                .setValue(WaterPurity.BLOCK_PURITY, WaterPurity.storedValue(WaterQuality.fresh(1))));
+        BlockPos pos = helper.absolutePos(POT);
+
+        TestFixtures.check(helper, servings(helper, pos) == 2,
+                "an old pot should read its servings from its level, got " + servings(helper, pos));
+        ServerPlayer player = TestFixtures.survivalPlayer(helper);
+        hold(player, new ItemStack(Items.GLASS_BOTTLE));
+        use(helper, player, pos);
+
+        ItemStack drawn = player.getItemInHand(InteractionHand.MAIN_HAND);
+        TestFixtures.check(helper, WaterQuality.fresh(1).equals(WaterPurity.quality(drawn)),
+                "a bottle drawn from an old pot should carry its murky water, got " + WaterPurity.quality(drawn));
+        TestFixtures.check(helper, servings(helper, pos) == 1,
+                "drawing a bottle should leave one serving, got " + servings(helper, pos));
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aPotOfOneServingTakesNoBucketButABottle(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> config.copperHangingPotCapacity = 1, () -> {
+            BlockPos pos = pot(helper, Blocks.STONE.defaultBlockState(), 0, null);
+            ServerPlayer player = TestFixtures.survivalPlayer(helper);
+            hold(player, new ItemStack(Items.WATER_BUCKET));
+            use(helper, player, pos);
+            TestFixtures.check(helper, servings(helper, pos) == 0
+                            && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WATER_BUCKET),
+                    "a bucket should not fit a pot of one serving, it holds " + servings(helper, pos));
+
+            hold(player, TestFixtures.waterBottle());
+            use(helper, player, pos);
+            BlockState after = helper.getLevel().getBlockState(pos);
+            TestFixtures.check(helper, servings(helper, pos) == 1 && after.getValue(HangingPotBlock.LEVEL) == HangingPotBlock.FILLS,
+                    "a bottle should fill a pot of one serving and it should look full, got "
+                            + servings(helper, pos) + " at fill " + after.getValue(HangingPotBlock.LEVEL));
+        });
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aPotOfSixtyFourServingsTakesTwentyOneBuckets(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> config.ironHangingPotCapacity = ThirstConfig.MAX_CONTAINER, () -> {
+            BlockPos pos = pot(helper, ThirstBlocks.IRON_HANGING_POT, Blocks.STONE.defaultBlockState(), 0, null);
+            ServerPlayer player = TestFixtures.survivalPlayer(helper);
+            for (int bucket = 0; bucket < 22; bucket++) {
+                hold(player, new ItemStack(Items.WATER_BUCKET));
+                use(helper, player, pos);
+            }
+            TestFixtures.check(helper, servings(helper, pos) == 63,
+                    "21 buckets should fit and the 22nd should not, the pot holds " + servings(helper, pos));
+            TestFixtures.check(helper, player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WATER_BUCKET),
+                    "the bucket that does not fit should be kept");
+            TestFixtures.check(helper, helper.getLevel().getBlockState(pos).getValue(HangingPotBlock.LEVEL) == HangingPotBlock.FILLS,
+                    "63 of 64 servings should look full");
+
+            hold(player, TestFixtures.waterBottle());
+            use(helper, player, pos);
+            TestFixtures.check(helper, servings(helper, pos) == ThirstConfig.MAX_CONTAINER,
+                    "a bottle should top the pot up to 64, got " + servings(helper, pos));
+        });
+        helper.succeed();
+    }
+
+    /** A pot holding more than a lowered capacity keeps it: it can be drawn from but takes nothing more. */
+    @GameTest
+    public void aPotOverALoweredCapacityKeepsItsWater(GameTestHelper helper) {
+        BlockPos pos = pot(helper, ThirstBlocks.IRON_HANGING_POT, Blocks.STONE.defaultBlockState(), 6, WaterQuality.fresh(2));
+        TestFixtures.withConfig(config -> config.ironHangingPotCapacity = 2, () -> {
+            TestFixtures.check(helper, servings(helper, pos) == 6 && HangingPotBlock.room(helper.getLevel(), pos) == 0,
+                    "lowering the capacity should take no water away and leave no room, got "
+                            + servings(helper, pos));
+            ServerPlayer player = TestFixtures.survivalPlayer(helper);
+            hold(player, TestFixtures.waterBottle());
+            use(helper, player, pos);
+            TestFixtures.check(helper, servings(helper, pos) == 6
+                            && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.POTION),
+                    "a pot over its capacity should take no bottle, it holds " + servings(helper, pos));
+
+            hold(player, new ItemStack(Items.GLASS_BOTTLE));
+            use(helper, player, pos);
+            TestFixtures.check(helper, servings(helper, pos) == 5,
+                    "a pot over its capacity should still be drawn from, it holds " + servings(helper, pos));
+        });
+        helper.succeed();
+    }
+
+    @GameTest
+    public void theFillShownRoundsUpInThirds(GameTestHelper helper) {
+        TestFixtures.check(helper, HangingPotBlock.fill(0, 6) == 0 && HangingPotBlock.fill(1, 6) == 1
+                        && HangingPotBlock.fill(2, 6) == 1 && HangingPotBlock.fill(3, 6) == 2
+                        && HangingPotBlock.fill(5, 6) == 3 && HangingPotBlock.fill(6, 6) == 3
+                        && HangingPotBlock.fill(1, 64) == 1 && HangingPotBlock.fill(9, 2) == 3,
+                "a pot should look a third full per third of its capacity, rounded up");
         helper.succeed();
     }
 
@@ -412,10 +517,14 @@ public final class HangingPotGameTest {
                                 WaterQuality quality) {
         helper.setBlock(GROUND, Blocks.STONE);
         helper.setBlock(FLOOR, floor);
-        BlockState pot = block.defaultBlockState()
-                .setValue(HangingPotBlock.HANGING, floor.is(Blocks.CAMPFIRE));
-        helper.setBlock(POT, HangingPotBlock.withWater(pot, level, quality));
-        return helper.absolutePos(POT);
+        helper.setBlock(POT, block.defaultBlockState().setValue(HangingPotBlock.HANGING, floor.is(Blocks.CAMPFIRE)));
+        BlockPos pos = helper.absolutePos(POT);
+        HangingPotBlock.setWater(helper.getLevel(), pos, level, quality);
+        return pos;
+    }
+
+    private static int servings(GameTestHelper helper, BlockPos pos) {
+        return HangingPotBlock.servings(helper.getLevel(), pos);
     }
 
     private static void hold(ServerPlayer player, ItemStack stack) {

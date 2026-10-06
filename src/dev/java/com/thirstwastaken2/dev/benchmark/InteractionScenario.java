@@ -165,7 +165,7 @@ final class InteractionScenario implements Stage {
         WaterQuality dirty = WaterQuality.fresh(0);
         ItemStack waterBottle = WaterPurity.setQuality(Vanilla.waterBottle(), acceptable);
         ItemStack fullWaterskin = new ItemStack(ThirstItems.WATERSKIN);
-        WaterskinItem.addWater(fullWaterskin, acceptable, WaterskinItem.CAPACITY);
+        WaterskinItem.addWater(fullWaterskin, acceptable, WaterskinItem.capacity(fullWaterskin));
         ItemStack apple = new ItemStack(Items.APPLE);
         ItemStack[] everyItem = BuiltInRegistries.ITEM.stream()
                 .filter(item -> item != Items.AIR)
@@ -179,6 +179,11 @@ final class InteractionScenario implements Stage {
         batched("sample_water", "WaterPurity.sampleAt: biome, temperature, altitude and the 5x3x5 neighbourhood scan",
                 world::refillWater,
                 () -> sink = WaterPurity.sampleAt(level, water),
+                () -> sink instanceof WaterQuality);
+        BlockPos coveredWater = world.coveredWater();
+        batched("sample_water_covered", "WaterPurity.sampleAt on a source with a block over it",
+                NOTHING,
+                () -> sink = WaterPurity.sampleAt(level, coveredWater),
                 () -> sink instanceof WaterQuality);
         single("fill_bottle", "Glass bottle used on water: vanilla BottleItem#use plus the purity capture and stamp",
                 () -> {
@@ -215,7 +220,7 @@ final class InteractionScenario implements Stage {
                 },
                 () -> sink = WaterInteractions.fillFromWater(player, level, HAND),
                 // Scooping from water fills a waterskin to capacity, not one serving at a time.
-                () -> WaterskinItem.servings(player.getMainHandItem()) == WaterskinItem.CAPACITY);
+                () -> WaterskinItem.servings(player.getMainHandItem()) == WaterskinItem.capacity(player.getMainHandItem()));
         single("drink_water_bottle", "Finishing a water bottle: vanilla consumption, thirst gain and the purity roll",
                 () -> {
                     thirsty();
@@ -253,11 +258,13 @@ final class InteractionScenario implements Stage {
                     WaterInteractions.tick(world.server);
                 },
                 () -> level.getBlockState(cauldron).getValue(WaterPurity.BLOCK_PURITY) > 0);
-        batched("full_bar_guard", "Using plain water at a full thirst bar, refused by the ItemStack#use hook",
+        // Murky: Clean and Pure may still be drunk at a full bar while quenched has room.
+        ItemStack murkyBottle = WaterPurity.setQuality(Vanilla.waterBottle(), WaterQuality.fresh(1));
+        batched("full_bar_guard", "Using Murky water at a full thirst bar, refused by the ItemStack#use hook",
                 () -> {
                     standing();
                     ThirstManager.set(player, ThirstData.full());
-                    player.setItemInHand(HAND, waterBottle.copy());
+                    player.setItemInHand(HAND, murkyBottle.copy());
                 },
                 () -> sink = player.getMainHandItem().use(level, player, HAND),
                 () -> refused(sink));
@@ -291,6 +298,11 @@ final class InteractionScenario implements Stage {
                     cursor[0] = (cursor[0] + 1) % everyItem.length;
                 },
                 () -> everyItem.length > 0);
+        ItemStack awkwardPotion = Vanilla.awkwardPotion();
+        batched("thirst_lookup_potion", "ThirstApi.thirstValues on an Awkward Potion, a potion that is not water",
+                NOTHING,
+                () -> sink = ThirstApi.thirstValues(awkwardPotion),
+                () -> true);
         batched("water_quality_read", "WaterPurity.quality on a stamped stack",
                 NOTHING,
                 () -> sink = WaterPurity.quality(waterBottle),
@@ -310,6 +322,24 @@ final class InteractionScenario implements Stage {
                 },
                 () -> player.causeFoodExhaustion(0.028F),
                 () -> true);
+        // Ten food ticks from a full bar with saturation hold exactly one saturation heal, wherever vanilla's
+        // heal timer stood: it heals on its tenth tick and starts over.
+        float[] healthBefore = new float[1];
+        single("heal_food", "One saturation heal through FoodDataMixin: ten FoodData ticks at full food",
+                () -> {
+                    standing();
+                    player.removeAllEffects();
+                    ThirstManager.tickPlayer(player);
+                    ThirstManager.set(player, ThirstData.full());
+                    player.getFoodData().setFoodLevel(20);
+                    player.getFoodData().setSaturation(5.0F);
+                    player.setHealth(player.getMaxHealth() - 4.0F);
+                    healthBefore[0] = player.getHealth();
+                },
+                () -> {
+                    for (int i = 0; i < 10; i++) player.getFoodData().tick(player);
+                },
+                () -> player.getHealth() > healthBefore[0]);
         batched("thirst_tick_idle", "ThirstManager.tickPlayer for a player with nothing buffered",
                 () -> {
                     ThirstManager.tickPlayer(player);

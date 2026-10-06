@@ -39,8 +39,26 @@ public final class ThirstManager {
     /** Matches the original mod's syncTimer cadence for peaceful regeneration. */
     private static final int SLOW_TICK_INTERVAL = 11;
     private static final int DAMAGE_INTERVAL = 40;
-    /** Softens any modifier below 1, exactly like the original MODIFIER_HARSHNESS. */
-    private static final float MODIFIER_HARSHNESS = 0.5F;
+    /**
+     * Thirst exhaustion every survival player spends per tick, whatever they do: one point of thirst a
+     * minute at four exhaustion a point, before climate. Not in the original, where a player standing
+     * still never got thirsty. Mining, building and waiting in a cave all cost water now.
+     */
+    private static final float BASELINE_EXHAUSTION = 4.0F / 1200.0F;
+    /**
+     * The climate curve: a factor of 0.8 at a temperate 0.5, a quarter more for every degree of the
+     * biome's temperature, 0.15 more where it does not rain, held between the bounds. Monotonic, so a
+     * slightly warmer biome never drains less, which the original's curve did past its fold at 1.
+     */
+    private static final float CLIMATE_BASE = 0.8F;
+    private static final float CLIMATE_PER_DEGREE = 0.25F;
+    private static final float CLIMATE_TEMPERATE = 0.5F;
+    private static final float CLIMATE_DRY = 0.15F;
+    private static final float CLIMATE_MIN = 0.65F;
+    private static final float CLIMATE_MAX = 1.35F;
+    /** The bounds the season's factor may push the climate's to. */
+    private static final float SEASONAL_MIN = 0.6F;
+    private static final float SEASONAL_MAX = 1.5F;
     /** Nausea's extra drain per tick, from the original DEPLETES_WHEN_NAUSEA branch. */
     private static final float NAUSEA_EXHAUSTION = 0.06F;
     /** What {@code HungerMobEffect#applyEffectTick} charges per amplifier level, every tick. */
@@ -138,10 +156,30 @@ public final class ThirstManager {
         return !data.enabled() || data.thirst() > SPRINT_THIRST_THRESHOLD;
     }
 
-    /** Plain water follows vanilla food rules: it cannot be consumed while the visible bar is full. */
+    /**
+     * Plain water follows vanilla food rules: it cannot be consumed while the visible bar is full.
+     *
+     * @deprecated asks about no stack, so it cannot allow the Clean and Pure top-up; use
+     *     {@link #canDrinkWater(Player, ItemStack)}
+     */
+    @Deprecated
     public static boolean canDrinkWater(Player player) {
         ThirstData data = get(player);
         return !data.enabled() || player.getAbilities().invulnerable || data.thirst() < ThirstData.MAX;
+    }
+
+    /**
+     * Whether {@code player} may drink the plain water in {@code stack}. Vanilla's food rule, nothing
+     * while the bar is full, with one exception: Clean or Pure water may still be drunk at full thirst
+     * while quenched is below full, so a player can build a reserve before a trip or after a heal spent
+     * it. Dirty and Murky water, and sea water, follow the plain rule. Diverges from the original, where
+     * a full bar refused all water.
+     */
+    public static boolean canDrinkWater(Player player, ItemStack stack) {
+        ThirstData data = get(player);
+        if (!data.enabled() || player.getAbilities().invulnerable || data.thirst() < ThirstData.MAX) return true;
+        return data.quenched() < ThirstData.MAX && WaterPurity.isWaterContainer(stack)
+                && WaterPurity.quality(stack) instanceof WaterQuality.Fresh fresh && fresh.purity() >= WaterPurity.BOILED;
     }
 
     public static void drinkItem(Player player, ItemStack stack) {
@@ -197,41 +235,51 @@ public final class ThirstManager {
         ThirstConfig config = ThirstConfig.get();
         Difficulty difficulty = player.level().getDifficulty();
         boolean peaceful = difficulty == Difficulty.PEACEFUL && !config.thirstDepletionInPeaceful;
+        boolean slowTick = player.tickCount % SLOW_TICK_INTERVAL == 0;
 
+        // The drain comes in three parts kept apart, because they scale differently. Activity is what
+        // the player did, mirrored from vanilla's food exhaustion: the climate and fire relief scale it,
+        // Nourishment cancels it, a listener sees it. The baseline is the minute's point of thirst every
+        // survival player spends: climate and fire relief scale it, nothing cancels it and no listener
+        // sees it, since it is nothing the player did. Illness is the effects' own drain: nothing scales
+        // or cancels it, and a listener sees it with the activity.
+        float activity = mirrored;
         // The Hunger effect already routes through causeFoodExhaustion; the original cancels that
         // contribution back out so poisoned food does not double as dehydration. Both sides are raw
         // amounts from the same tick, so they cancel exactly instead of leaving float noise behind that
         // would still cost a sync packet.
-        boolean slowTick = player.tickCount % SLOW_TICK_INTERVAL == 0;
-        MobEffectInstance upsetStomach = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
-        // Nausea bursts, rolled on the slow tick so the fast path stays a lookup.
-        if (upsetStomach != null && slowTick && !player.hasEffect(MobEffects.NAUSEA)
-                && player.getRandom().nextFloat()
-                        < UpsetStomach.burstChance(upsetStomach.getAmplifier(), SLOW_TICK_INTERVAL)) {
-            player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, UpsetStomach.NAUSEA_TICKS, 0,
-                    false, false, true));
-        }
-
-        float raw = mirrored;
         MobEffectInstance hunger = player.getEffect(MobEffects.HUNGER);
-        if (hunger != null) raw -= HUNGER_EXHAUSTION * (hunger.getAmplifier() + 1);
-        // Upset Stomach's own drain already pays for its bursts, so Nausea is not charged on top of it.
-        if (upsetStomach == null && player.hasEffect(MobEffects.NAUSEA)) {
-            raw += NAUSEA_EXHAUSTION;
+        if (hunger != null) activity -= HUNGER_EXHAUSTION * (hunger.getAmplifier() + 1);
+        // Nourishment stops the activity draining thirst the way it stops hunger, as in the original
+        // mod. Everything the player did is dropped, including the negative amounts Farmer's Delight uses
+        // to cancel food exhaustion from 1.21.11 on, so the Hunger refund above cannot turn into a refill
+        // either. Unlike the original it leaves the baseline and illness alone.
+        if (FarmersDelight.isNourished(player)) activity = 0.0F;
+
+        float illness = 0.0F;
+        MobEffectInstance upsetStomach = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
+        if (upsetStomach != null) {
+            illness += UpsetStomach.EXHAUSTION * (upsetStomach.getAmplifier() + 1);
+        } else if (player.hasEffect(MobEffects.NAUSEA)) {
+            // Upset Stomach's own drain stands for being ill, so Nausea is not charged on top of it.
+            illness += NAUSEA_EXHAUSTION;
         }
         MobEffectInstance parched = Vanilla.getEffect(player, ThirstEffects.PARCHED);
-        if (parched != null) raw += PARCHED_EXHAUSTION * (parched.getAmplifier() + 1);
-        if (upsetStomach != null) raw += UpsetStomach.EXHAUSTION * (upsetStomach.getAmplifier() + 1);
-        // Nourishment stops thirst draining the way it stops hunger, as in the original mod. Everything
-        // is dropped, including the negative amounts Farmer's Delight uses to cancel food exhaustion from
-        // 1.21.11 on, so the Hunger refund above cannot turn into a refill either.
-        if (FarmersDelight.isNourished(player)) raw = 0.0F;
-        // Once per tick, on the raw total, so a listener sees what the player did rather than each of
-        // the several vanilla charges a tick can hold. Nothing is built for it unless someone listens.
-        if (raw != 0.0F && ThirstEvents.EXHAUSTION.hasListeners()) {
-            raw = ThirstEvents.EXHAUSTION.invoker().onExhaustion(player, raw);
+        if (parched != null) illness += PARCHED_EXHAUSTION * (parched.getAmplifier() + 1);
+
+        // Once per tick, on the activity and illness together, so a listener sees what the player did
+        // and what ails them rather than each of the several vanilla charges a tick can hold. Its answer
+        // is split back between the two in the same proportion. Nothing is built unless someone listens.
+        float seen = activity + illness;
+        if (seen != 0.0F && ThirstEvents.EXHAUSTION.hasListeners()) {
+            float answer = ThirstEvents.EXHAUSTION.invoker().onExhaustion(player, seen);
+            float scale = answer / seen;
+            activity *= scale;
+            illness *= scale;
         }
 
+        // The baseline is not spent where thirst refills, on peaceful without depletion.
+        float scaled = peaceful ? activity : activity + BASELINE_EXHAUSTION;
         // On peaceful, exhaustion never reaches thirst, so once quenched is empty it has nothing left to
         // spend and is dropped. Kept, it would sit below a point forever, a drain the refill can never
         // top up, and AppleSkin's exhaustion strip would stay stuck part way.
@@ -240,7 +288,7 @@ public final class ThirstManager {
         // climate does not scale it and a listener does not see it as something the player did.
         float healCost = HealthRegen.healWithQuenched(player, data, tracker);
         float added = discards ? -data.exhaustion()
-                : unsynced + healCost + (raw == 0.0F ? 0.0F : raw * exhaustionModifier(player));
+                : unsynced + healCost + illness + (scaled == 0.0F ? 0.0F : scaled * exhaustionModifier(player));
         boolean regenerates = peaceful && slowTick && data.thirst() < ThirstData.MAX;
         // The same clamp ThirstData#addExhaustion applies.
         float exhaustion = Math.max(0.0F, data.exhaustion() + added);
@@ -273,7 +321,6 @@ public final class ThirstManager {
         BlockPos pos = handDrinkingWater(player, level, hand, hit);
         if (pos == null) return InteractionResult.PASS;
 
-        ThirstConfig config = ThirstConfig.get();
         WaterQuality quality = WaterPurity.sampleAt(level, pos);
         ItemStack sample = WaterPurity.setQuality(
                 new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), quality);
@@ -343,15 +390,16 @@ public final class ThirstManager {
     }
 
     /**
-     * Combined biome, fire-protection and fire-resistance multiplier applied to raw exhaustion,
-     * mirroring {@code ThirstHelper#getExhaustionBiomeModifier} and friends from the original mod.
+     * Combined climate, fire-protection and fire-resistance multiplier applied to the activity and the
+     * baseline, mirroring {@code ThirstHelper#getExhaustionBiomeModifier} and friends from the original
+     * mod. {@code thirstDepletionModifier} multiplies the Nether's factor as much as the Overworld's,
+     * which the original did not.
      */
     private static float computeExhaustionModifier(Player player) {
         ThirstConfig config = ThirstConfig.get();
         boolean scorching = Vanilla.waterEvaporates(player.level(), player.blockPosition());
-        float modifier = scorching
-                ? SCORCHING_MODIFIER
-                : climateModifier(player, config);
+        float modifier = (float) config.thirstDepletionModifier
+                * (scorching ? SCORCHING_MODIFIER : climateModifier(player, config));
 
         if (player.hasEffect(MobEffects.FIRE_RESISTANCE)) {
             modifier *= FIRE_RESISTANCE_MODIFIER;
@@ -382,36 +430,46 @@ public final class ThirstManager {
         seasonalClimate = seasons;
     }
 
+    /**
+     * The climate's factor on the drain, before {@code thirstDepletionModifier}: warmer and drier
+     * drains faster, along one straight line held between {@link #CLIMATE_MIN} and {@link #CLIMATE_MAX}.
+     * Diverges from the original's curve, which halved anything above a temperature of 1 and so drained
+     * less in a slightly warmer biome; a season's factor follows, then the wider seasonal bounds.
+     */
     private static float climateModifier(Player player, ThirstConfig config) {
         BlockPos pos = player.blockPosition();
         Holder<Biome> holder = player.level().getBiome(pos);
         Biome biome = holder.value();
         SeasonalClimate seasons = config.sereneSeasonsClimate ? seasonalClimate : null;
 
-        // The original used Biome#getDownfall, which no longer exists. hasPrecipitation reproduces
-        // the same dry/wet split within the original's effective 1.1 - 1.6 humidity range. Not in the
-        // original: a tropical biome's dry season counts as dry.
+        // The original used Biome#getDownfall, which no longer exists; hasPrecipitation is the same
+        // dry/wet split. Not in the original: a tropical biome's dry season counts as dry.
         boolean wet = biome.hasPrecipitation();
         if (seasons != null) wet = seasons.hasPrecipitation(player, holder, wet);
-        float humidity = wet ? 1.4F : 1.1F;
 
         float measured = measuredTemperature(player, config);
-        float temperature = (Float.isNaN(measured) ? biome.getBaseTemperature() : measured) + 0.2F;
-        if (temperature <= 0.0F) {
-            temperature = (float) Math.exp(temperature);
-        } else if (temperature > 1.0F) {
-            temperature *= 0.5F;
+        float factor = climateFactor(Float.isNaN(measured) ? biome.getBaseTemperature() : measured, wet);
+
+        // Not in the original. The season is a factor on the curve rather than a temperature. Cold
+        // Sweat's world temperature already follows Serene Seasons, so a measured temperature takes no
+        // second season.
+        if (seasons != null && Float.isNaN(measured)) {
+            factor = clamp(factor * seasons.drainMultiplier(player, holder), SEASONAL_MIN, SEASONAL_MAX);
         }
+        return factor;
+    }
 
-        // The config multiplier is applied before the harshness softening, as in the original.
-        float modifier = (float) config.thirstDepletionModifier * (temperature / humidity);
-        modifier = modifier < 1.0F ? 1.0F - (1.0F - modifier) * MODIFIER_HARSHNESS : modifier;
+    /**
+     * The climate's factor for a biome {@code temperature}, in the biome's own units, with or without
+     * rain. Public for the gametests, which check that it never falls as the temperature rises.
+     */
+    public static float climateFactor(float temperature, boolean wet) {
+        return clamp(CLIMATE_BASE + CLIMATE_PER_DEGREE * (temperature - CLIMATE_TEMPERATE)
+                + (wet ? 0.0F : CLIMATE_DRY), CLIMATE_MIN, CLIMATE_MAX);
+    }
 
-        // Not in the original. The season is a factor after the curve rather than a temperature, since
-        // the curve halves anything above 1 and a warmer summer would drain less. Cold Sweat's world
-        // temperature already follows Serene Seasons, so a measured temperature takes no second season.
-        if (seasons != null && Float.isNaN(measured)) modifier *= seasons.drainMultiplier(player, holder);
-        return modifier;
+    private static float clamp(float value, float min, float max) {
+        return Math.max(min, Math.min(max, value));
     }
 
     /**

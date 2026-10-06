@@ -26,9 +26,8 @@ public final class UpsetStomachGameTest {
     private static final float HURT_HEALTH = 10.0F;
 
     /**
-     * Each player's tick count is set off the slow tick, and the tick does not advance it, so no burst
-     * is ever rolled and the effect's own drain is all that differs. What is compared is everything
-     * spent, whole points included, since the sync step holds part of the exhaustion back.
+     * The players tick side by side, so the effect's own drain is all that differs. What is compared is
+     * everything spent, whole points included, since the sync step holds part of the exhaustion back.
      */
     @GameTest
     public void upsetStomachDrainsThirstByLevel(GameTestHelper helper) {
@@ -55,9 +54,9 @@ public final class UpsetStomachGameTest {
         helper.succeed();
     }
 
-    /** A burst is paid for by Upset Stomach's own drain, so Nausea is not charged on top of it. */
+    /** Upset Stomach's own drain stands for being ill, so Nausea is not charged on top of it. */
     @GameTest
-    public void aBurstCostsNothingOnTopOfUpsetStomach(GameTestHelper helper) {
+    public void nauseaCostsNothingOnTopOfUpsetStomach(GameTestHelper helper) {
         ServerPlayer sick = quietPlayer(helper);
         ServerPlayer bursting = quietPlayer(helper);
         sick.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, DRAIN_TICKS * 2, 0));
@@ -83,10 +82,10 @@ public final class UpsetStomachGameTest {
         float one = saturationFromMeal(helper, 0);
         float two = saturationFromMeal(helper, 1);
 
-        TestFixtures.check(helper, Math.abs(one - none * 0.75F) < 0.01F,
-                "Upset Stomach I should give three quarters of the saturation, got " + one + " against " + none);
-        TestFixtures.check(helper, Math.abs(two - none * 0.5F) < 0.01F,
-                "Upset Stomach II should give half the saturation, got " + two + " against " + none);
+        TestFixtures.check(helper, Math.abs(one - none * 0.5F) < 0.01F,
+                "Upset Stomach I should give half the saturation, got " + one + " against " + none);
+        TestFixtures.check(helper, Math.abs(two - none * 0.25F) < 0.01F,
+                "Upset Stomach II should give a quarter of the saturation, got " + two + " against " + none);
         helper.succeed();
     }
 
@@ -107,7 +106,7 @@ public final class UpsetStomachGameTest {
         helper.succeed();
     }
 
-    /** A survival player whose tick count is never on the slow tick, so no Nausea burst is rolled. */
+    /** A survival player whose tick count is off the slow tick, where peaceful's refill would land. */
     private static ServerPlayer quietPlayer(GameTestHelper helper) {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         player.tickCount = 1;

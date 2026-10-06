@@ -20,12 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The sickness tables: every line the config lists for the difficulty and the grade rolls on its own.
- * The rolls are forced rather than drawn, so every test is exact. Players are fresh and never ticked, so
+ * The sickness tables: every line the config lists for the difficulty and the grade gives its effect
+ * when its roll lands under its chance, lines of one group sharing a roll. The rolls are forced rather
+ * than drawn, so every test is exact. Players are fresh and never ticked, so
  * their effects are exactly what the drink gave.
  */
 public final class WaterSicknessGameTest {
     private static final int DIRTY = 0;
+    private static final int CLEAN = 2;
     private static final int PURE = 3;
     /** A roll no line under 100% passes, and one every line over 0% passes. */
     private static final float WORST = 0.0F;
@@ -89,22 +91,103 @@ public final class WaterSicknessGameTest {
     @GameTest
     public void theDefaultTablesKeepTheSicknessDesign(GameTestHelper helper) {
         for (Difficulty difficulty : Difficulty.values()) {
-            // Only the taste is certain: every drink of Dirty water leaves Nausea, and nothing else.
+            // Nothing is certain any more: the best roll on Dirty water gives nothing at all.
             ServerPlayer lucky = TestFixtures.mockPlayer(helper);
             WaterSickness.drink(lucky, DIRTY, difficulty, () -> BEST);
-            TestFixtures.check(helper, lucky.hasEffect(MobEffects.NAUSEA) && lucky.getActiveEffects().size() == 1,
-                    difficulty + ": the best roll on Dirty water leaves only the taste, got " + lucky.getActiveEffects());
+            TestFixtures.check(helper, lucky.getActiveEffects().isEmpty() || difficulty == Difficulty.HARD,
+                    difficulty + ": the best roll on Dirty water should give nothing, got " + lucky.getActiveEffects());
 
-            ServerPlayer pure = TestFixtures.mockPlayer(helper);
-            WaterSickness.drink(pure, PURE, difficulty, () -> WORST);
-            TestFixtures.check(helper, pure.getActiveEffects().isEmpty(),
-                    difficulty + ": Pure water never makes anyone ill, got " + pure.getActiveEffects());
+            for (int grade = CLEAN; grade <= PURE; grade++) {
+                ServerPlayer treated = TestFixtures.mockPlayer(helper);
+                WaterSickness.drink(treated, grade, difficulty, () -> WORST);
+                TestFixtures.check(helper, treated.getActiveEffects().isEmpty(),
+                        difficulty + ": grade " + grade + " water never makes anyone ill, got " + treated.getActiveEffects());
+            }
         }
+        ServerPlayer peaceful = TestFixtures.mockPlayer(helper);
+        WaterSickness.drink(peaceful, DIRTY, Difficulty.PEACEFUL, () -> WORST);
+        TestFixtures.check(helper, peaceful.getActiveEffects().isEmpty(),
+                "no water makes anyone ill on Peaceful, got " + peaceful.getActiveEffects());
+
+        // Normal Dirty's worst roll: Upset Stomach II for 60 seconds and Poison for 20.
         ServerPlayer unlucky = TestFixtures.mockPlayer(helper);
-        WaterSickness.drink(unlucky, DIRTY, Difficulty.HARD, () -> WORST);
+        WaterSickness.drink(unlucky, DIRTY, Difficulty.NORMAL, () -> WORST);
         MobEffectInstance upset = Vanilla.getEffect(unlucky, ThirstEffects.UPSET_STOMACH);
-        TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1 && unlucky.hasEffect(MobEffects.POISON),
-                "the worst roll on Hard gives Upset Stomach II and Poison, got " + unlucky.getActiveEffects());
+        MobEffectInstance poison = Vanilla.getEffect(unlucky, Vanilla.poison());
+        TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1 && upset.getDuration() == 60 * 20
+                        && poison != null && poison.getDuration() == 20 * 20,
+                "the worst roll on Normal Dirty should give Upset Stomach II for 60 s and Poison for 20 s, got "
+                        + unlucky.getActiveEffects());
+        helper.succeed();
+    }
+
+    /** Upset Stomach and Poison share one roll by default, so Poison never comes without Upset Stomach. */
+    @GameTest
+    public void poisonOnlyEverComesWithUpsetStomach(GameTestHelper helper) {
+        for (int grade = DIRTY; grade < CLEAN; grade++) {
+            for (Difficulty difficulty : Difficulty.values()) {
+                for (int percent = 0; percent < 100; percent++) {
+                    float roll = percent / 100.0F;
+                    ServerPlayer player = TestFixtures.mockPlayer(helper);
+                    WaterSickness.drink(player, grade, difficulty, () -> roll);
+                    boolean poisoned = Vanilla.getEffect(player, Vanilla.poison()) != null;
+                    boolean upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH) != null;
+                    TestFixtures.check(helper, !poisoned || upset,
+                            difficulty + " grade " + grade + " at roll " + roll + " gave Poison without Upset Stomach");
+                }
+            }
+        }
+        helper.succeed();
+    }
+
+    /** One roll per group in the order it first comes up, and one for every line with none. */
+    @GameTest
+    public void aGroupSharesOneRoll(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> config.sicknessEffects = everyDifficulty(List.of(
+                new SicknessEffect("minecraft:weakness", 60, 5, 1, "g"),
+                new SicknessEffect("minecraft:hunger", 50, 5, 1),
+                new SicknessEffect("minecraft:luck", 40, 5, 1, "g"))), () -> {
+            ServerPlayer player = TestFixtures.mockPlayer(helper);
+            float[] rolls = {0.5F, 0.9F, 0.0F};
+            int[] drawn = {0};
+            WaterSickness.drink(player, DIRTY, Difficulty.NORMAL, () -> rolls[drawn[0]++]);
+            TestFixtures.check(helper, drawn[0] == 2, "two rolls should be drawn, one per group or loner, got " + drawn[0]);
+            TestFixtures.check(helper, player.hasEffect(MobEffects.WEAKNESS) && !player.hasEffect(MobEffects.HUNGER)
+                            && !player.hasEffect(MobEffects.LUCK),
+                    "0.5 is under Weakness's 60 but not Luck's 40 on the same roll, and 0.9 misses Hunger, got "
+                            + player.getActiveEffects());
+        });
+        helper.succeed();
+    }
+
+    /**
+     * Upset Stomach again while ill adds half the new time, held to one and a half times it, and never
+     * shortens what is left: {@code max(R, min(R + D / 2, 1.5 * D))}, in ticks.
+     */
+    @GameTest
+    public void upsetStomachAgainAddsHalfItsTimeUpToOneAndAHalf(GameTestHelper helper) {
+        int ticks = 60 * 20;
+        TestFixtures.withConfig(config -> config.sicknessEffects = everyDifficulty(
+                List.of(new SicknessEffect(SicknessEffect.UPSET_STOMACH, 100, 60, 1))), () -> {
+            ServerPlayer player = TestFixtures.mockPlayer(helper);
+            WaterSickness.drink(player, DIRTY, Difficulty.NORMAL, () -> WORST);
+            TestFixtures.check(helper, upsetTicks(player) == ticks, "a first drink gives its time, got " + upsetTicks(player));
+            WaterSickness.drink(player, DIRTY, Difficulty.NORMAL, () -> WORST);
+            TestFixtures.check(helper, upsetTicks(player) == ticks * 3 / 2,
+                    "a second drink adds half, up to one and a half times, got " + upsetTicks(player));
+            WaterSickness.drink(player, DIRTY, Difficulty.NORMAL, () -> WORST);
+            TestFixtures.check(helper, upsetTicks(player) == ticks * 3 / 2,
+                    "a third drink stays at one and a half times, got " + upsetTicks(player));
+
+            ServerPlayer longer = TestFixtures.mockPlayer(helper);
+            longer.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 3 * ticks, 0));
+            WaterSickness.drink(longer, DIRTY, Difficulty.NORMAL, () -> WORST);
+            TestFixtures.check(helper, upsetTicks(longer) == 3 * ticks,
+                    "a longer illness already there should not be cut short, got " + upsetTicks(longer));
+        });
+        // Fractions of a second are kept in ticks: half of 1201 ticks rounds down, once.
+        TestFixtures.check(helper, WaterSickness.extended(true, 1000, 1201) == 1600,
+                "1000 left and 1201 more should give 1600, got " + WaterSickness.extended(true, 1000, 1201));
         helper.succeed();
     }
 
@@ -169,7 +252,21 @@ public final class WaterSicknessGameTest {
             TestFixtures.check(helper, tables.get("normal").equals(SicknessEffect.defaults().get("normal")),
                     "a difficulty missing from the file should get its defaults, got " + tables.get("normal"));
         });
+        // A Poison line in Upset Stomach's group cannot be likelier than it; split apart, it may be.
+        TestFixtures.withConfig(config -> config.sicknessEffects = everyDifficulty(List.of(
+                new SicknessEffect(SicknessEffect.UPSET_STOMACH, 40, 10, 1, "sick"),
+                new SicknessEffect(SicknessEffect.POISON, 80, 10, 1, "sick"),
+                new SicknessEffect(SicknessEffect.POISON, 90, 10, 1))), () -> {
+            List<SicknessEffect> dirty = ThirstConfig.get().sicknessEffects.get("normal").get("dirty");
+            TestFixtures.check(helper, dirty.get(1).chance == 40 && dirty.get(2).chance == 90,
+                    "grouped Poison should be held to Upset Stomach's 40 and a loner left alone, got " + dirty);
+        });
         helper.succeed();
+    }
+
+    private static int upsetTicks(ServerPlayer player) {
+        MobEffectInstance effect = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
+        return effect == null ? 0 : effect.getDuration();
     }
 
     /** Tables giving {@code dirty} for Dirty water on every difficulty, and nothing for any other grade. */

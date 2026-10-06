@@ -25,18 +25,6 @@
       },
       "trigger": "minecraft:recipe_crafted"
     },
-    "bottle_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bottle_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "bottle_2_smoking": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bottle_2_smoking"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
     "bowl_0_smelting": {
       "conditions": {
         "recipes": "thirstwastaken2:purify_water_bowl_0_smelting"
@@ -58,18 +46,6 @@
     "bowl_1_smoking": {
       "conditions": {
         "recipes": "thirstwastaken2:purify_water_bowl_1_smoking"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "bowl_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bowl_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "bowl_2_smoking": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bowl_2_smoking"
       },
       "trigger": "minecraft:recipe_crafted"
     },
@@ -97,123 +73,67 @@
       },
       "trigger": "minecraft:recipe_crafted"
     },
-    "bucket_2_smelting": {
+    "copper_canteen_0_smelting": {
       "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bucket_2_smelting"
+        "recipes": "thirstwastaken2:purify_water_copper_canteen_0_smelting"
       },
       "trigger": "minecraft:recipe_crafted"
     },
-    "bucket_2_smoking": {
+    "copper_canteen_1_smelting": {
       "conditions": {
-        "recipes": "thirstwastaken2:purify_water_bucket_2_smoking"
+        "recipes": "thirstwastaken2:purify_water_copper_canteen_1_smelting"
       },
       "trigger": "minecraft:recipe_crafted"
     },
-    "iron_flask_1_0_smelting": {
+    "has_copper_canteen": {
       "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_1_0_smelting"
+        "items": [
+          {
+            "items": "thirstwastaken2:copper_canteen"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_copper_hanging_pot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thirstwastaken2:copper_hanging_pot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_flask": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thirstwastaken2:iron_flask"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_hanging_pot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thirstwastaken2:iron_hanging_pot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "iron_flask_0_smelting": {
+      "conditions": {
+        "recipes": "thirstwastaken2:purify_water_iron_flask_0_smelting"
       },
       "trigger": "minecraft:recipe_crafted"
     },
-    "iron_flask_1_1_smelting": {
+    "iron_flask_1_smelting": {
       "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_1_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_1_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_1_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_2_0_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_2_0_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_2_1_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_2_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_2_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_2_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_3_0_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_3_0_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_3_1_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_3_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_3_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_3_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_4_0_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_4_0_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_4_1_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_4_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_4_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_4_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_5_0_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_5_0_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_5_1_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_5_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_5_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_5_2_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_6_0_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_6_0_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_6_1_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_6_1_smelting"
-      },
-      "trigger": "minecraft:recipe_crafted"
-    },
-    "iron_flask_6_2_smelting": {
-      "conditions": {
-        "recipes": "thirstwastaken2:purify_water_iron_flask_6_2_smelting"
+        "recipes": "thirstwastaken2:purify_water_iron_flask_1_smelting"
       },
       "trigger": "minecraft:recipe_crafted"
     }
@@ -235,38 +155,22 @@
       "bottle_0_smoking",
       "bottle_1_smelting",
       "bottle_1_smoking",
-      "bottle_2_smelting",
-      "bottle_2_smoking",
       "bowl_0_smelting",
       "bowl_0_smoking",
       "bowl_1_smelting",
       "bowl_1_smoking",
-      "bowl_2_smelting",
-      "bowl_2_smoking",
       "bucket_0_smelting",
       "bucket_0_smoking",
       "bucket_1_smelting",
       "bucket_1_smoking",
-      "bucket_2_smelting",
-      "bucket_2_smoking",
-      "iron_flask_1_0_smelting",
-      "iron_flask_1_1_smelting",
-      "iron_flask_1_2_smelting",
-      "iron_flask_2_0_smelting",
-      "iron_flask_2_1_smelting",
-      "iron_flask_2_2_smelting",
-      "iron_flask_3_0_smelting",
-      "iron_flask_3_1_smelting",
-      "iron_flask_3_2_smelting",
-      "iron_flask_4_0_smelting",
-      "iron_flask_4_1_smelting",
-      "iron_flask_4_2_smelting",
-      "iron_flask_5_0_smelting",
-      "iron_flask_5_1_smelting",
-      "iron_flask_5_2_smelting",
-      "iron_flask_6_0_smelting",
-      "iron_flask_6_1_smelting",
-      "iron_flask_6_2_smelting"
+      "copper_canteen_0_smelting",
+      "copper_canteen_1_smelting",
+      "iron_flask_0_smelting",
+      "iron_flask_1_smelting",
+      "has_copper_canteen",
+      "has_iron_flask",
+      "has_copper_hanging_pot",
+      "has_iron_hanging_pot"
     ]
   ]
 }

@@ -33,12 +33,12 @@ public final class KegWater {
         return !stack.isEmpty() && stack.fluid().isSame(Fluids.WATER);
     }
 
-    /** Unstamped water, poured in before this integration or from a plain bucket, counts as {@code defaultPurity}. */
+    /** Unstamped water, poured in before this integration or from a plain bucket, counts as {@code defaultQuality}. */
     public static WaterQuality quality(AbstractedFluidStack stack) {
         DataComponentMap components = stack.components();
         if (Boolean.TRUE.equals(components.get(ThirstComponents.WATER_SALTY))) return WaterQuality.SALT;
         Integer purity = components.get(ThirstComponents.WATER_PURITY);
-        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultPurity);
+        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultQuality);
     }
 
     /**

@@ -95,9 +95,11 @@ public final class DrinkingUpgradeWrapper extends UpgradeWrapperBase<DrinkingUpg
         return missing > 0 && drink(player, level, missing) && missingThirst(player) > 0;
     }
 
-    /** Zero while the bar is full, and while thirst does not apply to the player at all. */
+    /**
+     * Zero while the bar is full, and while thirst does not apply to the player at all. The upgrade
+     * drinks for thirst only: topping quenched up at a full bar is a choice it leaves to the player.
+     */
     private static int missingThirst(Player player) {
-        if (!ThirstManager.canDrinkWater(player)) return 0;
         ThirstData data = ThirstManager.get(player);
         if (!data.enabled() || player.getAbilities().invulnerable) return 0;
         return ThirstData.MAX - data.thirst();

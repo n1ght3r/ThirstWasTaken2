@@ -76,7 +76,7 @@ public final class SoftFluidQuality {
     public static WaterQuality quality(SoftFluidStack stack) {
         if (Boolean.TRUE.equals(stack.get(ThirstComponents.WATER_SALTY))) return WaterQuality.SALT;
         Integer purity = stack.get(ThirstComponents.WATER_PURITY);
-        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultPurity);
+        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultQuality);
     }
 
     /** Writes {@code quality} onto water and returns the same stack. Anything else is left alone. */
@@ -98,7 +98,7 @@ public final class SoftFluidQuality {
     /**
      * Gives water about to enter a tank the grade it already reads as, so that what a tank holds is
      * always stamped. Water that arrives without a grade would otherwise refuse to share a tank with
-     * water that has one, although both read as {@code defaultPurity} to everything else.
+     * water that has one, although both read as {@code defaultQuality} to everything else.
      *
      * <p>Fresh water poured out of a container arrives carrying both components, since that is what the
      * mod writes on an item; this is also where it comes down to the one the tank compares on.

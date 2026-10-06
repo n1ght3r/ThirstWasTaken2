@@ -33,17 +33,17 @@ import java.util.function.IntSupplier;
  * waterskin, the copper canteen and the iron flask. They differ only in capacity, sprite and whether
  * they boil, so code that asks whether a stack is one checks {@link #is(ItemStack)}, never one item.
  *
- * <p>The canteen and the flask boil their water clean over a lit campfire. Holding use on the campfire
+ * <p>The canteen and the flask boil their water Clean over a lit campfire. Holding use on the campfire
  * repeats {@link #useOn} every {@link #BOIL_STEP_TICKS} ticks, the rate vanilla repeats a held right
  * click at, and each repeat is one step of boiling. The progress is kept on the server per player
  * rather than on the stack: a component written every step would re-sync the held stack, and the
  * client plays the re-equip animation for every changed stack in the hand.
  */
 public final class WaterskinItem extends DrinkItem {
-    /** The leather waterskin's capacity. The others' come from {@link #capacity(ItemStack)}. */
-    public static final int CAPACITY = 3;
-    /** The most any of them holds, which bounds the servings component. */
-    public static final int MAX_CAPACITY = 6;
+    /** The most any of them may be set to hold, which bounds the servings component, saved and sent. */
+    public static final int MAX_CAPACITY = 64;
+    /** The filled sprites a waterskin has, a third full to full. */
+    private static final int SPRITES = 3;
     /** A bucket is three servings, the rate a cauldron uses, whatever it is poured into. */
     public static final int BUCKET_SERVINGS = 3;
     /** How often vanilla repeats a held right click, and so how much boiling each repeat adds. */
@@ -64,9 +64,9 @@ public final class WaterskinItem extends DrinkItem {
     private final IntSupplier boilTicksPerServing;
     private final boolean spriteShowsServings;
 
-    /** The leather waterskin: three servings, no boiling, a sprite per fill level. */
+    /** The leather waterskin: its capacity from the config, four by default, no boiling, a sprite per third. */
     public WaterskinItem(Properties properties) {
-        this(properties, () -> CAPACITY, () -> 0, true);
+        this(properties, () -> ThirstConfig.get().waterskinCapacity, () -> 0, true);
     }
 
     /**
@@ -93,7 +93,27 @@ public final class WaterskinItem extends DrinkItem {
 
     /** How many servings {@code stack} holds when full, or 0 when it is not a carried container. */
     public static int capacity(ItemStack stack) {
-        return stack.getItem() instanceof WaterskinItem vessel ? vessel.capacity.getAsInt() : 0;
+        return stack.getItem() instanceof WaterskinItem vessel ? Math.max(1, vessel.capacity.getAsInt()) : 0;
+    }
+
+    /**
+     * How long {@code stack} takes in a furnace: its per-serving boil time for every serving it holds,
+     * or 0 when it is not a vessel that boils, or holds nothing a furnace would boil. The in-hand switch
+     * does not turn this off; the furnace's own switch is its recipes'.
+     */
+    public static int furnaceTicks(ItemStack stack) {
+        if (!(stack.getItem() instanceof WaterskinItem vessel) || !WaterPurity.boils(WaterPurity.quality(stack))) return 0;
+        return servings(stack) * vessel.boilTicksPerServing.getAsInt();
+    }
+
+    /**
+     * Gives a vessel coming out of a recipe the servings of the one that went in. A furnace recipe for
+     * a vessel matches any fill, so its result records none; see {@code CookingRecipeMixin}.
+     */
+    public static void keepServings(ItemStack input, ItemStack result) {
+        if (is(input) && is(result) && servings(result) == 0 && servings(input) > 0) {
+            setServings(result, servings(input));
+        }
     }
 
     /**
@@ -158,8 +178,9 @@ public final class WaterskinItem extends DrinkItem {
 
     /**
      * Using a boiling vessel on a lit campfire boils it one step. Anything it holds but salt water is
-     * taken, even water that is already Purified: a player still holding use when the boil finishes
-     * would otherwise start drinking. Anywhere else this passes, and the vessel is drunk as usual.
+     * taken, even water that is already Clean or Pure, which heat leaves as it is: a player still holding
+     * use when the boil finishes would otherwise start drinking. Anywhere else this passes, and the
+     * vessel is drunk as usual.
      */
     @Override
     public InteractionResult useOn(UseOnContext context) {
@@ -180,11 +201,11 @@ public final class WaterskinItem extends DrinkItem {
             Vanilla.sendOverlayMessage(player, Component.translatable("thirstwastaken2.message.cannot_boil_salt"));
             return InteractionResult.CONSUME;
         }
-        if (fresh.purity() < WaterPurity.MAX) boilStep(player, stack, fresh, boilTicks, (ServerLevel) level, pos);
+        if (WaterPurity.boils(fresh)) boilStep(player, stack, fresh, boilTicks, (ServerLevel) level, pos);
         return InteractionResult.CONSUME;
     }
 
-    /** One step of boiling, finishing the whole vessel Purified once every serving has had its time. */
+    /** One step of boiling, finishing the whole vessel Clean once every serving has had its time. */
     private static void boilStep(Player player, ItemStack stack, WaterQuality quality, int boilTicksPerServing,
                                  ServerLevel level, BlockPos pos) {
         int servings = servings(stack);
@@ -196,7 +217,7 @@ public final class WaterskinItem extends DrinkItem {
 
         if (ticks >= total) {
             BOILING.remove(player);
-            WaterPurity.setQuality(stack, WaterQuality.fresh(WaterPurity.MAX));
+            WaterPurity.setQuality(stack, WaterPurity.boil(quality));
             level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.PLAYERS, 1.0F, 1.0F);
             Vanilla.sendOverlayMessage(player, Component.translatable("thirstwastaken2.message.boiled"));
             return;
@@ -268,7 +289,7 @@ public final class WaterskinItem extends DrinkItem {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.min(13, Math.round(13.0F * servings(stack) / capacity.getAsInt()));
+        return Math.min(13, Math.round(13.0F * servings(stack) / capacity(stack)));
     }
 
     @Override
@@ -293,8 +314,16 @@ public final class WaterskinItem extends DrinkItem {
         if (servings == 0) {
             Vanilla.clearModelSelector(stack);
         } else {
-            Vanilla.setModelSelector(stack, ThirstItems.WATERSKIN_MODEL_INDEX, servings);
+            Vanilla.setModelSelector(stack, ThirstItems.WATERSKIN_MODEL_INDEX, sprite(servings, capacity(stack)));
         }
+    }
+
+    /**
+     * Which of the three filled sprites {@code servings} out of {@code capacity} show: a third full, two
+     * thirds or full, rounded up, so any water at all shows and a skin over a lowered capacity looks full.
+     */
+    public static int sprite(int servings, int capacity) {
+        return (SPRITES * Math.min(servings, capacity) + capacity - 1) / capacity;
     }
 
     private static void clearWaterQuality(ItemStack stack) {

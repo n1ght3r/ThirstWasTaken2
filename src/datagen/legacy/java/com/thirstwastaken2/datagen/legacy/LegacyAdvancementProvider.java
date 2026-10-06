@@ -2,7 +2,6 @@ package com.thirstwastaken2.datagen.legacy;
 
 import com.thirstwastaken2.ThirstWasTaken2;
 import com.thirstwastaken2.item.ThirstItems;
-import com.thirstwastaken2.item.WaterskinItem;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
@@ -47,7 +46,7 @@ public final class LegacyAdvancementProvider extends FabricAdvancementProvider {
         Advancement firstDrink = awarded(consumer, root, "first_drink", ThirstItems.TERRACOTTA_WATER_BOWL, FrameType.TASK);
         Advancement dirtyWater = awarded(consumer, firstDrink, "dirty_water", Items.MUD, FrameType.TASK);
         Advancement boilWater = boilWater(consumer, dirtyWater);
-        awarded(consumer, boilWater, "purified_water", Items.GLASS_BOTTLE, FrameType.TASK);
+        awarded(consumer, boilWater, "purified_water", ThirstItems.COPPER_DISTILLER, FrameType.TASK);
         awarded(consumer, firstDrink, "sea_water", Items.KELP, FrameType.GOAL);
         awarded(consumer, firstDrink, "nether_drink", Items.MAGMA_BLOCK, FrameType.GOAL);
     }
@@ -62,19 +61,25 @@ public final class LegacyAdvancementProvider extends FabricAdvancementProvider {
     private static Advancement boilWater(Consumer<Advancement> consumer, Advancement parent) {
         Advancement.Builder builder = child(parent, Items.FURNACE, "boil_water", FrameType.TASK);
         for (String container : List.of("bottle", "bowl", "bucket")) {
-            for (int purity = 0; purity < 3; purity++) {
+            for (int purity = 0; purity < LegacyRecipeProvider.BOILED; purity++) {
                 for (String heat : List.of("smelting", "smoking")) {
                     builder.addCriterion(container + "_" + purity + "_" + heat, RecipeCraftedTrigger.TriggerInstance
                             .craftedItem(ThirstWasTaken2.id("purify_water_" + container + "_" + purity + "_" + heat)));
                 }
             }
         }
-        for (int servings = 1; servings <= WaterskinItem.MAX_CAPACITY; servings++) {
-            for (int purity = 0; purity < 3; purity++) {
-                builder.addCriterion("iron_flask_" + servings + "_" + purity + "_smelting",
-                        RecipeCraftedTrigger.TriggerInstance.craftedItem(
-                                ThirstWasTaken2.id(LegacyRecipeProvider.flaskPurifyName(servings, purity))));
+        for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK)) {
+            for (int purity = 0; purity < LegacyRecipeProvider.BOILED; purity++) {
+                String name = LegacyRecipeProvider.vesselPurifyName(vessel, purity);
+                builder.addCriterion(name.substring("purify_water_".length()),
+                        RecipeCraftedTrigger.TriggerInstance.craftedItem(ThirstWasTaken2.id(name)));
             }
+        }
+        // Or carrying something that boils water itself, held over a campfire or hung over one.
+        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
+                ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
+            builder.addCriterion("has_" + com.thirstwastaken2.platform.Vanilla.itemId(boiler).getPath(),
+                    net.minecraft.advancements.triggers.InventoryChangeTrigger.TriggerInstance.hasItems(boiler));
         }
         return builder.requirements(RequirementsStrategy.OR).save(consumer, ThirstWasTaken2.id("boil_water").toString());
     }

@@ -1,5 +1,5 @@
 // Parched in a real client: sea water makes the player Parched through the real right click, bad
-// water does not, and neither makes them Hungry; Parched drains thirst on the server tick, faster at
+// water does not (and no longer leaves a taste of Nausea), and neither makes them Hungry; Parched drains thirst on the server tick, faster at
 // level II; the client names it in English and Vietnamese. Run it unattended in a singleplayer world:
 //     ./gradlew ":<node>:runClient" -Pagent=tools/agent/gameplay/parched.jsonl -Pquickplay=ParchedAgent
 // ParchedAgent is a throwaway world, made fresh for each run by
@@ -44,11 +44,7 @@
 {"id": "drinkDirty", "command": "client.hold", "args": {"keys": ["use"], "ticks": 60}}
 {"id": "drunkDirty", "command": "client.state"}
 {"id": "dirtyNotParched", "command": "server.command", "args": {"command": "execute unless entity @p[nbt={active_effects:[{id:\"thirstwastaken2:parched\"}]}]"}}
-{"id": "dirtyNausea", "command": "server.command", "args": {"command": "execute if entity @p[nbt={active_effects:[{id:\"minecraft:nausea\"}]}]"}}
 {"id": "noHunger", "command": "server.command", "args": {"command": "execute unless entity @p[nbt={active_effects:[{id:\"minecraft:hunger\"}]}]"}}
-// Dirty water's Nausea lasts 12 seconds, 240 ticks, minus the few ticks since the bottle emptied.
-// Anything above 100 ticks is more than the old five seconds.
-{"id": "nauseaLeft", "command": "server.command", "args": {"command": "data get entity @p active_effects[{id:\"minecraft:nausea\"}].duration"}}
 
 // One sip by hand from a small pool: crouch, then three ticks of use on the water, one sip since a
 // use repeats only every four. The dev clients have toggleCrouch on, so the sneak key is pressed
@@ -77,9 +73,9 @@
 {"id": "standUp", "command": "client.key", "args": {"key": "sneak", "down": false}}
 {"id": "drainPool", "command": "server.command", "args": {"command": "fill -1 199 -2 1 199 0 minecraft:stone"}}
 
-// The drain, on the real server tick. Standing still costs nothing, so any exhaustion is Parched's.
-// Parched I is 0.01 a tick, so 200 ticks are about 2 exhaustion before the climate modifier; II is
-// twice that.
+// The drain, on the real server tick. Standing still costs the baseline, a point a minute (about 0.7
+// exhaustion in 200 ticks before the climate modifier), so the plain reading is that; anything more is
+// Parched's. Parched I is 0.01 a tick, so 200 ticks are about 2 exhaustion more; II is twice that.
 {"id": "cured", "command": "server.command", "args": {"command": "effect clear @p"}}
 {"id": "baseline", "command": "server.command", "args": {"command": "thirst set @p 20 0"}}
 {"id": "baselineSynced", "command": "wait", "args": {"ticks": 5}}

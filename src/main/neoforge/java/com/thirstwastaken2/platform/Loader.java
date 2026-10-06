@@ -7,6 +7,7 @@ import net.minecraft.world.Container;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.serialization.Codec;
 import com.thirstwastaken2.ThirstWasTaken2;
+import com.thirstwastaken2.neoforge.ConfigEnabledCondition;
 import com.thirstwastaken2.neoforge.ItemEnabledCondition;
 import java.util.function.Function;
 import net.minecraft.commands.CommandSourceStack;
@@ -137,12 +138,17 @@ public final class Loader {
     }
 
     /**
-     * Registers the {@code thirstwastaken2:item_enabled} load condition the mod's recipes carry, so a
-     * recipe for an item the config switches off is skipped as it loads. See {@link ItemEnabledCondition}.
+     * Registers the {@code thirstwastaken2:item_enabled} and {@code thirstwastaken2:config_enabled} load
+     * conditions the mod's recipes carry, so a recipe for an item or a feature the config switches off is
+     * skipped as it loads. See {@link ItemEnabledCondition} and {@link ConfigEnabledCondition}.
      */
     public static void registerResourceConditions() {
-        onRegister(NeoForgeRegistries.Keys.CONDITION_CODECS, () -> Registry.register(
-                NeoForgeRegistries.CONDITION_SERIALIZERS, ThirstWasTaken2.id("item_enabled"), ItemEnabledCondition.CODEC));
+        onRegister(NeoForgeRegistries.Keys.CONDITION_CODECS, () -> {
+            Registry.register(NeoForgeRegistries.CONDITION_SERIALIZERS, ThirstWasTaken2.id("item_enabled"),
+                    ItemEnabledCondition.CODEC);
+            Registry.register(NeoForgeRegistries.CONDITION_SERIALIZERS, ThirstWasTaken2.id("config_enabled"),
+                    ConfigEnabledCondition.CODEC);
+        });
     }
 
     /**

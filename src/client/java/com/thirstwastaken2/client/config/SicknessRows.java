@@ -152,9 +152,11 @@ final class SicknessRows {
             ConfigTheme.clippedText(graphics, ConfigRow.font(), name, textX, y + (widget.getHeight() - 8) / 2,
                     right - textX - ConfigRow.PADDING, effect == null ? ConfigTheme.FAINT : ConfigTheme.TEXT);
         });
+        // A line that shares its roll with others says so, since that is what keeps its chance inside theirs.
         background.setTooltip(Tooltip.create(effect == null
                 ? Component.translatable(PREFIX + "unknown", line.effect)
-                : Component.literal(line.effect)));
+                : line.group == null ? Component.literal(line.effect)
+                : Component.translatable(PREFIX + "grouped", line.effect, line.group)));
 
         EditBox chance = numberBox(CHANCE_WIDTH, line.chance, 0, 100, "chance",
                 value -> update(difficulty, grade, index, edited -> edited.chance = value));

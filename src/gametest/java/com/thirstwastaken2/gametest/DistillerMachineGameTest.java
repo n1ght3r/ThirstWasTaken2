@@ -373,6 +373,62 @@ public final class DistillerMachineGameTest {
         helper.succeed();
     }
 
+    /** A tank under three servings never fits a bucket: the slot keeps it, and so does the player. */
+    @GameTest
+    public void aTankOfOneRefusesABucketButTakesABottle(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> config.distillerTankServings = 1, () -> {
+            DistillerBlockEntity machine = machine(helper, true);
+            machine.setItem(DistillerBlockEntity.WATER_IN, new ItemStack(Items.WATER_BUCKET));
+            machine.tick();
+            TestFixtures.check(helper, machine.boilerServings() == 0
+                            && machine.getItem(DistillerBlockEntity.WATER_IN).is(Items.WATER_BUCKET),
+                    "a tank of one should leave the bucket in its slot, it holds " + machine.boilerServings());
+            machine.removeItemNoUpdate(DistillerBlockEntity.WATER_IN);
+
+            ServerPlayer player = TestFixtures.survivalPlayer(helper);
+            player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.WATER_BUCKET));
+            use(helper, player, TUB);
+            TestFixtures.check(helper, machine.boilerServings() == 0
+                            && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.WATER_BUCKET),
+                    "a tank of one should not take a bucket from the hand, it holds " + machine.boilerServings());
+
+            ItemStack bottle = pouredFrom(machine, TestFixtures.waterBottle());
+            TestFixtures.check(helper, machine.boilerServings() == 1 && bottle.is(Items.GLASS_BOTTLE),
+                    "a tank of one should take a bottle, it holds " + machine.boilerServings());
+        });
+        helper.succeed();
+    }
+
+    @GameTest
+    public void aTankOfSixtyFourTakesTwentyOneBuckets(GameTestHelper helper) {
+        TestFixtures.withConfig(config -> config.distillerTankServings = 64, () -> {
+            DistillerBlockEntity machine = machine(helper, true);
+            for (int bucket = 0; bucket < 22; bucket++) pouredFrom(machine, new ItemStack(Items.WATER_BUCKET));
+            TestFixtures.check(helper, machine.boilerServings() == 63,
+                    "21 buckets should fit a tank of 64 and the 22nd wait, it holds " + machine.boilerServings());
+        });
+        helper.succeed();
+    }
+
+    /** Water bowls stack, but the water slot pours one container at a time, so a hopper adds one. */
+    @GameTest
+    public void theWaterSlotTakesOneBowlAtATime(GameTestHelper helper) {
+        DistillerBlockEntity machine = machine(helper, true);
+        ItemStack first = HopperBlockEntity.addItem(null, machine, bowl(), Direction.UP);
+        ItemStack second = HopperBlockEntity.addItem(null, machine, bowl(), Direction.UP);
+        TestFixtures.check(helper, first.isEmpty() && second.getCount() == 1
+                        && machine.getItem(DistillerBlockEntity.WATER_IN).getCount() == 1,
+                "a hopper should put one bowl in the water slot and keep the next, got "
+                        + machine.getItem(DistillerBlockEntity.WATER_IN));
+
+        machine.tick();
+        ItemStack third = HopperBlockEntity.addItem(null, machine, bowl(), Direction.UP);
+        TestFixtures.check(helper, machine.boilerServings() == 1 && third.getCount() == 1,
+                "the empty bowl left in the slot should keep the next one out until it is taken, got "
+                        + machine.getItem(DistillerBlockEntity.WATER_IN));
+        helper.succeed();
+    }
+
     @GameTest
     public void anEmptyHandOpensTheMenuOnEitherHalf(GameTestHelper helper) {
         DistillerBlockEntity machine = machine(helper, true);
@@ -500,6 +556,10 @@ public final class DistillerMachineGameTest {
         machine.setItem(DistillerBlockEntity.WATER_IN, water);
         machine.tick();
         return machine.removeItemNoUpdate(DistillerBlockEntity.WATER_IN);
+    }
+
+    private static ItemStack bowl() {
+        return WaterPurity.setQuality(new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), WaterQuality.fresh(1));
     }
 
     /** Puts {@code empty} in the input, ticks once and takes out what was filled. */

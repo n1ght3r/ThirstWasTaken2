@@ -61,10 +61,7 @@ public class DrinkItem extends Item {
         return emptyContainer == null ? properties : properties.usingConvertsTo(emptyContainer);
     }
     //?} else {
-    /*// A potion takes 32 ticks to drink.
-    private static final int DRINK_TICKS = 32;
-
-    private static Properties drinkable(Properties properties, Item emptyContainer) {
+    /*private static Properties drinkable(Properties properties, Item emptyContainer) {
         return properties;
     }
 
@@ -94,16 +91,18 @@ public class DrinkItem extends Item {
     }
     *///?}
 
-    // 1.20.5 handed the use duration the entity using the item.
-    //? if >=1.20.5 <1.21.2 {
-    /*@Override
+    // How long a drink takes, the config's plainWaterDrinkTicks, 32 like a potion unless changed. From
+    // 1.21.2 the consumable component holds a duration too, which this overrides; 1.20.5 handed the use
+    // duration the entity using the item.
+    //? if >=1.20.5 {
+    @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return DRINK_TICKS;
+        return com.thirstwastaken2.config.ThirstConfig.get().plainWaterDrinkTicks;
     }
-    *///?} elif <1.20.5 {
+    //?} else {
     /*@Override
     public int getUseDuration(ItemStack stack) {
-        return DRINK_TICKS;
+        return com.thirstwastaken2.config.ThirstConfig.get().plainWaterDrinkTicks;
     }
     *///?}
 }

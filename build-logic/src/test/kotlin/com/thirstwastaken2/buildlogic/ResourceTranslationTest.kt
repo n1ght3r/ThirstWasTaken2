@@ -9,6 +9,7 @@ class ResourceTranslationTest {
     private val conditions = mapOf("fabric:load_conditions" to listOf(
         mapOf("condition" to "fabric:all_mods_loaded", "values" to listOf("farmersdelight")),
         mapOf("condition" to "thirstwastaken2:item_enabled", "item" to "thirstwastaken2:waterskin"),
+        mapOf("condition" to "thirstwastaken2:config_enabled", "setting" to "enableFurnaceBoiling"),
     ))
 
     @Test
@@ -33,10 +34,12 @@ class ResourceTranslationTest {
         assertEquals(mapOf("neoforge:conditions" to listOf(
             mapOf("type" to "neoforge:mod_loaded", "modid" to "farmersdelight"),
             mapOf("type" to "thirstwastaken2:item_enabled", "item" to "thirstwastaken2:waterskin"),
+            mapOf("type" to "thirstwastaken2:config_enabled", "setting" to "enableFurnaceBoiling"),
         )), neoForgeJson(conditions, "a.json", "type"))
         assertEquals(mapOf("conditions" to listOf(
             mapOf("type" to "forge:mod_loaded", "modid" to "farmersdelight"),
             mapOf("type" to "thirstwastaken2:item_enabled", "item" to "thirstwastaken2:waterskin"),
+            mapOf("type" to "thirstwastaken2:config_enabled", "setting" to "enableFurnaceBoiling"),
         )), forgeJson(conditions, "a.json"))
     }
 

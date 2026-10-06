@@ -16,6 +16,7 @@ import org.gradle.api.GradleException
  * | `fabric:type` `fabric:any`, `ingredients`                  | `neoforge:ingredient_type` `neoforge:compound`, `children`              | the ingredients as a plain array, Forge's compound |
  * | `fabric:load_conditions`, `fabric:all_mods_loaded`         | `neoforge:conditions`, one `neoforge:mod_loaded` per mod                | `conditions`, one `forge:mod_loaded` per mod       |
  * | `condition` `thirstwastaken2:item_enabled`, `item`         | `type` `thirstwastaken2:item_enabled`, `item`                           | the same as NeoForge                               |
+ * | `condition` `thirstwastaken2:config_enabled`, `setting`    | `type` `thirstwastaken2:config_enabled`, `setting`                      | the same as NeoForge                               |
  *
  * Both components ingredients take a `DataComponentPatch` and match a stack that carries at least the
  * listed values, which is NeoForge's default `strict: false`, so `strict` is left out. Both NBT
@@ -108,6 +109,12 @@ private fun loadConditions(conditions: Any?, file: String, loader: String, names
                     throw GradleException("$file: no $loader translation for ${condition.keys} in thirstwastaken2:item_enabled")
                 }
                 listOf(mapOf("type" to "thirstwastaken2:item_enabled", "item" to condition["item"]))
+            }
+            "thirstwastaken2:config_enabled" -> {
+                if (condition.keys != setOf("condition", "setting")) {
+                    throw GradleException("$file: no $loader translation for ${condition.keys} in thirstwastaken2:config_enabled")
+                }
+                listOf(mapOf("type" to "thirstwastaken2:config_enabled", "setting" to condition["setting"]))
             }
             else -> throw GradleException("$file: no $loader translation for the Fabric load condition ${condition["condition"]}")
         }

@@ -8,12 +8,12 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": "#c:ingots/copper",
-    "L": "minecraft:leather"
+    "S": "minecraft:string"
   },
   "pattern": [
-    " L ",
+    " S ",
     "C C",
-    "CCC"
+    " C "
   ],
   "result": {
     "id": "thirstwastaken2:copper_canteen"

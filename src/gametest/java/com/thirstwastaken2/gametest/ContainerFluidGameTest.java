@@ -29,16 +29,17 @@ public final class ContainerFluidGameTest {
     public void aWaterskinFillsWithWholeServingsOfOneGrade(GameTestHelper helper) {
         if (skipped(helper)) return;
         FluidMove bucket = ContainerFluids.fillWater(new ItemStack(ThirstItems.WATERSKIN), MURKY, 1000);
-        TestFixtures.check(helper, bucket.amount() == 3 * SERVING && WaterskinItem.servings(bucket.container()) == 3
+        int capacity = ThirstConfig.get().waterskinCapacity;
+        TestFixtures.check(helper, bucket.amount() == capacity * SERVING && WaterskinItem.servings(bucket.container()) == capacity
                         && WaterPurity.quality(bucket.container()).equals(MURKY),
-                "a bucket of murky water should fill an empty waterskin with three murky servings, got "
+                "a bucket of murky water should fill an empty waterskin with " + capacity + " murky servings, got "
                         + describe(bucket));
 
-        ItemStack twoMurky = skin(MURKY, 2);
-        FluidMove same = ContainerFluids.fillWater(twoMurky, MURKY, 500);
-        TestFixtures.check(helper, same.amount() == SERVING && WaterskinItem.servings(same.container()) == 3,
+        ItemStack nearlyFull = skin(MURKY, capacity - 1);
+        FluidMove same = ContainerFluids.fillWater(nearlyFull, MURKY, 500);
+        TestFixtures.check(helper, same.amount() == SERVING && WaterskinItem.servings(same.container()) == capacity,
                 "a waterskin with room for one serving takes one of the same grade, got " + describe(same));
-        FluidMove other = ContainerFluids.fillWater(twoMurky, PURE, 500);
+        FluidMove other = ContainerFluids.fillWater(nearlyFull, PURE, 500);
         TestFixtures.check(helper, other.amount() == 0,
                 "water of another grade must not be piped into a waterskin, got " + describe(other));
 
@@ -73,11 +74,11 @@ public final class ContainerFluidGameTest {
     @GameTest
     public void waterWithNoGradeFillsAsTheDefault(GameTestHelper helper) {
         if (skipped(helper)) return;
-        WaterQuality expected = WaterQuality.fresh(ThirstConfig.get().defaultPurity);
+        WaterQuality expected = WaterQuality.fresh(ThirstConfig.get().defaultQuality);
         FluidMove plain = ContainerFluids.fillWater(new ItemStack(ThirstItems.WATERSKIN), null, 250);
         TestFixtures.check(helper, plain.amount() == SERVING && WaterPurity.isStamped(plain.container())
                         && WaterPurity.quality(plain.container()).equals(expected),
-                "water from another mod with no grade should be graded defaultPurity, got " + describe(plain));
+                "water from another mod with no grade should be graded defaultQuality, got " + describe(plain));
         helper.succeed();
     }
 

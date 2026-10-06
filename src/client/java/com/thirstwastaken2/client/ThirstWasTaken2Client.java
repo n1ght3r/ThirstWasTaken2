@@ -5,6 +5,8 @@ import com.thirstwastaken2.block.ThirstBlocks;
 import com.thirstwastaken2.block.ThirstMenus;
 import com.thirstwastaken2.client.platform.ClientLoader;
 import com.thirstwastaken2.client.screen.DistillerScreen;
+import com.thirstwastaken2.tooltip.ThirstTooltip;
+import net.minecraft.client.Minecraft;
 
 public final class ThirstWasTaken2Client {
     /** One droplet row, as tall as vanilla's hunger bar. */
@@ -23,5 +25,7 @@ public final class ThirstWasTaken2Client {
         ClientLoader.renderCutout(() -> ThirstBlocks.DISTILLER_BOILER);
         ClientLoader.renderCutout(() -> ThirstBlocks.COOLING_TUB);
         ClientLoader.registerScreen(() -> ThirstMenus.COPPER_DISTILLER, DistillerScreen::new);
+        // Tooltip droplet rows say what drinking would give the player looking at them.
+        ThirstTooltip.setViewer(() -> Minecraft.getInstance().player);
     }
 }

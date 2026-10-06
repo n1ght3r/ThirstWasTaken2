@@ -27,11 +27,11 @@ public final class WaterFluids {
         return !stack.isEmpty() && stack.isIn(FluidTags.WATER);
     }
 
-    /** Unstamped water, from a creative tank or another mod, counts as {@code defaultPurity}. */
+    /** Unstamped water, from a creative tank or another mod, counts as {@code defaultQuality}. */
     public static WaterQuality quality(FluidStack stack) {
         if (Boolean.TRUE.equals(stack.get(ThirstComponents.WATER_SALTY))) return WaterQuality.SALT;
         Integer purity = stack.get(ThirstComponents.WATER_PURITY);
-        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultPurity);
+        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultQuality);
     }
 
     /** Writes {@code quality} onto water and returns the same stack. Anything else is left alone. */

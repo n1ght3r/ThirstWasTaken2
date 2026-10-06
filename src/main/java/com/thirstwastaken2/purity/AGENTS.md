@@ -70,7 +70,7 @@ checks all three implementations against one set of assertions, in millibuckets.
 ## Rules the code keeps
 
 - **Salt water carries no grade.** `setQuality`, through `ItemWaterData.setSalty`, removes `water_purity` from a salty stack. That is
-  what keeps the 27 purification recipes, which all match on a grade, from matching sea water, and
+  what keeps the purification recipes, which all match on a grade, from matching sea water, and
   what stops `get` from inventing one. Anything asking "how clean is it" goes through `quality`.
 - **A fresh container always writes `water_salty: false`,** even though false is the component's
   default. Every cooking recipe matches on it, so a container that leaves it out silently stops being
@@ -88,8 +88,8 @@ checks all three implementations against one set of assertions, in millibuckets.
   shares.
 - **Water that arrives on its own is graded where it lands.** Rain and pointed dripstones fill
   cauldrons with nobody pouring anything in, so `filledByRain` and `filledByDripstone` stamp
-  `WaterPurity.rainwaterPurity()` (Clean by default) and `dripstonePurity()` (Pure), both from the
-  config, rather than letting the cauldron fall through to `defaultPurity`. With
+  `WaterPurity.rainwaterQuality()` (Clean by default) and `dripstoneQuality()` (Pure), both from the
+  config, rather than letting the cauldron fall through to `defaultQuality`. With
   `enableRainCollection` off, `filledByRain` does nothing and pots ignore rain. Both keep the worse of what the cauldron held and what fell in, like pouring,
   and both check that the blockstate actually changed: the vanilla hooks run whether or not a layer
   was added.
@@ -104,6 +104,13 @@ checks all three implementations against one set of assertions, in millibuckets.
   collects water on a tick, so it reuses one sample per pump for 100 ticks
   (`src/main/createfly/.../SampledWater`), and so do Create on NeoForge and Sophisticated's Pump
   upgrade (`src/main/neoforge/.../SampledWater`).
+- **Heat stops at Clean.** `WaterPurity.BOILED` is the cap, and `boil` (one go) and `boilStep` (+1, Cold
+  Sweat's Boiler) are the only places that know it; every heat source calls one of them. Only the
+  distiller and the Sand Filter reach Pure. Water the sky can't reach is capped at Murky as the last,
+  costliest step of `sampleAt` (`openToTheSky`, through `Vanilla.skyAbove`), and only for world water.
+- **Water bottles do not stack.** The rework first stacked them to three, then took it back
+  (2026-10-06): a potion that stacks surprises other mods' brewing and storage code. Filled
+  terracotta bowls stack instead, from `terracottaWaterBowlStackSize` on the item's properties.
 - **The contamination score is never stored.** `sampleAt` scores a source, grades it, and keeps only
   the grade, so no container carries a hidden number that the player cannot see and the tooltip
   cannot explain.
@@ -117,16 +124,18 @@ checks all three implementations against one set of assertions, in millibuckets.
   extending `resolve`, not by importing anything.
 - **The sickness tables, by difficulty.** `applyEffects` hands fresh water to `effect/WaterSickness`
   and always returns true: every fresh drink quenches, the illness is the price. `WaterSickness` gives
-  each effect the config's `sicknessEffects` lists for the difficulty and the grade, each rolling on its
-  own; by default Dirty and Murky water always give 7 s of Nausea, the taste, then Upset Stomach and
-  Poison at chances that grow with the difficulty. The difficulty is read at the drink. Drinking again
-  while ill adds the line's time to the effect, up to twice it, while `extendSicknessEffects` is on. The original also applied Hunger; the
+  each effect the config's `sicknessEffects` lists for the difficulty and the grade. Lines with the same
+  `group` share one roll per drink, the rest roll on their own; by default Upset Stomach and Poison
+  share `illness` for Dirty and Murky water, Clean and Pure have no lines, and there is no taste
+  Nausea. The difficulty is read at the drink. Drinking again while ill extends Upset Stomach by half
+  the new time up to 1.5 times it, any other effect by the line's time up to twice it, while
+  `extendSicknessEffects` is on. The original also applied Hunger; the
   defaults never have. Salt water never reaches the
   roll: it spends exhaustion, applies Nausea and Parched II (without particles) for the config's
   `seaWaterNauseaSeconds` and `seaWaterParchedSeconds`, and returns false. With `enableSeaWater` off,
   `sampleAt` grades ocean and beach water like any other.
   `quenched` cuts what a drink of water quenches by the config's `quenchedPercent` (Dirty none, Murky
-  half by default),
+  a quarter, Clean half by default),
   and Upset Stomach cuts it again in `ThirstManager.drinkThroughEvent`; tooltips show the grade's cut.
   The design is `../../../../../../docs/dev/mechanics/WATER-SICKNESS.md`, and where its code goes
   `../../../../../../docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md`.

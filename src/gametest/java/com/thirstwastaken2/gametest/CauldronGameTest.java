@@ -190,7 +190,7 @@ public final class CauldronGameTest {
 
     /**
      * Rain grades itself. An empty cauldron that fills with rain is a water cauldron nobody poured
-     * anything into, which used to fall back to {@code defaultPurity} by accident.
+     * anything into, which used to fall back to {@code defaultQuality} by accident.
      *
      * <p>This one drives vanilla for real: {@code handlePrecipitation} is public, and only fills the
      * cauldron on a twentieth of its chances, so it is called until the block changes.
@@ -204,7 +204,7 @@ public final class CauldronGameTest {
 
         BlockState after = helper.getLevel().getBlockState(pos);
         WaterQuality stored = WaterPurity.storedQuality(after);
-        WaterQuality expected = WaterQuality.fresh(WaterPurity.rainwaterPurity());
+        WaterQuality expected = WaterQuality.fresh(WaterPurity.rainwaterQuality());
         TestFixtures.check(helper, after.is(Blocks.WATER_CAULDRON),
                 "rain should have filled the cauldron, got " + after);
         TestFixtures.check(helper, expected.equals(stored),
@@ -260,7 +260,7 @@ public final class CauldronGameTest {
         WaterInteractions.filledByDripstone(before, helper.getLevel(), pos, Fluids.WATER);
 
         WaterQuality stored = WaterPurity.storedQuality(helper.getLevel().getBlockState(pos));
-        WaterQuality expected = WaterQuality.fresh(WaterPurity.dripstonePurity());
+        WaterQuality expected = WaterQuality.fresh(WaterPurity.dripstoneQuality());
         TestFixtures.check(helper, expected.equals(stored),
                 "dripstone water should be graded " + expected + ", got " + stored);
         helper.succeed();

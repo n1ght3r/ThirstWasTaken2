@@ -1,6 +1,12 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
   "type": "minecraft:smelting",
-  "experience": 0.35,
+  "cookingtime": 480,
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "minecraft:water_bucket",
@@ -11,7 +17,7 @@
   },
   "result": {
     "components": {
-      "thirstwastaken2:water_purity": 3,
+      "thirstwastaken2:water_purity": 2,
       "thirstwastaken2:water_salty": false
     },
     "id": "minecraft:water_bucket"

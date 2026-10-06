@@ -214,8 +214,9 @@ public final class IntegrationApiGameTest {
         }
         TestFixtures.check(helper, seen[0] == 2.0F,
                 "the listener should see the tick's raw exhaustion, got " + seen[0]);
-        TestFixtures.check(helper, ThirstManager.get(spared).exhaustion() == 0.0F,
-                "a listener returning 0 should leave exhaustion alone, got " + ThirstManager.get(spared));
+        // Only the baseline is left, which no listener sees: a tick's worth, a few thousandths.
+        TestFixtures.check(helper, ThirstManager.get(spared).exhaustion() < 0.01F,
+                "a listener returning 0 should leave only the baseline, got " + ThirstManager.get(spared));
         TestFixtures.check(helper, ThirstManager.get(charged).exhaustion() > 0.0F,
                 "a player the listener passes over should still be charged, got " + ThirstManager.get(charged));
         helper.succeed();

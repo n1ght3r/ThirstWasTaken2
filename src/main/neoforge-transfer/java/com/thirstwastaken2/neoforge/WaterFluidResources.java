@@ -15,7 +15,7 @@ public final class WaterFluidResources {
         return !resource.isEmpty() && resource.is(FluidTags.WATER);
     }
 
-    /** Unstamped water counts as {@code defaultPurity}, as it does on a fluid stack. */
+    /** Unstamped water counts as {@code defaultQuality}, as it does on a fluid stack. */
     public static WaterQuality quality(FluidResource resource) {
         return WaterFluids.quality(resource.toStack(1));
     }

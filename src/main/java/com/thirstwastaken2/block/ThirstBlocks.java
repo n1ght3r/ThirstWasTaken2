@@ -8,17 +8,18 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public final class ThirstBlocks {
-    // Seconds a serving takes to boil pure in each pot come from the config, 4 for copper and 6 for
-    // iron by default, so a full pot takes three times as long as a bottle. A furnace takes 10 seconds a
-    // bucket and raises it two grades; see docs/dev/mechanics/WATER-REFERENCE.md for how the
-    // numbers were chosen. Iron carries heat worse than copper.
+    // Seconds a serving takes to boil Clean in each pot, and how many servings it holds, come from the
+    // config: 3 seconds and 3 servings for copper, 4 and 6 for iron by default. A furnace takes 24 seconds
+    // a bucket; see docs/dev/mechanics/WATER-REFERENCE.md for how the numbers were chosen. Iron carries
+    // heat worse than copper, and holds more.
 
     /**
      * Breaks quickly by hand, so it needs no tool tag. A piston knocks
      * it loose rather than pushing a pot of water around.
      */
     public static final HangingPotBlock COPPER_HANGING_POT = Vanilla.registerBlock("copper_hanging_pot",
-            properties -> new HangingPotBlock(properties, () -> ThirstConfig.get().copperHangingPotBoilSeconds),
+            properties -> new HangingPotBlock(properties, () -> ThirstConfig.get().copperHangingPotBoilSeconds,
+                    () -> ThirstConfig.get().copperHangingPotCapacity),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_ORANGE)
                     .strength(1.0F)
@@ -27,7 +28,8 @@ public final class ThirstBlocks {
                     .pushReaction(PushReaction.POPPED));
     /** The same pot in dark cast iron. Iron carries heat worse than copper, so it boils slower. */
     public static final HangingPotBlock IRON_HANGING_POT = Vanilla.registerBlock("iron_hanging_pot",
-            properties -> new HangingPotBlock(properties, () -> ThirstConfig.get().ironHangingPotBoilSeconds),
+            properties -> new HangingPotBlock(properties, () -> ThirstConfig.get().ironHangingPotBoilSeconds,
+                    () -> ThirstConfig.get().ironHangingPotCapacity),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .strength(1.0F)

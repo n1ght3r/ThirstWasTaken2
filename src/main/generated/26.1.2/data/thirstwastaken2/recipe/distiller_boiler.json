@@ -9,12 +9,12 @@
   "category": "misc",
   "key": {
     "C": "#c:ingots/copper",
-    "G": "#c:ingots/gold",
+    "I": "#c:ingots/iron",
     "P": "thirstwastaken2:copper_pipe"
   },
   "pattern": [
     "CPC",
-    "CGC",
+    "CIC",
     "CCC"
   ],
   "result": {

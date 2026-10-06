@@ -29,7 +29,7 @@ import net.minecraft.world.level.material.Fluids;
  *     <li>A serving is 250 mB, 20250 droplets, NeoForge's size rather than Fabric's 27000-droplet bottle,
  *     so both loaders move the same water. Only whole servings move.</li>
  *     <li>A container that holds water only takes more of the same grade.</li>
- *     <li>Water with no grade fills an empty container as {@code defaultPurity}.</li>
+ *     <li>Water with no grade fills an empty container as {@code defaultQuality}.</li>
  * </ul>
  *
  * <p>How the grade travels on the fluid is {@link FabricTransfer}'s.
@@ -59,7 +59,7 @@ public final class WaterContainerStorage implements Storage<FluidVariant>, Stora
     }
 
     /**
-     * The grade {@code variant} carries, {@code defaultPurity} when none, or {@code null} for anything but
+     * The grade {@code variant} carries, {@code defaultQuality} when none, or {@code null} for anything but
      * water. Only this mod's own data is read: other mods add their own to the water they hold, as
      * Create Fly's tanks add {@code create:fluid_max_capacity} after their first fill.
      */
@@ -67,7 +67,7 @@ public final class WaterContainerStorage implements Storage<FluidVariant>, Stora
         if (!variant.isOf(Fluids.WATER)) return null;
         if (FabricTransfer.salty(variant)) return WaterQuality.SALT;
         Integer purity = FabricTransfer.grade(variant);
-        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultPurity);
+        return WaterQuality.fresh(purity != null ? purity : ThirstConfig.get().defaultQuality);
     }
 
     private ItemStack container() {

@@ -54,14 +54,15 @@ public final class DrinkingGameTest {
     public void aWaterskinLosesOneServingPerDrinkAndStays(GameTestHelper helper) {
         ServerPlayer player = thirstyPlayer(helper);
         ItemStack skin = new ItemStack(ThirstItems.WATERSKIN);
-        WaterskinItem.addWater(skin, WaterQuality.fresh(WaterPurity.MAX), WaterskinItem.CAPACITY);
+        WaterskinItem.addWater(skin, WaterQuality.fresh(WaterPurity.MAX), com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity);
 
         startDrinking(player, skin);
         TestFixtures.check(helper, player.isUsingItem(), "a filled waterskin should start being drunk");
         ItemStack left = player.getUseItem().finishUsingItem(player.level(), player);
 
-        TestFixtures.check(helper, left.is(ThirstItems.WATERSKIN) && WaterskinItem.servings(left) == 2,
-                "a drink should leave the waterskin with 2 servings, got " + left);
+        int rest = com.thirstwastaken2.config.ThirstConfig.get().waterskinCapacity - 1;
+        TestFixtures.check(helper, left.is(ThirstItems.WATERSKIN) && WaterskinItem.servings(left) == rest,
+                "a drink should leave the waterskin with " + rest + " servings, got " + left);
         TestFixtures.check(helper, WaterPurity.quality(left).equals(WaterQuality.fresh(WaterPurity.MAX)),
                 "the water left behind keeps its grade, got " + WaterPurity.quality(left));
         TestFixtures.check(helper, ThirstManager.get(player).thirst() > 10,
@@ -70,9 +71,9 @@ public final class DrinkingGameTest {
     }
 
     /**
-     * What a drink restores is looked up by item id, so every carried container needs its own entry.
-     * The canteen and the flask once had none and restored nothing at any grade; murky water is where
-     * it was noticed.
+     * Every carried container restores one serving of plain water, whatever its grade. The canteen and
+     * the flask once restored nothing at any grade, when values were looked up per item and they had
+     * no entry; murky water is where it was noticed.
      */
     @GameTest
     public void aCanteenOrFlaskDrinkRestoresLikeAWaterskin(GameTestHelper helper) {
@@ -88,8 +89,8 @@ public final class DrinkingGameTest {
                 startDrinking(player, vessel);
                 player.getUseItem().finishUsingItem(player.level(), player);
 
-                TestFixtures.check(helper, ThirstManager.get(player).thirst() == 14,
-                        item + " of grade " + grade + " should restore the waterskin's 4 thirst, got "
+                TestFixtures.check(helper, ThirstManager.get(player).thirst() == 16,
+                        item + " of grade " + grade + " should restore a serving's 6 thirst, got "
                                 + ThirstManager.get(player));
             }
         }
@@ -128,7 +129,8 @@ public final class DrinkingGameTest {
 
     @GameTest
     public void plainWaterIsRefusedOnAFullBarButOtherDrinksAreNot(GameTestHelper helper) {
-        for (ItemStack water : new ItemStack[] {bowl(WaterQuality.fresh(2)), TestFixtures.waterBottle()}) {
+        // Murky: Clean and Pure may top quenched up at a full bar, which RecoveryGameTest covers.
+        for (ItemStack water : new ItemStack[] {bowl(WaterQuality.fresh(1)), WaterPurity.set(TestFixtures.waterBottle(), 1)}) {
             ServerPlayer full = TestFixtures.survivalPlayer(helper);
             startDrinking(full, water);
             TestFixtures.check(helper, !full.isUsingItem(), water + " should be refused on a full bar");

@@ -25,6 +25,6 @@ abstract class TroughBlockEntityMixin {
     private static int thirst$rainwater(FluidTank tank, FluidStack water, IFluidHandler.FluidAction action,
                                         Operation<Integer> original) {
         if (!ThirstConfig.get().enableRainCollection) return original.call(tank, water, action);
-        return original.call(tank, HearthWater.stamped(water, WaterQuality.fresh(WaterPurity.rainwaterPurity())), action);
+        return original.call(tank, HearthWater.stamped(water, WaterQuality.fresh(WaterPurity.rainwaterQuality())), action);
     }
 }

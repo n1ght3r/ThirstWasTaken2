@@ -115,11 +115,13 @@ public final class Loader {
     }
 
     /**
-     * Registers the {@code thirstwastaken2:item_enabled} load condition the mod's recipes and advancements
-     * carry. Forge keeps its condition serializers in a map of its own rather than a registry.
+     * Registers the {@code thirstwastaken2:item_enabled} and {@code thirstwastaken2:config_enabled} load
+     * conditions the mod's recipes and advancements carry. Forge keeps its condition serializers in a map
+     * of its own rather than a registry.
      */
     public static void registerResourceConditions() {
         CraftingHelper.register(ItemEnabledCondition.SERIALIZER);
+        CraftingHelper.register(ConfigEnabledCondition.SERIALIZER);
     }
 
     /**

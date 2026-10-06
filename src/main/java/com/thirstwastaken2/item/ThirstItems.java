@@ -30,12 +30,14 @@ public final class ThirstItems {
     public static final Item CLAY_BOWL = Vanilla.registerItem("clay_bowl", Item::new, new Item.Properties().stacksTo(64));
     public static final Item TERRACOTTA_BOWL = Vanilla.registerItem("terracotta_bowl", Item::new, new Item.Properties().stacksTo(64));
     /**
-     * A filled bowl does not stack, matching every vanilla drink container. Stacking it would put
-     * dozens of drinks in one slot and leave the waterskin, which holds three, with no purpose.
+     * A filled bowl stacks to {@code terracottaWaterBowlStackSize}, three by default, a serving each,
+     * and only with bowls of the same water: three crafted clay bowls make one stack. Read once, as the
+     * item is built, so a change needs a restart and the server and its clients have to agree on it.
      */
     public static final Item TERRACOTTA_WATER_BOWL = Vanilla.registerItem("terracotta_water_bowl",
             properties -> new DrinkItem(properties, TERRACOTTA_BOWL),
-            Vanilla.modelSelectorByDefault(ItemWaterData.freshByDefault(new Item.Properties().stacksTo(1), 3),
+            Vanilla.modelSelectorByDefault(ItemWaterData.freshByDefault(
+                    new Item.Properties().stacksTo(ThirstConfig.get().terracottaWaterBowlStackSize), 3),
                     BOWL_MODEL_INDEX, 3));
     public static final Item WATERSKIN = Vanilla.registerItem("waterskin", WaterskinItem::new,
             ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));

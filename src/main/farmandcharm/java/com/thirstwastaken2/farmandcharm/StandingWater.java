@@ -46,7 +46,7 @@ public final class StandingWater {
      * The water a bucket draws from the Timber Well at {@code pos}: the groundwater the well pumps from,
      * sampled where it lies, so a beach well gives sea water and a swamp well Dirty water. With no
      * groundwater below, the well was filled by rain, and gives rain's grade. Null leaves the bucket
-     * unstamped, which is {@code defaultPurity}: rain collection switched off.
+     * unstamped, which is {@code defaultQuality}: rain collection switched off.
      *
      * <p>If both groundwater and rain filled it, the groundwater decides, since the blockstate cannot say
      * which level came from where. Called on the server, when a bucket is filled, never on a tick.
@@ -55,7 +55,7 @@ public final class StandingWater {
         BlockPos source = groundwater(level, pos, state);
         if (source != null) return WaterPurity.sampleAt(level, source);
         if (!ThirstConfig.get().enableRainCollection) return null;
-        return WaterQuality.fresh(WaterPurity.rainwaterPurity());
+        return WaterQuality.fresh(WaterPurity.rainwaterQuality());
     }
 
     /**

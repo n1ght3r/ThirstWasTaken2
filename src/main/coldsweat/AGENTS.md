@@ -3,8 +3,8 @@
 [Cold Sweat](https://modrinth.com/mod/cold-sweat), the body temperature mod (mod id `cold_sweat`,
 package `com.momosoftworks.coldsweat`). With it installed, the thirst drain follows the world
 temperature Cold Sweat measures around the player, and Cold Sweat's own waterskin carries a grade and
-quenches when drunk. Cold Sweat's Boiler purifies water, its Waterskin purifies on a campfire, in a
-furnace and in a smoker, and hot drinks from two other mods warm the player. Why each choice was made,
+quenches when drunk. Cold Sweat's Boiler raises water a grade a pass up to Clean, its Waterskin boils
+Clean on a campfire, and hot drinks from two other mods warm the player. Why each choice was made,
 and what was found in game, is in
 [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](../../../docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md).
 
@@ -28,7 +28,6 @@ java/com/thirstwastaken2/coldsweat/
                          CampfireWaterskinMixin (vanilla's campfire, for the skin)
 resources/
   thirstwastaken2.coldsweat.mixins.json
-  data/thirstwastaken2/recipe/cold_sweat/            furnace and smoker recipes for the skin
   data/thirstwastaken2/cold_sweat/item/food/         Cold Sweat food data: hot drinks warm
 ```
 
@@ -84,16 +83,15 @@ answers yes for; at the tail of the Boiler's tick, on Cold Sweat's own beat (200
 `hasDrinkables`, there and in `checkForItems`, keeps the Boiler lit and burning fuel while it works, as
 Cold Sweat's own branch does. Salt water is let in and never raised.
 
-## Campfire, furnace, smoker
+## Campfire
 
 Cold Sweat already has a campfire recipe for any filled skin (it warms it), which hands back a new skin
 without our components. A second recipe of ours for the same input would leave the pick to load order,
 so there is none: `CampfireWaterskinMixin` wraps the drop in `CampfireBlockEntity.cookTick` and, when
 the result is an unstamped water container of the same item as a stamped input (`@Local(ordinal = 0)`
-is the input stack), stamps it with the bottle's campfire rule. It touches nothing already stamped, so
-this mod's own campfire recipes pass through unchanged. The furnace and smoker recipes are ordinary JSON,
-the bottle's grades and times, with a `neoforge:mod_loaded` condition; datagen is Fabric only, so they
-are hand-written.
+is the input stack), stamps it through `WaterPurity.boil`: Dirty and Murky come off Clean, better water as it was. It
+touches nothing already stamped. The skin's furnace and smoker recipes were deleted in the
+purification rework: heat stops at Clean, and the furnace route is the bottle's.
 
 ## Hot drinks
 
@@ -109,7 +107,8 @@ That was 1.3.0 and 1.4.0 without Farmer's Delight. `checkDataConditions` now fai
 
 The gametests run without Cold Sweat and prove the node loads without it.
 [tools/agent/integrations/cold-sweat.jsonl](../../../tools/agent/integrations/cold-sweat.jsonl) drives
-a client with it. Run on 2026-09-26, every check passed:
+a client with it. Run on 2026-09-26, before the purification rework, every check passed; the Boiler and
+campfire now stop at Clean (`WaterPurity.boilStep`, `boil`), so their lines below need a new run:
 
 - a source in plains fills a Murky skin, a source in an ocean a salty one, and the tooltip shows the grade;
 - a Dirty three-layer cauldron gives a Dirty skin and keeps two layers; the last layer of a Pure

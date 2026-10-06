@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
  * Cold Sweat's waterskin boiled on a campfire. Cold Sweat's own recipe takes any filled skin and hands
  * back a new one, which would drop the grade. Rather than a recipe of this mod's competing with it for
  * the same input, which one the campfire picked would be down to load order, the skin that comes off
- * keeps the water it went on with, boiled as a bottle is: Dirty to Clean, Murky and Clean to Pure, salt
- * water still salt. Cold Sweat sets its temperature on the same call.
+ * keeps the water it went on with, boiled Clean as anything heat touches, Clean and Pure as they
+ * were, salt water still salt. Cold Sweat sets its temperature on the same call.
  */
 @Mixin(CampfireBlockEntity.class)
 abstract class CampfireWaterskinMixin {
