@@ -20,7 +20,7 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - Copper cups keep the grade of their water, like a bucket. A cup filled from the sea stays salty
     instead of pouring into a cauldron as Clean water. On 1.20.1 the same goes for Create's Spout and
     Item Drain.
-- Kaleidoscope Flora, on NeoForge 1.21.1: its flower teas restore thirst, like Kaleidoscope Cookery's
+- Kaleidoscope Flora, on NeoForge 1.21.1 and Forge 1.20.1: its flower teas restore thirst, like Kaleidoscope Cookery's
   Flower Tea.
 - Extra Delight, on NeoForge 1.21.1:
   - Its juices, ades, milkshakes, coffee, tea, soups and popsicles restore thirst.

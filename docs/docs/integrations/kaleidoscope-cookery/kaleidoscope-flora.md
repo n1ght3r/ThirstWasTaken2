@@ -1,10 +1,11 @@
-    # ![](https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png){.mod-icon} Kaleidoscope Flora
+# ![](https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png){.mod-icon} Kaleidoscope Flora
 
 With Kaleidoscope Flora installed, its flower teas restore thirst.
 
 ::: warning Supported versions
-NeoForge, Minecraft 1.21.1, with ![](https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png){.mod-icon} [Kaleidoscope Flora](https://www.curseforge.com/minecraft/mc-mods/kaleidoscope-flora)
-0.3.4, which needs [Kaleidoscope Cookery](./). It is on CurseForge only.
+NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with ![](https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png){.mod-icon}
+[Kaleidoscope Flora](https://www.curseforge.com/minecraft/mc-mods/kaleidoscope-flora) 0.3.4, which needs
+[Kaleidoscope Cookery](./). It is on CurseForge only.
 :::
 
 ## Flower teas

@@ -979,7 +979,8 @@ public final class ThirstConfig {
     }
 
     /**
-     * Kaleidoscope Flora's flower teas, by id alone like the other mods'. The addon registers them through
+     * Kaleidoscope Flora's flower teas, by id alone like the other mods'. Its NeoForge 1.21.1 build and its
+     * Forge 1.20.1 one (both 0.3.4) register the same ids. The addon registers them through
      * Kaleidoscope Cookery's teacup registry under its own namespace, so each is a teacup like Cookery's
      * {@code flower_tea}, brewed in the same teapot and drunk the same way, and gets its value. Hanami
      * Tale is brewed in milk and gets the milk tea's. The four drinks from Vanilla Backport's flowers
