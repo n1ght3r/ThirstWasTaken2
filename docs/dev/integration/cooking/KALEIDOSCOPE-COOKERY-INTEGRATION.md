@@ -25,9 +25,9 @@ NeoForge release.
 | Node | Mod | Version | Modrinth id | Teapot | Dripstone into teapot |
 |---|---|---|---|---|---|
 | `1.21.1-neoforge` | official | `1.6.0-neoforge+mc1.21.1` (published 2026-09-22, same targets as 1.5.0) | `g8w0b2ly` | yes | yes |
-| `1.21.1` | Refabricated | `1.6.0.1-fabric+mc1.21.1` | `6qH7u3em` | yes | yes |
+| `1.21.1` | Refabricated | `1.6.0.3-fabric+mc1.21.1` | `pZfoi25M` | yes | yes |
 | `1.20.1-forge` | official | `1.6.0-forge+mc1.20.1` | `Ghp0qCKY` | yes | yes |
-| `1.20.1` | Refabricated | `1.6.0.1-fabric+mc1.20.1` | `qjnr9eXJ` | yes | yes |
+| `1.20.1` | Refabricated | `1.6.0.3-fabric+mc1.20.1` | `iCin2rRE` | yes | yes |
 | `1.21.11` | Refabricated | `1.3.0.9-fabric+mc1.21.11`, **frozen** ("1.4+ no longer supported") | `Gns9Xmuq` | yes | no |
 | `26.1.x` | Refabricated | `1.6.0.1-fabric+mc26.1.2` | `OFJxAr0S` | yes | no |
 | `26.2.x` | Refabricated | `1.6.0.1-fabric+mc26.2` | `Y9MqhBRe` | yes | no |
