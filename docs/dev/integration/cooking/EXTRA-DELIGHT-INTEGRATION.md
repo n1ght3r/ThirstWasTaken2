@@ -232,12 +232,12 @@ check passing, and `runGametest` (255 tests, none failing). Its header says how 
   applies nothing.
 
 Three things of Extra Delight's own, which the agent script works around and this integration leaves
-alone:
+alone, reported upstream as [Lance5057/ExtraDelight#288](https://github.com/Lance5057/ExtraDelight/issues/288):
 
-- **A Jar and a Mixing Bowl answer a click with `PASS`**, so after the Jar has emptied or filled the bucket
-  in hand, vanilla's bucket acts on the world too: a full bucket is poured out beside the Jar and its
-  water can wash small blocks away. The script checks the Jar's tank rather than the hand, and dries the
-  floor after each block.
+- **A Jar answers a click with `PASS`**, so after it has emptied or filled the bucket in hand, vanilla's
+  bucket acts on the world too: a full bucket is poured out beside the Jar and its water can wash small
+  blocks away, a Mixing Bowl nearby included. The script checks the Jar's tank rather than the hand, and
+  dries the floor after each block.
 - **A Jar hands nothing back for its last 250 mB**: `use` looks the bottle up after draining, from a tank
   that is then empty. The script pours two bottles before drawing one.
 - **The Mixing Bowl looks its recipe up only when its inventory changes**, so water and items written
