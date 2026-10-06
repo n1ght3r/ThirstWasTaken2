@@ -18,7 +18,9 @@ Progression: collect water, boil to **Clean**, then distil to **Pure**.
 | Tanks, pumps, jars, Spout, Item Drain | Preserve quality | Stays salty |
 
 - Heat never lowers quality or reboils Clean or Pure water.
-- `enableFurnaceBoiling` defaults to false. No water cooking recipes in vanilla campfire slots.
+- `enableFurnaceBoiling` defaults to **true**. Furnaces and smokers give players a basic treatment
+  route before metal vessels. Turning it off removes these recipes. No water cooking recipes in
+  vanilla campfire slots.
 - This mod's Waterskin cannot boil. Cold Sweat's campfire treatment is an integration exception;
   remove its furnace and smoker recipes.
 - Keep natural Pure sources: exposed cold mountain water above y 100, Spelunkery Spring Water, loot
@@ -37,12 +39,13 @@ Pure is a game grade, not a claim that distilled water is healthier than other s
 |---|---|---|
 | Dirty | `0xB0632E` | `0x5E3E20` |
 | Murky | `0xBDB878` | `0x808C4C` |
-| Clean | `0x8FA6B4` | `0x3F76E4` |
+| Clean | `0x74B8E0` | `0x3F76E4` |
 | Pure | `0x4FD6FF` | `0x3FB4E8` |
 | Salt | `0xE6DFC8` | `0x25817A` |
 
 Recolour water only in the four bowl and four animated hanging-pot textures; preserve shading.
-Check Clean versus Pure in game, including colour-blind readability and tooltip contrast.
+Keep Clean's existing tooltip colour (`0x74B8E0`); do not recolour that tooltip. Check Clean versus
+Pure in game, including colour-blind readability and tooltip contrast.
 
 | Rename | Target |
 |---|---|
@@ -163,20 +166,25 @@ within Upset Stomach chances, not added to them. Poison always comes with Upset 
 
 | Water | Difficulty | Upset Stomach: chance / duration / level | Poison I: chance / duration |
 |---|---|---|---|
-| Dirty | Easy | 65% / 90 s / I | 15% / 10 s |
-| Dirty | Normal | 90% / 120 s / II | 35% / 20 s |
-| Dirty | Hard | 100% / 180 s / II | 50% / 30 s |
-| Murky | Easy | 35% / 60 s / I | 5% / 8 s |
-| Murky | Normal | 65% / 90 s / I | 15% / 15 s |
-| Murky | Hard | 85% / 120 s / II | 25% / 20 s |
+| Dirty | Easy | 65% / 45 s / I | 15% / 10 s |
+| Dirty | Normal | 90% / 60 s / II | 35% / 20 s |
+| Dirty | Hard | 100% / 90 s / II | 50% / 30 s |
+| Murky | Easy | 35% / 30 s / I | 5% / 8 s |
+| Murky | Normal | 65% / 45 s / I | 15% / 15 s |
+| Murky | Hard | 85% / 60 s / II | 25% / 20 s |
 
 - Upset Stomach blocks natural healing even at full hunger, saturation and hydration.
 - Level I drains **4 hydration points/min**, level II **8/min**, independent of climate. Food
   saturation and incoming quenched are multiplied by **0.5 at I, 0.25 at II**, rounded down for
   quenched. Thirst recovery is unaffected, so prepared water can still prevent dehydration.
-- `extendSicknessEffects = true`: another proc adds its duration, capped at twice the incoming
-  duration, retaining a stronger/longer existing effect. Repeated dirty drinks prolong the danger;
-  safe water neither extends nor instantly cures it. No guaranteed taste Nausea or automatic bursts
+- `extendSicknessEffects = true`: a repeated Upset Stomach proc adds **half the incoming duration**,
+  capped at **1.5 times the incoming duration**, without shortening an existing longer effect or
+  lowering its level. For remaining duration R and incoming duration D, use
+  `max(R, min(R + D / 2, 1.5 * D))`, calculated in ticks; a first proc applies D normally.
+  Repeated Normal Dirty procs therefore leave at most 90 s, unless a longer effect was already
+  present. Repeated drinking can keep renewing that window; the cap limits time remaining, not
+  total time spent ill. Poison and other configured effects keep their existing extension rules.
+  Safe water neither extends nor instantly cures illness. No guaranteed taste Nausea or automatic bursts
   are needed for punishment; mechanics and clear effect/blocked-heal feedback carry the consequence.
 - Milk and honey can clear Poison according to their normal rules, but **milk does not cure Upset
   Stomach**. Time ends it; commands and explicit modded cures still work. Drinking Clean/Pure keeps
@@ -185,9 +193,9 @@ within Upset Stomach chances, not added to them. Poison always comes with Upset 
   dehydration and cave hazards supply the danger. Keep salt's no-hydration outcome, immediate
   exhaustion, Nausea and Parched, with climate-independent illness drain.
 
-A Normal Dirty proc costs **16 hydration points over two minutes**, plus activity and baseline
-depletion, against only six thirst restored by that drink. Normal Murky costs six points over
-90 s if illness procs. Three Murky drinks have a **95.7%** chance of at least one illness and a
+A Normal Dirty proc costs **8 hydration points over 60 s**, plus activity and baseline
+depletion, against only six thirst restored by that drink. Normal Murky costs three points over
+45 s if illness procs. Three Murky drinks have a **95.7%** chance of at least one illness and a
 38.6% chance of at least one Poison proc. Untreated water buys time in an emergency; it is not a
 sustainable substitute for treatment during a mining trip. These are proposed, untested defaults.
 
@@ -197,33 +205,71 @@ Servings per slot counts a filled stack. All water drinks use the shared 6 / 4 b
 
 | Container | Craft cost | Servings per slot | Clean / Pure total hydration | Role |
 |---|---|---|---|---|
-| Water bottle | 3 glass for 3 bottles | 1 | 8 / 10 | Cheap individual drink, loot, brewing |
-| Terracotta Water Bowl | 3 clay balls for 4 bowls, each fired once | 2 | 16 / 20 | Early sharing and short trips |
-| Waterskin | 2 leather + 1 string | 4 | 32 / 40 | Cheap travel with prepared water |
-| Copper Canteen | 3 copper ingots + 1 string | 4 | 32 / 40 | Travel and field treatment without leather |
-| Iron Flask | 5 iron ingots + 1 iron nugget | 6 | 48 / 60 | Longer trips, no leather/string requirement |
+| Water bottle | 3 glass for 3 bottles | 3 (3 bottles) | 24 / 30 | Stackable supply, sharing, brewing |
+| Terracotta Water Bowl | 3 clay balls for 3 clay bowls, each fired into one bowl | 3 (3 bowls) | 24 / 30 | Stackable clay alternative, sharing |
+| Waterskin | 2 leather + 1 string | 4 (one skin) | 32 / 40 | One vessel to fill, no separate empties |
+| Copper Canteen | 3 copper ingots + 1 string | 4 (one canteen) | 32 / 40 | Fast field treatment without leather |
+| Iron Flask | 5 iron ingots + 1 iron nugget | 6 (one flask) | 48 / 60 | Longer trips, no leather/string requirement |
 | Water bucket | 3 iron ingots | 3 for closed transfers | Cannot drink directly | Transport and world placement |
 
 Totals are nominal sums over spaced drinks, not what the player's bars store at once.
 
-- Filled bowls stack to **two**, other filled carried containers to one. Empty bowls keep their
-  existing stack size. Drinking a bowl returns exactly one empty bowl, occupying another slot while
-  filled bowls remain. Fill stacked empties one at a time without duplicating or dropping water.
-- Four bowls per cheap recipe supports sharing, but carrying all four takes two filled slots.
-  A skin doubles one slot's capacity. Copper adds treatment at equal capacity. Iron adds 50% capacity.
+- Filled bowls and **plain water bottles stack to 3 by default**, only when all their data match, including
+  quality and salt. Potions, splash/lingering potions and tipped arrows keep their own stack rules.
+  Empty bowls/bottles keep their existing stack sizes; skins, canteens and flasks remain unstackable.
+  Each drink consumes one serving and returns exactly one empty bowl/bottle. A partially drunk stack
+  needs room for its empties. Fill stacked empties one at a time without duplication or item loss.
+- Default carried capacities are **4/4/6** for skin/canteen/flask. A skin carries one more serving
+  than a bowl/bottle stack and creates no separate empties. Copper adds field boiling at equal
+  capacity; iron carries twice a bowl/bottle stack and 50% more than copper. Three crafted clay bowls
+  become three reusable fired bowls, exactly one default filled stack. Recipe yield stays fixed.
+- Longer autonomy rewards preparation. Do not increase drain to cancel the stack buff: untreated
+  water remains dangerous, healing still spends reserves, and every carried serving must be treated.
 - No durability, leaking, slower drinking for cheaper vessels or extra recovery for expensive ones.
-- Waterskin sprites: 0 empty, 1 `waterskin_1`, 2 or 3 `waterskin_2`, 4 full. Retain saved excess water
-  without accepting more until below capacity; values above four use the full sprite.
+- Waterskin sprites depend on fill fraction: empty at zero; otherwise choose one of the three filled
+  sprites with `ceil(3 * min(servings, capacity) / capacity)`. The bar and numeric tooltip show exact
+  contents at any configured capacity. Raise the saved/network serving bound to **64** and audit
+  saved/network data, fluid APIs, config bounds and recipe generation. Preserve existing quantities;
+  expanding capacity must not grant water. Saved excess above a custom lowered limit stays usable.
 - Village house chests can contain 1 to 4 empty bowls, gated on the bowl being enabled.
 - Bowl-and-bucket crafting produces Dirty water and returns the empty bucket. Treat this as a lossy
   convenience recipe; it must neither duplicate water nor turn salty input fresh.
+
+### Container configuration
+
+All the following settings accept integers **1 to 64**, clamped in `sanitize()`, with a widget,
+reset value and translated description in the container settings. These are independent controls;
+do not silently change another setting to preserve the default progression.
+
+| Setting | Default | Controls |
+|---|---|---|
+| `waterBottleStackSize` | 3 | Filled plain water bottles per stack |
+| `terracottaWaterBowlStackSize` | 3 | Filled Terracotta Water Bowls per stack |
+| `waterskinCapacity` | 4 | Servings in one Waterskin |
+| `copperCanteenCapacity` | 4 | Servings in one Copper Canteen |
+| `ironFlaskCapacity` | 6 | Servings in one Iron Flask |
+| `copperHangingPotCapacity` | 3 | Servings in one Copper Hanging Pot |
+| `ironHangingPotCapacity` | 6 | Servings in one Iron Hanging Pot |
+| `distillerTankServings` | 9 | Servings in each distiller tank |
+
+- Stack size and servings are different: a bowl or bottle still holds one serving; a carried vessel
+  still stacks to one. Bucket volume stays three servings, independent of capacity configuration.
+- Capacity changes never grant or delete water. An over-capacity saved vessel can drain but takes
+  no additional water until it has room. A tank smaller than three cannot accept a whole bucket:
+  reject that transfer without consuming it; one-serving containers still work.
+- Stack-limit settings require restart and must agree between server and clients. Preserve existing
+  items when a limit is lowered: split safely where space exists; retain unsplit excess if no safe
+  destination exists and prevent further merging. Never delete overflow or duplicate remainders.
+- Preserve custom config values within 1 to 64; missing keys use the defaults above. Audit recipes
+  for every fill count up to 64, GUI limits, models, tooltips, save/load and all loader fluid APIs.
+  Stack size 64 is an intentional pack option, not the default balance target.
 
 ## Treatment stations
 
 | Vessel | Capacity | Seconds per serving / full batch | Commitment |
 |---|---|---|---|
-| Copper Canteen | 4 | 2 / 8 | Hold use over a lit campfire |
-| Iron Flask | 6 | 3 / 18 | Hold use over a lit campfire |
+| Copper Canteen | 4 | 2 / 8 | Hold use over a lit campfire, or use furnace fuel |
+| Iron Flask | 6 | 3 / 18 | Hold use over a lit campfire, or use furnace fuel |
 | Copper Hanging Pot | 3 | 3 / 9 | Unattended Clean water |
 | Iron Hanging Pot | 6 | 4 / 24 | Unattended two-bucket batch |
 | Copper Distiller | 9 per tank | 8 / 72 | Fuel, Pure output, desalination, automation |
@@ -232,6 +278,13 @@ Both pot recipes use five matching ingots, two sticks and one chain. Copper serv
 batches; iron needs fewer refills. Pots lose water when broken and collect rain as Clean.
 The distiller's boiler centre uses **one iron ingot**. Keep the other component recipes: the machine
 costs copper, iron, fired clay and assembly, so a player settling by the sea need not find gold.
+
+The table shows default capacities. Treatment time scales with actual servings, not maximum capacity:
+four drinks in a canteen take 8 s even if its configured capacity is 64. A default full flask takes
+18 s. Higher-capacity packs can use unattended furnace preparation or treated storage. A default
+stack of three bowls/bottles is three furnace/smoker operations (24 s / 12 s), never one operation
+treating the whole stack. Pots offer fuel-free unattended batches; capacity settings do not change
+per-serving throughput or fuel cost.
 
 Pure's reserve and convenient sea-water processing are enough rewards. Clean must not make players
 ill to force a distiller purchase. Natural Pure sources, rain and Create filtering remain valid
@@ -269,7 +322,7 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
   not also inherit 8 / 13 recovery merely because they are tagged as drinks. Do not change foreign
   item stack sizes globally. Exotic effects and modpack overrides cannot be universally balanced.
 - Transfers between finite vessels conserve servings and never raise quality by changing container.
-  A bucket is three servings even when the destination holds four or six; partial transfers must
+  A bucket is three servings regardless of the destination's configured capacity; partial transfers must
   leave leftovers or explicitly discard them, never duplicate them.
 - World placement is different: ordinary placed water is sampled from its environment, not a saved
   bottle grade. A bucket can establish a refill point outside evaporating dimensions. Retain this
@@ -284,7 +337,7 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
 
 1. **Names and visuals:** update quality keys, config widgets, Sophisticated UI, the three renamed
    JSON keys and their migration, and all nine lang files. Vietnamese: "Sạch", "Chất lượng nước". Recolour eight water
-   textures and check readability in a client. Preserve persisted/public identifiers listed above.
+   textures and check readability in a client; keep Clean's tooltip colour. Preserve persisted/public identifiers listed above.
 2. **Recovery:** add configurable plain-water values and a stack-aware lookup, update own vessel
    defaults and required-value insertion, food/milk/prepared-drink defaults and integration categories.
    Remove hydration overflow without breaking existing public signatures or event cancellation;
@@ -299,18 +352,30 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
    and no automatic taste/burst Nausea. Add an optional roll-group field to effect entries: entries
    in one group share a random sample per drink; absent groups retain independent rolls for custom
    configs. Default Poison and Upset share a group, with Poison's chance no greater than Upset's.
-   Cover serialization, copying, sanitization and config UI; retain duration extension as default.
+   Cover serialization, copying, sanitization and config UI; retain duration extension as default,
+   with Upset Stomach's half-duration addition and 1.5-times cap, leaving other effects unchanged.
    Implement the covered-water grade cap in the sampling path, with platform seams for sky checks.
    Keep unrelated vanilla Nausea behavior; its drain is illness, not activity. Update sickness docs.
-5. **Containers:** four-serving skin and models, two-bowl stacks and every fill/return path.
-   Iron pots hold six, copper three; audit blockstate ranges, saved data, fill heights, rendering,
-   Jade, transfers and partial boiling. Existing containers retain contents and quality.
+5. **Containers:** configurable capacities and filled stack limits from the table, all 1 to 64,
+   with default carried capacities 4/4/6 and bowl/bottle stacks of three. Update skin models and
+   saved/network bounds, config sanitation, widgets/reset/lang and client/server agreement.
+   Implement the bottle exception per stack through version/loader seams, not a global
+   `PotionItem` stack-size change. Audit drinking, filling, pouring, dispensers, hoppers and returns.
+   Brewing bottle slots accept one bottle each, including shift-click/hopper insertion: a water
+   stack must never become multiple potions for one ingredient, lose bottles or leave overstacked potions.
+   Pot capacities default to three/six and support 64. Do not expand the level-by-boil-progress
+   blockstate product to that range: store exact contents/progress in a block entity with bounded
+   visual states, migrating existing pot states without water loss. Audit rendering, Jade, transfers
+   and partial boiling. Distiller tanks also support the configured 1 to 64 range.
 6. **Heat and recipes:** add `WaterPurity.BOILED = 2`; cap core, Farmer's Delight and Cold Sweat heat.
-   Add furnace switch and per-loader resource conditions. Update both recipe providers, crafting
-   costs/times, pot timing and village loot. Remove Cold Sweat furnace/smoker water recipes.
+   Add furnace switch defaulting to true and per-loader resource conditions. Existing explicit false
+   values stay false. Update both recipe providers, crafting
+   costs/times, pot timing and village loot. The three-clay recipe outputs three clay bowls; firing
+   remains one-to-one. Remove Cold Sweat furnace/smoker water recipes.
    Do not hand-edit generated output. New recipe patterns must be collision-free on every node.
-7. **Advancements:** `boil_water` uses `inventory_changed` for either metal vessel or Hanging Pot;
-   `purified_water` points to the distiller. Update both advancement providers.
+7. **Advancements:** `boil_water` accepts completing a furnace/smoker water recipe as well as the
+   inventory criterion for either metal vessel or Hanging Pot; `purified_water` points to the
+   distiller. Update both advancement providers so the default early furnace route counts.
 8. **Docs:** update water reference, sickness and distillation plans, integration instructions,
    player/config pages, store pages, screenshots and CHANGELOG. Keep the water page's URL, title it
    "Water quality". Explain resetting affected settings to adopt new defaults.
@@ -320,7 +385,7 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
 First validate correctness, then playtest these candidate defaults. No in-game balance trial has
 been run for this proposal.
 
-| Synthetic sustained drain | Clean: interval / six-serving flask | Pure: interval / six-serving flask |
+| Synthetic sustained drain | Clean: interval / default six-serving flask | Pure: interval / default six-serving flask |
 |---|---|---|
 | 4 hydration points/min | 120 s / 12 min | 150 s / 15 min |
 | 8 hydration points/min | 60 s / 6 min | 75 s / 7.5 min |
@@ -346,12 +411,23 @@ rates; validate real runs before claiming travel times.
   Compare bonus enabled/disabled: extra recovery must be bounded by the configured share of actual
   food healing and paid for in water, including when food healing is slow or modified by another mod.
 - Sickness: shared roll thresholds, independent custom entries, no Poison without Upset in defaults,
-  extensions/caps, milk/honey cure behavior, strong existing effects and recovery on expiry.
+  first-proc duration, half-duration extensions and 1.5-times remaining-duration cap. Cover fractional
+  seconds in ticks, mixed grades/levels, longer existing effects, extension disabled, unchanged Poison
+  extension, milk/honey cures and recovery on expiry. Normal Dirty must expire within 90 s after the
+  last proc when no longer effect was present; continuing to drink may renew that window.
 - Anti-bypass: steak/fruit plus repeated cave water cannot restore natural healing during Upset;
   food overflow creates no reserve. Milk plus raw water is not an illness cure loop. Test caves,
   surface water under roofs/trees, placed sources, stored treated water and tagged Pure springs.
-- Containers: stacked bowls, returns, legacy saves, partial fills, mixing, salt and conservation,
-  including inventory full. Test XP, recipe outputs/times with switch on/off, loot and advancements.
+- Containers: default stacks of three bowls/water bottles, quality separation, returns, legacy saves, high
+  serving counts and partial fills through every loader's fluid API, including inventory full.
+  Test brewing with manual/shift-click/hopper insertion, potions retaining their stack limits,
+  dispensers and one-item cooking/consumption. Verify the three-serving stack and carried vessels restore
+  exactly the same amount per serving. Test zero XP, recipe outputs/times with switch on/off, fresh
+  default-on configs, existing explicit false configs, loot and both advancement routes.
+- Config: test each stack/capacity setting at 1, its default and 64, plus out-of-range clamping.
+  Test mismatched-client protection, restart semantics, safe stack reduction with full inventory,
+  lowering filled capacity without loss, one-serving tanks refusing buckets, pot-state migration and
+  recipes at high fill counts. Verify three clay produces three clay bowls and three fired bowls.
 - Generate resources; run gametests, `checkDatagen`, resource translation checks, `checkLang`,
   `checkDataConditions`, relevant seam checks and the docs build.
 - Play the same 20-minute routes with each vessel: starter survival, building, ordinary exploration,
@@ -360,6 +436,9 @@ rates; validate real runs before claiming travel times.
 - Include sparse leather/string spawns, ocean starts, multiplayer sharing, bucket refill points,
   dripstone arrays, stackable juices and optional-mod automation. A same-seed comparison isolates
   container differences; use several seeds to test material availability.
+- Add a long-trip comparison of a default full stack of three bottles/bowls, a skin, a canteen and a flask.
+  Record preparation fuel/time and empty-container slots, not just departure capacity. Ensure the
+  larger vessels remain convenient without forcing full-batch hand boiling or inflating drain.
 - Compare three matched mining runs: food plus untreated cave water; food plus prepared Clean;
   food plus field boiling. Record illness uptime, blocked-heal time, health, water and food spent.
   Raw water must create a material survival disadvantage; prepared water must permit recovery.
