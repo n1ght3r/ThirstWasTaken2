@@ -81,6 +81,8 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     /** Any mod's copper, through the convention tag both loaders fill. */
     private static final TagKey<Item> COPPER_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/copper"));
+    private static final TagKey<Item> GOLD_INGOTS =
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/gold"));
     private static final TagKey<Item> IRON_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "ingots/iron"));
     private static final TagKey<Item> IRON_NUGGETS =
@@ -291,13 +293,16 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .unlockedBy("has_copper_ingot", has(COPPER_INGOTS))
                     .save(enabled(ThirstItems.COPPER_PIPE), recipe("copper_pipe"));
 
-            // The copper hanging pot, closed up under a pipe: the boiler is the pot grown up.
+            // A closed copper vessel with the pipe through its lid: a ring of copper round a gold ingot, the
+            // pipe in the top middle. Closed at the top, so it is clear of the U the pots, canteen and flask
+            // are made in.
             shaped(ThirstItems.DISTILLER_BOILER, 1)
-                    .pattern(" P ")
-                    .pattern("CHC")
+                    .pattern("CPC")
+                    .pattern("CGC")
+                    .pattern("CCC")
                     .define('P', ThirstItems.COPPER_PIPE)
                     .define('C', COPPER_INGOTS)
-                    .define('H', ThirstItems.COPPER_HANGING_POT)
+                    .define('G', GOLD_INGOTS)
                     .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
                     .save(enabled(ThirstItems.DISTILLER_BOILER), recipe("distiller_boiler"));
 

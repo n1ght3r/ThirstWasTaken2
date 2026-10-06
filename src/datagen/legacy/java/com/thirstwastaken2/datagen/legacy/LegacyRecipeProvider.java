@@ -60,6 +60,8 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
     // Fabric's convention tags on 1.20.1 still name the material first, and have no iron nuggets.
     private static final TagKey<Item> COPPER_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "copper_ingots"));
+    private static final TagKey<Item> GOLD_INGOTS =
+            TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "gold_ingots"));
     private static final TagKey<Item> IRON_INGOTS =
             TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "iron_ingots"));
     private static final float PURIFY_EXPERIENCE = 0.35F;
@@ -171,11 +173,12 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
                 .save(enabled(output, ThirstItems.COPPER_PIPE), id("copper_pipe"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.DISTILLER_BOILER)
-                .pattern(" P ")
-                .pattern("CHC")
+                .pattern("CPC")
+                .pattern("CGC")
+                .pattern("CCC")
                 .define('P', ThirstItems.COPPER_PIPE)
                 .define('C', COPPER_INGOTS)
-                .define('H', ThirstItems.COPPER_HANGING_POT)
+                .define('G', GOLD_INGOTS)
                 .unlockedBy("has_copper_pipe", has(ThirstItems.COPPER_PIPE))
                 .save(enabled(output, ThirstItems.DISTILLER_BOILER), id("distiller_boiler"));
 

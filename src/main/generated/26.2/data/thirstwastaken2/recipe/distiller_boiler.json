@@ -8,12 +8,13 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": "#c:ingots/copper",
-    "H": "thirstwastaken2:copper_hanging_pot",
+    "G": "#c:ingots/gold",
     "P": "thirstwastaken2:copper_pipe"
   },
   "pattern": [
-    " P ",
-    "CHC"
+    "CPC",
+    "CGC",
+    "CCC"
   ],
   "result": {
     "id": "thirstwastaken2:distiller_boiler"

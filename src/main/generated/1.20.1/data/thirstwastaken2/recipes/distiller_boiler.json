@@ -11,16 +11,17 @@
     "C": {
       "tag": "c:copper_ingots"
     },
-    "H": {
-      "item": "thirstwastaken2:copper_hanging_pot"
+    "G": {
+      "tag": "c:gold_ingots"
     },
     "P": {
       "item": "thirstwastaken2:copper_pipe"
     }
   },
   "pattern": [
-    " P ",
-    "CHC"
+    "CPC",
+    "CGC",
+    "CCC"
   ],
   "result": {
     "item": "thirstwastaken2:distiller_boiler"
