@@ -11,6 +11,7 @@
   ],
   "type": "minecraft:smelting",
   "cookingtime": 360,
+  "group": "thirstwastaken2:purify_water_iron_flask",
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "thirstwastaken2:iron_flask",

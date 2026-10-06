@@ -7,6 +7,7 @@
   ],
   "type": "minecraft:smoking",
   "cookingtime": 240,
+  "group": "thirstwastaken2:purify_water_bucket",
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "minecraft:water_bucket",

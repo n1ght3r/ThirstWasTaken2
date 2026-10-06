@@ -421,7 +421,8 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
 
             for (int purity = 0; purity < BOILED; purity++) {
                 vessels.accept(recipe(vesselPurifyName(vessel, purity)), Heat.SMELTING.create(
-                        vesselIngredient(vessel, purity), vesselResult(vessel, BOILED), vesselSmeltingTicks(vessel)),
+                        vesselIngredient(vessel, purity), vesselResult(vessel, BOILED), vesselSmeltingTicks(vessel),
+                        purifyGroup(Vanilla.itemId(vessel).getPath())),
                         purity == 0 ? unlock : null);
             }
         }
@@ -467,7 +468,8 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                 for (Heat heat : Heat.values()) {
                     var key = recipe(purifyName(container, purity, heat));
                     // The unlock is one file shared by all six, so only the first accept writes it.
-                    purified.accept(key, heat.create(ingredient, result, heat.ticks(container.smeltingTicks())),
+                    purified.accept(key, heat.create(ingredient, result, heat.ticks(container.smeltingTicks()),
+                                    purifyGroup(container.name())),
                             first ? unlock : null);
                     first = false;
                 }
@@ -539,6 +541,15 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                 unlocks.put("has_water_bucket", Items.WATER_BUCKET);
             }
             return unlocks;
+        }
+
+        /**
+         * The recipe book group a family of purification recipes shares. Each grade below the cap has a
+         * recipe of its own with the same result, and the book shows one button per recipe with an empty
+         * group, so without it the same Clean bottle sits there once per grade.
+         */
+        static String purifyGroup(String family) {
+            return ThirstWasTaken2.MOD_ID + ":purify_water_" + family;
         }
 
         private static String purifyName(Container container, int purity, Heat heat) {
@@ -631,20 +642,20 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         }
 
         //? if >=26.1 {
-        AbstractCookingRecipe create(Ingredient ingredient, ItemStackTemplate result, int time) {
+        AbstractCookingRecipe create(Ingredient ingredient, ItemStackTemplate result, int time, String group) {
             Recipe.CommonInfo common = new Recipe.CommonInfo(true);
             AbstractCookingRecipe.CookingBookInfo book =
-                    new AbstractCookingRecipe.CookingBookInfo(CookingBookCategory.MISC, "");
+                    new AbstractCookingRecipe.CookingBookInfo(CookingBookCategory.MISC, group);
             return switch (this) {
                 case SMELTING -> new SmeltingRecipe(common, book, ingredient, result, PURIFY_EXPERIENCE, time);
                 case SMOKING -> new SmokingRecipe(common, book, ingredient, result, PURIFY_EXPERIENCE, time);
             };
         }
         //?} else {
-        /*AbstractCookingRecipe create(Ingredient ingredient, ItemStack result, int time) {
+        /*AbstractCookingRecipe create(Ingredient ingredient, ItemStack result, int time, String group) {
             return switch (this) {
-                case SMELTING -> new SmeltingRecipe("", CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
-                case SMOKING -> new SmokingRecipe("", CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
+                case SMELTING -> new SmeltingRecipe(group, CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
+                case SMOKING -> new SmokingRecipe(group, CookingBookCategory.MISC, ingredient, result, PURIFY_EXPERIENCE, time);
             };
         }
         *///?}

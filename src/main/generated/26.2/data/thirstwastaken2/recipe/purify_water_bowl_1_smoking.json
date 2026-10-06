@@ -11,6 +11,7 @@
   ],
   "type": "minecraft:smoking",
   "cookingtime": 80,
+  "group": "thirstwastaken2:purify_water_bowl",
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "thirstwastaken2:terracotta_water_bowl",

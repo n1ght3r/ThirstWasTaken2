@@ -11,6 +11,7 @@
   ],
   "type": "minecraft:smelting",
   "cookingtime": 160,
+  "group": "thirstwastaken2:purify_water_copper_canteen",
   "ingredient": {
     "fabric:type": "fabric:components",
     "base": "thirstwastaken2:copper_canteen",

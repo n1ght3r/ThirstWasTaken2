@@ -297,7 +297,7 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
             for (Heat heat : Heat.values()) {
                 purified.accept(cooking(id(purifyName(container, purity, heat)), heat,
                         nbtIngredient(container.item(), in), result(container.item(), out),
-                        heat.ticks(container.smeltingTicks()), first ? unlock : null, unlockId));
+                        heat.ticks(container.smeltingTicks()), purifyGroup(container.name()), first ? unlock : null, unlockId));
                 first = false;
             }
         }
@@ -321,13 +321,14 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         for (int purity = 0; purity < BOILED; purity++) {
             vessels.accept(cooking(id(vesselPurifyName(vessel, purity)), Heat.SMELTING,
                     nbtIngredient(vessel, water(null, purity, false)), result(vessel, water(null, BOILED, false)),
-                    ticks, purity == 0 ? unlock : null, unlockId));
+                    ticks, purifyGroup(path), purity == 0 ? unlock : null, unlockId));
         }
     }
 
     private static FinishedRecipe cooking(Identifier id, Heat heat, JsonObject ingredient, JsonObject result,
-                                          int ticks, Advancement.Builder unlock, Identifier unlockId) {
+                                          int ticks, String group, Advancement.Builder unlock, Identifier unlockId) {
         JsonObject json = new JsonObject();
+        json.addProperty("group", group);
         json.addProperty("category", "misc");
         json.add("ingredient", ingredient);
         json.add("result", result);
@@ -417,6 +418,11 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
 
     private static Identifier id(String name) {
         return ThirstWasTaken2.id(name);
+    }
+
+    /** The recipe book group one family shares, so its grades show as one button, as on later versions. */
+    static String purifyGroup(String family) {
+        return ThirstWasTaken2.MOD_ID + ":purify_water_" + family;
     }
 
     static String purifyName(Container container, int purity, Heat heat) {

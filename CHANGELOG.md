@@ -70,6 +70,8 @@ thirst drains a little even standing still, and food and water each need the oth
 ### Fixed
 
 - A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
+- The furnace and smoker recipe books show one water bottle, bowl, bucket, canteen and flask each,
+  instead of one per grade of water.
   water inside, for example a Dirty bottle clicked on a full cauldron of Pure water.
 
 <details>

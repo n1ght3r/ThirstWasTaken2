@@ -13,6 +13,7 @@
   "category": "misc",
   "cookingtime": 360,
   "experience": 0.0,
+  "group": "thirstwastaken2:purify_water_iron_flask",
   "ingredient": {
     "fabric:type": "fabric:nbt",
     "base": {
