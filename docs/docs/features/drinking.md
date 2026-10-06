@@ -39,6 +39,9 @@ Every item the mod adds is in its own creative tab, and every recipe shows in th
 Drinking gives the empty bowl back. A terracotta bowl and a water bucket also craft a water bowl,
 but that water is always Dirty.
 
+Glass bottles work as in vanilla: they fill only from a water source block, never from flowing
+water. The terracotta bowl, waterskin, Copper Canteen and Iron Flask fill from either.
+
 ## Waterskin
 
 ![The waterskin recipe uses three leather and one string](/screenshots/recipes/waterskin-recipe.png)

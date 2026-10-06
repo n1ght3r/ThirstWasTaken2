@@ -1,222 +1,371 @@
-# Purification rework: boiling stops at Clear, only distilling makes Pure
+# Purification and drinking balance
 
-**Status: planned, not started.** [WATER-REFERENCE.md](WATER-REFERENCE.md) describes the game today;
-this plan changes it. Grade names below are the new ones: today's Clean is Clear here.
+**Status: planned.** Target behavior below; [WATER-REFERENCE.md](WATER-REFERENCE.md) describes the
+implemented game. Balance defaults require playtesting.
 
-## Goal
+## Treatment rules
 
-Each step of progression does one thing of its own:
+Progression: collect water, boil to **Clean**, then distil to **Pure**.
 
-| Step | How | Gives |
+| Method | Result | Salt water |
 |---|---|---|
-| 1 | No metal: water as found, rain, loot, a cleric's trade | whatever it is |
-| 2 | Boiling: Copper Canteen or Iron Flask held on a campfire, Copper and Iron Hanging Pots | Clear |
-| 3 | Distilling: the Copper Distiller, any water, sea water included | Pure |
+| Copper Canteen, Iron Flask, Hanging Pots, Farmer's Delight Cooking Pot | Dirty or Murky to Clean | Never becomes fresh |
+| Furnace and smoker | Clean, only with `enableFurnaceBoiling` enabled | Refused |
+| Cold Sweat Boiler | +1 grade per pass, capped at Clean | Refused |
+| Cold Sweat Waterskin on a campfire | Clean | Refused |
+| Copper Distiller | Pure from any input | Pure |
+| Create / Create Fly Sand Filter | +1 grade per pass, capped at Pure | Stays salty |
+| Tanks, pumps, jars, Spout, Item Drain | Preserve quality | Stays salty |
 
-Today a furnace (eight cobblestone) already makes Pure, so copper and iron unlock nothing and the
-distiller is only for sea water.
+- Heat never lowers quality or reboils Clean or Pure water.
+- `enableFurnaceBoiling` defaults to false. No water cooking recipes in vanilla campfire slots.
+- This mod's Waterskin cannot boil. Cold Sweat's campfire treatment is an integration exception;
+  remove its furnace and smoker recipes.
+- Keep natural Pure sources: exposed cold mountain water above y 100, Spelunkery Spring Water, loot
+  and dripstone cauldrons. The Sand Filter is the processing exception to distillation.
+- Ordinary world water without sky exposure at the sampled surface is **at most Murky**; worse
+  water remains Dirty. This includes cave pools and covered player-made refill points. Remove the
+  deep-aquifer quality bonus. Check salt and explicit `pure_water` fluids first, and preserve quality
+  stored in cauldrons/pots/tanks. Finding a tagged spring is a real exception, not every cave pool.
 
 ## Names and colours
 
-Grades: **Dirty → Murky → Clear → Pure**. Only grade 2 changes, Clean to Clear: boiled water is free of
-germs but not of what is dissolved in it, and still carries a small risk, so the name says how it
-looks, not that it is safe. The scale's name, wherever a player reads it, is **water quality**, not
-water purity (it also covers salt water). On the site, Pure is the game's name for distilled water,
-not a claim that it is healthier than other safe water.
+Use **water quality** in player-facing text. Grades: **Dirty, Murky, Clean, Pure**; salt is separate.
+Pure is a game grade, not a claim that distilled water is healthier than other safe water.
 
-Colours read brighter and more vivid the safer the water, warm to cool, salt off the ramp:
+| Grade | Tooltip | Water sprite |
+|---|---|---|
+| Dirty | `0xB0632E` | `0x5E3E20` |
+| Murky | `0xBDB878` | `0x808C4C` |
+| Clean | `0x8FA6B4` | `0x3F76E4` |
+| Pure | `0x4FD6FF` | `0x3FB4E8` |
+| Salt | `0xE6DFC8` | `0x25817A` |
 
-| Grade | Tooltip | Sprite | Reads as |
+Recolour water only in the four bowl and four animated hanging-pot textures; preserve shading.
+Check Clean versus Pure in game, including colour-blind readability and tooltip contrast.
+
+| Rename | Target |
+|---|---|
+| `thirst.purity.dirty`, `.slightly_dirty`, `.acceptable`, `.purified` | `thirst.water.dirty`, `.murky`, `.clean`, `.pure` |
+| `default_purity`, `rainwater_purity`, `dripstone_purity` lang keys | `*_quality`, labels ending in "Quality" |
+| `defaultPurity`, `rainwaterPurity`, `dripstonePurity` config fields / JSON keys | `defaultQuality`, `rainwaterQuality`, `dripstoneQuality` |
+| Sophisticated `upgrades.buttons.min_purity` | `min_quality`, "Drinks %s water or better" |
+| Jade and boiling message | "Water Quality", "The water has boiled" |
+
+Keep persisted and public identifiers: `water_purity`, `water_salty`, the `purity` blockstate,
+`purified_water`, Jade plugin id, `drink_min_purity`, `pure_water` and API names. Keep the grade name
+Clean, the sickness key `clean` and the lang key `quenched_percent_clean`.
+Migrate the three renamed JSON keys on load: use the legacy value only if the new key is absent,
+preserve custom values, and write only the new keys. No sickness grade-key migration is needed.
+
+Player-facing explanations distinguish boiling from removal of dissolved contaminants. Quality
+bonuses and sand filtration to Pure are gameplay allowances, not health claims.
+Reference: [CDC water treatment](https://www.cdc.gov/drinking-water/about/about-home-water-treatment-systems.html)
+and [EPA emergency disinfection](https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water).
+
+## Design targets
+
+- Thirst is the primary survival constraint on a mining trip. Food alone cannot sustain healing
+  without a water reserve, and untreated cave water must not be a profitable substitute for boiling.
+- Water preparation should matter before a trip; drinking should not interrupt ordinary activity
+  every few seconds. Target roughly 60 to 120 s between drinks during ordinary active Overworld
+  play, with longer gaps while building and shorter ones during sprint-jumping or combat.
+- Boiling completes the everyday safety task. Pure improves supplies and supports sea-based living;
+  it is an optional investment, not a cure for random punishment from correctly boiled water.
+- One serving restores the same amount in every drinking container. Materials buy storage and
+  treatment. Early items can be replaced; they need not compete equally with iron forever.
+- Unlimited world water is part of Minecraft. Balance preparation, carrying and treatment, not
+  scarcity of water blocks. Closed-container transfers must conserve water and quality.
+
+## Player mechanics
+
+### Recovery and quality
+
+Every full serving of plain fresh water restores **6 thirst and 4 base quenched** in **32 ticks**.
+This applies to bottles, bowls and all three carried vessels. Potions retain their own values.
+
+| Grade | Quenched multiplier | Actual thirst + quenched | Purpose |
 |---|---|---|---|
-| Dirty | `0xB0632E` | `0x5E3E20` | mud brown |
-| Murky | `0xBDB878` | `0x808C4C` | olive: silt and algae |
-| Clear | `0x8FA6B4` | `0x3F76E4` | tooltip a greyed blue; sprite vanilla's water blue |
-| Pure | `0x4FD6FF` | `0x3FB4E8` | the brightest of the scale |
-| Salt | `0xE6DFC8` | `0x25817A` | unchanged |
+| Dirty | 0% | 6 + 0 | Emergency water |
+| Murky | 25% | 6 + 1 | Risky untreated water, not a routine mining supply |
+| Clean | 50% | 6 + 2 | Safe everyday water |
+| Pure | 100% | 6 + 4 | Safe water with a larger reserve |
 
-- Clear and Pure must be easy to tell apart, colour-blind players included: these give a ΔE of about
-  28 (22 in a red-green simulation), and every tooltip colour keeps 4.5:1 contrast.
-- The tooltip is `WaterPurity.purityColor`. The sprites are the four `terracotta_water_bowl_purity_*`
-  and the four animated `copper_hanging_pot_water_purity_*` textures: recolour the water, keep the
-  shading. Anything that later shows water by grade uses the sprite column.
-- Tune the hex in game before settling.
+Keep integer rounding down, thirst 0 to 20 and quenched capped at current thirst. Plain water normally
+requires missing thirst; Clean/Pure can also be drunk at full thirst when quenched is below 20, to
+prepare a reserve or pay for healing. Dirty/Murky and hand drinking cannot use that exception.
+**Discard thirst overflow from all hydration sources**, including food, milk and flavoured drinks:
+otherwise topping up near full creates quenched without paying the source's reserve value.
+Tooltips preview the actual gain, including the cap and sickness reductions.
+Drinking when six points are missing makes full use of a serving; early top-ups are the player's choice.
 
-**Renamed** (text only):
+Pure gives 25% more total hydration per serving than Clean (10 versus 8), not twice the travel time.
+That comparison assumes room for both gains and excludes healing, illness and other food or drink.
 
-| What | From | To |
-|---|---|---|
-| Grade lang keys | `thirst.purity.dirty`, `.slightly_dirty`, `.acceptable`, `.purified` | `thirst.water.dirty`, `.murky`, `.clear`, `.pure` |
-| Quenched config lang key | `quenched_percent_clean` | `quenched_percent_clear` |
-| Config lang keys | `default_purity`, `rainwater_purity`, `dripstone_purity` | `*_quality`, values "… Quality" |
-| Sophisticated button | `upgrades.buttons.min_purity` | `min_quality`, "Drinks %s water or better" |
-| Sickness key in `thirstwastaken2.json` | `clean` | `clear`, migrated |
-| Values only | "Water Purity" (Jade), "The water is boiled clean" | "Water Quality", "The water has boiled" |
+**Drinking by hand:** 6 thirst, zero quenched, 32 uninterrupted ticks, one sickness roll on completion.
+Cancel on moving out of reach, losing the water target or releasing use. No immediate gain on click,
+no extra offhand sip, and no thirst overflow. This remains a free local fallback without instant
+combat recovery or a reason to carry no water. It does not consume the world source.
 
-**Kept**, because worlds, configs, other mods or the API store them: the `water_purity` and
-`water_salty` components, the `purity` blockstate, the `purified_water` advancement, the Jade plugin id,
-`drink_min_purity`, the `pure_water` tag, config field names, `ThirstApi` and `WaterPurity`.
+### Health and drain
 
-**Migration:** in `sanitizeSickness`, a difficulty's table with `clean` and no `clear` is old; move
-`clean` to `clear`. The new names never write `clean`, so no version field is needed.
+- Natural food healing requires **20 thirst, quenched above zero, and no Upset Stomach**. There is
+  no slow-heal exception below those thresholds. Apply this gate to both saturation and hunger
+  healing. Refund food exhaustion for blocked
+  heals; do not charge thirst for refunded healing. Keep `naturalRegeneration` and normal food
+  requirements. Disabling dehydration's healing restriction removes its thirst/reserve gate;
+  illness has a separate configurable healing restriction.
+- Reward a prepared reserve: at **20 thirst and at least 6 quenched, without Upset Stomach**, each
+  successful food-based heal adds **25% of the health actually restored by that base heal**. At 1 to
+  5 quenched, eligible healing is normal. Check the reserve before the base heal. Clean and Pure
+  qualify equally; Pure supplies the reserve with fewer servings.
+- `quenchedHealthRegen` now controls this bonus fraction, default **0.25**, with 0 disabling the
+  bonus. Replace the independent timed water heal entirely; never run both systems. Update its
+  config description and reset value, and document the changed meaning for existing configs.
+- Limit the bonus to remaining missing health and charge **6 thirst exhaustion per actual bonus
+  HP**, once, outside climate/global multipliers and activity suppression. Carry fractional cost
+  through exhaustion. A base heal of 1 HP gives at most 0.25 bonus HP for 1.5 exhaustion (0.375
+  quenched points). The base heal keeps its ordinary food cost and mirrored thirst cost. Do not
+  charge bonus cost for overhealing or a cancelled bonus; do not charge a second food cost for it.
+- No successful base heal means no bonus: hunger, blocked regeneration or a cancelled heal cannot
+  be bypassed by water. Apply the bonus only to the two natural food-healing paths, with no extra
+  timer or recursive bonus. Its full-thirst, reserve and no-Upset conditions still apply when the
+  base healing restrictions are disabled.
+- Instant Health, Regeneration effects, absorption and totems remain emergency resources. Do not
+  intercept every `heal` call or silently disable other mods' healing; ordinary eating alone is
+  what must fail to bypass illness. Explain the blocked-healing condition in the effect tooltip.
+- Sprint remains blocked at 6 or below. Keep the existing dehydration damage and Peaceful recovery.
+- Add baseline depletion of **one hydration point per minute**, plus activity exhaustion, at four
+  exhaustion per point. It applies in survival while enabled, except automatic-refill Peaceful;
+  excludes creative/spectator. Mining, building and waiting in a cave all consume water. Successful
+  food-based healing still consumes thirst exhaustion, so a full food bar cannot heal indefinitely.
+- Make the climate curve monotonic: a slightly warmer biome must not suddenly drain less. Proposed
+  Overworld factor: `clamp(0.8 + 0.25 * (temperature - 0.5) + (dry ? 0.15 : 0), 0.65, 1.35)`.
+  `temperature` is biome base temperature or the Cold Sweat adapter's equivalent, without the old
+  `+0.2` transform; `dry` follows precipitation, including the season integration.
+- Apply seasons only without a measured Cold Sweat temperature, then clamp the Overworld factor
+  to 0.6 to 1.5. Nether/evaporating dimensions use **3.0** instead. Set the global depletion default
+  to **1.2**, multiplying either result. Climate and existing Fire Resistance/Protection relief apply
+  to baseline and activity depletion; the baseline is one point/min before these factors.
+- Charge illness exhaustion separately from climate, armour, activity integrations and season.
+  Keep its EXHAUSTION event visibility, without charging it twice. Nourishment may suppress activity
+  depletion, but must not cancel baseline depletion, water illness or illness's healing restriction.
+  Explicit pack overrides remain possible.
 
-## Real-world basis
+These drain values are tuning candidates. Validate adapter units and measure actual routes before
+release; do not infer seconds of travel from item values alone.
 
-Player-facing text about treating water stays within this:
+### Sickness
 
-| Real world | Source | In game |
-|---|---|---|
-| Boiling kills bacteria, viruses and parasites (1 minute at a rolling boil) | CDC | boiling gives Clear |
-| Boiling leaves chemicals, heavy metals and salt, more concentrated as water boils off; algal toxins survive it | CDC, EPA | boiling stops at Clear, sea water stays salty |
-| Distillation removes germs and most chemicals, not some volatile organics | CDC | the distiller gives Pure from any water |
+Clean and Pure have **no water sickness on any difficulty**. Peaceful has none from fresh water.
+Use one shared illness roll per drink for the default effects: Poison chances below are included
+within Upset Stomach chances, not added to them. Poison always comes with Upset Stomach.
 
-The game simplifies one thing: Clear's small, immediate sickness risk stands in for harm that is really
-long-term. The site says so in a line.
-
-Sources: [CDC, water in an emergency](https://www.cdc.gov/water-emergency/about/index.html),
-[EPA, emergency disinfection](https://www.epa.gov/ground-water-and-drinking-water/emergency-disinfection-drinking-water),
-[CDC, home water treatment](https://www.cdc.gov/drinking-water/about/about-home-water-treatment-systems.html),
-[CDC, backcountry treatment](https://stacks.cdc.gov/view/cdc/12378),
-[EPA, cyanotoxins](https://www.epa.gov/sites/default/files/2017-06/documents/cyanotoxin-management-drinking-water.pdf).
-
-## Rules
-
-- **Heat sets water to Clear**, whatever heats it: a held vessel, a hanging pot, Farmer's Delight's
-  Cooking Pot, the furnace and smoker (only with the switch). Clear and Pure water is not boiled, and
-  nothing lowers a grade.
-- **The distiller sets any water to Pure**, sea water included, and is the only thing that makes sea
-  water drinkable.
-- **No furnace or smoker water recipes** by default; `enableFurnaceBoiling` brings them back, to Clear.
-- **Campfire slots never boil water**, switch or not.
-- **Waterskins cannot be boiled** (the mod's and Cold Sweat's), switch or not.
-
-Every treatment after the rework (today's are in WATER-REFERENCE.md, "Input to output, by grade"):
-
-| Method | Rule | Dirty | Murky | Clear | Pure | Salt |
-|---|---|---|---|---|---|---|
-| All heat, as above | to Clear | Clear | Clear | not boiled | kept | refused, or salt where a mod makes it |
-| Boiler (Cold Sweat) | +1 a pass, to Clear | Murky, then Clear | Clear | kept | kept | refused |
-| Cold Sweat's Waterskin on a campfire | to Clear | Clear | Clear | kept | kept | refused |
-| Copper Distiller | to Pure | Pure | Pure | Pure | Pure | Pure |
-| Sand Filter (Create, Create Fly) | +1 a pass, to Pure | Murky | Clear | Pure | Pure | passes salty |
-| Tanks, pumps, jars, Spout, Item Drain | pass through | kept | kept | kept | kept | kept |
-
-**The Sand Filter is the one exception to "only the distiller makes Pure"**, unchanged: it needs a
-running Create setup, Dirty to Pure takes three filters in series, and it never touches salt. Pure from
-sand is a gameplay allowance, not a real-world claim.
-
-**Other Pure sources** stay: cold mountain water above y 100, Spelunkery's Spring Water, loot, and a
-dripstone cauldron (about 6.5 minutes a serving, too slow to compete; `dripstonePurity` set to 2 makes
-it Clear).
-
-## Balance
-
-| Grade | Quenched | Upset Stomach (Easy / Normal / Hard) | Poison |
+| Water | Difficulty | Upset Stomach: chance / duration / level | Poison I: chance / duration |
 |---|---|---|---|
-| Dirty | 0% | unchanged | unchanged |
-| Murky | 50% | unchanged | unchanged |
-| Clear | **85%** (100% today) | **3 / 8 / 15%** (5 / 12 / 20% today) | **none** (3 / 5 / 10% today) |
-| Pure | 100% | none | none |
+| Dirty | Easy | 65% / 90 s / I | 15% / 10 s |
+| Dirty | Normal | 90% / 120 s / II | 35% / 20 s |
+| Dirty | Hard | 100% / 180 s / II | 50% / 30 s |
+| Murky | Easy | 35% / 60 s / I | 5% / 8 s |
+| Murky | Normal | 65% / 90 s / I | 15% / 15 s |
+| Murky | Hard | 85% / 120 s / II | 25% / 20 s |
 
-| Container | Servings | Boils |
+- Upset Stomach blocks natural healing even at full hunger, saturation and hydration.
+- Level I drains **4 hydration points/min**, level II **8/min**, independent of climate. Food
+  saturation and incoming quenched are multiplied by **0.5 at I, 0.25 at II**, rounded down for
+  quenched. Thirst recovery is unaffected, so prepared water can still prevent dehydration.
+- `extendSicknessEffects = true`: another proc adds its duration, capped at twice the incoming
+  duration, retaining a stronger/longer existing effect. Repeated dirty drinks prolong the danger;
+  safe water neither extends nor instantly cures it. No guaranteed taste Nausea or automatic bursts
+  are needed for punishment; mechanics and clear effect/blocked-heal feedback carry the consequence.
+- Milk and honey can clear Poison according to their normal rules, but **milk does not cure Upset
+  Stomach**. Time ends it; commands and explicit modded cures still work. Drinking Clean/Pure keeps
+  the player alive while recovering. Do not remove unrelated effects or override every cure API.
+- No additional lethal disease in this pass. Poison itself does not kill; low health, continued
+  dehydration and cave hazards supply the danger. Keep salt's no-hydration outcome, immediate
+  exhaustion, Nausea and Parched, with climate-independent illness drain.
+
+A Normal Dirty proc costs **16 hydration points over two minutes**, plus activity and baseline
+depletion, against only six thirst restored by that drink. Normal Murky costs six points over
+90 s if illness procs. Three Murky drinks have a **95.7%** chance of at least one illness and a
+38.6% chance of at least one Poison proc. Untreated water buys time in an emergency; it is not a
+sustainable substitute for treatment during a mining trip. These are proposed, untested defaults.
+
+## Containers and crafting
+
+Servings per slot counts a filled stack. All water drinks use the shared 6 / 4 base above.
+
+| Container | Craft cost | Servings per slot | Clean / Pure total hydration | Role |
+|---|---|---|---|---|
+| Water bottle | 3 glass for 3 bottles | 1 | 8 / 10 | Cheap individual drink, loot, brewing |
+| Terracotta Water Bowl | 3 clay balls for 4 bowls, each fired once | 2 | 16 / 20 | Early sharing and short trips |
+| Waterskin | 2 leather + 1 string | 4 | 32 / 40 | Cheap travel with prepared water |
+| Copper Canteen | 3 copper ingots + 1 string | 4 | 32 / 40 | Travel and field treatment without leather |
+| Iron Flask | 5 iron ingots + 1 iron nugget | 6 | 48 / 60 | Longer trips, no leather/string requirement |
+| Water bucket | 3 iron ingots | 3 for closed transfers | Cannot drink directly | Transport and world placement |
+
+Totals are nominal sums over spaced drinks, not what the player's bars store at once.
+
+- Filled bowls stack to **two**, other filled carried containers to one. Empty bowls keep their
+  existing stack size. Drinking a bowl returns exactly one empty bowl, occupying another slot while
+  filled bowls remain. Fill stacked empties one at a time without duplicating or dropping water.
+- Four bowls per cheap recipe supports sharing, but carrying all four takes two filled slots.
+  A skin doubles one slot's capacity. Copper adds treatment at equal capacity. Iron adds 50% capacity.
+- No durability, leaking, slower drinking for cheaper vessels or extra recovery for expensive ones.
+- Waterskin sprites: 0 empty, 1 `waterskin_1`, 2 or 3 `waterskin_2`, 4 full. Retain saved excess water
+  without accepting more until below capacity; values above four use the full sprite.
+- Village house chests can contain 1 to 4 empty bowls, gated on the bowl being enabled.
+- Bowl-and-bucket crafting produces Dirty water and returns the empty bucket. Treat this as a lossy
+  convenience recipe; it must neither duplicate water nor turn salty input fresh.
+
+## Treatment stations
+
+| Vessel | Capacity | Seconds per serving / full batch | Commitment |
+|---|---|---|---|
+| Copper Canteen | 4 | 2 / 8 | Hold use over a lit campfire |
+| Iron Flask | 6 | 3 / 18 | Hold use over a lit campfire |
+| Copper Hanging Pot | 3 | 3 / 9 | Unattended Clean water |
+| Iron Hanging Pot | 6 | 4 / 24 | Unattended two-bucket batch |
+| Copper Distiller | 9 per tank | 8 / 72 | Fuel, Pure output, desalination, automation |
+
+Both pot recipes use five matching ingots, two sticks and one chain. Copper serves small frequent
+batches; iron needs fewer refills. Pots lose water when broken and collect rain as Clean.
+The distiller's boiler centre uses **one iron ingot**. Keep the other component recipes: the machine
+costs copper, iron, fired clay and assembly, so a player settling by the sea need not find gold.
+
+Pure's reserve and convenient sea-water processing are enough rewards. Clean must not make players
+ill to force a distiller purchase. Natural Pure sources, rain and Create filtering remain valid
+alternative infrastructure. Multiple dripstone cauldrons scale output at the cost of space and iron;
+never justify their balance from one cauldron's speed alone.
+
+With `enableFurnaceBoiling` enabled, all outputs cap at Clean:
+
+| Input | Furnace | Smoker |
 |---|---|---|
-| Waterskin | **5** (3 today) | no |
-| Copper Canteen | 4 | to Clear, on a campfire |
-| Iron Flask | 6 | to Clear, on a campfire |
+| Bottle or bowl, 1 serving | 8 s | 4 s |
+| Bucket, 3 servings | 24 s | 12 s |
+| Copper Canteen | 2 s per serving | No recipe |
+| Iron Flask | 3 s per serving | No recipe |
 
-- The Waterskin keeps its four sprites: 0 empty, 1 or 2 `waterskin_1`, 3 or 4 `waterskin_2`, 5 full.
-  `MAX_CAPACITY` stays 6; old skins need no migration.
-- A filled Terracotta Water Bowl stacks to 4. Empty Terracotta Bowls appear in village chests.
-- The bowl-and-bucket crafting recipe gives a Dirty bowl: a crafting recipe cannot read the bucket's
-  grade.
-- `boil_water` is earned by having a Copper Canteen, Iron Flask or either Hanging Pot in the inventory
-  (`inventory_changed`). `purified_water` points at the distiller.
-- The distiller stays at 8 s a serving.
+Recipe XP stays zero for water treatment. No water cooking recipes in vanilla campfire slots.
 
-With the switch on:
+## Integration and transfer boundaries
 
-| Method | Time | Servings |
+- Separate plain-water recovery from potion recovery. The stack lookup must distinguish water
+  from potions before consulting the cached item-only value; never cache a stack-dependent result
+  under `minecraft:potion`. HUD, tooltip, consumption and automation must agree.
+- Audit known third-party plain-water drinks, including Cold Sweat's drink action, against 6 / 4.
+  Keep temperature effects and pouring actions separate; do not turn them into extra drinks.
+- Solid food is incidental hydration: wet fruit restores at most **2 thirst / 0 quenched**, vegetables
+  at most **1 / 0**, dry foods and meat **0 / 0**. Apply the no-quenched ceiling to solid food from
+  integrations too, with explicit pack overrides. Keep hunger, saturation and special food effects.
+  Melon stacks and golden carrots must not substitute for a water reserve through food overflow.
+- Plain milk gives **4 thirst / 0 quenched**. It can remove Poison but not Upset Stomach, and cannot
+  by itself enable natural healing with an empty water reserve. Milk-based prepared drinks follow
+  their recipe category, not an automatic Pure-water bonus.
+- Prepared soups and non-alcoholic crafted drinks can supply reserve: target **6 thirst / 4 quenched**
+  per completed serving, gated on actual recipes/ingredients. They are valid preparation, not raw
+  cave water. Audit known integrations' values and stack sizes before shipping; cheap juices must
+  not also inherit 8 / 13 recovery merely because they are tagged as drinks. Do not change foreign
+  item stack sizes globally. Exotic effects and modpack overrides cannot be universally balanced.
+- Transfers between finite vessels conserve servings and never raise quality by changing container.
+  A bucket is three servings even when the destination holds four or six; partial transfers must
+  leave leftovers or explicitly discard them, never duplicate them.
+- World placement is different: ordinary placed water is sampled from its environment, not a saved
+  bottle grade. A bucket can establish a refill point outside evaporating dimensions. Retain this
+  vanilla-compatible shortcut; do not describe buckets as only three drinks in open-world use or
+  the distiller as the only possible route from an ocean bucket to fresh water in another biome.
+- Exposed safe water is a reward for location and travel. Cave refill points still produce at most
+  Murky water and need treatment. Closed salt-water tanks require distillation; the Nether rewards
+  carried supplies. A campfire and copper vessel provide an affordable treatment route before a
+  distiller, including an underground camp.
+
+## Implementation
+
+1. **Names and visuals:** update quality keys, config widgets, Sophisticated UI, the three renamed
+   JSON keys and their migration, and all nine lang files. Vietnamese: "Sạch", "Chất lượng nước". Recolour eight water
+   textures and check readability in a client. Preserve persisted/public identifiers listed above.
+2. **Recovery:** add configurable plain-water values and a stack-aware lookup, update own vessel
+   defaults and required-value insertion, food/milk/prepared-drink defaults and integration categories.
+   Remove hydration overflow without breaking existing public signatures or event cancellation;
+   allow Clean/Pure reserve top-ups at full thirst, including automation and previews.
+   Defaults apply to fresh configs; preserve deliberate custom values. Update all tooltip paths.
+3. **Player loop:** implement timed hand drinking, the hydration/illness healing gate, the conditional
+   25% bonus per successful food heal and its exhaustion cost; remove the independent water-heal
+   timer/path. Add baseline drain, monotonic climate/global scaling and separate illness drain.
+   Update config controls/reset/lang and document the bonus setting's changed meaning. Audit
+   loader/version seams, actual health gains, starvation and healing refunds.
+4. **Sickness and sources:** implement the table, stronger drain/reserve penalties, milk-cure exception
+   and no automatic taste/burst Nausea. Add an optional roll-group field to effect entries: entries
+   in one group share a random sample per drink; absent groups retain independent rolls for custom
+   configs. Default Poison and Upset share a group, with Poison's chance no greater than Upset's.
+   Cover serialization, copying, sanitization and config UI; retain duration extension as default.
+   Implement the covered-water grade cap in the sampling path, with platform seams for sky checks.
+   Keep unrelated vanilla Nausea behavior; its drain is illness, not activity. Update sickness docs.
+5. **Containers:** four-serving skin and models, two-bowl stacks and every fill/return path.
+   Iron pots hold six, copper three; audit blockstate ranges, saved data, fill heights, rendering,
+   Jade, transfers and partial boiling. Existing containers retain contents and quality.
+6. **Heat and recipes:** add `WaterPurity.BOILED = 2`; cap core, Farmer's Delight and Cold Sweat heat.
+   Add furnace switch and per-loader resource conditions. Update both recipe providers, crafting
+   costs/times, pot timing and village loot. Remove Cold Sweat furnace/smoker water recipes.
+   Do not hand-edit generated output. New recipe patterns must be collision-free on every node.
+7. **Advancements:** `boil_water` uses `inventory_changed` for either metal vessel or Hanging Pot;
+   `purified_water` points to the distiller. Update both advancement providers.
+8. **Docs:** update water reference, sickness and distillation plans, integration instructions,
+   player/config pages, store pages, screenshots and CHANGELOG. Keep the water page's URL, title it
+   "Water quality". Explain resetting affected settings to adopt new defaults.
+
+## Validation and tuning
+
+First validate correctness, then playtest these candidate defaults. No in-game balance trial has
+been run for this proposal.
+
+| Synthetic sustained drain | Clean: interval / six-serving flask | Pure: interval / six-serving flask |
 |---|---|---|
-| Furnace, bottle or bowl | 10 s | 1 |
-| Furnace, bucket | 10 s | 3 |
-| Smoker, any of those | 5 s | 1 or 3 |
-| Furnace, Copper Canteen | 3 s a serving | 1 to 4 |
-| Furnace, Iron Flask | 4 s a serving | 1 to 6 |
+| 4 hydration points/min | 120 s / 12 min | 150 s / 15 min |
+| 8 hydration points/min | 60 s / 6 min | 75 s / 7.5 min |
+| 16 hydration points/min | 30 s / 3 min | 37.5 s / 3.75 min |
 
-## Steps
+These are arithmetic budgets: `(thirst + quenched) / drain`. They exclude initial player reserves,
+refilling, overflow waste, sickness and healing. The rates are test scenarios, not measured movement
+rates; validate real runs before claiming travel times.
 
-### 1. Names and colours
-
-Ships on its own; it changes no behaviour.
-
-- `WaterPurity.purityKey` and `purityColor`; `ConfigCategory`, `ConfigEntry.grade` and
-  `DrinkingUpgradeTab` use the renamed keys.
-- `SicknessEffect.GRADES` becomes `{"dirty", "murky", "clear", "pure"}`; the migration in
-  `sanitizeSickness`.
-- Recolour the eight water textures; check in a client.
-- Nine lang files: renamed keys, grade 2 retranslated (Vietnamese: Trong; "Chất lượng nước" for the
-  scale). `checkLang`.
-- `TooltipGameTest`: check the four grade keys by name, since salt now shares the `thirst.water.`
-  prefix. A gametest for the migration.
-- Dev docs and Javadoc that name a grade; the site (rename `features/water-purity.md` to "Water
-  quality", keeping its URL), store pages, screenshots; CHANGELOG ("Clean is now called Clear").
-
-### 2. Cap heat at Clear
-
-- A constant `WaterPurity.BOILED = 2`. `WaterskinItem` and `HangingPotBlock` boil only below it and
-  finish at it. `DistillerWater.PURE` stays `MAX`.
-- Cold Sweat (`coldsweat`, `coldsweatforge`): `BoiledWater` stops at Clear for the Boiler and the
-  campfire skin.
-- `ThirstApi`: check what it documents as boiling's result; bump `API_VERSION` only if a method is
-  added.
-
-### 3. Config
-
-- `enableFurnaceBoiling`, off; a toggle in the Water page's `water.collected` section, lang keys.
-- `quenchedPercent` default `{0, 50, 85, 100}`; `SicknessEffect.defaults()` for Clear as in Balance.
-- `thirstwastaken2:furnace_boiling` resource condition per loader, next to `ItemEnabledCondition`.
-- Existing configs keep their numbers; the CHANGELOG says to reset the Water and sickness pages.
-
-### 4. Waterskin
-
-`CAPACITY` 5, `ThirstModelProvider.waterskinVariants()` maps five fills onto four sprites.
-
-### 5. Datagen (`ThirstRecipeProvider`, and `LegacyRecipeProvider` for 1.20.1)
-
-- `PURIFY_TABLE` becomes `{2, 2}` (Dirty and Murky only), every recipe gated on `furnace_boiling`.
-- Remove campfire recipes (`Heat.CAMPFIRE`).
-- Iron Flask `servings × 4 s`; new Copper Canteen recipes `servings × 3 s`, one method for both.
-- `FarmersDelightRecipeProvider` gives Clear.
-- Bowl recipe gives Dirty (`bowlResult(0)`).
-- `boil_water`'s new criterion in `ThirstAdvancementProvider` and `LegacyAdvancementProvider`.
-
-### 6. Cold Sweat
-
-Delete the six `purify_waterskin_*` furnace and smoker recipes in `src/main/coldsweat`; update its
-`AGENTS.md` and the checks that expect Pure from a skin or the Boiler.
-
-### 7. Bowls
-
-- `TERRACOTTA_WATER_BOWL` `stacksTo(4)`. Drinking from a stack returns one empty bowl; bowls of
-  different grades do not merge; every filler handles a stack.
-- A loot pool of 1 to 4 empty bowls in village house chests, skipped while the bowl is disabled.
-  `LootGameTest`.
-
-### 8. Regenerate and test
-
-- `runDatagen`, `checkDatagen`, `checkNeoForgeResources`, `checkDataConditions`.
-- Gametests, switch off: no furnace water recipe; vessels and pots end Clear and leave Pure alone; the
-  distiller gives Pure; Clear quenches 85% and never poisons; 5-serving waterskin; `boil_water` from a
-  canteen. Switch on: Murky to Clear, canteen and flask timed by fill. Cold Sweat; bowl stacks, loot
-  and recipe.
-- Nodes: `26.3.x`, `1.21.1-neoforge`, `1.20.1`, `1.20.1-forge`.
-
-### 9. Docs
-
-`WATER-REFERENCE.md` (then drop its "today" warning), `WATER-SICKNESS.md`, `DISTILLATION-PLAN.md`, the
-site's water, drinking, Cold Sweat, Farmer's Delight and configuration pages, and the CHANGELOG as a
-balance change.
-
-## Open
-
-- **Is the start too hard?** Before copper there is no way to treat water. If it proves harsh, a
-  terracotta pot on a campfire (to Clear) could fill the gap.
+- Correctness on `26.3.x`, `1.21.1-neoforge`, `1.20.1`, `1.20.1-forge`: config-key migration (legacy
+  only, new only, both present, custom values preserved), retained `clean` sickness key, plain
+  water versus potions, recovery rounding/caps/overflow, event behavior, sickness and config defaults.
+- Hand use: no benefit before 32 ticks, cancel/reach/offhand checks, exactly one completed drink.
+  Health: test thirst 19/20, quenched 0/1 and 5/6, Upset present/absent, both healing paths, each option off,
+  refunds, starvation and natural regeneration off. Test Clean/Pure top-ups at full thirst and block
+  that exception for raw water/hand drinking. At the default, 1 actual base HP gives at most 0.25
+  bonus HP and exactly 1.5 bonus exhaustion; check partial heals, remaining-health caps, cancelled
+  heals, fractional cost, no duplicate charge and no independent timed healing. No bonus when the
+  base heal fails; no bonus on potion/mod healing. Bonus eligibility stays strict with base gates off.
+- Climate: no discontinuity at the old temperature threshold; global setting also scales Nether;
+  seasons and Cold Sweat do not double-count; illness is neither climate-scaled nor cancelled by
+  Nourishment by default. Check baseline drain exclusions and that Nourishment leaves it active.
+  Compare bonus enabled/disabled: extra recovery must be bounded by the configured share of actual
+  food healing and paid for in water, including when food healing is slow or modified by another mod.
+- Sickness: shared roll thresholds, independent custom entries, no Poison without Upset in defaults,
+  extensions/caps, milk/honey cure behavior, strong existing effects and recovery on expiry.
+- Anti-bypass: steak/fruit plus repeated cave water cannot restore natural healing during Upset;
+  food overflow creates no reserve. Milk plus raw water is not an illness cure loop. Test caves,
+  surface water under roofs/trees, placed sources, stored treated water and tagged Pure springs.
+- Containers: stacked bowls, returns, legacy saves, partial fills, mixing, salt and conservation,
+  including inventory full. Test XP, recipe outputs/times with switch on/off, loot and advancements.
+- Generate resources; run gametests, `checkDatagen`, resource translation checks, `checkLang`,
+  `checkDataConditions`, relevant seam checks and the docs build.
+- Play the same 20-minute routes with each vessel: starter survival, building, ordinary exploration,
+  repeated combat and Nether travel. Record drink count, active treatment time, inventory slots,
+  health/food/water spent and refill opportunities. Repeat with prepared Clean and Pure water.
+- Include sparse leather/string spawns, ocean starts, multiplayer sharing, bucket refill points,
+  dripstone arrays, stackable juices and optional-mod automation. A same-seed comparison isolates
+  container differences; use several seeds to test material availability.
+- Compare three matched mining runs: food plus untreated cave water; food plus prepared Clean;
+  food plus field boiling. Record illness uptime, blocked-heal time, health, water and food spent.
+  Raw water must create a material survival disadvantage; prepared water must permit recovery.
+  Also test one emergency raw drink followed by shelter and Clean water: a prepared recovery route
+  must exist without requiring a distiller or unavoidable death.
+- If ordinary travel needs a drink more often than roughly once a minute, tune activity drain before
+  adding more capacity. If prepared travel is too easy, test climate and route opportunities before
+  adding random sickness to Clean. Keep the bounded, paid healing bonus and conserved-serving rules fixed while
+  tuning recovery, so one adjustment is not hiding a different exploit.
