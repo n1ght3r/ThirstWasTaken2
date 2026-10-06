@@ -17,7 +17,7 @@ thirst, and the client only receives it through the `PlayerData` sync.
 | A new config key | `config/ThirstConfig` (field + `sanitize()`), then the client config screen |
 | Switching off the mod's own items (Mod Items page) | `config/ThirstConfig.isItemEnabled`, read by the `item_enabled` recipe condition (`platform/Loader.registerResourceConditions`, the generators in `src/datagen`) and by the creative tab |
 | Bowls, waterskin, copper canteen, iron flask, creative tab | `item/` (the three carried containers are one class, `WaterskinItem`) |
-| The mod's own mob effects (Parched) | `effect/ThirstEffects`; what they do lives where they matter, e.g. Parched's drain in `ThirstManager.tickPlayer` |
+| The mod's own mob effects (Parched, Upset Stomach) | `effect/ThirstEffects`; what they do lives where they matter: Parched's drain in `ThirstManager.tickPlayer`, Upset Stomach's cramps in `effect/UpsetStomach` (rolled from the same tick), its stop on healing in `data/HealthRegen` |
 | The copper and iron hanging pots: capacity, boiling, filling and drawing | `block/` |
 | The copper distiller, a two-block block placed and broken whole like a bed | `block/DistillerBlock`; its models from `tools/distiller/generate_distiller_model.py`; checked in a client by `tools/agent/gameplay/distiller.jsonl` |
 | The distiller at work: tanks, fire, distilling to Pure, the slots and hopper faces, the right-click pour and draw | `block/DistillerBlockEntity` on the boiler half, `block/DistillerWater` for which containers it takes and fills, `block/DistillerInteractions.useMachine`. See `docs/dev/mechanics/DISTILLATION-PLAN.md` |

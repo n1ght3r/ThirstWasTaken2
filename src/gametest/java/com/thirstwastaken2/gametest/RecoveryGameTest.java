@@ -152,17 +152,16 @@ public final class RecoveryGameTest {
                     Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 200, 0));
             lines.clear();
             ThirstTooltip.appendTo(bowl(WaterPurity.MAX), lines::add, true);
-            int cut = (int) (4 * com.thirstwastaken2.effect.UpsetStomach.saturationScale(player));
-            String reduced = ThirstTooltip.quenched(cut, com.thirstwastaken2.compat.AppleSkin.quenchedOverlay()).getString();
-            TestFixtures.check(helper, cut < 4 && lines.stream().anyMatch(line -> line.getString().equals(reduced)),
-                    "Upset Stomach should cut Pure's 4 quenched to " + cut + " in the row, got " + lines);
+            String full = ThirstTooltip.quenched(4, com.thirstwastaken2.compat.AppleSkin.quenchedOverlay()).getString();
+            TestFixtures.check(helper, lines.stream().anyMatch(line -> line.getString().equals(full)),
+                    "Upset Stomach should leave Pure's 4 quenched whole in the row, got " + lines);
         } finally {
             ThirstTooltip.setViewer(() -> null);
         }
         helper.succeed();
     }
 
-    /** Runs {@code checks} with no sickness table, so no rolled Upset Stomach cuts the quenched a drink gives. */
+    /** Runs {@code checks} with no sickness table, so a drink rolls no illness. */
     private static void withoutSickness(Runnable checks) {
         TestFixtures.withConfig(config -> config.sicknessEffects = WaterSicknessGameTest.everyDifficulty(java.util.List.of()),
                 checks);

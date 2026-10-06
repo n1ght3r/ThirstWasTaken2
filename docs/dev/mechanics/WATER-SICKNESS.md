@@ -5,8 +5,9 @@ setback on Normal, a gamble with your life on Hard. Boiling the water first alwa
 
 **The purification rework changed steps 1 to 4** ([PURIFICATION-REWORK.md](PURIFICATION-REWORK.md#sickness)):
 Clean water is safe on every difficulty, Upset Stomach and Poison share one roll, there is no taste
-Nausea and no Nausea bursts, Upset Stomach drains 4 or 8 thirst a minute, scales saturation and
-quenched by 0.5 or 0.25, blocks healing and is not cured by milk. The numbers in game are in
+Nausea and no Nausea bursts. A later change (2026-10-07) left Upset Stomach blocking healing with no
+switch and cramping for half a heart now and then above a floor by difficulty; it no longer drains
+thirst or cuts saturation and quenched, and milk cures it. The numbers in game are in
 [WATER-REFERENCE.md](WATER-REFERENCE.md#drinking-bad-water); the tables below for steps 1 to 4 are the
 old design, kept for steps 5 onward to build on.
 

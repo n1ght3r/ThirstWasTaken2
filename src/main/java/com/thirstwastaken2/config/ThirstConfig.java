@@ -60,8 +60,6 @@ public final class ThirstConfig {
     public boolean canDrinkByHand = true;
     /** On, food does not heal while the thirst bar is under {@link #foodHealMinThirstPercent}. */
     public boolean dehydrationHaltsHealthRegen = true;
-    /** On, neither food nor quenched heals while the player has Upset Stomach. */
-    public boolean illnessHaltsHealthRegen = true;
     /** How full, in percent, the thirst bar has to be for food to heal. */
     public int foodHealMinThirstPercent = 50;
     /**

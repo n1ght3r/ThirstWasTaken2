@@ -59,8 +59,9 @@ Oceans and beaches give salt water. It has its own icon and tooltip line. On Min
 
 ![Parched effect icon](/icons/parched.png){.effect-icon}
 
-Parched makes thirst drain faster, the way Hunger does for food, and turns the thirst bar the colour
-of dry sand.
+Parched makes thirst drain faster, the way Hunger does for food: 4 points a minute at level I, 8 at
+level II, on top of the usual drain and whatever the climate. The thirst bar turns the colour of dry
+sand while it lasts.
 
 ![The thirst bar in dry sand colours while Parched](/screenshots/hud/parched-hud.png)
 
@@ -106,14 +107,22 @@ added, with [sicknessEffects](/docs/configuration#sicknesseffects).
 
 ![Upset Stomach effect icon](/icons/upset-stomach.png){.effect-icon}
 
-The common one. It never hurts on its own, but it stops natural healing until it wears off, however
-full the bars are.
+The common one. It stops natural healing until it wears off, however full the bars are, and now and
+then a cramp costs half a heart. Cramps stop at a floor, so Upset Stomach alone never kills.
 
-- Thirst drains by 4 points a minute at level I, 8 at level II, on top of the usual drain.
-- Food fills half its saturation at level I, a quarter at level II. Drinks give the same share of
-  their quenched.
-- Milk doesn't cure it. Only time does. Clean water keeps the player going until then.
+- Every 4 seconds there is a chance of a cramp:
+
+  | | Level I | Level II | Never below |
+  |---|---|---|---|
+  | Easy | 15% | 25% | 5 hearts |
+  | Normal | 25% | 45% | 2 hearts |
+  | Hard | 40% | 60% | half a heart |
+
+- Armour doesn't soften a cramp, and like any damage it wakes a sleeping player.
+- Milk cures it.
 - The thirst bar turns green while it lasts.
+
+How long it lasts:
 
 | | Easy | Normal | Hard |
 |---|---|---|---|

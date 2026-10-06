@@ -35,8 +35,6 @@ enum ConfigCategory {
                             config -> config.preventSprintingWhenThirsty, (config, value) -> config.preventSprintingWhenThirsty = value),
                     ConfigEntry.toggle("dehydration_halts_health_regen",
                             config -> config.dehydrationHaltsHealthRegen, (config, value) -> config.dehydrationHaltsHealthRegen = value),
-                    ConfigEntry.toggle("illness_halts_health_regen",
-                            config -> config.illnessHaltsHealthRegen, (config, value) -> config.illnessHaltsHealthRegen = value),
                     ConfigEntry.number("food_heal_min_thirst_percent", 0, 100, ConfigEntry::wholePercent,
                             config -> config.foodHealMinThirstPercent, (config, value) -> config.foodHealMinThirstPercent = value),
                     ConfigEntry.percent("quenched_health_regen", 0, 100,

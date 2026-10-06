@@ -3,7 +3,6 @@ package com.thirstwastaken2.tooltip;
 import com.thirstwastaken2.api.ThirstApi;
 import com.thirstwastaken2.compat.AppleSkin;
 import com.thirstwastaken2.config.QuenchedOverlay;
-import com.thirstwastaken2.effect.UpsetStomach;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.Vanilla;
@@ -118,13 +117,11 @@ public final class ThirstTooltip {
                 ? WaterPurity.quenched(WaterPurity.quality(stack), values[1]) : values[1];
         Player player = viewer.get();
         if (player != null && ThirstApi.isEnabled(player)) {
-            // What this player would actually gain: thirst stops at a full bar, Upset Stomach cuts the
-            // quenched as it does at the drink, and quenched cannot pass thirst.
+            // What this player would actually gain: thirst stops at a full bar, and quenched cannot pass thirst.
             int thirstNow = ThirstApi.thirst(player);
             int quenchedNow = ThirstApi.quenched(player);
             int thirstAfter = Math.min(ThirstApi.maxThirst(), thirstNow + thirstAmount);
-            int scaled = (int) (quenchedAmount * UpsetStomach.saturationScale(player));
-            quenchedAmount = Math.min(thirstAfter, quenchedNow + scaled) - quenchedNow;
+            quenchedAmount = Math.min(thirstAfter, quenchedNow + quenchedAmount) - quenchedNow;
             thirstAmount = thirstAfter - thirstNow;
         }
         Component thirst = thirst(thirstAmount);

@@ -25,7 +25,6 @@ Every setting at its default. The long lists are cut short here; see
   "preventSprintingWhenThirsty": true,
   "canDrinkByHand": true,
   "dehydrationHaltsHealthRegen": true,
-  "illnessHaltsHealthRegen": true,
   "foodHealMinThirstPercent": 50,
   "quenchedHealthRegen": 0.5,
   "quenchedHealMinFoodPercent": 50,
@@ -124,10 +123,6 @@ Default `true`. No sprinting at 6 thirst or below.
 
 Default `true`. Food only heals with the thirst bar at `foodHealMinThirstPercent` or more. See
 [Healing](/docs/features/thirst-and-quenched#healing).
-
-### illnessHaltsHealthRegen
-
-Default `true`. Neither food nor quenched heals during Upset Stomach.
 
 ### foodHealMinThirstPercent
 

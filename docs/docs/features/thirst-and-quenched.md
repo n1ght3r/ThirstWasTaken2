@@ -39,9 +39,9 @@ Riding a horse, boat or minecart costs nothing. Creative and spectator players a
 - With [Serene Seasons](/docs/integrations/serene-seasons) installed, summer drains faster and winter
   slower, and tropical biomes drain faster in their dry season.
 - Fire Resistance halves the drain. Fire Protection slows it further, down to a quarter.
-- [Upset Stomach](/docs/features/water-purity#upset-stomach) adds its own drain, whatever the climate.
 - Nausea adds extra drain while it lasts.
-- Parched adds extra drain while it lasts, and the droplets turn sandy. Sea water causes it.
+- [Parched](/docs/features/water-purity#parched) adds its own drain, whatever the climate, and the
+  droplets turn sandy. Sea water causes it.
 - On Peaceful the bar refills on its own, unless the server turns that off.
 
 Every rate is a setting. See [Configuration](/docs/configuration#thirst).
@@ -56,7 +56,7 @@ Health comes back two ways, and each needs the other bar:
   the speed saturation heals, spending quenched as it goes. Saturation goes first: quenched only heals
   once the food's saturation has run out, so a big meal is spent before the water reserve.
 
-Upset Stomach stops both. The `naturalRegeneration` game rule still applies. The speed and both
+[Upset Stomach](/docs/features/water-purity#upset-stomach) always stops both. The `naturalRegeneration` game rule still applies. The speed and both
 halves can be changed, see [Configuration](/docs/configuration#dehydrationhaltshealthregen).
 
 ## Running low

@@ -54,14 +54,15 @@ thirst drains a little even standing still, and food and water each need the oth
   temperature, and the Nether drains three times as fast.
 - Food heals only while the thirst bar is at least half full, and quenched heals only while the food
   bar is. Quenched now waits for saturation to run out before it heals, instead of healing alongside
-  it, and Upset Stomach stops both.
+  it, and Upset Stomach always stops both.
 - Water in a cave or under a roof is at best Murky. Deep water is no longer cleaner.
 - Dirty and Murky water no longer taste bad: no more Nausea after every drink. Upset Stomach and Poison
   now come from one roll, so Poison only ever comes with Upset Stomach. Clean water never makes the
   player ill.
-- Upset Stomach drains 4 thirst a minute, 8 at level II, halves the saturation and quenched from what
-  is eaten or drunk, a quarter at level II, and stops healing. It no longer warps the screen, and milk
-  doesn't cure it.
+- Upset Stomach no longer drains thirst or cuts saturation. Instead, cramps now and then cost half a
+  heart, more often at level II and on harder difficulties, but never below a floor, so it can't kill.
+  It no longer warps the screen, and milk cures it.
+- Parched drains 4 thirst a minute, 8 at level II.
 - The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
   and a string. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.
 - Three clay balls make three clay bowls. The Distiller Boiler takes an iron ingot instead of gold.
@@ -69,9 +70,9 @@ thirst drains a little even standing still, and food and water each need the oth
 
 ### Fixed
 
-- A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
 - The furnace and smoker recipe books show one water bottle, bowl, bucket, canteen and flask each,
   instead of one per grade of water.
+- A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
   water inside, for example a Dirty bottle clicked on a full cauldron of Pure water.
 
 <details>
@@ -80,7 +81,7 @@ thirst drains a little even standing still, and food and water each need the oth
 - New: `enableCopperDistiller`, `distillerServingSeconds` (default `8`), `distillerTankServings`
   (default `9`) and `distillerSaltItem`, which picks one salt when several mods add one.
 - New: `enableFurnaceBoiling`, `plainWaterValue` (`[6, 4]`), `plainWaterDrinkTicks` (`32`),
-  `illnessHaltsHealthRegen`, `foodHealMinThirstPercent`, `quenchedHealMinFoodPercent`, `waterskinCapacity`, `terracottaWaterBowlStackSize`, `copperHangingPotCapacity` and `ironHangingPotCapacity`. Every
+  `foodHealMinThirstPercent`, `quenchedHealMinFoodPercent`, `waterskinCapacity`, `terracottaWaterBowlStackSize`, `copperHangingPotCapacity` and `ironHangingPotCapacity`. Every
   container count goes from 1 to 64.
 - `defaultPurity`, `rainwaterPurity` and `dripstonePurity` are now `defaultQuality`,
   `rainwaterQuality` and `dripstoneQuality`. An old file is converted on load.

@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "Khi tắt, độ khát sẽ hồi lại thay vì giảm ở độ khó Hòa bình.",
   "thirstwastaken2.config.dehydration_halts_health_regen": "Khát chặn hồi máu",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Thức ăn không hồi máu khi thanh khát thấp hơn mức đặt bên dưới.",
-  "thirstwastaken2.config.illness_halts_health_regen": "Bệnh chặn hồi máu",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "Cả thức ăn lẫn giải khát đều không hồi máu khi bị Đau bụng.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Hồi bằng ăn: khát tối thiểu",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "Thanh khát phải đầy ít nhất bao nhiêu để thức ăn hồi máu.",
   "thirstwastaken2.config.quenched_health_regen": "Hồi máu bằng giải khát",

@@ -135,8 +135,7 @@ checks all three implementations against one set of assertions, in millibuckets.
   `seaWaterNauseaSeconds` and `seaWaterParchedSeconds`, and returns false. With `enableSeaWater` off,
   `sampleAt` grades ocean and beach water like any other.
   `quenched` cuts what a drink of water quenches by the config's `quenchedPercent` (Dirty none, Murky
-  a quarter, Clean half by default),
-  and Upset Stomach cuts it again in `ThirstManager.drinkThroughEvent`; tooltips show the grade's cut.
+  a quarter, Clean half by default); tooltips show the grade's cut. Upset Stomach no longer cuts it.
   The design is `../../../../../../docs/dev/mechanics/WATER-SICKNESS.md`, and where its code goes
   `../../../../../../docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md`.
 - **`purityKey` and `purityColor` own the lang key and the colour together**, and they are the only

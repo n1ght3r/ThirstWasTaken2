@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "Gdy wyłączone, na poziomie Pokojowym pragnienie powoli się uzupełnia zamiast spadać.",
   "thirstwastaken2.config.dehydration_halts_health_regen": "Pragnienie blokuje regen.",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Jedzenie nie leczy, gdy pasek pragnienia jest poniżej ustawionej niżej części.",
-  "thirstwastaken2.config.illness_halts_health_regen": "Choroba blokuje regen.",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "Ani jedzenie, ani ugaszenie nie leczą podczas Rozstroju żołądka.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Leczenie jedzeniem: min. picie",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "Jak pełny musi być pasek pragnienia, by jedzenie leczyło.",
   "thirstwastaken2.config.quenched_health_regen": "Leczenie z ugaszenia",

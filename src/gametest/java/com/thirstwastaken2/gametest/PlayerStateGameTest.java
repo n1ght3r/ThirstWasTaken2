@@ -31,7 +31,7 @@ public final class PlayerStateGameTest {
     private static final float HUNGER_EXHAUSTION = 0.005F;
     /** Three of these stay inside one quarter-point sync step under any climate modifier the test world has. */
     private static final float SMALL_EXHAUSTION = 0.02F;
-    private static final int PARCHED_TICKS = 100;
+    private static final int PARCHED_TICKS = 60;
 
     @GameTest
     public void sprintingIsBlockedWhenThirsty(GameTestHelper helper) {
@@ -111,8 +111,8 @@ public final class PlayerStateGameTest {
 
     /**
      * Parched is a marker, so the drain lives in the tick, not the effect. Ticked directly rather than
-     * through {@code ThirstManager.tick}, so that other tests' players do not tick with it. A hundred
-     * ticks spend a point or two of exhaustion, well past a sync step and short of a whole thirst point.
+     * through {@code ThirstManager.tick}, so that other tests' players do not tick with it. Sixty ticks
+     * of Parched II spend 1.6 exhaustion, well past a sync step and short of a whole thirst point.
      */
     @GameTest
     public void parchedDrainsThirstByLevel(GameTestHelper helper) {

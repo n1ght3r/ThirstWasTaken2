@@ -64,10 +64,12 @@ public final class ThirstManager {
     /** What {@code HungerMobEffect#applyEffectTick} charges per amplifier level, every tick. */
     private static final float HUNGER_EXHAUSTION = 0.005F;
     /**
-     * Parched's drain per tick per level, the thirst counterpart of {@link #HUNGER_EXHAUSTION}. Over the
-     * 30 seconds sea water gives, Parched II costs 3 thirst before the climate modifier.
+     * Parched's drain per tick per level, the thirst counterpart of {@link #HUNGER_EXHAUSTION}: four points
+     * of thirst a minute at I and eight at II. It is charged as illness, so the climate modifier does not
+     * scale it; only a {@code ThirstEvents.EXHAUSTION} listener can. Over the 30 seconds sea water gives,
+     * Parched II costs 4 thirst.
      */
-    private static final float PARCHED_EXHAUSTION = 0.01F;
+    private static final float PARCHED_EXHAUSTION = 16.0F / 1200.0F;
     /**
      * How long a computed exhaustion modifier is reused. Climate, armour and Fire Resistance change far
      * more slowly than vanilla charges exhaustion, and it takes seconds of exhaustion to spend a single
@@ -198,12 +200,10 @@ public final class ThirstManager {
 
     /**
      * Restores what a drink restores after {@link ThirstEvents#DRINK} has had its say. Every drink of an
-     * item or of water by hand ends here; with no listener it is {@link #drink} and nothing else. Upset
-     * Stomach cuts the quenched first, the way it cuts the saturation of food.
+     * item or of water by hand ends here; with no listener it is {@link #drink} and nothing else.
      */
     private static void drinkThroughEvent(Player player, ItemStack stack, int thirst, int quenched) {
         if (player.level().isClientSide()) return;
-        quenched = (int) (quenched * UpsetStomach.saturationScale(player));
         if (ThirstEvents.DRINK.hasListeners()) {
             ThirstEvents.DrinkAmounts amounts = new ThirstEvents.DrinkAmounts(thirst, quenched);
             ThirstEvents.DRINK.invoker().onDrink(player, stack, amounts);
@@ -232,6 +232,8 @@ public final class ThirstManager {
         ThirstData data = get(player);
         if (!data.enabled() || player.getAbilities().invulnerable) return;
 
+        UpsetStomach.tick(player);
+
         ThirstConfig config = ThirstConfig.get();
         Difficulty difficulty = player.level().getDifficulty();
         boolean peaceful = difficulty == Difficulty.PEACEFUL && !config.thirstDepletionInPeaceful;
@@ -256,14 +258,7 @@ public final class ThirstManager {
         // either. Unlike the original it leaves the baseline and illness alone.
         if (FarmersDelight.isNourished(player)) activity = 0.0F;
 
-        float illness = 0.0F;
-        MobEffectInstance upsetStomach = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
-        if (upsetStomach != null) {
-            illness += UpsetStomach.EXHAUSTION * (upsetStomach.getAmplifier() + 1);
-        } else if (player.hasEffect(MobEffects.NAUSEA)) {
-            // Upset Stomach's own drain stands for being ill, so Nausea is not charged on top of it.
-            illness += NAUSEA_EXHAUSTION;
-        }
+        float illness = player.hasEffect(MobEffects.NAUSEA) ? NAUSEA_EXHAUSTION : 0.0F;
         MobEffectInstance parched = Vanilla.getEffect(player, ThirstEffects.PARCHED);
         if (parched != null) illness += PARCHED_EXHAUSTION * (parched.getAmplifier() + 1);
 

@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "When off, thirst slowly refills instead of draining on Peaceful difficulty.",
   "thirstwastaken2.config.dehydration_halts_health_regen": "Dehydration Stops Regen",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Food does not heal you while the thirst bar is under the share set below.",
-  "thirstwastaken2.config.illness_halts_health_regen": "Illness Stops Regen",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "Neither food nor quenched heals you while you have Upset Stomach.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Food Heal: Min Thirst",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "How full the thirst bar has to be for food to heal you.",
   "thirstwastaken2.config.quenched_health_regen": "Quenched Healing",

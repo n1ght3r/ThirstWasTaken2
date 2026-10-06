@@ -57,17 +57,17 @@ public final class DrainGameTest {
     }
 
     @GameTest
-    public void upsetStomachDrainsFourOrEightPointsAMinuteWhateverTheClimate(GameTestHelper helper) {
+    public void parchedDrainsFourOrEightPointsAMinuteWhateverTheClimate(GameTestHelper helper) {
         BlockPos water = TestFixtures.water(helper);
         for (int amplifier = 0; amplifier <= 1; amplifier++) {
             ServerPlayer player = inPlains(helper, water);
             TestFixtures.setState(player, 20, 20, 20, 20.0F,
-                    Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 2 * MINUTE, amplifier));
+                    Vanilla.effectInstance(ThirstEffects.PARCHED, 2 * MINUTE, amplifier));
             tick(player, MINUTE);
             float illness = spent(ThirstManager.get(player)) - 4.0F * PLAINS;
             float expected = 16.0F * (amplifier + 1);
             TestFixtures.check(helper, Math.abs(illness - expected) < TOLERANCE,
-                    "Upset Stomach " + (amplifier + 1) + " should add " + expected + " exhaustion a minute, got " + illness);
+                    "Parched " + (amplifier + 1) + " should add " + expected + " exhaustion a minute, got " + illness);
         }
         helper.succeed();
     }
@@ -114,7 +114,7 @@ public final class DrainGameTest {
         tick(player, 20);
         TestFixtures.check(helper, seen[0] == 0.0F, "a player doing nothing should give a listener nothing, got " + seen[0]);
 
-        player.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, MINUTE, 0));
+        player.addEffect(Vanilla.effectInstance(ThirstEffects.PARCHED, MINUTE, 0));
         tick(player, 20);
         TestFixtures.check(helper, seen[0] > 0.0F, "illness should reach a listener");
         helper.succeed();

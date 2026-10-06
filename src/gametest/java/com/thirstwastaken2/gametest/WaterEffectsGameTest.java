@@ -82,7 +82,7 @@ public final class WaterEffectsGameTest {
             TestFixtures.check(helper, got == expected,
                     "grade " + grade + " should give " + percent[grade] + "% of 8 quenched, " + expected + ", got " + got);
         }
-        // No sickness at all, so no Upset Stomach is rolled that would cut the quenched a second time.
+        // No sickness at all, so the drink rolls nothing.
         TestFixtures.withConfig(config -> config.sicknessEffects = WaterSicknessGameTest.everyDifficulty(List.of()), () -> {
             ServerPlayer dirty = TestFixtures.mockPlayer(helper);
             ThirstManager.set(dirty, ThirstManager.get(dirty).withLevels(4, 0));
@@ -95,7 +95,7 @@ public final class WaterEffectsGameTest {
     }
 
     @GameTest
-    public void upsetStomachCutsQuenched(GameTestHelper helper) {
+    public void upsetStomachLeavesQuenchedWhole(GameTestHelper helper) {
         ServerPlayer healthy = TestFixtures.mockPlayer(helper);
         ServerPlayer sick = TestFixtures.mockPlayer(helper);
         ThirstManager.set(healthy, ThirstManager.get(healthy).withLevels(4, 0));
@@ -106,9 +106,9 @@ public final class WaterEffectsGameTest {
         ThirstManager.drinkItem(sick, bowl(WaterQuality.fresh(WaterPurity.MAX)));
 
         int full = ThirstManager.get(healthy).quenched();
-        int cut = ThirstManager.get(sick).quenched();
-        TestFixtures.check(helper, full > 0 && cut == full / 4,
-                "Upset Stomach II should leave a quarter of a pure drink's quenched, got " + cut + " against " + full);
+        int got = ThirstManager.get(sick).quenched();
+        TestFixtures.check(helper, full > 0 && got == full,
+                "Upset Stomach II should leave a pure drink's quenched whole, got " + got + " against " + full);
         helper.succeed();
     }
 

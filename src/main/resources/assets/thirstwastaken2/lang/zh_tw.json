@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "關閉後，和平難度下口渴值會緩慢回復而不是下降。",
   "thirstwastaken2.config.dehydration_halts_health_regen": "脫水停止回血",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "口渴條低於下方設定的比例時，食物不會回血。",
-  "thirstwastaken2.config.illness_halts_health_regen": "生病停止回血",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "肚子不適期間，食物和解渴值都不會回血。",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "食物回血：最低口渴",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "食物回血所需的口渴條比例。",
   "thirstwastaken2.config.quenched_health_regen": "解渴值回血",

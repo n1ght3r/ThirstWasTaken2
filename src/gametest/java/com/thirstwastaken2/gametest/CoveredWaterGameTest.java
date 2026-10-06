@@ -8,14 +8,13 @@ import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 
 /**
- * Water the sky does not reach is at best Murky, and milk does not cure Upset Stomach. The water stands in
+ * Water the sky does not reach is at best Murky, and milk cures Upset Stomach. The water stands in
  * a meadow, a mountain biome whose open water is Clean, so the cap has something to take away, and the
  * column over it is cleared first: the test area's own bounds block motion above it.
  */
@@ -92,9 +91,9 @@ public final class CoveredWaterGameTest {
         return water;
     }
 
-    /** Milk clears Poison as vanilla's does, and leaves Upset Stomach to run its course. */
+    /** Milk clears Poison and Upset Stomach alike, as it clears any effect. */
     @GameTest
-    public void milkCuresPoisonButNotUpsetStomach(GameTestHelper helper) {
+    public void milkCuresPoisonAndUpsetStomach(GameTestHelper helper) {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         player.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 600, 1));
         player.addEffect(Vanilla.effectInstance(Vanilla.poison(), 600, 0));
@@ -103,9 +102,8 @@ public final class CoveredWaterGameTest {
 
         TestFixtures.check(helper, Vanilla.getEffect(player, Vanilla.poison()) == null,
                 "milk should still clear Poison, got " + player.getActiveEffects());
-        MobEffectInstance upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH);
-        TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1 && upset.getDuration() > 500,
-                "milk should leave Upset Stomach as it was, got " + upset);
+        TestFixtures.check(helper, Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH) == null,
+                "milk should clear Upset Stomach, got " + player.getActiveEffects());
         helper.succeed();
     }
 

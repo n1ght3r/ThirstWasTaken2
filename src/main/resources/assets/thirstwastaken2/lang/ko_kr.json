@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "끄면 평화로움 난이도에서 갈증이 닳지 않고 천천히 회복됩니다.",
   "thirstwastaken2.config.dehydration_halts_health_regen": "탈수 시 재생 정지",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "갈증 막대가 아래 비율보다 낮으면 음식으로 회복하지 않습니다.",
-  "thirstwastaken2.config.illness_halts_health_regen": "질병 시 재생 정지",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "배탈 중에는 음식도 해갈도 회복시키지 않습니다.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "음식 회복: 최소 갈증",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "음식으로 회복하려면 갈증 막대가 이만큼 차 있어야 합니다.",
   "thirstwastaken2.config.quenched_health_regen": "해갈 회복",

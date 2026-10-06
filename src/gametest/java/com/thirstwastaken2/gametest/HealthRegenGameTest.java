@@ -64,7 +64,7 @@ public final class HealthRegenGameTest {
     }
 
     @GameTest
-    public void eachSwitchLiftsOnlyItsOwnGate(GameTestHelper helper) {
+    public void dehydrationsSwitchLeavesUpsetStomachsGate(GameTestHelper helper) {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         TestFixtures.withConfig(config -> config.dehydrationHaltsHealthRegen = false, () -> {
             TestFixtures.setState(player, 2, 0, 20, START_HEALTH, null);
@@ -73,14 +73,6 @@ public final class HealthRegenGameTest {
             TestFixtures.setState(player, 2, 0, 20, START_HEALTH, upset(0));
             TestFixtures.check(helper, HealthRegen.blocksFoodHeal(player),
                     "Upset Stomach should still block healing with only dehydration's gate off");
-        });
-        TestFixtures.withConfig(config -> config.illnessHaltsHealthRegen = false, () -> {
-            TestFixtures.setState(player, 20, 3, 20, START_HEALTH, upset(1));
-            TestFixtures.check(helper, !HealthRegen.blocksFoodHeal(player),
-                    "with illness's gate off, Upset Stomach should not block healing");
-            TestFixtures.setState(player, 5, 3, 20, START_HEALTH, upset(1));
-            TestFixtures.check(helper, HealthRegen.blocksFoodHeal(player),
-                    "thirst should still block healing with only illness's gate off");
         });
         helper.succeed();
     }

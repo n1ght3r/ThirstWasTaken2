@@ -28,7 +28,7 @@ Vanilla hooks. Everything the mod cannot do through a Fabric API event lands her
 | Mixin | Target | Purpose |
 |---|---|---|
 | `PlayerMixin` | `causeFoodExhaustion` (HEAD), `hasEnoughFoodToDoExhaustiveManoeuvres` (`@ModifyReturnValue`, after 1.21.1); implements `ExhaustionTracker.Holder` | buffer hunger exhaustion for the thirst tick; block sprinting at thirst ≤ 6 through `ThirstManager.allowsSprinting`. Not `Player#canSprint`: that only asks whether a rider may sprint the player, and hooking it blocked nothing. On 1.21.1 the check lives on `LocalPlayer`, so `LocalPlayerMixin` in `src/client/java` gates it there, on both loaders |
-| `FoodDataMixin` | `FoodData#tick`, both `ServerPlayer#heal` call sites (`Player#heal` on 1.21.1); `FoodData#add`'s saturation | dehydration halts natural regen and refunds the food cost vanilla would have charged; Upset Stomach's saturation multiplier, read at the head of `tick` since `FoodData` has no player |
+| `FoodDataMixin` | `FoodData#tick`, both `ServerPlayer#heal` call sites (`Player#heal` on 1.21.1) | dehydration and Upset Stomach halt natural regen and refund the food cost vanilla would have charged |
 | `ItemStackMixin` | `use` (HEAD), `finishUsingItem` (HEAD), `addDetailsToTooltip` (TAIL); on 1.21.1 a `@WrapOperation` round the `appendHoverText` call in `getTooltipLines` | block plain water at full thirst; restore thirst on consume; append waterskin, purity and droplet lines |
 | `BottleItemMixin` | `BottleItem#use` | stamp sampled quality onto a bottle filled from a water block |
 | `BucketItemMixin` | `BucketItem#use` | stamp sampled quality onto a bucket filled from a water block |

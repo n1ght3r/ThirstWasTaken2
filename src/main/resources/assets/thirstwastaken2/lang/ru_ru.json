@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "Если выключено, на Мирной сложности жажда медленно восполняется, а не убывает.",
   "thirstwastaken2.config.dehydration_halts_health_regen": "Жажда стопорит реген",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Еда не лечит, пока шкала жажды ниже доли, заданной ниже.",
-  "thirstwastaken2.config.illness_halts_health_regen": "Болезнь стопорит реген",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "Ни еда, ни утоление не лечат при расстройстве желудка.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Лечение едой: мин. жажда",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "Насколько полной должна быть шкала жажды, чтобы еда лечила.",
   "thirstwastaken2.config.quenched_health_regen": "Лечение утолением",

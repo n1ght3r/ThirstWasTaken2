@@ -22,9 +22,15 @@ the EULA prompt, never opens a window, places each test in its own patch of a sc
 exits non-zero if any required test failed and writes a JUnit XML report to
 `versions/<version>/build/gametest/report.xml`.
 
-The scratch world, `run/<node>/gametest/world`, is reopened rather than made anew, so it grows by a
-player file per test on every run and passes 500 MB a node. Nothing reads it afterwards:
-`python tools/agent/clean.py <node>` deletes it, see [tools/agent/AGENTS.md](../../../tools/agent/AGENTS.md#cleaning-up).
+The runner would reopen its scratch world, `run/<node>/gametest/world` (`gametestserver` on NeoForge
+from 1.21.11), rather than make it anew, so `runGametest` deletes it first, with the config, in
+`gradle/shared.gradle.kts`. Kept, it grew by a player file per test on every run, and saving into tens
+of thousands of them made shutting the server down slower than the tests.
+
+A mock player stays on the server until something removes it, and every join and leave is sent to every
+player online. `TestFixtures.mockPlayer` removes the players of finished tests before it makes another,
+and a test that needs a player many times over reuses one rather than making a player apiece: 800 of
+them once made one test take 26 seconds and the shutdown a minute.
 
 This is an ordinary Gradle source set, not part of the mod. `thirstwastaken2_gametest` is its own
 small mod declared in `src/gametest/resources/fabric.mod.json`, and on NeoForge and Forge also in
@@ -144,13 +150,13 @@ cauldron bottle draw.
 | Class | Covers |
 |---|---|
 | `WaterFillingGameTest` | bottle and bucket filling, that each fill resamples the water, that an abandoned fill leaves nothing behind |
-| `WaterEffectsGameTest` | salt water, that bad water still quenches, quenched cut by grade and by Upset Stomach, Clean and Pure water, milk and honey (milk not curing Upset Stomach), boiling not desalinating |
+| `WaterEffectsGameTest` | salt water, that bad water still quenches, quenched cut by grade and left whole by Upset Stomach, Clean and Pure water, milk and honey, boiling not desalinating |
 | `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, grouped lines sharing one roll and ungrouped ones rolling apart, Upset Stomach extending by half up to 1.5 times and other effects up to twice (and not when switched off), the defaults (no Poison without Upset Stomach, Clean and Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in, a grouped Poison capped at its Upset Stomach |
-| `UpsetStomachGameTest` | Upset Stomach draining 4 and 8 thirst a minute, Nausea costing nothing on top of it, the saturation it cuts at I and II, and that it never hurts on its own |
-| `HealthRegenGameTest` | food healing at half the thirst bar and not below, Upset Stomach, the share as a setting, each switch lifting only its own gate, the refund on both heal paths; quenched healing once saturation is spent, at half speed for 3 exhaustion a heal, needing a full bar, half the food bar and no illness, and off at 0% |
-| `DrainGameTest` | a point a minute standing still, scaled by the global speed and hidden from `EXHAUSTION` listeners; Upset Stomach's 4 and 8 a minute whatever the climate; activity scaled by the climate, and the climate curve never falling as it warms |
+| `UpsetStomachGameTest` | Upset Stomach draining no thirst, Nausea still draining on top of it, saturation left whole, and that it never hurts on its own |
+| `HealthRegenGameTest` | food healing at half the thirst bar and not below, Upset Stomach, the share as a setting, dehydration's switch leaving Upset Stomach's gate, the refund on both heal paths; quenched healing once saturation is spent, at half speed for 3 exhaustion a heal, needing a full bar, half the food bar and no illness, and off at 0% |
+| `DrainGameTest` | a point a minute standing still, scaled by the global speed and hidden from `EXHAUSTION` listeners; Parched's 4 and 8 a minute whatever the climate; activity scaled by the climate, and the climate curve never falling as it warms |
 | `RecoveryGameTest` | water told apart from potions per stack, every container restoring the same serving, each grade's quenched, thirst over a full bar lost, the quenched cap, only Clean and Pure topping up a full bar, and tooltip rows showing the actual gain |
-| `CoveredWaterGameTest` | open water keeping its grade, a roof and leaves capping it at Murky, deep open water not covered by itself, stored water keeping its grade under a roof; and milk curing Poison but not Upset Stomach, honey the same |
+| `CoveredWaterGameTest` | open water keeping its grade, a roof and leaves capping it at Murky, deep open water not covered by itself, stored water keeping its grade under a roof; and milk curing Poison and Upset Stomach, honey only Poison |
 | `ConfigMigrationGameTest` | `defaultPurity`, `rainwaterPurity` and `dripstonePurity` read into the `*Quality` keys: legacy only, new only, both (the new wins), and saving only the new ones |
 | `WaterskinGameTest` | mixing, salinity, capacity, emptying |
 | `CanteenGameTest` | the copper canteen and iron flask: capacity, one sprite, boiling on a campfire through the real use path (complete, one step short, kept and restarted progress, soul campfire), salt, unlit and the waterskin not boiling, capacities from the config (1, 64, clamped, over a lowered capacity), both vessels in a furnace at 1, 4, 6 and 64 servings and their per-serving time, no smoker or campfire recipe, the crafting recipes (canteen, flask, three clay bowls, four-leather waterskin, iron-centred distiller boiler) |

@@ -213,9 +213,12 @@ Read as: chance, time, level.
 | Hard, Upset Stomach | 100%, 90 s, **II** | 85%, 60 s, **II** |
 | Hard, Poison | 50%, 30 s | 25%, 20 s |
 
-- **Upset Stomach** drains 4 thirst a minute at I and 8 at II, outside climate and Nourishment, scales
-  food saturation and incoming quenched by 0.5 at I and 0.25 at II, and blocks natural food healing
-  (`illnessHaltsHealthRegen`). Milk does not cure it (`MilkMixin`); milk and honey still cure Poison.
+- **Upset Stomach** always blocks natural healing, food's and quenched's, with no switch. It drains no
+  thirst and cuts no saturation or quenched. Every 80 ticks it rolls a cramp of 1 magic damage
+  (`effect/UpsetStomach`): Easy 15% / 25% at I / II, Normal 25% / 45%, Hard 40% / 60%, never taking
+  health below 10, 4 and 1. Fixed, no config. Like any damage, a cramp wakes a sleeper. Milk cures it,
+  as it cures Poison; honey cures only Poison.
+- **Parched** drains 4 thirst a minute at I and 8 at II, as illness: outside climate and Nourishment.
 - **Drinking again while ill** (`extendSicknessEffects`, on): Upset Stomach becomes
   `max(R, min(R + D / 2, 1.5 * D))` ticks for R left and D incoming; any other effect adds the line's
   time to what is left, up to twice the line's time. The higher level is kept. Off, vanilla's rule.

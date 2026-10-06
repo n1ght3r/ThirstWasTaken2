@@ -115,8 +115,6 @@
   "thirstwastaken2.config.thirst_depletion_in_peaceful.tooltip": "オフにすると、ピースフルでは渇きが減らずゆっくり回復します。",
   "thirstwastaken2.config.dehydration_halts_health_regen": "脱水で自然回復停止",
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "渇きゲージが下の割合を下回る間、食べ物では回復しません。",
-  "thirstwastaken2.config.illness_halts_health_regen": "病気で自然回復停止",
-  "thirstwastaken2.config.illness_halts_health_regen.tooltip": "腹痛の間は、食べ物でも潤いでも回復しません。",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "食べ物回復の最低渇き",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "食べ物で回復するのに必要な渇きゲージの割合です。",
   "thirstwastaken2.config.quenched_health_regen": "潤いによる回復",

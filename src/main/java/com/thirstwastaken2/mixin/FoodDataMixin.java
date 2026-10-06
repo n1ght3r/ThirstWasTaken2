@@ -1,27 +1,19 @@
 package com.thirstwastaken2.mixin;
 
 import com.thirstwastaken2.data.HealthRegen;
-import com.thirstwastaken2.effect.UpsetStomach;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Natural healing from food, through {@code HealthRegen}: dehydration and Upset Stomach stop it, the food
  * cost vanilla would have charged for a skipped heal is refunded so hunger is not silently drained, and
  * a heal that goes through gets the water reserve's bonus. As the original MixinFoodData, without its
  * slow heal for a nearly hydrated player.
- *
- * <p>Also cuts the saturation food gives while the player has Upset Stomach. {@code FoodData} does not
- * know its player, so the multiplier is read on each tick and applied by the next {@code add}.
  */
 @Mixin(FoodData.class)
 abstract class FoodDataMixin {
@@ -34,27 +26,6 @@ abstract class FoodDataMixin {
     @Shadow public abstract void addExhaustion(float amount);
 
     @Shadow public abstract float getSaturationLevel();
-
-    /** Upset Stomach's saturation multiplier as of the last tick. */
-    @Unique private float thirst$saturationScale = 1.0F;
-
-    @Inject(method = "tick", at = @At("HEAD"))
-    //? if >=1.21.2 {
-    private void thirst$readSaturationScale(ServerPlayer player, CallbackInfo info) {
-    //?} else
-    //private void thirst$readSaturationScale(Player player, CallbackInfo info) {
-        thirst$saturationScale = UpsetStomach.saturationScale(player);
-    }
-
-    // Before 1.20.5 food is added through eat(int, float), whose float is the saturation modifier the
-    // saturation is a multiple of, so scaling it scales the saturation the same.
-    //? if >=1.20.5 {
-    @ModifyVariable(method = "add", at = @At("HEAD"), argsOnly = true)
-    //?} else
-    //@ModifyVariable(method = "eat(IF)V", at = @At("HEAD"), argsOnly = true)
-    private float thirst$scaleSaturation(float saturation) {
-        return saturation * thirst$saturationScale;
-    }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", ordinal = 0, target = HEAL))
     //? if >=1.21.2 {
