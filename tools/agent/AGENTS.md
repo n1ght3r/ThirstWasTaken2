@@ -76,7 +76,7 @@ The script's docstring says what it touches.
 | Delete | Why it is safe |
 |---|---|
 | A world in `saves/` holding `.agent-world` | `new_world.py` made it and makes it again from nothing on the next run |
-| `run/<node>/gametest/world` | `runGametest` only ever adds to it: a player file per test per run (36,000 on one node) and chunks around each structure, over 500 MB a node |
+| `run/<node>/gametest/world` | `runGametest` deletes it and makes it again on every run; one left from a run is only disk |
 | `agent/<queue>/screenshots/`, `client.record` frames | Once the keepers are copied to `docs/public/screenshots/` or a GIF is made, the next capture writes them again. A recording is hundreds of PNGs |
 
 | Keep | Why |

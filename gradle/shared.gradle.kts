@@ -716,8 +716,17 @@ tasks.register<Copy>("buildAndCollect") {
  * between local runs keeps the file the last run saved, and a value already in that file is never
  * replaced by a newer default, so without this a local run would test the defaults of whichever version
  * first wrote it.
+ *
+ * The world goes too, for the same reason and for time. The runner reopens it rather than making it anew,
+ * so it kept every mock player any run had joined, tens of thousands of files, and saving into a
+ * directory that size made shutting the server down slower than the tests. `world` is the Fabric and
+ * Forge runners' and NeoForge 1.21.1's, `gametestserver` vanilla's own from 1.21.5.
  */
-val gametestConfig = rootProject.file("run/${project.name}/gametest/config/thirstwastaken2.json")
+val gametestDir = rootProject.file("run/${project.name}/gametest")
 tasks.matching { it.name == "runGametest" }.configureEach {
-    doFirst { gametestConfig.delete() }
+    doFirst {
+        gametestDir.resolve("config/thirstwastaken2.json").delete()
+        gametestDir.resolve("world").deleteRecursively()
+        gametestDir.resolve("gametestserver").deleteRecursively()
+    }
 }

@@ -25,8 +25,11 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Scaffolding shared by the gametests: readable assertions, a water source, and a player aimed at it. */
 final class TestFixtures {
@@ -115,9 +118,43 @@ final class TestFixtures {
      * and 1.21.11 and 26.1 do not have it at all. Funnelling every test through here suppresses
      * the warning once and makes the eventual migration a single edit. Each loader's
      * {@code MockPlayers} makes the call, since Forge 47 cannot take vanilla's player as it is.
+     *
+     * <p>Vanilla never takes a mock player off the server, so each one stayed until shutdown, and every
+     * join and leave is sent to every player online: with a thousand of them, leaving alone took longer
+     * than all the tests. Each call first removes the players of tests already done.
      */
     static ServerPlayer mockPlayer(GameTestHelper helper) {
-        return MockPlayers.create(helper);
+        removeFinishedPlayers();
+        ServerPlayer player = MockPlayers.create(helper);
+        JOINED.add(new Joined(helper, player));
+        return player;
+    }
+
+    /** The mock players still on the server, with the test that made each. Server thread only. */
+    private static final List<Joined> JOINED = new ArrayList<>();
+    private static Field testInfo;
+
+    private record Joined(GameTestHelper helper, ServerPlayer player) { }
+
+    private static void removeFinishedPlayers() {
+        JOINED.removeIf(joined -> {
+            if (!testInfo(joined.helper()).isDone()) return false;
+            joined.player().level().getServer().getPlayerList().remove(joined.player());
+            return true;
+        });
+    }
+
+    /** The helper's test, which it keeps private on every version; dev runs use Mojang's names. */
+    private static net.minecraft.gametest.framework.GameTestInfo testInfo(GameTestHelper helper) {
+        try {
+            if (testInfo == null) {
+                testInfo = GameTestHelper.class.getDeclaredField("testInfo");
+                testInfo.setAccessible(true);
+            }
+            return (net.minecraft.gametest.framework.GameTestInfo) testInfo.get(helper);
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("GameTestHelper#testInfo is missing", exception);
+        }
     }
 
     /** A survival player with a full hunger bar, so vanilla allows sprinting and charges exhaustion. */

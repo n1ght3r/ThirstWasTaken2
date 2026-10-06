@@ -7,9 +7,8 @@ With no node it goes through every run/<node>/. What it deletes, because the nex
 - **Worlds `new_world.py` made**, the ones holding a `.agent-world` file. `new_world.py` recreates a
   world from nothing on every run, so one kept between runs is only disk. `--world` limits this to one
   world, for cleaning up straight after a script.
-- **`gametest/world`**, which `runGametest` reopens on every run rather than making anew. Every test
-  adds a player file under a fresh UUID and generates chunks around its structure, so it only grows:
-  tens of thousands of player files and over 500 MB a node.
+- **`gametest/world`**, which `runGametest` deletes and makes again on every run, so the one a run
+  leaves behind is only disk.
 
 With `--screenshots` it also empties `agent/<queue>/screenshots/`: captures and `client.record`
 frames. Copy any keeper out first; the docs images live in docs/public/screenshots, not here.

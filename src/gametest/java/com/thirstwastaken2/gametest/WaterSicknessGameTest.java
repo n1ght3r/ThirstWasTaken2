@@ -124,11 +124,14 @@ public final class WaterSicknessGameTest {
     /** Upset Stomach and Poison share one roll by default, so Poison never comes without Upset Stomach. */
     @GameTest
     public void poisonOnlyEverComesWithUpsetStomach(GameTestHelper helper) {
+        // One player, cleared before each of the 800 drinks: a player apiece joined 800 to the server,
+        // and every join and leave is announced to all the others.
+        ServerPlayer player = TestFixtures.mockPlayer(helper);
         for (int grade = DIRTY; grade < CLEAN; grade++) {
             for (Difficulty difficulty : Difficulty.values()) {
                 for (int percent = 0; percent < 100; percent++) {
                     float roll = percent / 100.0F;
-                    ServerPlayer player = TestFixtures.mockPlayer(helper);
+                    player.removeAllEffects();
                     WaterSickness.drink(player, grade, difficulty, () -> roll);
                     boolean poisoned = Vanilla.getEffect(player, Vanilla.poison()) != null;
                     boolean upset = Vanilla.getEffect(player, ThirstEffects.UPSET_STOMACH) != null;
