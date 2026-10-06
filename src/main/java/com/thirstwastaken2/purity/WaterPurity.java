@@ -408,7 +408,7 @@ public final class WaterPurity {
     private static int purityColor(int purity) {
         return switch (purity) {
             case 0 -> 0xB0632E;
-            case 1 -> 0xBDB878;
+            case 1 -> 0xC2A878;
             case 2 -> 0x74B8E0;
             default -> 0x4FD6FF;
         };
