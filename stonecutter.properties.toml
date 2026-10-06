@@ -31,8 +31,8 @@ deps.serene_seasons = "GICZwCsE"
 # 0.0.1.1, the Fabric upload.
 deps.glitchcore = "25HLOiOl"
 # Kaleidoscope Cookery Refabricated; see [fabric."1.21.1"].
-# 1.6.0.1-fabric+mc1.20.1, the Fabric upload.
-deps.kaleidoscope_cookery = "qjnr9eXJ"
+# 1.6.0.3-fabric+mc1.20.1, the Fabric upload.
+deps.kaleidoscope_cookery = "iCin2rRE"
 # Forge Config API Port, which it requires here, only on the runClient classpath.
 # v8.0.3-1.20.1-Fabric, the Fabric upload.
 deps.forge_config_api_port = "HvR3IdRE"
@@ -114,8 +114,8 @@ deps.moonlight = "przKUDWo"
 # original, so one integration serves both. Pinned by Modrinth version id, since the Fabric uploads of
 # different Minecraft versions share one version number. See
 # docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
-# 1.6.0.1-fabric+mc1.21.1, the Fabric upload.
-deps.kaleidoscope_cookery = "6qH7u3em"
+# 1.6.0.3-fabric+mc1.21.1, the Fabric upload.
+deps.kaleidoscope_cookery = "pZfoi25M"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
 # v21.1.6-1.21.1-Fabric, the Fabric upload.
 deps.forge_config_api_port = "N5qzq0XV"
@@ -183,7 +183,7 @@ deps.glitchcore = "sux8kYHe"
 mod.mc_compat = "[1.21.1,1.21.2)"
 mod.mc_releases = ["1.21.1"]
 
-deps.neoforge = "21.1.255"
+deps.neoforge = "21.1.256"
 # 3.0.9+mc1.21, the NeoForge upload.
 deps.appleskin = "uAKA6Laj"
 deps.cloth_config = "15.0.140+neoforge"
@@ -198,12 +198,12 @@ deps.create = "UjX6dr61"
 # Sophisticated Core, whose upgrades keep water quality and take the Drinking upgrade. Its tanks move
 # fluid through IFluidHandler here and through NeoForge's transfer API from 1.21.11, so each generation
 # has its own source directory. See src/main/sophisticated/AGENTS.md.
-# 1.21.1-1.5.5.2363, the NeoForge upload.
-deps.sophisticated_core = "nSoNwJfm"
-# 1.21.1-3.26.7.2182, only on the runClient classpath, as the storage the upgrades go in.
-deps.sophisticated_backpacks = "Igmp9PwW"
-# 1.21.1-1.6.1.2147, only on the runClient classpath, to check the Drinking upgrade in a placed storage.
-deps.sophisticated_storage = "Hhf1IKFI"
+# 1.21.1-1.5.6.2374, the NeoForge upload.
+deps.sophisticated_core = "UE7sxOO1"
+# 1.21.1-3.26.8.2189, only on the runClient classpath, as the storage the upgrades go in.
+deps.sophisticated_backpacks = "VAovBzi4"
+# 1.21.1-1.6.2.2154, only on the runClient classpath, to check the Drinking upgrade in a placed storage.
+deps.sophisticated_storage = "UIIgwVBX"
 # Supplementaries and Moonlight Lib, the same integration the Fabric table builds; see there.
 # 1.21.1-3.9.9, the NeoForge upload.
 deps.supplementaries = "WrZWfRjP"
@@ -379,12 +379,12 @@ deps.appleskin = "i8MiVItH"
 deps.cloth_config = "26.1.154+neoforge"
 # The newest release; 26.1.11+neoforge is a beta.
 deps.jade = "26.1.10+neoforge"
-# 26.1.2-1.5.5.2364, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
-deps.sophisticated_core = "KLCJdT7E"
-# 26.1.2-3.26.8.2178, only on the runClient classpath.
-deps.sophisticated_backpacks = "dhlT6oy7"
-# 26.1.2-1.5.115.2143, only on the runClient classpath.
-deps.sophisticated_storage = "jv1WJVBY"
+# 26.1.2-1.5.6.2372, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
+deps.sophisticated_core = "CNfSb4lk"
+# 26.1.2-3.26.9.2186, only on the runClient classpath.
+deps.sophisticated_backpacks = "2Xu8ODqt"
+# 26.1.2-1.5.116.2151, only on the runClient classpath.
+deps.sophisticated_storage = "xtGVkBRS"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.7, the NeoForge upload.
 deps.serene_seasons = "atclxQCD"
@@ -446,12 +446,12 @@ deps.neoforge = "26.2.0.88"
 deps.appleskin = "slnk1Qah"
 deps.cloth_config = "26.2.155+neoforge"
 deps.jade = "26.2.10+neoforge"
-# 26.2-1.5.3.2361, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
-deps.sophisticated_core = "bFsy74dH"
-# 26.2-3.26.8.2179, only on the runClient classpath.
-deps.sophisticated_backpacks = "Z6VcOqjM"
-# 26.2-1.5.116.2144, only on the runClient classpath.
-deps.sophisticated_storage = "LlgRHf3e"
+# 26.2-1.5.4.2376, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
+deps.sophisticated_core = "HyyPa3VW"
+# 26.2-3.26.9.2187, only on the runClient classpath.
+deps.sophisticated_backpacks = "TSlHkFF9"
+# 26.2-1.5.117.2150, only on the runClient classpath.
+deps.sophisticated_storage = "wYnpIcM7"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.6, the NeoForge upload.
 deps.serene_seasons = "MZd2wAtJ"
@@ -470,7 +470,7 @@ mod.mc_releases = ["26.3"]
 [fabric."26.3.x"]
 mod.mc_compat = "~26.3"
 
-deps.fabric_api = "0.161.0+26.3"
+deps.fabric_api = "0.162.0+26.3"
 # The only Mod Menu upload built for 26.3 so far. A node stays on the channel its pinned version is on,
 # so update_mc_deps.py keeps offering betas here until a 21.0.0 release catches up.
 deps.modmenu = "21.0.0"
