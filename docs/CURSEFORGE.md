@@ -42,6 +42,7 @@
 ## Purification
 * **Boiling:** Smelt water bottles, bowls, or buckets in a furnace or over a campfire to raise their purity grade.
 * **Hanging Pots:** Hang a Copper or Iron Hanging Pot over a lit campfire to boil a bucket of water into Pure water.
+* **Copper Distiller:** A two-block still that turns any water Pure, sea water included. It burns furnace fuel and hoppers can keep it running.
 * **Rain and Dripstone:** Cauldrons placed under open rain or pointed dripstone automatically fill with clean water.
 
 <div align="center">
@@ -53,6 +54,19 @@
   <tr>
     <td align="center"><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/water/iron-hanging-pot.png" alt="Iron Hanging Pot boiling water over a campfire" width="300"></td>
     <td align="center"><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/water/furnace-clean-water.png" alt="Purifying Water" width="380"></td>
+  </tr>
+</table>
+</div>
+
+<div align="center">
+<table>
+  <tr>
+    <th align="center">Copper Distiller</th>
+    <th align="center">Screen and recipe</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/water/copper-distiller.png" alt="A Copper Distiller burning on the plains, Jade reading its boiler as Salty and its basin as Pure" width="400"></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/water/copper-distiller-gui.png" alt="The Copper Distiller's screen: a bucket of sea water poured in, coal burning, sea water in the boiler tank and Pure water in the basin tank, bottles filling" width="352"><br><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/copper-distiller-recipe.png" alt="The Distiller Boiler beside a Copper Pipe, the Brick Firebox under the boiler and the Cooling Tub under the pipe, make a Copper Distiller" width="352"><br><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity">How to craft its parts</a></td>
   </tr>
 </table>
 </div>

@@ -203,8 +203,21 @@ Works like the Copper Hanging Pot but boils slower: 6 seconds a serving.
 A two-block still that turns any water into Pure water, sea water included. It burns furnace fuel
 and runs on its own, so hoppers can keep it going.
 
+![A Copper Distiller up close, its fire burning: the boiler on its brick firebox, the swan neck pipe running over to the cooling tub, and the tap over the basin](/screenshots/water/copper-distiller-front.png)
+
 It is made of four parts: a Brick Firebox, a Distiller Boiler, a Cooling Tub and a Copper Pipe.
+
+![Three copper ingots in a row make four Copper Pipes](/screenshots/recipes/copper-pipe-recipe.png)
+
+![Seven copper ingots in a ring round a gold ingot, a Copper Pipe in the middle of the top row, make a Distiller Boiler](/screenshots/recipes/distiller-boiler-recipe.png)
+
+![Five Copper Pipes around a barrel, a cauldron below, make a Cooling Tub](/screenshots/recipes/cooling-tub-recipe.png)
+
+![Three smooth stone slabs on top, a campfire in a ring of bricks below, make a Brick Firebox](/screenshots/recipes/brick-firebox-recipe.png)
+
 Craft the four together into a whole distiller, or build it in the world:
+
+![The Distiller Boiler beside a Copper Pipe, the Brick Firebox under the boiler and the Cooling Tub under the pipe, make a Copper Distiller](/screenshots/recipes/copper-distiller-recipe.png)
 
 1. Place the Distiller Boiler on top of the Brick Firebox.
 2. Place the Cooling Tub to its right, as seen from the front, facing the same way.
@@ -212,6 +225,8 @@ Craft the four together into a whole distiller, or build it in the world:
 
 Before it works, fill the cooling tub once with any water container. Sea water will do. Without it
 nothing condenses, and the arrow in the distiller's screen turns red.
+
+![The Copper Distiller's screen: an emptied bucket in the water slot, coal burning, sea water in the boiler tank, Pure water in the basin tank, and a bottle filled from it](/screenshots/water/copper-distiller-gui.png)
 
 - Right-click with an empty hand to open its screen: water in, fuel, an empty container to fill, and
   the two tanks.
@@ -224,6 +239,10 @@ nothing condenses, and the arrow in the distiller's screen turns red.
 - Hoppers feed water in from above and fuel or empty containers from the sides, and take filled
   containers and salt out from below.
 - Breaking it drops the distiller and whatever its slots held. The water in its tanks is lost.
+
+With Jade installed, looking at it shows what each tank holds and its grade.
+
+![Jade on a Copper Distiller: two drinks of Salty water in the boiler and four of Pure water in the basin](/screenshots/water/copper-distiller.png)
 
 ### Salt
 

@@ -1,0 +1,182 @@
+// The Copper Distiller docs images: docs/public/screenshots/water/copper-distiller.png, the machine at
+// work on the plains with Jade reading its tanks; copper-distiller-front.png, the same from the front with
+// the HUD hidden while the fire burns, close up like the hanging pot's; copper-distiller-gui.png, its screen distilling sea
+// water; and the five crafting grids in docs/public/screenshots/recipes/ (copper-pipe, distiller-boiler,
+// cooling-tub, brick-firebox, copper-distiller), each with the result's name drawn beside it by
+// tools/generate_docs_images.py's tooltip() from the "*Tooltip" answers. Shot on 26.2 on the plains at
+// -256 72 192, the hanging pot's spot, in a copy of the dev world's seed:
+//     python tools/agent/new_world.py 26.2.x DistillerShots --from "New World"
+//     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/distiller.jsonl -Pquickplay=DistillerShots
+// The machine faces north, the boiler at -256 and the tub to its west; the camera stands north of it.
+// tp sets the feet; the eye is 1.62 above, so the scene's camera stands on the ground for Jade to read the
+// boiler. Keep the capture with the most of the machine in frame. The "*Placed" checks have to say "Test passed".
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "quiet", "command": "server.command", "args": {"command": "gamerule sendCommandFeedback false"}}
+{"id": "spectator", "command": "server.command", "args": {"command": "gamemode spectator @p"}}
+{"id": "scene", "command": "server.command", "args": {"command": "tp @p -256.0 73.6 188.6 0 18"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set day"}}
+{"id": "hold", "command": "server.command", "args": {"command": "gamerule advance_time false"}}
+{"id": "clear", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "peaceful", "command": "server.command", "args": {"command": "difficulty peaceful"}}
+
+// Grass and flowers round the machine would hide its base; the ground itself stays.
+{"id": "space", "command": "server.command", "args": {"command": "fill -259 72 188 -253 75 194 minecraft:air replace #minecraft:replaceable"}}
+{"id": "boiler", "command": "server.command", "args": {"command": "setblock -256 72 192 thirstwastaken2:copper_distiller[facing=north,part=boiler,piped=true,cooled=true]"}}
+{"id": "tub", "command": "server.command", "args": {"command": "setblock -257 72 192 thirstwastaken2:copper_distiller[facing=north,part=tub,piped=true,cooled=true]"}}
+{"id": "boilerPlaced", "command": "server.command", "args": {"command": "execute if block -256 72 192 thirstwastaken2:copper_distiller[part=boiler]"}}
+{"id": "tubPlaced", "command": "server.command", "args": {"command": "execute if block -257 72 192 thirstwastaken2:copper_distiller[part=tub]"}}
+
+// Sea water and coal in: a few servings on, both tanks hold water and the fire burns.
+{"id": "coal", "command": "server.command", "args": {"command": "item replace block -256 72 192 container.1 with minecraft:coal 8"}}
+{"id": "sea1", "command": "server.command", "args": {"command": "item replace block -256 72 192 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "pour1", "command": "wait", "args": {"ticks": 40}}
+{"id": "sea2", "command": "server.command", "args": {"command": "item replace block -256 72 192 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+
+// The clean front shot: HUD hidden, so no Jade and no crosshair, while the fire still burns.
+{"id": "boiling", "command": "wait", "args": {"ticks": 120}}
+{"id": "aimFront", "command": "server.command", "args": {"command": "tp @p -256.0 72.28 190.4 0 24"}}
+{"id": "settleFront", "command": "wait", "args": {"ticks": 40}}
+{"id": "hideHud", "command": "client.hud.toggle"}
+{"id": "front1", "command": "client.capture", "args": {"name": "copper-distiller-front-1"}}
+{"id": "gapFront", "command": "wait", "args": {"ticks": 30}}
+{"id": "front2", "command": "client.capture", "args": {"name": "copper-distiller-front-2"}}
+{"id": "gapFront2", "command": "wait", "args": {"ticks": 30}}
+{"id": "front3", "command": "client.capture", "args": {"name": "copper-distiller-front-3"}}
+{"id": "showHud", "command": "client.hud.toggle"}
+{"id": "run", "command": "wait", "args": {"ticks": 400}}
+{"id": "aimScene", "command": "server.command", "args": {"command": "tp @p -256.0 72.0 189.0 -9.5 19"}}
+{"id": "settleScene", "command": "wait", "args": {"ticks": 40}}
+{"id": "scene1", "command": "client.capture", "args": {"name": "copper-distiller-1"}}
+{"id": "gapScene", "command": "wait", "args": {"ticks": 30}}
+{"id": "scene2", "command": "client.capture", "args": {"name": "copper-distiller-2"}}
+{"id": "sideView", "command": "server.command", "args": {"command": "tp @p -256.3 72.2 188.4 -8 19"}}
+{"id": "settleSide", "command": "wait", "args": {"ticks": 40}}
+{"id": "scene3", "command": "client.capture", "args": {"name": "copper-distiller-side"}}
+
+// The screen: a survival player opens it with an empty hand, looking at the boiler's front.
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "chatFade", "command": "wait", "args": {"ticks": 220}}
+{"id": "standOn", "command": "server.command", "args": {"command": "fill -257 71 188 -254 71 190 minecraft:grass_block keep"}}
+{"id": "bottles", "command": "server.command", "args": {"command": "item replace block -256 72 192 container.2 with minecraft:glass_bottle 3"}}
+{"id": "seaGui", "command": "server.command", "args": {"command": "item replace block -256 72 192 container.0 with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "emptyHand", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "aimGui", "command": "server.command", "args": {"command": "tp @p -255.5 72 189.5 0 20"}}
+{"id": "settleGui", "command": "wait", "args": {"ticks": 20}}
+{"id": "pressGui", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pressedGui", "command": "wait", "args": {"ticks": 3}}
+{"id": "releaseGui", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "opened", "command": "wait", "args": {"ticks": 120}}
+{"id": "screen", "command": "client.screen"}
+{"id": "guiSlots", "command": "client.slots"}
+{"id": "gui1", "command": "client.capture", "args": {"name": "copper-distiller-gui-1"}}
+{"id": "gapGui", "command": "wait", "args": {"ticks": 15}}
+{"id": "gui2", "command": "client.capture", "args": {"name": "copper-distiller-gui-2"}}
+{"id": "guiClose", "command": "client.screen", "args": {"open": "none"}}
+
+// The five recipes in a crafting table beside the player. Grid slots are 1 to 9, row by row. The distiller's
+// four parts sit as the machine stands: the boiler on the firebox, the pipe beside it over the tub.
+{"id": "table", "command": "server.command", "args": {"command": "setblock -254 72 189 minecraft:crafting_table"}}
+{"id": "aimTable", "command": "server.command", "args": {"command": "tp @p -255.5 72 189.5 -90 35"}}
+{"id": "pipeClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pipeGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 3"}}
+{"id": "pipeSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "pipeOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "pipeOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "pipeTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "pipePut0_4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "pipePut0_5", "command": "client.slot", "args": {"slot": 5, "button": 1}}
+{"id": "pipePut0_6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "pipeGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:copper_pipe"]]}
+{"id": "pipeRecipe", "command": "client.capture", "args": {"name": "pipe-recipe"}}
+{"id": "pipeTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_pipe"}}
+{"id": "pipeClose", "command": "client.screen", "args": {"open": "none"}}
+{"id": "boilerClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "boilerGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 7"}}
+{"id": "boilerGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with thirstwastaken2:copper_pipe 1"}}
+{"id": "boilerGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:gold_ingot 1"}}
+{"id": "boilerSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "boilerOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "boilerOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "boilerTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "boilerPut0_1", "command": "client.slot", "args": {"slot": 1, "button": 1}}
+{"id": "boilerPut0_3", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "boilerPut0_4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "boilerPut0_6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "boilerPut0_7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
+{"id": "boilerPut0_8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "boilerPut0_9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
+{"id": "boilerTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "boilerPut1_2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "boilerTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "boilerPut2_5", "command": "client.slot", "args": {"slot": 5}}
+{"id": "boilerGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:distiller_boiler"]]}
+{"id": "boilerRecipe", "command": "client.capture", "args": {"name": "boiler-recipe"}}
+{"id": "boilerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:distiller_boiler"}}
+{"id": "boilerClose", "command": "client.screen", "args": {"open": "none"}}
+{"id": "tubClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "tubGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with thirstwastaken2:copper_pipe 5"}}
+{"id": "tubGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:barrel 1"}}
+{"id": "tubGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:cauldron 1"}}
+{"id": "tubSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tubOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "tubOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "tubTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "tubPut0_1", "command": "client.slot", "args": {"slot": 1, "button": 1}}
+{"id": "tubPut0_2", "command": "client.slot", "args": {"slot": 2, "button": 1}}
+{"id": "tubPut0_3", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "tubPut0_4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "tubPut0_6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "tubTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "tubPut1_5", "command": "client.slot", "args": {"slot": 5}}
+{"id": "tubTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "tubPut2_8", "command": "client.slot", "args": {"slot": 8}}
+{"id": "tubGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:cooling_tub"]]}
+{"id": "tubRecipe", "command": "client.capture", "args": {"name": "tub-recipe"}}
+{"id": "tubTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:cooling_tub"}}
+{"id": "tubClose", "command": "client.screen", "args": {"open": "none"}}
+{"id": "fireboxClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "fireboxGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:smooth_stone_slab 3"}}
+{"id": "fireboxGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:bricks 5"}}
+{"id": "fireboxGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:campfire 1"}}
+{"id": "fireboxSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "fireboxOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "fireboxOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "fireboxTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "fireboxPut0_1", "command": "client.slot", "args": {"slot": 1, "button": 1}}
+{"id": "fireboxPut0_2", "command": "client.slot", "args": {"slot": 2, "button": 1}}
+{"id": "fireboxPut0_3", "command": "client.slot", "args": {"slot": 3, "button": 1}}
+{"id": "fireboxTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "fireboxPut1_4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "fireboxPut1_6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "fireboxPut1_7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
+{"id": "fireboxPut1_8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "fireboxPut1_9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
+{"id": "fireboxTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "fireboxPut2_5", "command": "client.slot", "args": {"slot": 5}}
+{"id": "fireboxGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:brick_firebox"]]}
+{"id": "fireboxRecipe", "command": "client.capture", "args": {"name": "firebox-recipe"}}
+{"id": "fireboxTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:brick_firebox"}}
+{"id": "fireboxClose", "command": "client.screen", "args": {"open": "none"}}
+{"id": "distillerClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "distillerGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with thirstwastaken2:distiller_boiler 1"}}
+{"id": "distillerGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with thirstwastaken2:copper_pipe 1"}}
+{"id": "distillerGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with thirstwastaken2:brick_firebox 1"}}
+{"id": "distillerGive3", "command": "server.command", "args": {"command": "item replace entity @p container.12 with thirstwastaken2:cooling_tub 1"}}
+{"id": "distillerSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "distillerOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "distillerOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "distillerTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "distillerPut0_4", "command": "client.slot", "args": {"slot": 4}}
+{"id": "distillerTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "distillerPut1_5", "command": "client.slot", "args": {"slot": 5}}
+{"id": "distillerTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "distillerPut2_7", "command": "client.slot", "args": {"slot": 7}}
+{"id": "distillerTake3", "command": "client.slot", "args": {"inventory": 12}}
+{"id": "distillerPut3_8", "command": "client.slot", "args": {"slot": 8}}
+{"id": "distillerGrid", "command": "client.slots", "checks": [["result.slots.0.item", "==", "thirstwastaken2:copper_distiller"]]}
+{"id": "distillerRecipe", "command": "client.capture", "args": {"name": "distiller-recipe"}}
+{"id": "distillerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_distiller"}}
+{"id": "distillerClose", "command": "client.screen", "args": {"open": "none"}}
