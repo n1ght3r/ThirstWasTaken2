@@ -9,8 +9,6 @@ Fabric and NeoForge, Minecraft 1.21.1, with ![](https://cdn.modrinth.com/data/Gy
 version is no longer updated and is not supported.
 :::
 
-![A palm bar with three cocktails on a beach, bar stools, deck chairs, and a cocktail on a table under a parasol, the sea and palm trees behind](/screenshots/integrations/beachparty/beachparty-bar.png)
-
 ## Placed cocktails
 
 A cocktail placed down is sipped three times before the glass is empty. Each sip restores a third of

@@ -9,8 +9,6 @@ Fabric and NeoForge, Minecraft 1.21.1, with ![](https://cdn.modrinth.com/data/qw
 is not supported.
 :::
 
-![A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot](/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png)
-
 ## Kitchen sinks
 
 Candlelight's kitchen sinks fill from nothing, as they always have. The water they give, in a bottle

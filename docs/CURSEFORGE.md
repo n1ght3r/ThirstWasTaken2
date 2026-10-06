@@ -172,48 +172,21 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 
 <table>
   <tr>
-    <td width="55%">
-      <img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.
-    </td>
-    <td width="45%">
-      <img alt="A Timber Well and a Water Trough, both full of water, on a sandy shore" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/farm-and-charm-well.png" width="100%">
-    </td>
+    <td width="45%"><img alt="Let's Do: Farm &amp; Charm icon" src="https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/">Let's Do: Farm &amp; Charm</a><br><i>1.21.1 Fabric and NeoForge</i></td>
+    <td width="55%">Teas and soups restore thirst. A bucket from the Timber Well gets the grade of the groundwater below it, and water from a Water Trough is Murky, so neither is a free source of clean water.</td>
   </tr>
   <tr>
-    <td width="55%">
-      <img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a></b><br>
-      <i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i><br><br>
-      Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Candlelight kitchen sink full of water between counters, beside a stove with a cooking pot" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farm-and-charm/candlelight-kitchen-sink.png" width="100%">
-    </td>
+    <td width="45%"><img alt="Let's Do: Candlelight icon" src="https://cdn.modrinth.com/data/qwbArkQk/5e0770c8da0fab82a70bc9c3913c8d3996c53345_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farm-and-charm/candlelight">Let's Do: Candlelight</a><br><i>1.21.1 Fabric and NeoForge, with Farm &amp; Charm</i></td>
+    <td width="55%">Soups, salads and chocolate mousse restore thirst. Kitchen sinks still fill on their own, but their water is Murky and needs boiling, and they refuse sea water.</td>
   </tr>
   <tr>
-    <td width="55%">
-      <img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Teas and coffees restore thirst, also when drunk from a placed Jug. The Tea Kettle brews nothing from sea water.
-    </td>
-    <td width="45%">
-      <img alt="A Tea Kettle on a stove in a meadow, beside a Jug and cups of tea on barrels and a row of tea bushes" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/herbalbrews/herbalbrews-tea-garden.png" width="100%">
-    </td>
+    <td width="45%"><img alt="Let's Do: HerbalBrews icon" src="https://cdn.modrinth.com/data/Eh11TaTm/cea48ad39e9323e9e0f5354ee1d4c160f46b50be_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/herbalbrews">Let's Do: HerbalBrews</a><br><i>1.21.1 Fabric and NeoForge</i></td>
+    <td width="55%">Teas and coffees restore thirst, also when drunk from a placed Jug. The Tea Kettle brews nothing from sea water.</td>
   </tr>
   <tr>
-    <td width="55%">
-      <img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a></b><br>
-      <i>1.21.1 Fabric and NeoForge</i><br><br>
-      Cocktails and open coconuts restore thirst. A placed cocktail gives three sips, each a third of the glass.
-    </td>
-    <td width="45%">
-      <img alt="A palm bar with cocktails on a beach, deck chairs and a parasol, the sea and palm trees behind" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/beachparty/beachparty-bar.png" width="100%">
-    </td>
+    <td width="45%"><img alt="Let's Do: Beachparty icon" src="https://cdn.modrinth.com/data/GyKzAh3l/41b9b45c365ecd55aced04bcd22af93878f766a0_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/beachparty">Let's Do: Beachparty</a><br><i>1.21.1 Fabric and NeoForge</i></td>
+    <td width="55%">Cocktails and open coconuts restore thirst. A placed cocktail gives three sips, each a third of the glass.</td>
   </tr>
-</table>
-
-<table>
   <tr>
     <td width="45%"><img alt="Let's Do: Vinery icon" src="https://cdn.modrinth.com/data/1DWmBJVA/029aec55be4d860ba0aede4939dd93332b6dafad_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/vinery">Let's Do: Vinery</a><br><i>1.21.1 Fabric and NeoForge</i></td>
     <td width="55%">Its juices, wines, grapes and cherries restore thirst, wine less than the juice it is made from.</td>

@@ -8,8 +8,6 @@ Fabric and NeoForge, Minecraft 1.21.1, with ![](https://cdn.modrinth.com/data/HJ
 1.1.26, which needs Architectury API. Its 1.20.1 version is no longer updated and is not supported.
 :::
 
-![A Timber Well and a Water Trough, both full of water, on a sandy shore](/screenshots/integrations/farm-and-charm/farm-and-charm-well.png)
-
 ## Timber Well
 
 A Timber Well pumps groundwater from a water source up to six blocks below it. A bucket drawn from it

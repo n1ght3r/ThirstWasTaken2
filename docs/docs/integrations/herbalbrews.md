@@ -8,8 +8,6 @@ Fabric and NeoForge, Minecraft 1.21.1, with ![](https://cdn.modrinth.com/data/Eh
 1.1.4, which needs Architectury API. Its 1.20.1 version is no longer updated and is not supported.
 :::
 
-![A Tea Kettle and a Copper Tea Kettle on a stove in a meadow, beside a Jug and cups of tea on barrels and a row of tea bushes](/screenshots/integrations/herbalbrews/herbalbrews-tea-garden.png)
-
 ## Tea Kettle
 
 The Tea Kettle takes a water bucket or a water bottle in its water slot. Any grade of fresh water works,
