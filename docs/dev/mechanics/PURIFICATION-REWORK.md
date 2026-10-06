@@ -1,7 +1,11 @@
 # Purification and drinking balance
 
-**Status: planned.** Target behavior below; [WATER-REFERENCE.md](WATER-REFERENCE.md) describes the
-implemented game. Balance defaults require playtesting.
+**Status: implemented** (2026-10-06), uncommitted; balance defaults still need the playtests under
+[Validation and tuning](#validation-and-tuning). [WATER-REFERENCE.md](WATER-REFERENCE.md) describes the
+game as built. Three choices below were taken back during implementation, at the maintainer's call,
+and are marked where they stand: **water bottles do not stack**, **drinking by hand stays a sip per
+click**, and **no water sprite is recoloured**. The Waterskin's recipe became four leather, a choice
+of the maintainer's rather than the cost table's.
 
 ## Treatment rules
 
@@ -35,17 +39,19 @@ Progression: collect water, boil to **Clean**, then distil to **Pure**.
 Use **water quality** in player-facing text. Grades: **Dirty, Murky, Clean, Pure**; salt is separate.
 Pure is a game grade, not a claim that distilled water is healthier than other safe water.
 
-| Grade | Tooltip | Water sprite |
-|---|---|---|
-| Dirty | `0xB0632E` | `0x5E3E20` |
-| Murky | `0xBDB878` | `0x808C4C` |
-| Clean | `0x74B8E0` | `0x3F76E4` |
-| Pure | `0x4FD6FF` | `0x3FB4E8` |
-| Salt | `0xE6DFC8` | `0x25817A` |
+| Grade | Tooltip |
+|---|---|
+| Dirty | `0xB0632E` |
+| Murky | `0xBDB878` |
+| Clean | `0x74B8E0` |
+| Pure | `0x4FD6FF` |
+| Salt | `0xE6DFC8` |
 
-Recolour water only in the four bowl and four animated hanging-pot textures; preserve shading.
-Keep Clean's existing tooltip colour (`0x74B8E0`); do not recolour that tooltip. Check Clean versus
-Pure in game, including colour-blind readability and tooltip contrast.
+Keep Clean's existing tooltip colour (`0x74B8E0`). Check Clean versus Pure in game, including
+colour-blind readability and tooltip contrast.
+
+**Taken back:** the bowl and hanging-pot water sprites were recoloured to a new palette and then put
+back. They keep their original colours; only the tooltip colours above changed (Murky's).
 
 | Rename | Target |
 |---|---|
@@ -105,12 +111,22 @@ Drinking when six points are missing makes full use of a serving; early top-ups 
 Pure gives 25% more total hydration per serving than Clean (10 versus 8), not twice the travel time.
 That comparison assumes room for both gains and excludes healing, illness and other food or drink.
 
-**Drinking by hand:** 6 thirst, zero quenched, 32 uninterrupted ticks, one sickness roll on completion.
+**Taken back: drinking by hand stays as it was**, a sip of 3 thirst and 2 base quenched cut by the
+grade, one per click, with its sickness roll. The timed drink below was built and then removed.
+
+~~**Drinking by hand:** 6 thirst, zero quenched, 32 uninterrupted ticks, one sickness roll on completion.
 Cancel on moving out of reach, losing the water target or releasing use. No immediate gain on click,
 no extra offhand sip, and no thirst overflow. This remains a free local fallback without instant
-combat recovery or a reason to carry no water. It does not consume the world source.
+combat recovery or a reason to carry no water. It does not consume the world source.~~
 
 ### Health and drain
+
+**Taken back: healing.** The gate and the 25% reserve bonus below were built, then replaced at the
+maintainer's call by something close to the original's independent heal: food heals while the thirst
+bar is at `foodHealMinThirstPercent` (50%) or more; quenched heals on its own, at `quenchedHealthRegen`
+(0.5) of saturation's speed, with a full thirst bar, the food bar at `quenchedHealMinFoodPercent` (50%)
+or more and **only once saturation is spent**, so the two take turns; Upset Stomach stops both. The
+healing bullets below are the superseded design; the drain ones stand.
 
 - Natural food healing requires **20 thirst, quenched above zero, and no Upset Stomach**. There is
   no slow-heal exception below those thresholds. Apply this gate to both saturation and hunger
@@ -205,23 +221,26 @@ Servings per slot counts a filled stack. All water drinks use the shared 6 / 4 b
 
 | Container | Craft cost | Servings per slot | Clean / Pure total hydration | Role |
 |---|---|---|---|---|
-| Water bottle | 3 glass for 3 bottles | 3 (3 bottles) | 24 / 30 | Stackable supply, sharing, brewing |
-| Terracotta Water Bowl | 3 clay balls for 3 clay bowls, each fired into one bowl | 3 (3 bowls) | 24 / 30 | Stackable clay alternative, sharing |
-| Waterskin | 2 leather + 1 string | 4 (one skin) | 32 / 40 | One vessel to fill, no separate empties |
+| Water bottle | 3 glass for 3 bottles | 1 (does not stack) | 8 / 10 | Vanilla's, sharing, brewing |
+| Terracotta Water Bowl | 3 clay balls for 3 clay bowls, each fired into one bowl | 3 (3 bowls) | 24 / 30 | Stackable supply, sharing |
+| Waterskin | 4 leather | 4 (one skin) | 32 / 40 | One vessel to fill, no separate empties |
 | Copper Canteen | 3 copper ingots + 1 string | 4 (one canteen) | 32 / 40 | Fast field treatment without leather |
 | Iron Flask | 5 iron ingots + 1 iron nugget | 6 (one flask) | 48 / 60 | Longer trips, no leather/string requirement |
 | Water bucket | 3 iron ingots | 3 for closed transfers | Cannot drink directly | Transport and world placement |
 
 Totals are nominal sums over spaced drinks, not what the player's bars store at once.
 
-- Filled bowls and **plain water bottles stack to 3 by default**, only when all their data match, including
-  quality and salt. Potions, splash/lingering potions and tipped arrows keep their own stack rules.
-  Empty bowls/bottles keep their existing stack sizes; skins, canteens and flasks remain unstackable.
-  Each drink consumes one serving and returns exactly one empty bowl/bottle. A partially drunk stack
-  needs room for its empties. Fill stacked empties one at a time without duplication or item loss.
+- Filled bowls **stack to 3 by default**, only when all their data match, including quality and salt.
+  Empty bowls keep their stack size; skins, canteens and flasks remain unstackable. Each drink
+  consumes one serving and returns exactly one empty bowl. Fill stacked empties one at a time without
+  duplication or item loss.
+- **Taken back: water bottles do not stack.** They stacked to 3 through a per-stack
+  `max_stack_size`, then it was removed: a stacking potion surprises other mods' brewing, storage and
+  automation code. Bottles stay vanilla's. (Hearth and Harvest stacks plain water bottles itself; see
+  its integration plan.)
 - Default carried capacities are **4/4/6** for skin/canteen/flask. A skin carries one more serving
-  than a bowl/bottle stack and creates no separate empties. Copper adds field boiling at equal
-  capacity; iron carries twice a bowl/bottle stack and 50% more than copper. Three crafted clay bowls
+  than a bowl stack and creates no separate empties. Copper adds field boiling at equal
+  capacity; iron carries twice a bowl stack and 50% more than copper. Three crafted clay bowls
   become three reusable fired bowls, exactly one default filled stack. Recipe yield stays fixed.
 - Longer autonomy rewards preparation. Do not increase drain to cancel the stack buff: untreated
   water remains dangerous, healing still spends reserves, and every carried serving must be treated.
@@ -243,7 +262,6 @@ do not silently change another setting to preserve the default progression.
 
 | Setting | Default | Controls |
 |---|---|---|
-| `waterBottleStackSize` | 3 | Filled plain water bottles per stack |
 | `terracottaWaterBowlStackSize` | 3 | Filled Terracotta Water Bowls per stack |
 | `waterskinCapacity` | 4 | Servings in one Waterskin |
 | `copperCanteenCapacity` | 4 | Servings in one Copper Canteen |
@@ -252,7 +270,7 @@ do not silently change another setting to preserve the default progression.
 | `ironHangingPotCapacity` | 6 | Servings in one Iron Hanging Pot |
 | `distillerTankServings` | 9 | Servings in each distiller tank |
 
-- Stack size and servings are different: a bowl or bottle still holds one serving; a carried vessel
+- Stack size and servings are different: a bowl still holds one serving; a carried vessel
   still stacks to one. Bucket volume stays three servings, independent of capacity configuration.
 - Capacity changes never grant or delete water. An over-capacity saved vessel can drain but takes
   no additional water until it has room. A tank smaller than three cannot accept a whole bucket:
@@ -282,7 +300,7 @@ costs copper, iron, fired clay and assembly, so a player settling by the sea nee
 The table shows default capacities. Treatment time scales with actual servings, not maximum capacity:
 four drinks in a canteen take 8 s even if its configured capacity is 64. A default full flask takes
 18 s. Higher-capacity packs can use unattended furnace preparation or treated storage. A default
-stack of three bowls/bottles is three furnace/smoker operations (24 s / 12 s), never one operation
+stack of three bowls is three furnace/smoker operations (24 s / 12 s), never one operation
 treating the whole stack. Pots offer fuel-free unattended batches; capacity settings do not change
 per-serving throughput or fuel cost.
 
@@ -317,6 +335,7 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
   by itself enable natural healing with an empty water reserve. Milk-based prepared drinks follow
   their recipe category, not an automatic Pure-water bonus.
 - Prepared soups and non-alcoholic crafted drinks can supply reserve: target **6 thirst / 4 quenched**
+  (also `drinkTagValue` and the keyword drink and soup values; keyword fruit is 2 / 0)
   per completed serving, gated on actual recipes/ingredients. They are valid preparation, not raw
   cave water. Audit known integrations' values and stack sizes before shipping; cheap juices must
   not also inherit 8 / 13 recovery merely because they are tagged as drinks. Do not change foreign
@@ -335,9 +354,12 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
 
 ## Implementation
 
+Step by step, with where the code goes and the performance budget each step must keep:
+[PURIFICATION-REWORK-IMPLEMENTATION.md](PURIFICATION-REWORK-IMPLEMENTATION.md).
+
 1. **Names and visuals:** update quality keys, config widgets, Sophisticated UI, the three renamed
-   JSON keys and their migration, and all nine lang files. Vietnamese: "Sạch", "Chất lượng nước". Recolour eight water
-   textures and check readability in a client; keep Clean's tooltip colour. Preserve persisted/public identifiers listed above.
+   JSON keys and their migration, and all nine lang files. Vietnamese: "Sạch", "Chất lượng nước". The water textures keep their
+   colours (taken back); keep Clean's tooltip colour. Preserve persisted/public identifiers listed above.
 2. **Recovery:** add configurable plain-water values and a stack-aware lookup, update own vessel
    defaults and required-value insertion, food/milk/prepared-drink defaults and integration categories.
    Remove hydration overflow without breaking existing public signatures or event cancellation;
@@ -357,12 +379,9 @@ Recipe XP stays zero for water treatment. No water cooking recipes in vanilla ca
    Implement the covered-water grade cap in the sampling path, with platform seams for sky checks.
    Keep unrelated vanilla Nausea behavior; its drain is illness, not activity. Update sickness docs.
 5. **Containers:** configurable capacities and filled stack limits from the table, all 1 to 64,
-   with default carried capacities 4/4/6 and bowl/bottle stacks of three. Update skin models and
+   with default carried capacities 4/4/6 and bowl stacks of three (bottles: taken back, see above). Update skin models and
    saved/network bounds, config sanitation, widgets/reset/lang and client/server agreement.
-   Implement the bottle exception per stack through version/loader seams, not a global
-   `PotionItem` stack-size change. Audit drinking, filling, pouring, dispensers, hoppers and returns.
-   Brewing bottle slots accept one bottle each, including shift-click/hopper insertion: a water
-   stack must never become multiple potions for one ingredient, lose bottles or leave overstacked potions.
+   Audit drinking, filling, pouring, dispensers, hoppers and returns for stacked bowls.
    Pot capacities default to three/six and support 64. Do not expand the level-by-boil-progress
    blockstate product to that range: store exact contents/progress in a block entity with bounded
    visual states, migrating existing pot states without water loss. Audit rendering, Jade, transfers
@@ -418,7 +437,7 @@ rates; validate real runs before claiming travel times.
 - Anti-bypass: steak/fruit plus repeated cave water cannot restore natural healing during Upset;
   food overflow creates no reserve. Milk plus raw water is not an illness cure loop. Test caves,
   surface water under roofs/trees, placed sources, stored treated water and tagged Pure springs.
-- Containers: default stacks of three bowls/water bottles, quality separation, returns, legacy saves, high
+- Containers: default stacks of three bowls, bottles not stacking, quality separation, returns, legacy saves, high
   serving counts and partial fills through every loader's fluid API, including inventory full.
   Test brewing with manual/shift-click/hopper insertion, potions retaining their stack limits,
   dispensers and one-item cooking/consumption. Verify the three-serving stack and carried vessels restore
@@ -436,7 +455,7 @@ rates; validate real runs before claiming travel times.
 - Include sparse leather/string spawns, ocean starts, multiplayer sharing, bucket refill points,
   dripstone arrays, stackable juices and optional-mod automation. A same-seed comparison isolates
   container differences; use several seeds to test material availability.
-- Add a long-trip comparison of a default full stack of three bottles/bowls, a skin, a canteen and a flask.
+- Add a long-trip comparison of a default full stack of three bowls, a skin, a canteen and a flask.
   Record preparation fuel/time and empty-container slots, not just departure capacity. Ensure the
   larger vessels remain convenient without forcing full-batch hand boiling or inflating drain.
 - Compare three matched mining runs: food plus untreated cave water; food plus prepared Clean;

@@ -10,9 +10,9 @@
 
 ## Thirst and Quenched
 * **Thirst Bar:** Depletes as you run, jump, mine, and fight.
-* **Quenched Buffer:** Works like saturation. It drains first, and [heals](https://n1ght3r.github.io/ThirstWasTaken2/docs/configuration#quenchedhealthregen) you while thirst is full.
-* **Dehydration:** Low thirst prevents sprinting and natural health regeneration. Empty thirst causes steady damage.
-* **Environment:** Hot biomes like deserts and the Nether deplete thirst faster. Fire Resistance and Fire Protection reduce heat drain.
+* **Quenched Buffer:** Works like saturation. It drains first, and [heals](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/thirst-and-quenched#healing) you once saturation runs out.
+* **Dehydration:** Food stops healing below half thirst. Low thirst prevents sprinting, and empty thirst causes steady damage.
+* **Environment:** Thirst drains a little even at rest. Hot biomes like deserts and the Nether deplete it faster. Fire Resistance and Fire Protection reduce heat drain.
 
 <div align="center">
 <table>
@@ -26,10 +26,10 @@
 ## Water Quality
 | Grade | Common Sources | Effects |
 | :--- | :--- | :--- |
-| **Dirty** | Swamps, stagnant pools | Often causes [Upset Stomach](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#upset-stomach) or [Poisoning](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#poisoning), worse on harder difficulties |
-| **Murky** | Standard rivers, lakes, caves | Can cause [Upset Stomach](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#upset-stomach) or [Poisoning](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#poisoning) |
-| **Clean** | Mountain rivers, deep aquifers, boiled water | Rarely makes you ill, high hydration |
-| **Pure** | Glaciers, rain cauldrons, refined drinks | Completely safe, maximum hydration |
+| **Dirty** | Swamps, stagnant pools | Often causes [Upset Stomach](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#upset-stomach) or [Poisoning](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#poison), worse on harder difficulties |
+| **Murky** | Standard rivers, lakes, caves | Can cause [Upset Stomach](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#upset-stomach) or [Poisoning](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#poison) |
+| **Clean** | Mountain rivers, rain, boiled water | Safe |
+| **Pure** | Cold peaks, dripstone, distilled water | Safe, with the biggest reserve |
 | **Salty** | Oceans and beaches | Cannot quench thirst; makes you [Parched](https://n1ght3r.github.io/ThirstWasTaken2/docs/features/water-purity#parched) |
 
 <div align="center">
@@ -46,9 +46,9 @@
 </div>
 
 ## Purification
-* **Boiling:** Smelt water bottles, bowls, or buckets in a furnace or over a campfire to raise their purity grade.
-* **Hanging Pots:** Hang a Copper or Iron Hanging Pot over a lit campfire to boil a bucket of water into Pure water.
-* **Copper Distiller:** A two-block still that turns any water Pure, sea water included. It burns furnace fuel and hoppers can keep it running.
+* **Boiling:** Boil water bottles, bowls, buckets, canteens and flasks in a furnace to make them Clean, which is safe to drink.
+* **Hanging Pots:** Hang a Copper or Iron Hanging Pot over a lit campfire to boil water Clean on its own.
+* **Copper Distiller:** A two-block still and the way to Pure water, from any water, sea water included. It burns furnace fuel and hoppers can keep it running.
 * **Rain and Dripstone:** Cauldrons placed under open rain or pointed dripstone automatically fill with clean water.
 
 <div align="center">
@@ -79,7 +79,7 @@
 
 ## Early Game Gear and Drinking
 * **Terracotta Bowls:** Mold clay into bowls and fire them in a furnace to scoop water early on.
-* **Waterskin:** Holds 3 servings of water in a single slot. Intelligently mixes water grades.
+* **Waterskin:** Holds 4 servings of water in a single slot. Filled water bowls stack to 3. Intelligently mixes water grades.
 * **Drink by Hand:** Sneak and right-click any fresh water block to drink directly without a container.
 
 <div align="center">
@@ -89,15 +89,15 @@
     <th align="center">Waterskin</th>
   </tr>
   <tr>
-    <td align="center"><img alt="Three clay balls in a bowl shape make four Clay Bowls" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/clay-bowl-recipe.png" width="280"><br><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/furnace-terracotta-bowl.png" alt="Firing a Clay Bowl into a Terracotta Bowl" width="280"></td>
-    <td align="center"><img alt="Three leather and a string make a Waterskin" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/waterskin-recipe.png" width="280"></td>
+    <td align="center"><img alt="Three clay balls in a bowl shape make three Clay Bowls" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/clay-bowl-recipe.png" width="280"><br><img src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/furnace-terracotta-bowl.png" alt="Firing a Clay Bowl into a Terracotta Bowl" width="280"></td>
+    <td align="center"><img alt="Four leather in a ring make a Waterskin" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/waterskin-recipe.png" width="280"></td>
   </tr>
 </table>
 </div>
 
 ## Mid Game Gear
-* **Copper Canteen:** Holds 4 servings. Hold it over a lit campfire to boil the water inside to Pure.
-* **Iron Flask:** Holds 6 servings. Boils slower over a campfire, but also works in a furnace.
+* **Copper Canteen:** Holds 4 servings. Hold it over a lit campfire to boil the water inside Clean.
+* **Iron Flask:** Holds 6 servings and boils slower. Both also work in a furnace.
 
 <div align="center">
 <table>
@@ -106,7 +106,7 @@
     <th align="center">Iron Flask</th>
   </tr>
   <tr>
-    <td align="center"><img alt="Five copper ingots and a leather make a Copper Canteen" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/copper-canteen-recipe.png" width="300"></td>
+    <td align="center"><img alt="Three copper ingots and a string make a Copper Canteen" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/copper-canteen-recipe.png" width="300"></td>
     <td align="center"><img alt="Five iron ingots and an iron nugget make an Iron Flask" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/iron-flask-recipe.png" width="264"></td>
   </tr>
 </table>
@@ -131,10 +131,10 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
       <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/"><img alt="Farmer's Delight" src="https://i.imgur.com/wqSocVR.png" width="272"></a><br>
       <i>1.21.1 NeoForge and 1.20.1 Forge<br>
       Fabric: <img alt="Farmer's Delight Refabricated icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F7vxePowz%2F26e8448993e9bda4dba92b6e7a1a13d9c4333138.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> <a href="https://modrinth.com/mod/farmers-delight-refabricated">Farmer's Delight Refabricated</a></i><br><br>
-      Soups, stews, and drinks restore thirst. The Cooking Pot purifies water to Pure grade. The Nourishment effect pauses thirst depletion.
+      Soups, stews, and drinks restore thirst. The Cooking Pot boils water Clean. The Nourishment effect pauses thirst depletion.
     </td>
     <td width="45%">
-      <img alt="A Farmer's Delight Cooking Pot boiling water bottles to Pure" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farmers-delight/farmers-delight-cooking-pot.png" width="100%">
+      <img alt="A Farmer's Delight Cooking Pot boiling water bottles Clean" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/farmers-delight/farmers-delight-cooking-pot.png" width="100%">
     </td>
   </tr>
   <tr>

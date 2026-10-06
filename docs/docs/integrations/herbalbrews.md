@@ -25,9 +25,7 @@ restore as much as three teas drunk one by one.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Green, Black, Oolong, Lavender, Yerba Mate, Rooibos and Hibiscus Tea | 6 | 9 |
-| Coffee | 5 | 8 |
-| Milk Coffee | 6 | 10 |
+| Green, Black, Oolong, Lavender, Yerba Mate, Rooibos and Hibiscus Tea, Coffee, Milk Coffee | 6 | 4 |
 
 The Flask, a mix of three potions, restores no thirst. Every value can be changed in the
 [config](/docs/configuration).

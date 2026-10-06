@@ -12,10 +12,8 @@ NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with ![](https://media.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Hanami Tale | 8 | 12 |
-| Every other flower tea | 6 | 9 |
+| Every flower tea, Hanami Tale included | 6 | 4 |
 
-A flower tea restores what Kaleidoscope Cookery's Flower Tea does, and Hanami Tale, brewed in milk,
-what its Clay Pot Milk Tea does. Like every tea, they are brewed in the Teapot, so a cup is safe
+A flower tea restores what Kaleidoscope Cookery's teas do. Like every tea, they are brewed in the Teapot, so a cup is safe
 whatever water went in, and the Teapot brews none of them from sea water. The cakes are solid food and
 restore no thirst. Every value can be changed in the [config](/docs/configuration#drinks-and-foods).

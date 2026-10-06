@@ -25,9 +25,9 @@ and sea water does not.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Tomato Soup, Mushroom Soup, Salad, Beetroot Salad, Fresh Garden Salad | 4 | 5 |
-| Tomato Mozzarella Salad | 3 | 4 |
-| Chocolate Mousse | 2 | 3 |
+| Tomato Soup, Mushroom Soup | 6 | 4 |
+| Salad, Beetroot Salad, Fresh Garden Salad, Tomato Mozzarella Salad | 2 | 0 |
+| Chocolate Mousse | 1 | 0 |
 
 Pasta, roasts, steaks and the dishes cooked in wine restore no thirst. Every value can be changed in
 the [config](/docs/configuration).

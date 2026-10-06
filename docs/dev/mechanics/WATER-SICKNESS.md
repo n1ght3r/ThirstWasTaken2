@@ -1,7 +1,14 @@
 # Water sickness
 
-Drinking water that is not Pure is a risk that grows with the difficulty: a nuisance on Easy, a
+Drinking Dirty or Murky water is a risk that grows with the difficulty: a nuisance on Easy, a
 setback on Normal, a gamble with your life on Hard. Boiling the water first always avoids it.
+
+**The purification rework changed steps 1 to 4** ([PURIFICATION-REWORK.md](PURIFICATION-REWORK.md#sickness)):
+Clean water is safe on every difficulty, Upset Stomach and Poison share one roll, there is no taste
+Nausea and no Nausea bursts, Upset Stomach drains 4 or 8 thirst a minute, scales saturation and
+quenched by 0.5 or 0.25, blocks healing and is not cured by milk. The numbers in game are in
+[WATER-REFERENCE.md](WATER-REFERENCE.md#drinking-bad-water); the tables below for steps 1 to 4 are the
+old design, kept for steps 5 onward to build on.
 
 This page is the design. How to build it is in
 [WATER-SICKNESS-IMPLEMENTATION.md](WATER-SICKNESS-IMPLEMENTATION.md).

@@ -4,6 +4,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ## [Unreleased]
 
+This release reworks how water is cleaned and how much it's worth. Boiling now makes water Clean, which
+is safe, and Pure water comes from the new Copper Distiller. Every container restores the same per drink,
+thirst drains a little even standing still, and food and water each need the other to heal.
+
 ### Added
 
 - The Copper Distiller, a two-block still that turns any water into Pure water, sea water included.
@@ -14,6 +18,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 - Novice Leatherworkers can sell a Waterskin, and novice Clerics a Clean water bottle, so emeralds buy
   water before a player can boil any.
 - When another mod adds salt, distilling sea water leaves some of it behind.
+- Filled terracotta water bowls stack to three, as long as their water is the same.
+- The Copper Canteen can go in a furnace too, like the Iron Flask.
 - With Jade installed, looking at a distiller shows both its tanks and whether its cooling tub is dry.
 - Miner's Delight, on NeoForge 1.21.1 and Forge 1.20.1:
   - Its soups and the Milk Cup restore thirst. A cup of soup restores half what a bowl does.
@@ -30,6 +36,37 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - The Vat and the Mixing Bowl make nothing from sea water, and the Evaporator only turns sea water into
     salt.
 
+### Changed
+
+- Boiling stops at Clean. A furnace, a smoker, a campfire-boiled canteen or flask, a Hanging Pot, the
+  Farmer's Delight Cooking Pot and the Cold Sweat Boiler all make Dirty and Murky water Clean, never
+  Pure. Clean water is always safe to drink.
+- Water no longer cooks on a campfire's slots. A furnace takes 8 seconds a bottle or bowl, 24 a bucket,
+  and gives no experience. A canteen or flask takes its boil time for each drink inside.
+- Every drink of water restores 6 thirst, from a bottle, bowl, waterskin, canteen or flask alike. Its
+  quenched depends on the grade: none for Dirty, 1 for Murky, 2 for Clean and 4 for Pure.
+- Drinks, soups and food from every supported mod were rebalanced. Prepared drinks and soups give 6
+  thirst and 4 quenched, alcohol less, and solid food a little thirst but no quenched. Drinks another
+  mod only tags as drinks get 6 and 4 too.
+- Thirst past a full bar is lost instead of turning into quenched. Clean and Pure water can still be
+  drunk with a full bar while quenched isn't full, to build a reserve.
+- Thirst drains about a point a minute even when standing still. The drain rises smoothly with
+  temperature, and the Nether drains three times as fast.
+- Food heals only while the thirst bar is at least half full, and quenched heals only while the food
+  bar is. Quenched now waits for saturation to run out before it heals, instead of healing alongside
+  it, and Upset Stomach stops both.
+- Water in a cave or under a roof is at best Murky. Deep water is no longer cleaner.
+- Dirty and Murky water no longer taste bad: no more Nausea after every drink. Upset Stomach and Poison
+  now come from one roll, so Poison only ever comes with Upset Stomach. Clean water never makes the
+  player ill.
+- Upset Stomach drains 4 thirst a minute, 8 at level II, halves the saturation and quenched from what
+  is eaten or drunk, a quarter at level II, and stops healing. It no longer warps the screen, and milk
+  doesn't cure it.
+- The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
+  and a string. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.
+- Three clay balls make three clay bowls. The Distiller Boiler takes an iron ingot instead of gold.
+- The Boil Your Water advancement is also earned by making a canteen, flask or hanging pot.
+
 ### Fixed
 
 - A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
@@ -40,6 +77,15 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - New: `enableCopperDistiller`, `distillerServingSeconds` (default `8`), `distillerTankServings`
   (default `9`) and `distillerSaltItem`, which picks one salt when several mods add one.
+- New: `enableFurnaceBoiling`, `plainWaterValue` (`[6, 4]`), `plainWaterDrinkTicks` (`32`),
+  `illnessHaltsHealthRegen`, `foodHealMinThirstPercent`, `quenchedHealMinFoodPercent`, `waterskinCapacity`, `terracottaWaterBowlStackSize`, `copperHangingPotCapacity` and `ironHangingPotCapacity`. Every
+  container count goes from 1 to 64.
+- `defaultPurity`, `rainwaterPurity` and `dripstonePurity` are now `defaultQuality`,
+  `rainwaterQuality` and `dripstoneQuality`. An old file is converted on load.
+- `quenchedHealMinFood`, in half shanks, is replaced by `quenchedHealMinFoodPercent`.
+- Sickness effects take an optional `group`: effects in one group share a roll.
+- An existing config keeps its old values. Reset the Thirst, Water, Sickness and Containers pages, or
+  delete the file, to take the new defaults, item values included.
 
 </details>
 

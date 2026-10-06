@@ -13,19 +13,11 @@ build for another Minecraft version.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Lemonade, Limeade, Orangeade, Glass of Punch, and Glow Berry, Sweet Berry, Tomato, Cactus, Orange and Grapefruit Juice | 8 | 13 |
-| Gourmet Hot Chocolate | 8 | 13 |
-| Every milkshake | 8 | 12 |
-| Chocolate Milk, Eggnog, Horchata, Soy Milk, Xocolatl, Ginger Beer | 6 | 8 |
-| Tea | 6 | 9 |
-| Coffee, Dalgona Coffee | 5 | 8 |
-| Lemon Juice, Lime Juice | 4 | 5 |
-| Apple, Glow Berry, Sweet Berry and Honey Cream Popsicles | 7 | 9 |
-| Caramel Pop, Cinnamon Swirl Creampop, Fudgsicle | 5 | 7 |
-| Melon Gazpacho | 6 | 8 |
-| Every other soup and stew, Gazpacho, Congee | 4 | 5 |
-| Curry, Chili con Carne, White Chili | 3 | 4 |
-| Every ice cream, Ice Cream Sundae, Affogato, every custard | 2 | 3 |
+| Lemonade, Limeade, Orangeade, Glass of Punch, Glow Berry, Sweet Berry, Tomato, Cactus, Orange and Grapefruit Juice, every milkshake, Gourmet Hot Chocolate, Chocolate Milk, Eggnog, Horchata, Xocolatl, Ginger Beer, Tea, Coffee, Dalgona Coffee, every soup and stew, Gazpacho, Melon Gazpacho, Congee | 6 | 4 |
+| Lemon Juice, Lime Juice | 4 | 2 |
+| Soy Milk | 4 | 0 |
+| Curry, Chili con Carne, White Chili, every popsicle | 2 | 0 |
+| Every ice cream, Ice Cream Sundae, Affogato, every custard | 1 | 0 |
 
 Rice dishes, pies, puddings, jellies and other dry foods restore none. A feast serves one of the bowls
 above. Every value can be changed in the [config](/docs/configuration#drinks-and-foods).

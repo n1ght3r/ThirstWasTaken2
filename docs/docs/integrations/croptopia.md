@@ -18,21 +18,13 @@ Fabric and NeoForge on Minecraft 26.2, 26.1 and 1.21.1, and Fabric and Forge on 
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Every juice, Lemonade, Limeade | 8 | 13 |
-| Chocolate Milkshake | 8 | 12 |
-| Every smoothie | 7 | 10 |
-| Kiwi Sorbet | 7 | 9 |
-| Pumpkin Spice Latte | 6 | 10 |
-| Tea | 6 | 9 |
-| Soy Milk, Horchata, Fruit Salad | 6 | 8 |
-| Coffee | 5 | 8 |
-| Beer, Mead | 5 | 6 |
-| Soups, stews and the other salads | 4 | 5 |
-| Cantaloupe, Honeydew | 4 | 5 |
-| Wine, Cucumber | 3 | 4 |
-| Rum | 2 | 2 |
-| Ice cream, Yoghurt, Tomato and the larger fruit | 2 | 3 |
-| Berries, Cherries, Kumquats, Lemons, Limes, Lettuce, Celery | 1 | 2 |
+| Every juice and smoothie, Lemonade, Limeade, Chocolate Milkshake, Tea, Coffee, Pumpkin Spice Latte, Horchata, soups and stews | 6 | 4 |
+| Beer, Mead | 5 | 2 |
+| Soy Milk | 4 | 0 |
+| Wine | 3 | 1 |
+| Rum | 2 | 1 |
+| Salads, Kiwi Sorbet, Cantaloupe, Honeydew, Cucumber, Tomato and the larger fruit | 2 | 0 |
+| Ice cream, Yoghurt, Berries, Cherries, Kumquats, Lemons, Limes, Lettuce, Celery | 1 | 0 |
 
 Croptopia's Water Bottle and Milk Bottle are ingredients and can't be drunk. Every value can be changed
 in the [config](/docs/configuration).

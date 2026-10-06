@@ -21,7 +21,7 @@ at once.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Coconut, Sweetberry, Cocoa, Pumpkin, Honey and Melon Cocktail | 7 | 10 |
-| Open Coconut | 4 | 5 |
+| Coconut, Sweetberry, Cocoa, Pumpkin, Honey and Melon Cocktail | 6 | 4 |
+| Open Coconut | 2 | 0 |
 
 Mussels restore no thirst. Every value can be changed in the [config](/docs/configuration).

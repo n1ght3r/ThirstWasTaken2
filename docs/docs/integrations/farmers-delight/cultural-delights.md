@@ -20,15 +20,13 @@ else changes.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Cola | 6 | 8 |
-| Ginger Beer, Butterbeer, Beer, Mead, Apple Cider | 5 | 6 |
-| Bloody Mary, Mojito, Margarita | 4 | 5 |
-| Wine, Glow Wine | 3 | 4 |
-| Lemon Liqueur | 2 | 2 |
-| Hearty Salad | 4 | 5 |
-| Cucumber | 3 | 4 |
-| Creamed Corn, Poached Eggplants | 2 | 3 |
-| Cut Cucumber | 1 | 2 |
+| Cola, Ginger Beer, Butterbeer | 6 | 4 |
+| Beer, Mead, Apple Cider | 5 | 2 |
+| Bloody Mary, Mojito, Margarita | 4 | 2 |
+| Wine, Glow Wine | 3 | 1 |
+| Lemon Liqueur | 2 | 1 |
+| Cucumber, Hearty Salad | 2 | 0 |
+| Cut Cucumber, Creamed Corn, Poached Eggplants | 1 | 0 |
 
 The stronger a drink, the less it restores. Tequila, Gin, Brandy, Vodka, Whiskey, Rum, Vinegar and
 Acid restore none. Pickles are salty and restore none either. Every value can be changed in the

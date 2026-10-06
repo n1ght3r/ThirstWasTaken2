@@ -19,14 +19,10 @@ official Fabric build stopped at 1.0.1 and has no Teapot: with it, only the teas
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Clay Pot Milk Tea | 8 | 12 |
-| Butter Tea | 6 | 10 |
-| Wheat Aroma Oolong Tea, Tieguanyin, Biluochun, Dong Ding Oolong Tea, Sakura Fubuki, Flower Tea | 6 | 9 |
-| Pork Bone Soup | 5 | 7 |
-| Seafood Miso Soup, Fearsome Thick Soup, Mutton and Radish Soup, Wild Mushroom Rabbit Soup, Pufferfish Soup, Borscht, Beef Meatball Soup, Chicken and Mushroom Stew, Laba Congee, Donkey Soup, Tomato Beef Brisket Soup | 4 | 5 |
-| Mystery Tea | 3 | 3 |
-| Beef Noodle, Lamb Hui Noodles, Udon Noodle | 3 | 4 |
-| Tomato | 2 | 3 |
+| Clay Pot Milk Tea, Butter Tea, Wheat Aroma Oolong Tea, Tieguanyin, Biluochun, Dong Ding Oolong Tea, Sakura Fubuki, Flower Tea, Pork Bone Soup, Seafood Miso Soup, Fearsome Thick Soup, Mutton and Radish Soup, Wild Mushroom Rabbit Soup, Pufferfish Soup, Borscht, Beef Meatball Soup, Chicken and Mushroom Stew, Laba Congee, Donkey Soup, Tomato Beef Brisket Soup | 6 | 4 |
+| Beef Noodle, Lamb Hui Noodles, Udon Noodle | 3 | 2 |
+| Mystery Tea | 3 | 1 |
+| Tomato | 2 | 0 |
 
 Tea is brewed from boiled water, so a cup is safe whatever water went into the Teapot. Dishes eaten
 straight off a placed block are solid food and restore no thirst. Every value can be changed in the

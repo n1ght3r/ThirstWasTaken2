@@ -38,11 +38,9 @@ what the milk bucket restores, so a full cauldron is worth about one bucket.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Pear Juice | 8 | 13 |
-| Maple Syrup Bottle | 4 | 6 |
-| Pesto Bottle | 1 | 2 |
-| Witch Stew | 4 | 5 |
-| Pear, Syruped Pear, Honeyed Apple | 2 | 3 |
+| Pear Juice, Witch Stew | 6 | 4 |
+| Maple Syrup Bottle, Pear, Syruped Pear, Honeyed Apple | 2 | 0 |
+| Pesto Bottle | 1 | 0 |
 
 Pear Juice, the Pesto Bottle and Witch Stew only exist with Farmer's Delight installed. Meat, fish, nuts,
 bread, pasta and cakes restore no thirst. Every value can be changed in the [config](/docs/configuration).

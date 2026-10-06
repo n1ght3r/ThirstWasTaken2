@@ -3,9 +3,9 @@
 Every way to get water, what each grade of water does when drunk, by difficulty, and how the ways of
 cleaning it compare.
 
-**It describes the game as the code stands today.** The planned rework (plain heat stops at Clean, no
-campfire slots, lower Clean sickness) is in [PURIFICATION-REWORK.md](PURIFICATION-REWORK.md); update
-this file when it lands. The design of the sickness itself is in [WATER-SICKNESS.md](WATER-SICKNESS.md).
+**It describes the game as the code stands today**, after the purification rework
+([PURIFICATION-REWORK.md](PURIFICATION-REWORK.md), the design and its reasons). The design of the
+sickness itself is in [WATER-SICKNESS.md](WATER-SICKNESS.md).
 
 Every number below is a default. Most are in the config (`ThirstConfig`); the ones that are not say so.
 
@@ -16,32 +16,38 @@ Fresh water has four grades; sea water is a different kind of water, not a grade
 | Grade | Number | Quenched given (`quenchedPercent`) |
 |---|---|---|
 | Dirty | 0 | 0% |
-| Murky | 1 | 50% |
-| Clean | 2 | 100% |
+| Murky | 1 | 25% |
+| Clean | 2 | 50% |
 | Pure | 3 | 100% |
 | Sea water | salt | none, see [Sea water](#sea-water) |
 
-Anything holding water with no grade stamped on it counts as `defaultPurity`, Clean.
+Anything holding water with no grade stamped on it counts as `defaultQuality`, Clean.
 
 ## What a drink gives
 
-A thirst bar is 20.
+A thirst bar is 20. Thirst past a full bar is lost, from every source, and quenched never passes thirst.
 
-| Drink | Thirst | Quenched (before the grade's cut) |
+| Drink | Thirst | Quenched (before the grade's share) | Time |
+|---|---|---|---|
+| A serving of water: bottle, Terracotta Water Bowl, Waterskin, Copper Canteen, Iron Flask (`plainWaterValue`) | 6 | 4 | 32 ticks (`plainWaterDrinkTicks`; a bottle is always vanilla's 32) |
+| A sip by hand from a water block (`canDrinkByHand`) | 3 | 2 (not in the config) | one click while sneaking |
+| Any other potion | 6 | 8 | vanilla |
+| Prepared soups and non-alcoholic drinks, from any mod | 6 | 4 | |
+| Milk bucket | 4 | 0 | |
+| Solid food | 0 to 2 | 0 | |
+
+A Clean or Pure serving can be drunk with a full thirst bar while quenched is below 20 (`canDrinkWater(player, stack)`);
+Dirty and Murky cannot.
+
+| Carried or stacked | Servings | Thirst when full |
 |---|---|---|
-| Water bottle | 6 | 8 |
-| Terracotta Water Bowl | 4 | 5 |
-| One serving of a Waterskin, Copper Canteen or Iron Flask | 4 | 5 |
-| A sip by hand from a water block (`canDrinkByHand`) | 3 | 2 (not in the config) |
-| Milk bucket, for comparison | 6 | 8 |
+| Terracotta Water Bowls | 3 a stack (`terracottaWaterBowlStackSize`); water bottles do not stack | 18 |
+| Waterskin | 4 (`waterskinCapacity`) | 24 |
+| Copper Canteen | 4 (`copperCanteenCapacity`) | 24 |
+| Iron Flask | 6 (`ironFlaskCapacity`) | 36 |
 
-| Carried vessel | Servings | Thirst when full |
-|---|---|---|
-| Waterskin | 3 (fixed) | 12 |
-| Copper Canteen | 4 (`copperCanteenCapacity`) | 16 |
-| Iron Flask | 6 (`ironFlaskCapacity`) | 24 |
-
-A bucket is three servings wherever it is poured, the same rate a cauldron uses.
+Every count goes from 1 to 64. A bucket is three servings wherever it is poured, the same rate a
+cauldron uses, whatever the destination holds.
 
 ## Where water comes from
 
@@ -66,7 +72,7 @@ Spelunkery's Spring Water, as optional entries. See [src/main/spelunkery/AGENTS.
 |---|---|
 | Biome base temperature 1.5 or more | +10 |
 | Biome base temperature 0.15 or less | −10 |
-| Above y 100 or below y 32 | −5 |
+| Above y 100 | −5 |
 | Flowing water, not a source | −5 |
 | Mud or mangrove roots within 2 blocks | +15 |
 | Farmland or a composter within 2 blocks | +10 |
@@ -78,12 +84,17 @@ Spelunkery's Spring Water, as optional entries. See [src/main/spelunkery/AGENTS.
 | 36 to 65 | Murky |
 | 66 to 100 | Dirty |
 
+Then, only when the score left something better than Murky: water the sky can't reach is capped at
+Murky (`COVERED_MAX`). The column is walked up at most 16 blocks to its top and compared with the
+`MOTION_BLOCKING` heightmap through `Vanilla.skyAbove`, so leaves count as cover. Stored water
+(cauldrons, pots) and `pure_water` fluids are not capped.
+
 What that gives in practice:
 
-- **Pure:** only cold mountains high up: frozen peaks, jagged peaks or snowy slopes above y 100
-  (28 − 10 − 5 = 13).
-- **Clean:** other mountains above y 100, cold rivers (42 − 10 = 32), deep aquifers in a mountain.
-- **Murky:** most plains, forests and rivers, ordinary lakes.
+- **Pure:** only cold mountains high up, open to the sky: frozen peaks, jagged peaks or snowy slopes
+  above y 100 (28 − 10 − 5 = 13).
+- **Clean:** other mountains above y 100, cold rivers (42 − 10 = 32), open to the sky.
+- **Murky:** most plains, forests and rivers, ordinary lakes, and every cave pool.
 - **Dirty:** swamps, jungles, savannas, badlands, and water next to mud or a farm.
 
 None of these are in the config; they are constants in `WaterPurity`.
@@ -92,8 +103,8 @@ None of these are in the config; they are constants in `WaterPurity`.
 
 | Source | Grade | Config |
 |---|---|---|
-| Rain into a cauldron or a hanging pot | Clean | `rainwaterPurity`, off with `enableRainCollection` |
-| A pointed dripstone dripping into a cauldron | Pure | `dripstonePurity` |
+| Rain into a cauldron or a hanging pot | Clean | `rainwaterQuality`, off with `enableRainCollection` |
+| A pointed dripstone dripping into a cauldron | Pure | `dripstoneQuality` |
 
 Both keep the worse of what the cauldron held and what fell in. A cauldron always keeps the worse of
 two waters mixed; a carried vessel averages them.
@@ -102,7 +113,7 @@ two waters mixed; a carried vessel averages them.
 
 | Block | Grade drawn | Notes |
 |---|---|---|
-| Timber Well (Farm & Charm) | the groundwater it pumps, sampled at the source block | rain only: `rainwaterPurity`; a beach well gives sea water |
+| Timber Well (Farm & Charm) | the groundwater it pumps, sampled at the source block | rain only: `rainwaterQuality`; a beach well gives sea water |
 | Water Trough (Farm & Charm) | Murky | whatever was poured in; sea water refused |
 | Kitchen sink (Candlelight) | Murky | fills from nothing; sea water refused |
 
@@ -130,32 +141,35 @@ leatherworkers, and two clerics in three, offer it. See `compat/TradeIntegration
 
 ## Cleaning water
 
-"Up two grades" is `PURIFY_TABLE` in `ThirstRecipeProvider`: Dirty becomes Clean, Murky and Clean
-become Pure. Only the Copper Distiller takes the salt out of sea water, and it makes any water Pure;
-see [DISTILLATION-PLAN.md](DISTILLATION-PLAN.md). With Spelunkery, a furnace boils a sea water bucket
-down to a salt bucket, and nothing to drink.
+Heat makes Dirty and Murky water Clean in one go and never goes further: `WaterPurity.boil` and, for
+Cold Sweat's Boiler, `boilStep` (+1 a pass, to Clean). Only the Copper Distiller makes Pure water from
+anything, and only it takes the salt out of sea water; see [DISTILLATION-PLAN.md](DISTILLATION-PLAN.md).
+Create's Sand Filter is the one other way to Pure. With Spelunkery, a furnace boils a sea water bucket
+down to a salt bucket, and nothing to drink. Clean and Pure water have no recipe anywhere, so heat
+never takes them.
 
 | Method | Time | Servings | Result | Fuel | Notes |
 |---|---|---|---|---|---|
-| Furnace, bottle or bowl | 10 s | 1 | up two grades | yes | `SMELTING_TIME` |
-| Furnace, bucket | 10 s | 3 | up two grades | yes | one item, so the furnace's cheapest input per serving after the flask |
-| Furnace, Dirty bucket to Pure | 20 s | 3 | Pure | yes | two passes |
-| Smoker, any of those | 5 s | 1 or 3 | up two grades | yes | `SMOKING_TIME`; also Sophisticated's Smoking upgrades |
-| Campfire, four slots | 30 s | up to 12 | up two grades | no | `CAMPFIRE_TIME`; the highest throughput of anything |
-| Iron Flask, furnace | 10 s | 1 to 6 | up two grades | yes | one recipe per fill level; the canteen has none |
-| Copper Canteen, held on a campfire | 3 s a serving, 12 s full | 4 | Pure | no | hold use the whole time; `copperCanteenBoilSeconds` |
-| Iron Flask, held on a campfire | 4 s a serving, 24 s full | 6 | Pure | no | `ironFlaskBoilSeconds` |
-| Copper Hanging Pot | 4 s a serving, 12 s full | 3 | Pure | no | over a lit campfire; `copperHangingPotBoilSeconds` |
-| Iron Hanging Pot | 6 s a serving, 18 s full | 3 | Pure | no | the same; `ironHangingPotBoilSeconds` |
+| Furnace, bottle or bowl | 8 s | 1 | Clean | yes | `enableFurnaceBoiling`; a stack of bowls goes through one at a time |
+| Furnace, bucket | 24 s | 3 | Clean | yes | |
+| Smoker, bottle, bowl or bucket | 4 s / 12 s | 1 or 3 | Clean | yes | also Sophisticated's Smoking upgrades |
+| Copper Canteen, furnace | 2 s a serving, 8 s full | 1 to 4 | Clean | yes | one recipe per grade, any fill; `FurnaceMixin` times it per serving |
+| Iron Flask, furnace | 3 s a serving, 18 s full | 1 to 6 | Clean | yes | the same |
+| Copper Canteen, held on a campfire | 2 s a serving, 8 s full | 4 | Clean | no | hold use the whole time; `copperCanteenBoilSeconds` |
+| Iron Flask, held on a campfire | 3 s a serving, 18 s full | 6 | Clean | no | `ironFlaskBoilSeconds` |
+| Copper Hanging Pot | 3 s a serving, 9 s full | 3 | Clean | no | over a lit campfire; `copperHangingPotBoilSeconds`, `copperHangingPotCapacity` |
+| Iron Hanging Pot | 4 s a serving, 24 s full | 6 | Clean | no | `ironHangingPotBoilSeconds`, `ironHangingPotCapacity` |
 | Copper Distiller | 8 s a serving, 72 s full | up to 9 | Pure, sea water included | furnace fuel | coal runs ten servings; the cooling tub filled once; a bucket of sea water leaves one salt when another mod has salt; `distillerServingSeconds`, `distillerTankServings` |
-| Cooking Pot (Farmer's Delight) | 10 s | 1 | Pure | heat below | only with Farmer's Delight |
-| Boiler (Cold Sweat) | 10 s a grade, 30 s Dirty to Pure | up to 27 | up one grade a pass, to Pure | yes | only with Cold Sweat |
+| Cooking Pot (Farmer's Delight) | 10 s | 1 | Clean | heat below | only with Farmer's Delight; Dirty and Murky only |
+| Boiler (Cold Sweat) | 10 s a grade, 20 s Dirty to Clean | up to 27 | up one grade a pass, to Clean | yes | only with Cold Sweat |
 | Sand Filter (Create, Create Fly) | 10 mB a tick, 1.25 s a serving | continuous | up one grade a pass, to Pure; sea water passes salty | none of its own; the pumps feeding it need rotation | only with Create (NeoForge 1.21.1, Forge 1.20.1) or Create Fly (Fabric 26.1.x, 26.2.x); filters in series for more than one grade |
-| Cold Sweat's Waterskin, furnace or smoker | 10 s / 5 s | 1 | up two grades | yes | hand-written recipes in `src/main/coldsweat` |
-| Cold Sweat's Waterskin, campfire | 60 s | 1 | up two grades | no | Cold Sweat's own recipe; `CampfireWaterskinMixin` stamps the grade |
+| Cold Sweat's Waterskin, campfire | 60 s | 1 | Clean | no | Cold Sweat's own recipe; `CampfireWaterskinMixin` stamps the grade. Its furnace and smoker recipes were removed |
 | Teapot (Kaleidoscope Cookery) | 12 s | 4 teacups | safe tea, not water | heat below, a tea bag | a teacup restores its fixed value whatever the grade; sea water refused |
 | Cooking Pot (Farm & Charm, and Candlelight's) | 45 s | 1 jug of tea | safe tea, not water | heat below, a glass bottle | takes a water bucket of any grade; sea water refused |
 | Tea Kettle (HerbalBrews) | 25 ticks a tea | 1 cup | safe tea, not water | a stove below, blaze powder for heat, a glass bottle | takes a water bucket or any bottle of any grade; sea water refused |
+
+No water recipe is a campfire-slot recipe: vanilla would take any vessel held against a campfire into
+its slots and swallow the in-hand boil. No water recipe gives experience.
 
 The Waterskin cannot be boiled at all. Clean water gets into it only from something already clean: a
 hanging pot, a cauldron, or bottles and buckets boiled elsewhere.
@@ -165,89 +179,48 @@ nothing.
 
 ### Input to output, by grade
 
-The same methods by what each grade of water comes out as. A step is one grade: Dirty to Murky is +1,
-Dirty to Pure +3. A grade never passes Pure (`WaterQuality.Fresh` clamps), so "up two grades" on Clean
-water gives only +1. Names are the game's today; the rework renames Clean to Clear.
+| Method | Dirty | Murky | Clean | Pure | Sea water |
+|---|---|---|---|---|---|
+| Furnace, smoker; canteen and flask in a furnace or on a campfire; hanging pots; Farmer's Delight Cooking Pot; Cold Sweat's Waterskin on a campfire | Clean | Clean | kept, no recipe | kept, no recipe | refused (a salt bucket with Spelunkery, salt in a Cooking Pot with Hearth and Harvest or Expanded Delight) |
+| Boiler (Cold Sweat) | Murky, then Clean | Clean | kept | kept | refused |
+| Copper Distiller | Pure | Pure | Pure | Pure | **Pure**, and salt when another mod has it |
+| Sand Filter (Create, Create Fly) | Murky (+1) | Clean (+1) | Pure (+1) | Pure | passes through salty |
+| Teapot, Farm & Charm and Candlelight Cooking Pot, HerbalBrews Tea Kettle | tea, not water: a fixed value whatever the grade | | | | refused |
 
-There are three kinds of rule:
+Mixing in a cauldron or a hanging pot keeps the worse grade; a carried vessel averages, rounded down.
 
-- **Up by N**: the input plus N grades. Furnace, smoker and campfire slots, Cold Sweat's Waterskin (+2);
-  Cold Sweat's Boiler and the Sand Filter (+1 a pass).
-- **Set to a grade**: whatever goes in comes out Pure, so the steps depend on the input. The vessels,
-  the hanging pots, Farmer's Delight's Cooking Pot, the Copper Distiller.
-- **Pass through**: keeps the grade. Tanks, pumps, jars, a Spout, an Item Drain. Mixing in a cauldron,
-  a hanging pot or a waterskin only lowers.
+### Where Pure water comes from
 
-| Method | Rule | Dirty | Murky | Clean | Pure | Sea water |
-|---|---|---|---|---|---|---|
-| Furnace, smoker: bottle, bowl, bucket, Iron Flask | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe (a salt bucket with Spelunkery) |
-| Campfire slots: bottle, bowl, bucket | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe |
-| Copper Canteen, Iron Flask held on a campfire | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | kept | refused |
-| Copper and Iron Hanging Pots | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | kept | refused |
-| Copper Distiller | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | Pure | **Pure**, and salt when another mod has it |
-| Cooking Pot (Farmer's Delight) | to Pure | Pure (+3) | Pure (+2) | Pure (+1) | no recipe | refused, or salt with Hearth and Harvest or Expanded Delight |
-| Boiler (Cold Sweat) | +1 a pass | Murky, then Clean, then Pure | Clean, then Pure | Pure (+1) | kept | refused |
-| Cold Sweat's Waterskin, furnace or smoker | +2 | Clean (+2) | Pure (+2) | Pure (+1) | no recipe | no recipe |
-| Cold Sweat's Waterskin, campfire | +2 | Clean (+2) | Pure (+2) | kept | kept | refused |
-| Sand Filter (Create, Create Fly) | +1 a pass | Murky (+1) | Clean (+1) | Pure (+1) | Pure | passes through salty |
-| Teapot, Farm & Charm and Candlelight Cooking Pot, HerbalBrews Tea Kettle | | tea, not water: a fixed value whatever the grade | | | | refused |
-
-So the same Dirty bottle comes out Clean from a furnace, Pure from a pot and Murky after one Boiler
-pass. The rework makes heat uniform (every kind stops at Clean, to be named Clear) and leaves Pure to
-the distiller and, with Create, the Sand Filter; see
-[PURIFICATION-REWORK.md](PURIFICATION-REWORK.md#rules).
-
-### Where Pure water comes from today
-
-Cold mountain water above y 100, a dripstone cauldron, Spelunkery's Spring Water, underground and Nether loot, and every row above that ends in Pure or
-"up two grades" from Murky or Clean. That last part is why plain heat is being capped; see
-[PURIFICATION-REWORK.md](PURIFICATION-REWORK.md).
+The Copper Distiller, the Sand Filter, cold mountain water above y 100 open to the sky, a dripstone
+cauldron, Spelunkery's Spring Water, and underground and Nether loot.
 
 ## Drinking bad water
 
-Each line below rolls on its own, so one drink can give more than one. "Taste" is Nausea for 7 s,
-always. Pure water gives nothing on any difficulty. The tables are `sicknessEffects` in the config;
-`SicknessEffect.defaults()` holds these.
+Clean and Pure water give nothing on any difficulty, and fresh water gives nothing on Peaceful. The
+default Upset Stomach and Poison lines share the group `illness`, so one roll decides both: Poison's
+chance sits inside Upset Stomach's, and Poison never comes alone (`sanitize()` keeps a grouped Poison
+chance at or under its Upset Stomach's). There is no taste Nausea. The tables are `sicknessEffects` in
+the config; `SicknessEffect.defaults()` holds these.
 
 Read as: chance, time, level.
 
-### Peaceful
+| | Dirty | Murky |
+|---|---|---|
+| Easy, Upset Stomach | 65%, 45 s, I | 35%, 30 s, I |
+| Easy, Poison | 15%, 10 s | 5%, 8 s |
+| Normal, Upset Stomach | 90%, 60 s, **II** | 65%, 45 s, I |
+| Normal, Poison | 35%, 20 s | 15%, 15 s |
+| Hard, Upset Stomach | 100%, 90 s, **II** | 85%, 60 s, **II** |
+| Hard, Poison | 50%, 30 s | 25%, 20 s |
 
-| | Dirty | Murky | Clean |
-|---|---|---|---|
-| Taste | 100% | 100% | — |
-| Upset Stomach | — | — | — |
-| Poison | — | — | — |
-
-### Easy
-
-| | Dirty | Murky | Clean |
-|---|---|---|---|
-| Taste | 100% | 100% | — |
-| Upset Stomach | 65%, 45 s, I | 35%, 45 s, I | 5%, 20 s, I |
-| Poison | 25%, 10 s, I | 10%, 10 s, I | 3%, 5 s, I |
-
-### Normal
-
-| | Dirty | Murky | Clean |
-|---|---|---|---|
-| Taste | 100% | 100% | — |
-| Upset Stomach | 75%, 60 s, **II** | 50%, 60 s, I | 12%, 30 s, I |
-| Poison | 35%, 20 s, I | 18%, 20 s, I | 5%, 8 s, I |
-
-### Hard
-
-| | Dirty | Murky | Clean |
-|---|---|---|---|
-| Taste | 100% | 100% | — |
-| Upset Stomach | 78%, 90 s, **II** | 66%, 90 s, **II** | 20%, 45 s, I |
-| Poison | 45%, 30 s, I | 30%, 30 s, I | 10%, 12 s, I |
-
-- **Drinking again while ill** (`extendSicknessEffects`, on): the same effect adds the line's time to
-  what is left, up to twice the line's time, and keeps the higher level. Off, vanilla's rule: the
-  longer of the two is kept.
-- **Every fresh drink still restores thirst**; the grade only cuts its quenched (Dirty none, Murky
-  half) and brings the chance of illness.
+- **Upset Stomach** drains 4 thirst a minute at I and 8 at II, outside climate and Nourishment, scales
+  food saturation and incoming quenched by 0.5 at I and 0.25 at II, and blocks natural food healing
+  (`illnessHaltsHealthRegen`). Milk does not cure it (`MilkMixin`); milk and honey still cure Poison.
+- **Drinking again while ill** (`extendSicknessEffects`, on): Upset Stomach becomes
+  `max(R, min(R + D / 2, 1.5 * D))` ticks for R left and D incoming; any other effect adds the line's
+  time to what is left, up to twice the line's time. The higher level is kept. Off, vanilla's rule.
+- **Every fresh drink still restores thirst**; the grade only cuts its quenched and brings the chance of
+  illness.
 - A line naming an effect no mod registers is skipped, so a pack can list another mod's effect.
 
 ### Sea water
@@ -260,16 +233,15 @@ tables above do not apply to it.
 
 These came from the hanging pot's design and still hold.
 
-- **A hanging pot holds one bucket, three servings.** It is smaller than a cauldron, so three buckets
-  looked wrong next to one. It was nine servings at first.
+- **A copper hanging pot holds one bucket, three servings, and an iron one two.** It is smaller than a
+  cauldron, so three buckets looked wrong next to one. Up to 64 from the config, through
+  `HangingPotBlockEntity`; the blockstate only shows how full it looks.
 - **A bucket is three servings, never nine.** Otherwise water would multiply through a cauldron: three
   bottles make a bucket, and that bucket would give nine bottles. That matters in the Nether.
 - **Nothing can be poured into a pot where water evaporates**, as in the Nether. The water hisses away
   like a bucket emptied there, but the player keeps it.
 - **Boiling is timed per serving**, as a furnace times each item. Pouring more in adds only the new
-  servings' time; what has boiled is kept, and water already Pure counts as boiled. A pot's water is one
+  servings' time; what has boiled is kept, and water already Clean or Pure counts as boiled. A pot's water is one
   batch with one grade, so no serving can be taken out Pure while the rest is still boiling.
-- **Copper boils faster, iron holds more** (the canteen and the flask), and copper heats faster than
-  iron (the pots), after the metals themselves. What makes the Iron Hanging Pot worth its iron is still
-  open: more heat sources (magma, fire, lava) or keeping its heat about 5 s after the fire goes out.
-  Copper oxidising and boiling slower as it weathers was set aside: three more textures and blocks.
+- **Copper boils faster, iron holds more**, for the canteen and flask and for the pots alike. Copper
+  oxidising and boiling slower as it weathers was set aside: three more textures and blocks.

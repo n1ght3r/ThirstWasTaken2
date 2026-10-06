@@ -20,11 +20,10 @@ Cooking Pot still cooks Asparagus Soup and Cinnamon Apples from sea water.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Apple, Sweet Berry, Glow Berry and Cranberry Juice | 8 | 13 |
-| Goat Milk Bottle, Goat Milk Bucket | 6 | 8 |
-| Asparagus Soup, Creamy Asparagus Soup, Honey Peanut Soup, Cinnamon Apples | 4 | 5 |
-| Peanut Salad, Sweet Potato Salad, Goat Cheese Beetroot Salad | 4 | 5 |
-| Cranberries | 1 | 2 |
+| Apple, Sweet Berry, Glow Berry and Cranberry Juice, Asparagus Soup, Creamy Asparagus Soup, Honey Peanut Soup | 6 | 4 |
+| Goat Milk Bottle, Goat Milk Bucket | 4 | 0 |
+| Cinnamon Apples, Peanut Salad, Sweet Potato Salad, Goat Cheese Beetroot Salad | 2 | 0 |
+| Cranberries | 1 | 0 |
 
 Jellies, cheese, sandwiches, Mac and Cheese and the other dry foods restore none. Every value can be
 changed in the [config](/docs/configuration#drinks-and-foods).

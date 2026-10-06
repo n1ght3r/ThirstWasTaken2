@@ -15,15 +15,13 @@ version.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Blueberry, Cherry, Raspberry, Red Grape, Green Grape, Sweet Berry and Glow Berry Juice | 8 | 13 |
-| Goat Milk Bottle, Chocolate Milk Bottle | 6 | 8 |
-| Mead, Hard Cider, Root Beer | 5 | 6 |
-| Every wine | 3 | 4 |
-| Moonshine | 2 | 2 |
-| Syrup Bottle | 2 | 3 |
-| Corn Stew, Onion Soup | 4 | 5 |
-| Baked Apple, Caramel Apple | 2 | 3 |
-| Blueberries, Raspberries, Cherries, Red and Green Grapes | 1 | 2 |
+| Blueberry, Cherry, Raspberry, Red Grape, Green Grape, Sweet Berry and Glow Berry Juice, Chocolate Milk Bottle, Root Beer, Corn Stew, Onion Soup | 6 | 4 |
+| Mead, Hard Cider | 5 | 2 |
+| Goat Milk Bottle | 4 | 0 |
+| Every wine | 3 | 1 |
+| Moonshine | 2 | 1 |
+| Syrup Bottle | 2 | 0 |
+| Blueberries, Raspberries, Cherries, Red and Green Grapes, Baked Apple, Caramel Apple | 1 | 0 |
 
 Jams, pickles, cheese and other dry foods restore none. Every value can be changed in the
 [config](/docs/configuration#drinks-and-foods).
@@ -43,5 +41,5 @@ Jams, pickles, cheese and other dry foods restore none. Every value can be chang
 
 ## Salt
 
-In a Cooking Pot, only a bottle of sea water boils down to salt. A bottle of fresh water is purified to
-Pure instead, as it is without Hearth and Harvest. A water bucket still boils into salt.
+In a Cooking Pot, only a bottle of sea water boils down to salt. A bottle of Dirty or Murky fresh water is
+boiled Clean instead, as it is without Hearth and Harvest. A water bucket still boils into salt.

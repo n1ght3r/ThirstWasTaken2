@@ -70,12 +70,14 @@ opens the same menu.
 
 ## How it runs
 
-- **Tanks.** Boiler tank and basin tank hold 9 servings each (three buckets). The boiler tank keeps one
+- **Tanks.** Boiler tank and basin tank hold 9 servings each (three buckets), 1 to 64 from the config;
+  under three a tank takes no bucket, and its water slot takes one container at a time, since water
+  bowls stack. The boiler tank keeps one
   quality: salt, or the worst fresh grade poured in (the same mixing rule as the hanging pot and the
   cauldron). The basin is always Pure.
-- **A serving takes 8 s** while the fire burns. The copper hanging pot takes 4 s a serving, but only
-  for fresh water up to Pure; the distiller handles salt water and runs unattended from fuel, so it may
-  be slower. To tune.
+- **A serving takes 8 s** while the fire burns. The copper hanging pot takes 3 s a serving, but only
+  makes fresh water Clean; the distiller is the one way to Pure from anything, salt water included,
+  and runs unattended from fuel, so it may be slower. To tune.
 - **Fuel.** Burns as in a furnace: coal lasts 80 s, ten servings at 8 s. It only burns while there is
   water to boil and room in the basin, so it is not wasted.
 - **Salt.** Every 3 salty servings (one bucket of sea water) make one salt item, when a salt item

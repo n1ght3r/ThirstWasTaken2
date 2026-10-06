@@ -57,7 +57,10 @@ each needs.
 | `gameplay/client-sync.jsonl` | what the client is told: `/thirst set`, the sprint gate at 6 and 7, rejoining, respawning, the Nether |
 | `gameplay/parched.jsonl` | Parched from sea water through the real right click, its drain by level, its name in each language |
 | `gameplay/waterskin-stack.jsonl` | a waterskin filled from a stack of bottles on the cursor puts the empty bottle in the inventory |
-| `gameplay/loot-and-boil.jsonl` | water bottles in the seeded chests and barters, and `boil_water` from a furnace and a smoker |
+| `gameplay/loot-and-boil.jsonl` | water bottles in the seeded chests and barters, and `boil_water` from a furnace and a smoker, both boiling Clean |
+| `gameplay/canteen.jsonl` | the Copper Canteen and Iron Flask boiling Clean in hand on a campfire, salt refused, and both crafting recipes |
+| `gameplay/hanging-pot.jsonl` | a pot over a lit campfire boiling Clean, salt staying salty, the campfire taken away |
+| `gameplay/distiller.jsonl` | the Copper Distiller placed, built from its parts, piped, cooled and distilling to Pure |
 | `smoke/boot.jsonl` | a client without an optional mod comes up and stays up, see [Without the optional mods](#without-the-optional-mods) |
 
 The fifth sync check, two clients each seeing only their own bar, needs `runServer`, `runManualA` and
@@ -139,15 +142,18 @@ looks and sounds.
       black squares. Placed on stone, it stands on its own without the frame. The crossbar runs across
       the placing player's view. The iron pot is dark iron with the same frame and chain.
 - [x] The water surface rises and falls with the level, and its colour matches the grade.
-- [x] Over a lit campfire the water bubbles and steams, and turns pure blue with a short brewing
+- [x] Over a lit campfire the water bubbles and steams, and turns Clean's blue with a short brewing
       sound when done.
+- [ ] An iron pot holding six drinks looks a third, two thirds and full as it fills; a pot from an
+      older save keeps its water.
 - [x] In the Nether, pouring into a pot hisses and smokes.
 - [x] Breaking the campfire drops the pot.
 
 ### Sprites and sounds
 
 - [x] A filled bowl's water colour changes with its grade: four fresh colours and a sea colour.
-- [x] A waterskin's sprite shows 0, 1, 2 or 3 drinks, and its bar is coloured by grade.
+- [ ] A waterskin's sprite shows empty, a third, two thirds or full, at any capacity, and its bar is
+      coloured by grade.
 - [x] Drinking a bowl or a waterskin plays the drinking animation and sound.
 - [x] Crouch with an empty hand and use water at less than full thirst: the drinking sound is heard
       by the drinker.
@@ -159,9 +165,6 @@ looks and sounds.
       particles swirl around the player. `gameplay/parched.jsonl` captures both screens.
 - [x] With Upset Stomach the thirst bar turns venom green, empty droplets included, and wins over
       Parched.
-- [x] A Nausea burst of 10 seconds visibly warps the screen, growing for most of the burst and fading
-      at the end.
-- [ ] Nausea bursts come about once a minute at Upset Stomach I and twice at II, watched in play.
 - [ ] Sneaking and clicking water with an empty hand splashes droplets on the water.
 - [ ] Sneaking and using a filled waterskin on a block empties it with a splash sound, droplets and
       the bottle sound, like a water bottle poured on dirt.
@@ -228,6 +231,28 @@ looks and sounds.
 
 `checkOptionalSeam` is the static half of these checks for classes, and `checkDataConditions` for data
 files; CI runs both on every node.
+
+## Purification rework
+
+The design's playtests ([PURIFICATION-REWORK.md](mechanics/PURIFICATION-REWORK.md#validation-and-tuning)).
+They judge balance, so they are played, not scripted. Record the numbers each asks for in the release
+PR.
+
+- [ ] Furnace and smoker times on screen: a bottle 8 s and 4 s, a bucket 24 s and 12 s, a half-full
+      canteen half a full one's time; no experience; `enableFurnaceBoiling` off and `/reload` leaves
+      no water recipe in the recipe book.
+- [ ] Upset Stomach's tooltip or effect line makes it clear that food does not heal while it lasts.
+- [ ] The tooltip's droplet rows show the actual gain: less at nearly full thirst, none of quenched
+      for Dirty water, a quarter of a serving for Murky.
+- [ ] Twenty-minute routes with each vessel: starter survival, building, ordinary exploration,
+      repeated combat and the Nether. Count drinks, treatment time, slots, and health, food and water
+      spent. Ordinary travel should not need a drink more than about once a minute.
+- [ ] Three matched mining runs: food and untreated cave water, food and prepared Clean water, food
+      and boiling in the field. Raw water should lose; prepared water should let the player heal.
+- [ ] A long trip with a stack of three bowls, a waterskin, a canteen and a flask, counting the fuel
+      and time to prepare them.
+- [ ] One raw drink in an emergency, then shelter and Clean water: the player recovers without a
+      distiller.
 
 ## Per version
 
@@ -312,8 +337,8 @@ allow cheats, so the agent scripts read block entities through `server.command`.
       `runServer`. Fabric 1.20.1 syncs through its own channel, Forge through a `SimpleChannel`.
 - [ ] The thirst bar, its droplets and the quenched outline draw from their texture sheet, with no
       missing-texture squares, in every state `ui/hud-layout.jsonl` sets up.
-- [ ] A campfire, smoker and furnace each boil a Murky bottle, bucket and bowl two grades, and the
-      recipe book shows the purification recipes on both loaders.
+- [ ] A smoker and a furnace each boil a Murky bottle, bucket and bowl Clean, a furnace a canteen and
+      a flask too, and the recipe book shows the purification recipes on both loaders.
 - [ ] A water bowl, a waterskin and a canteen keep their grade across a save and reload.
 - [ ] Mods → ThirstWasTaken2 → Config opens the settings screen on Forge; Mod Menu does on Fabric.
 - [x] The shipped Forge jar (`reobfJar`) boots on a real Forge 47.4.10 server with no mixin or data
@@ -354,7 +379,7 @@ released before the server sees the player crouch.
       translated differently there (`type` and `items`).
 - [ ] On `1.21.1-neoforge`, run `integrations/cold-sweat.jsonl` and look at its
       `cold-sweat-hud.png`: the thirst bar and Cold Sweat's body temperature gauge do not overlap. Then
-      put a Dirty water bottle in a Boiler by hand, through its screen, and see it rise to Pure.
+      put a Dirty water bottle in a Boiler by hand, through its screen, and see it rise to Clean and stop.
 
 ## When this file changes
 

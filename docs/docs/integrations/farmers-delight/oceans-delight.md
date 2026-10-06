@@ -16,9 +16,8 @@ Fabric it needs Farmer's Delight Refabricated. The mod has no build for a newer 
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Bowl of Guardian Soup | 5 | 7 |
-| Braised Sea Pickle | 4 | 5 |
-| Seagrass Salad | 2 | 3 |
+| Bowl of Guardian Soup, Braised Sea Pickle | 6 | 4 |
+| Seagrass Salad | 2 | 0 |
 
 Squid rings, rolls, tentacles, cod and the other seafood restore none. Every value can be changed in the
 [config](/docs/configuration#drinks-and-foods).

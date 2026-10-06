@@ -11,11 +11,11 @@ Fabric and NeoForge, Minecraft 1.21.1, with ![](https://cdn.modrinth.com/data/1D
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Apple Juice and every Grapejuice | 8 | 13 |
-| Apple Cider, Kelp Cider, Mead | 5 | 6 |
-| Every other wine | 3 | 4 |
-| Apple Mash | 2 | 3 |
-| Grapes and Cherries | 1 | 2 |
+| Apple Juice and every Grapejuice | 6 | 4 |
+| Apple Cider, Kelp Cider, Mead | 5 | 2 |
+| Every wine | 3 | 1 |
+| Apple Mash | 2 | 0 |
+| Grapes and Cherries | 1 | 0 |
 
 A big bottle and a small one restore the same. Rotten cherries restore no thirst. Every value can be
 changed in the [config](/docs/configuration).

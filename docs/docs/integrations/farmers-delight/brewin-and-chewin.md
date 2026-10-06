@@ -24,14 +24,12 @@ water poured into it does not keep its grade.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Kombucha | 6 | 8 |
-| Beer, Mead, Egg Grog, Glittering Grenadine | 5 | 6 |
-| Bloody Mary | 4 | 5 |
-| Rice Wine | 3 | 4 |
-| Pale Jane, Strongroot Ale, Dread Nog | 3 | 3 |
-| Saccharine Rum, Steel-Toe Stout, Red Rum | 2 | 2 |
-| Creamy Onion Soup | 4 | 5 |
-| Fiery Fondue | 2 | 3 |
+| Kombucha, Creamy Onion Soup | 6 | 4 |
+| Beer, Mead, Egg Grog, Glittering Grenadine | 5 | 2 |
+| Bloody Mary | 4 | 2 |
+| Every wine, Pale Jane, Strongroot Ale, Dread Nog | 3 | 1 |
+| Saccharine Rum, Steel-Toe Stout, Red Rum | 2 | 1 |
+| Grits | 2 | 0 |
 
 The stronger a drink, the less it restores. Vodka, Salty Folly and Withering Dross restore none. A
 brew is safe whatever water went into the Keg. Every value can be changed in the

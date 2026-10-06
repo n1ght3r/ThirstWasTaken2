@@ -13,10 +13,9 @@ Everything on this page works on NeoForge, Minecraft 1.21.1, with
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Milk Cup | 6 | 8 |
-| Cave Soup, Bat Soup, Insect Stew | 4 | 5 |
-| Bone Broth Cup, Beetroot Soup Cup | 3 | 4 |
-| Every other soup and stew cup | 2 | 3 |
+| Cave Soup, Bat Soup, Insect Stew | 6 | 4 |
+| Milk Cup | 4 | 0 |
+| Every soup and stew cup | 3 | 2 |
 
 A cup of soup is half a bowl, so it restores half as much. The cave foods, plates and sandwiches restore
 none. Every value can be changed in the [config](/docs/configuration#drinks-and-foods).

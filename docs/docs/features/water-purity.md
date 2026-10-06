@@ -5,6 +5,9 @@ thirst. Every container shows which one it holds in its tooltip.
 
 ![A water bottle tooltip stepping through Dirty, Murky, Clean, Pure and Salty](/screenshots/water/water-tooltips.gif)
 
+Collect water, boil it **Clean**, and distil it **Pure** if a bigger reserve is worth the trouble.
+Clean water is already safe to drink.
+
 ## The four grades
 
 From worst to best: **Dirty**, **Murky**, **Clean**, **Pure**. Water gets its grade where it is
@@ -12,24 +15,28 @@ collected and keeps it.
 
 | Grade | Usually found in | Drinking it |
 |---|---|---|
-| **Dirty** | Swamps, jungles, savannas, badlands | Often makes you ill, no quenched |
-| **Murky** | Rivers and most other biomes | Can make you ill, half quenched |
-| **Clean** | Mountains | Rarely makes you ill |
-| **Pure** | Cold peaks | Always safe |
+| **Dirty** | Swamps, jungles, savannas, badlands | Usually makes the player ill, no quenched |
+| **Murky** | Rivers, most other biomes, every cave | Can make the player ill, a little quenched |
+| **Clean** | Mountains, rain | Safe |
+| **Pure** | Cold peaks, dripstone | Safe, and the most quenched |
 | **Salty** | Oceans and beaches | Never quenches thirst, gives [Parched](#parched) |
 
-How likely each grade is to make you ill is under [Drinking bad water](#drinking-bad-water).
+How much each grade restores is on the [drinking page](/docs/features/drinking#what-is-worth-drinking),
+and how likely Dirty and Murky water are to make the player ill is under
+[Drinking bad water](#drinking-bad-water).
 
 ![](https://cdn.modrinth.com/data/8oi3bsk5/1959d924a1088944bbf07a06ba523726112d7e7a_96.webp){.mod-icon} [Terralith](https://modrinth.com/mod/terralith)'s Orchid Swamp and Ice Marsh count as swamps, so their water is Dirty.
 
 - Hot biomes make water worse, cold biomes make it better.
-- Water above y 100 or below y 32 is a little cleaner. So is flowing water.
+- Water above y 100 is a little cleaner. So is flowing water.
 - Mud, mangrove roots, farmland or a composter within two blocks make water worse.
+- Water the sky can't reach is at best Murky: a cave pool, or a pond under a roof or leaves. Rain
+  doesn't renew it, so it needs boiling like any other risky water.
 
 Modpacks can add biomes to the `thirstwastaken2:stagnant_water` tag, coastal biomes whose water is
 salty to the `thirstwastaken2:sea_water` tag, and fluids that are always Pure to the
 `thirstwastaken2:pure_water` fluid tag. Water with no grade of its own
-uses [defaultPurity](/docs/configuration#defaultpurity).
+uses [defaultQuality](/docs/configuration#defaultquality).
 
 ## Checking water with Jade
 
@@ -73,27 +80,24 @@ Neither improves water already in the cauldron.
 
 ## Drinking bad water
 
-Fresh water always quenches thirst. The grade sets the risk, and harder difficulties make it worse.
-Pure water is always safe.
+Fresh water always restores thirst. Clean and Pure water are always safe, and so is every grade on
+Peaceful. Dirty and Murky water can make the player ill, more often on harder difficulties.
 
-Bad water fills the thirst bar but does not last. Dirty water gives no quenched and Murky water half,
-so thirst starts dropping again soon after, the way rotten flesh gives almost no saturation.
+Bad water also leaves little reserve: Dirty water gives no quenched and Murky water only a quarter
+of a serving's, so thirst starts dropping again soon after.
 
-Dirty and Murky water taste bad: every drink gives seven seconds of Nausea, even on Peaceful. Then each
-effect below has its own chance, so one drink can give both, or neither.
+Each drink rolls once. Upset Stomach comes on the chance below, and Poison only on a worse roll, so
+Poison always comes with Upset Stomach.
 
-| Chance per drink | Dirty | Murky | Clean |
-|---|---|---|---|
-| Peaceful | none | none | none |
-| Easy | 65% Upset Stomach I, 25% Poison | 35% Upset Stomach I, 10% Poison | 5% Upset Stomach I, 3% Poison |
-| Normal | 75% Upset Stomach II, 35% Poison | 50% Upset Stomach I, 18% Poison | 12% Upset Stomach I, 5% Poison |
-| Hard | 78% Upset Stomach II, 45% Poison | 66% Upset Stomach II, 30% Poison | 20% Upset Stomach I, 10% Poison |
+| Chance per drink | Dirty | Murky |
+|---|---|---|
+| Easy | 65% Upset Stomach I, 15% also Poison | 35% Upset Stomach I, 5% also Poison |
+| Normal | 90% Upset Stomach II, 35% also Poison | 65% Upset Stomach I, 15% also Poison |
+| Hard | 100% Upset Stomach II, 50% also Poison | 85% Upset Stomach II, 25% also Poison |
 
-Clean water makes the player ill for less time than Dirty or Murky water, as the tables below show.
-
-Drinking bad water again while an effect from it is still on adds its time again, up to twice as long.
-The stronger level is kept. This can be switched off with
-[extendSicknessEffects](/docs/configuration#extendsicknesseffects).
+Drinking bad water again while still ill makes Upset Stomach last longer, by half the new dose, but
+never more than one and a half doses from now. The stronger level is kept. This can be switched off
+with [extendSicknessEffects](/docs/configuration#extendsicknesseffects).
 
 Every effect, chance, duration and level can be changed for each difficulty and grade, and any effect
 added, with [sicknessEffects](/docs/configuration#sicknesseffects).
@@ -102,74 +106,85 @@ added, with [sicknessEffects](/docs/configuration#sicknesseffects).
 
 ![Upset Stomach effect icon](/icons/upset-stomach.png){.effect-icon}
 
-The common one. It never hurts on its own.
+The common one. It never hurts on its own, but it stops natural healing until it wears off, however
+full the bars are.
 
-- Thirst drains faster, twice as fast at level II.
-- The screen warps now and then, about once a minute at level I and twice at level II.
-- Food fills less saturation, and drinks less quenched: three quarters at level I, half at level II.
+- Thirst drains by 4 points a minute at level I, 8 at level II, on top of the usual drain.
+- Food fills half its saturation at level I, a quarter at level II. Drinks give the same share of
+  their quenched.
+- Milk doesn't cure it. Only time does. Clean water keeps the player going until then.
 - The thirst bar turns green while it lasts.
 
 | | Easy | Normal | Hard |
 |---|---|---|---|
-| From Dirty or Murky water | 45 seconds | 60 seconds | 90 seconds |
-| From Clean water | 20 seconds | 30 seconds | 45 seconds |
+| From Dirty water | 45 seconds | 60 seconds, level II | 90 seconds, level II |
+| From Murky water | 30 seconds | 45 seconds | 60 seconds, level II |
 
 ![The thirst bar in green while the player has Upset Stomach](/screenshots/hud/upset-stomach-hud.png)
 
 ### Poison
 
-A bad batch. Milk cures it.
+A bad batch. Milk and honey cure it.
 
 | | Easy | Normal | Hard |
 |---|---|---|---|
-| From Dirty or Murky water | 10 seconds | 20 seconds | 30 seconds |
-| From Clean water | 5 seconds | 8 seconds | 12 seconds |
+| From Dirty water | 10 seconds | 20 seconds | 30 seconds |
+| From Murky water | 8 seconds | 15 seconds | 20 seconds |
 
 Poison stops at half a heart, so it never kills.
 
 ## Cleaning fresh water
 
-Put a water bottle, terracotta water bowl or water bucket in a furnace, a smoker or on a campfire.
+Heat makes Dirty and Murky water Clean, and goes no further. Only a
+[Copper Distiller](#copper-distiller) makes Pure water, from any water, sea water included. The Create
+[Sand Filter](/docs/integrations/create#sand-filter) also cleans water a grade at a time, up to Pure.
+
+Ways to boil water:
+
+- A [Copper Canteen or Iron Flask](#boiling-in-a-canteen-or-flask) held over a campfire.
+- A [Hanging Pot](#copper-hanging-pot) on a campfire, which needs no attention.
+- A furnace or a smoker, below.
+- The Farmer's Delight [Cooking Pot](/docs/integrations/farmers-delight/#boiling-water-in-the-cooking-pot).
+
+Clean and Pure water have nothing left to boil, so heat never takes them, and nothing boils salt out.
+
+### Furnace and smoker
 
 ![A dirty water bottle comes out of the furnace clean](/screenshots/water/furnace-clean-water.png)
 
-| In | Out |
-|---|---|
-| Dirty | Clean |
-| Murky | Pure |
-| Clean | Pure |
+A water bottle, terracotta water bowl, water bucket, Copper Canteen or Iron Flask of Dirty or Murky
+water comes out Clean. No experience is given.
 
-A furnace takes ten seconds, a smoker five, a campfire thirty. An Iron Flask works in a furnace
-too, however full it is. Other ways to clean water:
+| | Furnace | Smoker |
+|---|---|---|
+| Bottle or bowl | 8 seconds | 4 seconds |
+| Bucket | 24 seconds | 12 seconds |
+| Copper Canteen | 2 seconds a drink | No |
+| Iron Flask | 3 seconds a drink | No |
 
-- A [Copper Canteen or Iron Flask](#boiling-in-a-canteen-or-flask) boils its water Pure over a
-  campfire.
-- A [Hanging Pot](#copper-hanging-pot) boils a whole bucket Pure.
-- A [Copper Distiller](#copper-distiller) turns any water Pure, sea water included.
-- The Farmer's Delight [Cooking Pot](/docs/integrations/farmers-delight/#boiling-water-in-the-cooking-pot)
-  makes bottles and bowls Pure in one pass.
-- The Create [Sand Filter](/docs/integrations/create#sand-filter) cleans water pumped through it.
+A canteen or flask takes as long as the drinks inside, so a half-full one is done in half the time.
+A stack of bowls is boiled one at a time. Servers can turn furnace boiling off with
+[enableFurnaceBoiling](/docs/configuration#enablefurnaceboiling).
 
 ## Boiling in a canteen or flask
 
 Hold use on a lit campfire or soul campfire with a [Copper Canteen or Iron Flask](/docs/features/drinking#copper-canteen-and-iron-flask)
 that holds water. The progress shows above the hotbar, and when it is done all the water inside is
-Pure.
+Clean.
 
 | | Per drink | Full |
 |---|---|---|
-| Copper Canteen | 3 seconds | 12 seconds |
-| Iron Flask | 4 seconds | 24 seconds |
+| Copper Canteen | 2 seconds | 8 seconds |
+| Iron Flask | 3 seconds | 18 seconds |
 
 - Letting go keeps the progress. Adding water starts it over.
 - Salt water never boils clean.
-- Only the Iron Flask goes in a furnace. It raises the water two grades, like a bottle.
 
 ## Copper Hanging Pot
 
 ![A Copper Hanging Pot of water boiling over a campfire](/screenshots/water/copper-hanging-pot.png)
 
-Placed on a lit campfire or soul campfire, it boils water into Pure water. Placed on the ground, it
+Placed on a lit campfire or soul campfire, it boils water Clean on its own. Placed on the ground, it
 stands a block up on its legs, so a campfire can go under it later. Putting any other solid block
 under it knocks the pot off.
 
@@ -179,14 +194,13 @@ under it knocks the pot off.
 
 On Minecraft 1.21 and 1.21.1 the recipe uses a chain instead of an iron chain.
 
-- Holds three servings, like a cauldron. A bucket fills or empties it. A bottle or bowl adds or takes
-  one.
+- Holds three servings, a bucket. A bucket fills or empties it. A bottle or bowl adds or takes one.
 - A waterskin fills up from it in one go, as far as the pot has water. Sneak to pour all of it in.
-- Each serving takes 4 seconds.
+- Each serving takes 3 seconds.
 - Adding water only adds that water's time. Putting the fire out pauses the boil.
 - The water changes colour with its grade.
 - It mixes like a cauldron, and salt water never boils clean.
-- Rain fills it slowly.
+- Rain fills it slowly, with Clean water.
 - Water cannot be poured into it in the Nether.
 - Breaking it drops the pot. The water is lost.
 
@@ -194,7 +208,8 @@ On Minecraft 1.21 and 1.21.1 the recipe uses a chain instead of an iron chain.
 
 ![An Iron Hanging Pot of water boiling over a campfire](/screenshots/water/iron-hanging-pot.png)
 
-Works like the Copper Hanging Pot but boils slower: 6 seconds a serving.
+Works like the Copper Hanging Pot but holds six servings, two buckets, and boils slower: 4 seconds a
+serving.
 
 ![Two sticks and a chain across the top, five iron ingots in a U below, make an Iron Hanging Pot](/screenshots/recipes/iron-hanging-pot-recipe.png)
 
@@ -209,7 +224,7 @@ It is made of four parts: a Brick Firebox, a Distiller Boiler, a Cooling Tub and
 
 ![Three copper ingots in a row make four Copper Pipes](/screenshots/recipes/copper-pipe-recipe.png)
 
-![Seven copper ingots in a ring round a gold ingot, a Copper Pipe in the middle of the top row, make a Distiller Boiler](/screenshots/recipes/distiller-boiler-recipe.png)
+![Seven copper ingots in a ring round an iron ingot, a Copper Pipe in the middle of the top row, make a Distiller Boiler](/screenshots/recipes/distiller-boiler-recipe.png)
 
 ![Five Copper Pipes around a barrel, a cauldron below, make a Cooling Tub](/screenshots/recipes/cooling-tub-recipe.png)
 
@@ -236,8 +251,8 @@ nothing condenses, and the arrow in the distiller's screen turns red.
 - Each serving takes 8 seconds while the fire burns. Coal runs ten servings. The fire only burns
   while there is water to boil and room in the basin, so no fuel is wasted.
 - The boiler and the basin each hold 9 servings, three buckets.
-- Hoppers feed water in from above and fuel or empty containers from the sides, and take filled
-  containers and salt out from below.
+- Hoppers feed water in from above, one container at a time, and fuel or empty containers from the
+  sides, and take filled containers and salt out from below.
 - Breaking it drops the distiller and whatever its slots held. The water in its tanks is lost.
 
 With Jade installed, looking at it shows what each tank holds and its grade.

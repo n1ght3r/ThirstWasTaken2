@@ -24,8 +24,8 @@ A bucket of Spring Water is Spelunkery's own fluid. It can be poured out again, 
 ## Boiling water into salt
 
 Spelunkery boils a water bucket into a Salt Bucket in a furnace. With this mod, that only works with sea
-water: boiling it away leaves its salt behind. A bucket of fresh water is purified in the furnace as
-usual, and a bucket that is already Pure stays as it is.
+water: boiling it away leaves its salt behind. A bucket of Dirty or Murky fresh water is boiled Clean
+in the furnace as usual, and better water stays as it is.
 
 Salt is also mined from rock salt, so it is still easy to get when sea water is turned off with
 [enableSeaWater](/docs/configuration#enableseawater).

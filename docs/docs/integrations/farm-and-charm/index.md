@@ -39,11 +39,9 @@ bucket of sea water does not start.
 
 | Item | Thirst | Quenched |
 |---|---|---|
-| Strawberry, Nettle and Ribwort Tea, a cup or the whole jug | 6 | 9 |
-| Barley, Onion, Potato and Simple Tomato Soup, Goulash, Farmer Salad | 4 | 5 |
-| Corn Grits | 3 | 4 |
-| Tomato | 2 | 3 |
-| Lettuce, Strawberry | 1 | 2 |
+| Strawberry, Nettle and Ribwort Tea, a cup or the whole jug, Barley, Onion, Potato and Simple Tomato Soup, Goulash | 6 | 4 |
+| Farmer Salad, Corn Grits, Tomato | 2 | 0 |
+| Lettuce, Strawberry | 1 | 0 |
 
 A placed tea jug pours two cups, so drinking the jug whole wastes one. Breads, roasts, pancakes and
 other dry dishes restore no thirst. Every value can be changed in the [config](/docs/configuration).

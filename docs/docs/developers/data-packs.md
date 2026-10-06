@@ -71,5 +71,5 @@ Loaded thirst values for 12 items from data packs
 ## The `c:drinks` tag
 
 For a flat value instead of an exact one, tag the item `c:drinks`. It then restores
-[`drinkTagValue`](/docs/configuration#drinktagvalue), 6 thirst and 8 quenched by default. Items also
+[`drinkTagValue`](/docs/configuration#drinktagvalue), 6 thirst and 4 quenched by default. Items also
 tagged `c:drinks/magic` or `c:drinks/ominous`, such as potions, are left out.

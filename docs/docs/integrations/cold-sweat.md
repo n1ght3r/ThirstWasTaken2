@@ -31,8 +31,8 @@ Cold Sweat's Waterskin is a second waterskin next to this mod's, with its own te
 
 - Filled from water in the world, it takes that water's [grade](/docs/features/water-purity), sea
   water included. Filled from a cauldron or a tank, it takes the grade of the water inside.
-- A sip, made while sneaking, restores what a bottle of water does, 6 thirst and 8 quenched, with the
-  same chance of sickness for bad water. Sea water restores nothing and makes the player Parched.
+- A sip, made while sneaking, restores what a [serving of water](/docs/features/drinking#what-is-worth-drinking)
+  of the same grade does, with the same chance of sickness for bad water. Sea water restores nothing and makes the player Parched.
 - Pouring it over the player, its normal use, restores no thirst.
 - Poured into a cauldron, the cauldron keeps the worse of the two grades, as with any container.
 - The empty Waterskin left over carries no grade.
@@ -45,11 +45,11 @@ The grade shows in the Waterskin's tooltip.
 
 | Where | What happens |
 |---|---|
-| Boiler | Takes any water container of this mod, bottles, buckets and bowls too. With fuel, it raises each one a grade every 10 seconds, up to Pure. |
-| Campfire | The Waterskin comes off boiled like a bottle: Dirty becomes Clean, anything better becomes Pure. |
-| Furnace and Smoker | The Waterskin purifies like a bottle of water. |
+| Boiler | Takes any water container of this mod, bottles, buckets and bowls too. With fuel, it raises each one a grade every 10 seconds, up to Clean. |
+| Campfire | The Waterskin comes off boiled Clean. |
 
-Sea water stays sea water in all three. Boiling does not remove salt.
+Heat stops at Clean, as everywhere else; only a [Copper Distiller](/docs/features/water-purity#copper-distiller)
+makes Pure water. Sea water stays sea water in both. Boiling does not remove salt.
 
 ## Hot drinks
 
