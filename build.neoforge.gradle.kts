@@ -269,6 +269,14 @@ dependencies {
             "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
     }
 
+    // Extra Delight, on the node that sets it. src/main/extradelight's mixins name its bottle registry,
+    // tanks and recipes, so they compile against it.
+    findProperty("deps.extra_delight")?.let {
+        compileOnly("maven.modrinth:extradelight:$it") { isTransitive = false }
+        runClientMod(listOf("extradelight", "farmers-delight", "farmersdelight"),
+            "maven.modrinth:extradelight:$it") { isTransitive = false }
+    }
+
     // No Man's Land, on the node that sets it. src/main/nomansland's mixin names its milk cauldron, so it
     // compiles against it. NeoForge loads the Biolith and Mixed Litter nested in its jar itself. Off by
     // default: it rewrites the whole Overworld, which slows every client start and needs a new world.

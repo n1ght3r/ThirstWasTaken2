@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { CURSEFORGE, CURSEFORGE_ICON, MODRINTH, MODRINTH_ICON, REPO } from './links'
-import { DELIGHT_ADDONS, FARM_AND_CHARM, LETS_DO, FARMERS_DELIGHT, INTEGRATIONS, type Mod } from './mods'
+import { DELIGHT_ADDONS, FARM_AND_CHARM, LETS_DO, FARMERS_DELIGHT, INTEGRATIONS, KALEIDOSCOPE_ADDONS, KALEIDOSCOPE_COOKERY, type Mod } from './mods'
 
 const BASE = process.env.VITEPRESS_BASE || '/'
 
@@ -64,6 +64,12 @@ const manualSidebar = [
         ...sidebarMod(FARM_AND_CHARM),
         collapsed: true,
         items: LETS_DO.map(sidebarMod)
+      },
+      {
+        // Kaleidoscope Cookery and its addons, the same way.
+        ...sidebarMod(KALEIDOSCOPE_COOKERY),
+        collapsed: true,
+        items: KALEIDOSCOPE_ADDONS.map(sidebarMod)
       }
     ]
   },

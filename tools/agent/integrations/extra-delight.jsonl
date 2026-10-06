@@ -1,0 +1,296 @@
+// Extra Delight in a real client, the check of its integration plan
+// (docs/dev/integration/cooking/EXTRA-DELIGHT-INTEGRATION.md). What it proves: every id ThirstConfig lists
+// for the mod exists; the Tap and the Sink give Murky water, by bottle and by bucket; a Jar keeps the grade
+// of a bottle and of a bucket and refuses a second grade; a Keg keeps sea water salty; the Evaporator
+// works on sea water and not on fresh; the Mixing Bowl stirs fresh water and not sea water; a Funnel grades
+// the source it takes up; and a drink restores what ThirstConfig says. Runs on 1.21.1-neoforge.
+// Run it unattended:
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/extra-delight.jsonl -Pquickplay=ExtraDelightAgent -PwithoutOptional=cold-sweat
+// ExtraDelightAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py 1.21.1-neoforge ExtraDelightAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/1.21.1-neoforge/agent/client tools/agent/integrations/extra-delight.jsonl --verify --max-age 15
+//
+// Everything happens on a stone floor at y 199. The player stands at 0.5 200 0.5 looking south at pitch
+// 30, at the block on 0 200 2. A bottle or bucket used on a block comes back in the hand when it is the
+// only one held.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 3000 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 210 8 minecraft:air"}}
+{"id": "box", "command": "server.command", "args": {"command": "fill -8 194 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 8 212 8 minecraft:plains"}}
+{"id": "stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+
+// Every id ThirstConfig lists, and the blocks the script uses.
+{"id": "id_affogato", "command": "server.command", "args": {"command": "give @p extradelight:affogato"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_custard", "command": "server.command", "args": {"command": "give @p extradelight:apple_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:apple_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:apple_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:apple_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_borscht", "command": "server.command", "args": {"command": "give @p extradelight:borscht"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cactus_juice", "command": "server.command", "args": {"command": "give @p extradelight:cactus_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cactus_soup", "command": "server.command", "args": {"command": "give @p extradelight:cactus_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_caramel_custard", "command": "server.command", "args": {"command": "give @p extradelight:caramel_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_caramel_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:caramel_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_carrot_soup", "command": "server.command", "args": {"command": "give @p extradelight:carrot_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chicken_stew", "command": "server.command", "args": {"command": "give @p extradelight:chicken_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chili_con_carne", "command": "server.command", "args": {"command": "give @p extradelight:chili_con_carne"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chocolate_custard", "command": "server.command", "args": {"command": "give @p extradelight:chocolate_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chocolate_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:chocolate_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chocolate_milk", "command": "server.command", "args": {"command": "give @p extradelight:chocolate_milk"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chocolate_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:chocolate_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cinnamon_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:cinnamon_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_coffee", "command": "server.command", "args": {"command": "give @p extradelight:coffee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_congee", "command": "server.command", "args": {"command": "give @p extradelight:congee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cookie_dough_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:cookie_dough_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cookie_dough_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:cookie_dough_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_corn_chowder", "command": "server.command", "args": {"command": "give @p extradelight:corn_chowder"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_curry", "command": "server.command", "args": {"command": "give @p extradelight:curry"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_dalgona_coffee", "command": "server.command", "args": {"command": "give @p extradelight:dalgona_coffee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_eggnog", "command": "server.command", "args": {"command": "give @p extradelight:eggnog"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_fish_soup", "command": "server.command", "args": {"command": "give @p extradelight:fish_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_fudge_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:fudge_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_gazpacho", "command": "server.command", "args": {"command": "give @p extradelight:gazpacho"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_ginger_beer", "command": "server.command", "args": {"command": "give @p extradelight:ginger_beer"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glow_berry_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:glow_berry_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glow_berry_juice", "command": "server.command", "args": {"command": "give @p extradelight:glow_berry_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glow_berry_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:glow_berry_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_glow_berry_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:glow_berry_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_gourmet_hot_chocolate", "command": "server.command", "args": {"command": "give @p extradelight:gourmet_hot_chocolate"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_grapefruit_juice", "command": "server.command", "args": {"command": "give @p extradelight:grapefruit_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hazelnut_soup", "command": "server.command", "args": {"command": "give @p extradelight:hazelnut_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honey_custard", "command": "server.command", "args": {"command": "give @p extradelight:honey_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honey_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:honey_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honey_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:honey_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honey_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:honey_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_horchata", "command": "server.command", "args": {"command": "give @p extradelight:horchata"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_ice_cream_sundae", "command": "server.command", "args": {"command": "give @p extradelight:ice_cream_sundae"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lamb_stew", "command": "server.command", "args": {"command": "give @p extradelight:lamb_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon_juice", "command": "server.command", "args": {"command": "give @p extradelight:lemon_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemonade", "command": "server.command", "args": {"command": "give @p extradelight:lemonade"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lime_juice", "command": "server.command", "args": {"command": "give @p extradelight:lime_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_limeade", "command": "server.command", "args": {"command": "give @p extradelight:limeade"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_melon_gazpacho", "command": "server.command", "args": {"command": "give @p extradelight:melon_gazpacho"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mint_chip_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:mint_chip_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mint_chip_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:mint_chip_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_miso_soup", "command": "server.command", "args": {"command": "give @p extradelight:miso_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mulligatawny_soup", "command": "server.command", "args": {"command": "give @p extradelight:mulligatawny_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_nut_butter_custard", "command": "server.command", "args": {"command": "give @p extradelight:nut_butter_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_nut_butter_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:nut_butter_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_nut_butter_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:nut_butter_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_onion_soup", "command": "server.command", "args": {"command": "give @p extradelight:onion_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_juice", "command": "server.command", "args": {"command": "give @p extradelight:orange_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orangeade", "command": "server.command", "args": {"command": "give @p extradelight:orangeade"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_oxtail_soup", "command": "server.command", "args": {"command": "give @p extradelight:oxtail_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pork_stew", "command": "server.command", "args": {"command": "give @p extradelight:pork_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_potato_soup", "command": "server.command", "args": {"command": "give @p extradelight:potato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pumpkin_custard", "command": "server.command", "args": {"command": "give @p extradelight:pumpkin_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pumpkin_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:pumpkin_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_pumpkin_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:pumpkin_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_punch", "command": "server.command", "args": {"command": "give @p extradelight:punch"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sauerkraut_soup", "command": "server.command", "args": {"command": "give @p extradelight:sauerkraut_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_soy_milk", "command": "server.command", "args": {"command": "give @p extradelight:soy_milk"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_stuffed_apple_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:stuffed_apple_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_custard", "command": "server.command", "args": {"command": "give @p extradelight:sweet_berry_custard"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_ice_cream", "command": "server.command", "args": {"command": "give @p extradelight:sweet_berry_ice_cream"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_juice", "command": "server.command", "args": {"command": "give @p extradelight:sweet_berry_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_milkshake", "command": "server.command", "args": {"command": "give @p extradelight:sweet_berry_milkshake"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sweet_berry_popsicle", "command": "server.command", "args": {"command": "give @p extradelight:sweet_berry_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tea", "command": "server.command", "args": {"command": "give @p extradelight:tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tomato_juice", "command": "server.command", "args": {"command": "give @p extradelight:tomato_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tomato_soup", "command": "server.command", "args": {"command": "give @p extradelight:tomato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_chili", "command": "server.command", "args": {"command": "give @p extradelight:white_chili"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_xocolati", "command": "server.command", "args": {"command": "give @p extradelight:xocolati"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tap", "command": "server.command", "args": {"command": "give @p extradelight:tap"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_oak_sink", "command": "server.command", "args": {"command": "give @p extradelight:oak_sink"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_jar", "command": "server.command", "args": {"command": "give @p extradelight:jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_evaporator", "command": "server.command", "args": {"command": "give @p extradelight:evaporator"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mixing_bowl", "command": "server.command", "args": {"command": "give @p extradelight:mixing_bowl"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_funnel", "command": "server.command", "args": {"command": "give @p extradelight:funnel"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_wooden_spoon", "command": "server.command", "args": {"command": "give @p extradelight:wooden_spoon"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_flour", "command": "server.command", "args": {"command": "give @p extradelight:flour"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// The Tap, on 0 200 2: a glass bottle and an empty bucket both draw Murky water.
+{"id": "tapClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "tap", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:tap"}}
+{"id": "tap_bottle_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "tap_bottle_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tap_bottle_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "tap_bottle_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "tap_bottle_murky", "command": "server.command", "args": {"command": "clear @p minecraft:potion[thirstwastaken2:water_purity=1] 0"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Found"}]}
+{"id": "tap_bucket_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "tap_bucket_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tap_bucket_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "tap_bucket_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "tap_bucket_murky", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "tapGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "tapDry", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air replace minecraft:water"}}
+
+// The Oak Sink, on 0 200 2: a glass bottle and an empty bucket both draw Murky water.
+{"id": "oak_sinkClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "oak_sink", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:oak_sink"}}
+{"id": "oak_sink_bottle_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "oak_sink_bottle_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "oak_sink_bottle_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "oak_sink_bottle_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "oak_sink_bottle_murky", "command": "server.command", "args": {"command": "clear @p minecraft:potion[thirstwastaken2:water_purity=1] 0"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Found"}]}
+{"id": "oak_sink_bucket_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "oak_sink_bucket_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "oak_sink_bucket_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "oak_sink_bucket_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "oak_sink_bucket_murky", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "oak_sinkGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "oak_sinkDry", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air replace minecraft:water"}}
+
+// A Jar, on 0 200 2, aimed at: it is small. Two Dirty bottles go in and one is drawn back Dirty (2.6.6
+// hands nothing back for the last 250 mB); a Clean one is refused while it holds Dirty water.
+{"id": "jarClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "jar", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:jar"}}
+{"id": "jar_aim", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 37"}}
+{"id": "jar_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "jar_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jar_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_dirty_taken", "command": "server.command", "args": {"command": "clear @p minecraft:glass_bottle 0"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Found"}]}
+{"id": "jar_clear1", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "jar_dirty2_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "jar_dirty2_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_dirty2_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jar_dirty2_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_clean_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=2,thirstwastaken2:water_salty=false]"}}
+{"id": "jar_clean_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_clean_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jar_clean_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_clean_refused", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion[thirstwastaken2:water_purity=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jar_draw_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "jar_draw_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_draw_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jar_draw_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_draw_dirty", "command": "server.command", "args": {"command": "clear @p minecraft:potion[thirstwastaken2:water_purity=0] 0"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Found"}]}
+{"id": "jar_clear2", "command": "server.command", "args": {"command": "clear @p"}}
+
+// A fresh Jar: a Dirty bucket poured in stays Dirty in it. The click also lets vanilla's bucket act on
+// the world, since Extra Delight passes it on, so the hand is not checked and the floor is dried.
+{"id": "jarBucket", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "jarBucketNew", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:jar"}}
+{"id": "jar_bucket_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "jar_bucket_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_bucket_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "jar_bucket_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "jar_bucket_dirty", "command": "server.command", "args": {"command": "execute if data block 0 200 2 Fluid{components:{\"thirstwastaken2:water_purity\":0}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "jarData", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "jarGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "jarDry", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air replace minecraft:water"}}
+{"id": "jar_unaim", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+
+// A Keg, on 0 200 2: a sea water bucket in, an empty bucket draws it back salty.
+{"id": "keg", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:keg_block"}}
+{"id": "keg_salt_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "keg_salt_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "keg_salt_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "keg_salt_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "keg_salt_taken", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kegData", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "keg_salt_draw_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "keg_salt_draw_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "keg_salt_draw_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "kegHand", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "keg_salt_salty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kegGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+{"id": "kegDry", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air replace minecraft:water"}}
+
+// Two Evaporators, one south of the player on 0 200 2 and one east on 2 200 0. Sea water starts
+// evaporating; Murky water never does.
+{"id": "evapSea", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:evaporator"}}
+{"id": "evap_sea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "evap_sea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "evap_sea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "evap_sea_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "evap_sea_taken", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "evapFresh", "command": "server.command", "args": {"command": "setblock 2 200 0 extradelight:evaporator"}}
+{"id": "evap_turn", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 -90 30"}}
+{"id": "evap_fresh_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=1,thirstwastaken2:water_salty=false]"}}
+{"id": "evap_fresh_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "evap_fresh_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "evap_fresh_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "evap_fresh_taken", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "evap_back", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "evap_wait", "command": "wait", "args": {"ticks": 100}}
+{"id": "evapSeaData", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "evap_sea_running", "command": "server.command", "args": {"command": "execute if data block 0 200 2 {cookTime:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "evapFreshData", "command": "server.command", "args": {"command": "data get block 2 200 0"}}
+{"id": "evap_fresh_idle", "command": "server.command", "args": {"command": "execute if data block 2 200 0 {cookTime:0,cookTimeTotal:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "evap_fresh_stands", "command": "server.command", "args": {"command": "execute if data block 2 200 0 Fluid.components"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "evapSaltGone", "command": "server.command", "args": {"command": "kill @e[type=item]"}}
+{"id": "evapDry", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air replace minecraft:water"}}
+{"id": "evapGone", "command": "server.command", "args": {"command": "fill 0 200 0 2 200 2 minecraft:air"}}
+
+// Two Mixing Bowls, on 0 200 2 and 2 200 2, each with two flour and a bucket of water; a hopper above
+// each adds the third flour of wheat dough's recipe, which is when the bowl looks its recipe up. A spoon
+// then stirs the one of Murky water; the one of sea water has no recipe, so the click opens its screen.
+{"id": "bowl_fresh", "command": "server.command", "args": {"command": "setblock 0 200 2 extradelight:mixing_bowl"}}
+{"id": "bowl_fresh_fill", "command": "server.command", "args": {"command": "data merge block 0 200 2 {inv:{Size:14,Items:[{Slot:1,id:\"extradelight:flour\",count:1},{Slot:2,id:\"extradelight:flour\",count:1}]},Fluid0:{id:\"minecraft:water\",amount:1000,components:{\"thirstwastaken2:water_purity\":1}}}"}}
+{"id": "bowl_fresh_hopper", "command": "server.command", "args": {"command": "setblock 0 201 2 minecraft:hopper[facing=down]{Items:[{Slot:0b,id:\"extradelight:flour\",count:1}]}"}}
+{"id": "bowl_sea", "command": "server.command", "args": {"command": "setblock 2 200 2 extradelight:mixing_bowl"}}
+{"id": "bowl_sea_fill", "command": "server.command", "args": {"command": "data merge block 2 200 2 {inv:{Size:14,Items:[{Slot:1,id:\"extradelight:flour\",count:1},{Slot:2,id:\"extradelight:flour\",count:1}]},Fluid0:{id:\"minecraft:water\",amount:1000,components:{\"thirstwastaken2:water_salty\":true}}}"}}
+{"id": "bowl_sea_hopper", "command": "server.command", "args": {"command": "setblock 2 201 2 minecraft:hopper[facing=down]{Items:[{Slot:0b,id:\"extradelight:flour\",count:1}]}"}}
+{"id": "bowl_settle", "command": "wait", "args": {"ticks": 40}}
+{"id": "bowl_hoppers_gone", "command": "server.command", "args": {"command": "fill 0 201 2 2 201 2 minecraft:air"}}
+{"id": "bowlFreshFilled", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "bowl_spoon_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with extradelight:wooden_spoon"}}
+{"id": "bowl_aim", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 41"}}
+{"id": "bowl_fresh_stir_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowl_fresh_stir_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "bowl_fresh_stir_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowlFreshData", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "bowl_fresh_stirred", "command": "server.command", "args": {"command": "execute if data block 0 200 2 {stirs:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "bowl_turn", "command": "server.command", "args": {"command": "tp @p 2.5 200 0.5 0 41"}}
+{"id": "bowl_sea_stir_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowl_sea_stir_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "bowl_sea_stir_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "bowl_close", "command": "client.screen", "args": {"open": "none"}}
+{"id": "bowlSeaData", "command": "server.command", "args": {"command": "data get block 2 200 2"}}
+{"id": "bowl_sea_idle", "command": "server.command", "args": {"command": "execute if data block 2 200 2 {stirs:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "bowl_back", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "bowlsGone", "command": "server.command", "args": {"command": "fill 0 200 2 2 200 2 minecraft:air"}}
+{"id": "bowlItemsGone", "command": "server.command", "args": {"command": "kill @e[type=item]"}}
+
+// A Funnel sunk in the floor at 3 199 3, a water source on it: it takes the source up, graded.
+{"id": "funnel", "command": "server.command", "args": {"command": "setblock 3 199 3 extradelight:funnel"}}
+{"id": "funnelSource", "command": "server.command", "args": {"command": "setblock 3 200 3 minecraft:water"}}
+{"id": "funnel_wait", "command": "wait", "args": {"ticks": 40}}
+{"id": "funnelData", "command": "server.command", "args": {"command": "data get block 3 199 3"}}
+{"id": "funnel_graded", "command": "server.command", "args": {"command": "execute if data block 3 199 3 Fluid.components"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "funnelGone", "command": "server.command", "args": {"command": "fill 3 199 3 3 200 3 minecraft:stone"}}
+
+// Drinking from thirst 4, quenched 0, looking up so nothing is placed: lemonade restores 8, coffee 5.
+{"id": "drink_lemonade_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_lemonade_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_lemonade_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_lemonade_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with extradelight:lemonade"}}
+{"id": "drink_lemonade_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_lemonade_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_lemonade_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_lemonade_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_lemonade_state", "command": "client.state", "expect": {"result.thirst": 12}}
+{"id": "drink_coffee_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_coffee_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
+{"id": "drink_coffee_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_coffee_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with extradelight:coffee"}}
+{"id": "drink_coffee_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coffee_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_coffee_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_coffee_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_coffee_state", "command": "client.state", "expect": {"result.thirst": 9}}

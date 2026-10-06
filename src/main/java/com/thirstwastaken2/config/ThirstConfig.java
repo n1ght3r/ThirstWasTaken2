@@ -330,6 +330,11 @@ public final class ThirstConfig {
         // And for Miner's Delight, added after that.
         minersDelightDrinks(drinks);
         minersDelightFoods(foods);
+        // And for Kaleidoscope Flora, added after that.
+        kaleidoscopeFloraDrinks(drinks);
+        // And for Extra Delight, added after that.
+        extraDelightDrinks(drinks);
+        extraDelightFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -459,6 +464,8 @@ public final class ThirstConfig {
         vineryDrinks(values);
         croptopiaDrinks(values);
         minersDelightDrinks(values);
+        kaleidoscopeFloraDrinks(values);
+        extraDelightDrinks(values);
         return values;
     }
 
@@ -493,6 +500,7 @@ public final class ThirstConfig {
         vineryFoods(values);
         croptopiaFoods(values);
         minersDelightFoods(values);
+        extraDelightFoods(values);
         return values;
     }
 
@@ -967,6 +975,78 @@ public final class ThirstConfig {
                     mod + "vegetable_soup_cup", mod + "onion_soup_cup", mod + "mushroom_stew_cup",
                     mod + "rabbit_stew_cup", mod + "cave_soup_cup", mod + "bat_soup_cup", mod + "insect_stew_cup");
             putMissing(foods, 3, 4, mod + "bone_broth_cup", mod + "beetroot_soup_cup");
+        }
+    }
+
+    /**
+     * Kaleidoscope Flora's flower teas, by id alone like the other mods'. The addon registers them through
+     * Kaleidoscope Cookery's teacup registry under its own namespace, so each is a teacup like Cookery's
+     * {@code flower_tea}, brewed in the same teapot and drunk the same way, and gets its value. Hanami
+     * Tale is brewed in milk and gets the milk tea's. The four drinks from Vanilla Backport's flowers
+     * ({@code the_gaze}, {@code as_you_wish}, {@code springtime_stroll}, {@code fleeting_bloom}) exist only
+     * with that mod, and an id that does not exist is never matched. The mooncake and the flower cakes are
+     * dry and left out.
+     */
+    private static void kaleidoscopeFloraDrinks(Map<String, int[]> drinks) {
+        for (String tea : new String[]{"when_the_wind_rises", "lullaby", "first_bloom", "fire_waltz",
+                "the_unnoticed", "crimson_heartbeat", "autumn_serenade", "absolution", "rosy_stride",
+                "loves_me_not", "prussian_leap", "may_kiss", "fleurs_du_mal", "breath_of_ancients", "the_sunward",
+                "spring_waltz", "tender_thorns", "coronation", "voracious_urn", "echo_of_the_end",
+                "vernal_awakening", "the_gaze", "as_you_wish", "springtime_stroll", "fleeting_bloom"}) {
+            putMissing(drinks, 6, 9, "kaleidoscope_flora:" + tea);
+        }
+        putMissing(drinks, 8, 12, "kaleidoscope_flora:hanami_tale");
+    }
+
+    /**
+     * Extra Delight's drinks, by id alone like the other mods'. Its only official build is NeoForge 1.21.1;
+     * an id another build lacks is never matched. Ades, punch and the juices are Farmer's Delight's juice,
+     * lemon and lime juice drunk neat half of one, milkshakes Fruits Delight's, gourmet hot chocolate
+     * Farmer's Delight's hot cocoa, the milky drinks and ginger beer a bottle of milk, tea the other mods'
+     * teas, coffee Croptopia's. Its Tough As Nails tags rank them the same way.
+     */
+    private static void extraDelightDrinks(Map<String, int[]> drinks) {
+        for (String juice : new String[]{"lemonade", "limeade", "orangeade", "punch", "glow_berry_juice",
+                "sweet_berry_juice", "tomato_juice", "cactus_juice", "orange_juice", "grapefruit_juice"}) {
+            putMissing(drinks, 8, 13, "extradelight:" + juice);
+        }
+        putMissing(drinks, 4, 5, "extradelight:lemon_juice", "extradelight:lime_juice");
+        for (String shake : new String[]{"milkshake", "chocolate_milkshake", "glow_berry_milkshake",
+                "sweet_berry_milkshake", "pumpkin_milkshake", "honey_milkshake", "apple_milkshake",
+                "cookie_dough_milkshake", "mint_chip_milkshake", "nut_butter_milkshake"}) {
+            putMissing(drinks, 8, 12, "extradelight:" + shake);
+        }
+        putMissing(drinks, 8, 13, "extradelight:gourmet_hot_chocolate");
+        putMissing(drinks, 6, 8, "extradelight:chocolate_milk", "extradelight:eggnog", "extradelight:horchata",
+                "extradelight:soy_milk", "extradelight:xocolati", "extradelight:ginger_beer");
+        putMissing(drinks, 6, 9, "extradelight:tea");
+        putMissing(drinks, 5, 8, "extradelight:coffee", "extradelight:dalgona_coffee");
+    }
+
+    /**
+     * Extra Delight's soups, popsicles and cold desserts; see {@link #extraDelightDrinks}. A soup or stew
+     * is every other mod's, curry and chili thicker, like noodles. Fruit and honey popsicles are Farmer's
+     * Delight's melon popsicle, the creamier ones less; ice cream and custard Croptopia's ice cream. The
+     * rice dishes, pies, puddings and jellies are solid food, and each feast serves one of these bowls.
+     */
+    private static void extraDelightFoods(Map<String, int[]> foods) {
+        for (String soup : new String[]{"borscht", "cactus_soup", "carrot_soup", "corn_chowder", "fish_soup",
+                "hazelnut_soup", "miso_soup", "mulligatawny_soup", "onion_soup", "oxtail_soup", "potato_soup",
+                "sauerkraut_soup", "tomato_soup", "gazpacho", "congee", "chicken_stew", "lamb_stew", "pork_stew"}) {
+            putMissing(foods, 4, 5, "extradelight:" + soup);
+        }
+        putMissing(foods, 6, 8, "extradelight:melon_gazpacho");
+        putMissing(foods, 3, 4, "extradelight:curry", "extradelight:chili_con_carne", "extradelight:white_chili");
+        putMissing(foods, 7, 9, "extradelight:apple_popsicle", "extradelight:glow_berry_popsicle",
+                "extradelight:sweet_berry_popsicle", "extradelight:honey_popsicle");
+        putMissing(foods, 5, 7, "extradelight:caramel_popsicle", "extradelight:cinnamon_popsicle",
+                "extradelight:fudge_popsicle");
+        for (String cold : new String[]{"ice_cream", "apple_ice_cream", "chocolate_ice_cream",
+                "cookie_dough_ice_cream", "glow_berry_ice_cream", "honey_ice_cream", "mint_chip_ice_cream",
+                "nut_butter_ice_cream", "pumpkin_ice_cream", "sweet_berry_ice_cream", "stuffed_apple_ice_cream",
+                "ice_cream_sundae", "affogato", "apple_custard", "caramel_custard", "chocolate_custard",
+                "honey_custard", "nut_butter_custard", "pumpkin_custard", "sweet_berry_custard"}) {
+            putMissing(foods, 2, 3, "extradelight:" + cold);
         }
     }
 

@@ -52,11 +52,6 @@ export const INTEGRATIONS: Mod[] = [
     link: '/docs/integrations/supplementaries'
   },
   {
-    name: 'Kaleidoscope Cookery',
-    icon: 'https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png',
-    link: '/docs/integrations/kaleidoscope-cookery'
-  },
-  {
     name: 'Cold Sweat',
     icon: 'https://cdn.modrinth.com/data/uXhSmPjd/bf55420556c30d44d2f5cf7b8915705b9214b4ef.png',
     link: '/docs/integrations/cold-sweat'
@@ -98,7 +93,8 @@ export const DELIGHT_ADDONS: Mod[] = [
   ['Hearth and Harvest', '8EEEXOzj/e5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png', 'hearth-and-harvest'],
   ["Ocean's Delight", 'DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png', 'oceans-delight'],
   ['Expanded Delight', 'e9V6wFcR/4cbbace573b20628290929948a77c74d95ed7a70.png', 'expanded-delight'],
-  ['Rustic Delight', 'foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png', 'rustic-delight']
+  ['Rustic Delight', 'foa4fGIH/eecc99e281522f2291081c48176f0faa84c107bc.png', 'rustic-delight'],
+  ['Extra Delight', 'yRrY3XII/cec2396cf9f6f74a5b0cff196301a4b8b8124e1e.png', 'extra-delight']
 ].map(([name, file, page]) => ({
   name,
   icon: trimmed(`https://cdn.modrinth.com/data/${file}`),
@@ -134,5 +130,20 @@ export const LETS_DO: Mod[] = [
     name: "Let's Do: Vinery",
     icon: 'https://cdn.modrinth.com/data/1DWmBJVA/029aec55be4d860ba0aede4939dd93332b6dafad_96.webp',
     link: '/docs/integrations/vinery'
+  }
+]
+
+// Kaleidoscope Cookery and its addons, grouped the same way, in kaleidoscope-cookery/.
+export const KALEIDOSCOPE_COOKERY: Mod = {
+  name: 'Kaleidoscope Cookery',
+  icon: 'https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png',
+  link: '/docs/integrations/kaleidoscope-cookery/'
+}
+
+export const KALEIDOSCOPE_ADDONS: Mod[] = [
+  {
+    name: 'Kaleidoscope Flora',
+    icon: 'https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png',
+    link: '/docs/integrations/kaleidoscope-cookery/kaleidoscope-flora'
   }
 ]

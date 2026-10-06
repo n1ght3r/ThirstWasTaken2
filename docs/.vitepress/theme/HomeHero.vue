@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 import HeroSlideshow from './HeroSlideshow.vue'
 import { CURSEFORGE, CURSEFORGE_ICON, MODRINTH, MODRINTH_ICON } from '../links'
-import { DELIGHT_ADDONS, LETS_DO, INTEGRATIONS, SHOWS_ONLY } from '../mods'
+import { DELIGHT_ADDONS, LETS_DO, INTEGRATIONS, KALEIDOSCOPE_ADDONS, SHOWS_ONLY } from '../mods'
 
 // The home page's hero, in place of VitePress's: its words come from `thirstHero` in index.md.
 interface Stat {
@@ -16,7 +16,7 @@ const { frontmatter } = useData()
 const hero = computed(() => frontmatter.value.thirstHero)
 
 // Every mod the "Works with" grid shows, Farmer's Delight and Farm & Charm included.
-const integrationCount = SHOWS_ONLY.length + INTEGRATIONS.length + 1 + DELIGHT_ADDONS.length + 1 + LETS_DO.length
+const integrationCount = SHOWS_ONLY.length + INTEGRATIONS.length + 1 + DELIGHT_ADDONS.length + 1 + LETS_DO.length + 1 + KALEIDOSCOPE_ADDONS.length
 const statValue = (stat: Stat) => (stat.integrations ? `${integrationCount} mods` : stat.value)
 
 // A thirst bar of ten droplets that fills from the right, as it does in game.

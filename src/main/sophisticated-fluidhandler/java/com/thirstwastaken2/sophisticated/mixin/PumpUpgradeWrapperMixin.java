@@ -8,7 +8,7 @@ import com.thirstwastaken2.neoforge.SampledWater;
 import com.thirstwastaken2.neoforge.WaterFluids;
 import com.thirstwastaken2.purity.WaterQuality;
 import com.thirstwastaken2.sophisticated.StampedWaterSource;
-import com.thirstwastaken2.sophisticated.WaterQualityFluidHandler;
+import com.thirstwastaken2.neoforge.WaterQualityFluidHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

@@ -16,7 +16,7 @@ npm run docs:build    # must pass before you call a docs change done
 | `index.md` | The hero page. Feature cards link into the documentation. |
 | `docs/` | The manual: overview, features, installation, commands, configuration, FAQ. |
 | `docs/features/` | What the mod does on its own and why, in prose. No config key listings. |
-| `docs/integrations/` | One page per optional mod that changes what this one does, under the sidebar's Integrations. Farmer's Delight and its addons (Brewin' and Chewin', Cultural Delights, Fruits Delight, Ocean's Delight, Expanded Delight, Rustic Delight) share `docs/integrations/farmers-delight/`, whose `index.md` is Farmer's Delight's own page. Let's Do: Farm & Charm and its addon Candlelight share `docs/integrations/farm-and-charm/` the same way. In the sidebar and the home page's grid, HerbalBrews, Beachparty and Vinery sit in Farm & Charm's group too (`LETS_DO` in `.vitepress/mods.ts`), as the store pages' "Let's Do mods" family does, while their pages stay directly in `docs/integrations/`. AppleSkin and Jade only show what is already there, so they get no page. |
+| `docs/integrations/` | One page per optional mod that changes what this one does, under the sidebar's Integrations. Farmer's Delight and its addons (Brewin' and Chewin', Cultural Delights, Fruits Delight, Ocean's Delight, Expanded Delight, Rustic Delight, Extra Delight) share `docs/integrations/farmers-delight/`, whose `index.md` is Farmer's Delight's own page. Let's Do: Farm & Charm and its addon Candlelight share `docs/integrations/farm-and-charm/` the same way. In the sidebar and the home page's grid, HerbalBrews, Beachparty and Vinery sit in Farm & Charm's group too (`LETS_DO` in `.vitepress/mods.ts`), as the store pages' "Let's Do mods" family does, while their pages stay directly in `docs/integrations/`. AppleSkin and Jade only show what is already there, so they get no page. |
 | `docs/developers/` | For mod and data pack authors: the data pack format and the Java API. |
 | `.vitepress/config.mts` | Nav, sidebar and the GitHub, Modrinth and CurseForge icons. |
 | `.vitepress/mods.ts` | Every other mod the site links to, with its icon: the sidebar's Integrations group and the home page's "Works with" grid both read it. A new integration is added here once. |
@@ -27,9 +27,9 @@ npm run docs:build    # must pass before you call a docs change done
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
 folder), and pages listing config keys directly in `docs/`. A new integration page also goes in the
 sidebar's Integrations group in `.vitepress/config.mts`. It gets a row in `MODRINTH.md` and
-`CURSEFORGE.md` only when it is a Farmer's Delight addon or a Let's Do mod, or when the maintainer
+`CURSEFORGE.md` only when it is a Farmer's Delight addon, a Let's Do mod or a Kaleidoscope Cookery addon, or when the maintainer
 asks; any other new integration stays off the store pages, which point to the site's full list. There, Mod Compatibility opens with one collapsed section per family of mods, with no
-heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews, Beachparty and Vinery), then
+heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews, Beachparty and Vinery, then Kaleidoscope Cookery and its addon Kaleidoscope Flora), then
 the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
 mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
 Spelunkery). That table stays short: the rest are left to "...and more. [View full list]", which links

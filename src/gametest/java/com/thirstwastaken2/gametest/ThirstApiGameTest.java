@@ -687,6 +687,102 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Kaleidoscope Flora is never installed here either. Its teas are Cookery's flower tea, and Hanami
+     * Tale, brewed in milk, Cookery's milk tea; its cakes are dry and not listed.
+     */
+    @GameTest
+    public void kaleidoscopeFloraTeasAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"when_the_wind_rises", "lullaby", "rosy_stride", "fleurs_du_mal", "the_gaze",
+                "fleeting_bloom", "hanami_tale"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("kaleidoscope_flora:" + drink),
+                    "the default drinks should list kaleidoscope_flora:" + drink);
+        }
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("kaleidoscope_flora:lullaby"),
+                        defaults.drinks.get("kaleidoscope_cookery:flower_tea")),
+                "a flower tea should restore what Cookery's flower tea does");
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("kaleidoscope_flora:hanami_tale"),
+                        defaults.drinks.get("kaleidoscope_cookery:clay_pot_milk_tea")),
+                "Hanami Tale, brewed in milk, should restore what Cookery's milk tea does");
+        for (String dry : new String[]{"blossom_mooncake", "raw_flower_cake", "dew_flower_cake", "poppy_tea_bag"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("kaleidoscope_flora:" + dry)
+                            && !defaults.drinks.containsKey("kaleidoscope_flora:" + dry),
+                    "kaleidoscope_flora:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("kaleidoscope_flora:" + drink);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("kaleidoscope_flora:may_kiss", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "kaleidoscope_flora:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("kaleidoscope_flora:may_kiss"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("kaleidoscope_flora:may_kiss")));
+        });
+        helper.succeed();
+    }
+
+    /**
+     * Extra Delight is never installed here either. A juice restores more than lemon juice drunk neat,
+     * and the rice dishes, jellies and ingredients are not listed.
+     */
+    @GameTest
+    public void extraDelightDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"lemonade", "orange_juice", "milkshake", "tea", "coffee", "soy_milk"};
+        String[] foods = {"miso_soup", "lamb_stew", "curry", "apple_popsicle", "ice_cream"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("extradelight:" + drink),
+                    "the default drinks should list extradelight:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("extradelight:" + food),
+                    "the default foods should list extradelight:" + food);
+        }
+        TestFixtures.check(helper, defaults.drinks.get("extradelight:lemon_juice")[0]
+                        < defaults.drinks.get("extradelight:lemonade")[0],
+                "lemon juice drunk neat should restore less than the lemonade made from it");
+        for (String dry : new String[]{"curry_rice", "jelly_red", "pickle_juice", "vinegar", "salt"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("extradelight:" + dry)
+                            && !defaults.drinks.containsKey("extradelight:" + dry),
+                    "extradelight:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("extradelight:" + drink);
+            for (String food : foods) config.foods.remove("extradelight:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("extradelight:punch", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "extradelight:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "extradelight:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("extradelight:punch"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("extradelight:punch")));
+        });
+        helper.succeed();
+    }
+
     /** Ocean's Delight is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void oceansDelightFoodsAreMergedIntoAnOlderConfig(GameTestHelper helper) {

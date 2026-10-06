@@ -1,8 +1,5 @@
-package com.thirstwastaken2.sophisticated;
+package com.thirstwastaken2.neoforge;
 
-import com.thirstwastaken2.neoforge.WaterContainerFluidHandler;
-import com.thirstwastaken2.neoforge.WaterContainerFluids;
-import com.thirstwastaken2.neoforge.WaterFluids;
 import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +20,10 @@ import java.util.function.Function;
  *
  * <p>The fluid side keeps the one-component rule of {@link WaterFluids}, so water of two grades never
  * merges into one tank.
+ *
+ * <p>Shared by the integrations whose tanks fill and empty containers through NeoForge 21.1's
+ * {@code IFluidHandlerItem}: Sophisticated Core's Tank and Pump upgrades, and Extra Delight's jars,
+ * kegs and kitchen blocks.
  */
 public final class WaterQualityFluidHandler implements IFluidHandlerItem {
     private final IFluidHandlerItem delegate;

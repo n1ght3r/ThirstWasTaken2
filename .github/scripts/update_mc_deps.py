@@ -200,6 +200,8 @@ MODRINTH_DEPS = [
     ModrinthDep("lodestone", "lodestonelib", by_id=True, **NO_PAGE),
     # Hearth and Harvest, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others.
     ModrinthDep("hearth_and_harvest", "hearth-and-harvest", by_id=True),
+    # Extra Delight, 1.21.1 NeoForge only, pinned by id like the others.
+    ModrinthDep("extra_delight", "extradelight", by_id=True),
     # Let's Do: Farm & Charm and Candlelight, its addon, HerbalBrews, Beachparty and Vinery, both 1.21.1 nodes,
     # pinned by id: their Fabric and NeoForge uploads share a version number. Architectury API, which
     # all of them require, runClient only.

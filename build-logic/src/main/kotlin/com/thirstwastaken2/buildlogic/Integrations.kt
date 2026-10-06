@@ -344,6 +344,15 @@ val integrations: List<Integration> = listOf(
         neoForgeDependencies = listOf("hearthandharvest"),
         loadAfter = setOf("hearthandharvest"),
     ),
+    // NeoForge only: Extra Delight's only official build is NeoForge 1.21.1. Its jars, kegs, vat, mixing
+    // bowl and tap move water as NeoForge fluid stacks. See src/main/extradelight/AGENTS.md.
+    Integration(
+        dir = "extradelight",
+        depsKey = "deps.extra_delight",
+        loaders = setOf(Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.extradelight.mixins.json",
+        neoForgeDependencies = listOf("extradelight"),
+    ),
     // NeoForge only: No Man's Land's only build is NeoForge 1.21.1. Its milk cauldron's sips restore a
     // quarter of a milk bucket each. See src/main/nomansland/AGENTS.md.
     Integration(

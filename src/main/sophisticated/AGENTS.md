@@ -45,7 +45,8 @@ sophisticated/java/com/thirstwastaken2/sophisticated/     every NeoForge node bu
   drinking/DrinkAt                   how thirsty to be first: any, half a drink, a whole drink
 sophisticated-fluidhandler/java/…/sophisticated/          1.21.1
   SophisticatedGeneration    the marker class the gate looks for
-  WaterQualityFluidHandler   a container's IFluidHandlerItem with the grade carried across it
+  (WaterQualityFluidHandler, a container's IFluidHandlerItem with the grade carried across it, is in
+   core's src/main/neoforge-fluidhandler, shared with Extra Delight)
   StampedWaterSource         world water as an IFluidHandler that hands out its sampled grade
   mixin/TankUpgradeWrapperMixin     wraps the one method the Tank upgrade finds container handlers through
   mixin/PumpUpgradeWrapperMixin     the Pump upgrade: world pickup, buckets in hand, pumping out

@@ -2,7 +2,7 @@ package com.thirstwastaken2.sophisticated.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.thirstwastaken2.sophisticated.WaterQualityFluidHandler;
+import com.thirstwastaken2.neoforge.WaterQualityFluidHandler;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.p3pp3rf1y.sophisticatedcore.upgrades.tank.TankUpgradeWrapper;

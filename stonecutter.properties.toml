@@ -277,6 +277,11 @@ deps.lodestone = "CohX6yP1"
 # See src/main/hearthandharvest/AGENTS.md.
 # 1.3.4, the NeoForge upload.
 deps.hearth_and_harvest = "7nTyt27O"
+# Extra Delight, whose jars, kegs, vat and mixing bowl keep a water's grade, whose tap and sink stop
+# making Clean water from nothing, and whose recipes take no sea water. NeoForge 1.21.1 is its only
+# official build. See src/main/extradelight/AGENTS.md.
+# 2.6.6.
+deps.extra_delight = "1SSgrmDa"
 # Serene Seasons and GlitchCore, the same integration the Fabric table builds; see there.
 # 10.1.0.9, the NeoForge upload.
 deps.serene_seasons = "pHEgQQUE"
