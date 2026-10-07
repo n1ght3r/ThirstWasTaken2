@@ -18,44 +18,16 @@ const hero = computed(() => frontmatter.value.thirstHero)
 // Every mod the "Works with" grid shows, Farmer's Delight and Farm & Charm included.
 const integrationCount = SHOWS_ONLY.length + INTEGRATIONS.length + 1 + DELIGHT_ADDONS.length + 1 + LETS_DO.length + 1 + KALEIDOSCOPE_ADDONS.length
 const statValue = (stat: Stat) => (stat.integrations ? `${integrationCount} mods` : stat.value)
-
-// A thirst bar of ten droplets that fills from the right, as it does in game.
-const DROPLETS = 10
-
-// Items of the mod that float around the slideshow.
-const floaters = [
-  { src: '/icons/hero/copper-canteen.png', class: 'floater-a' },
-  { src: '/icons/hero/iron-flask.png', class: 'floater-b' },
-  { src: '/icons/hero/water-bowl.png', class: 'floater-c' },
-  { src: '/icons/hero/waterskin.png', class: 'floater-d' }
-]
 </script>
 
 <template>
   <section v-if="hero" class="th-hero">
-    <div class="th-hero-backdrop" aria-hidden="true" />
-
     <div class="th-hero-inner">
       <div class="th-hero-text">
-        <p class="th-hero-badge">
-          <img :src="withBase('/logo-small.png')" alt="" class="th-hero-badge-logo" />
-          <span>{{ hero.badge }}</span>
-        </p>
+        <p class="th-hero-badge">{{ hero.badge }}</p>
 
         <h1 class="th-hero-name">{{ hero.name }}</h1>
         <p class="th-hero-tagline">{{ hero.tagline }}</p>
-
-        <div class="th-hero-bar" role="img" aria-label="A thirst bar filling up">
-          <span
-            v-for="n in DROPLETS"
-            :key="n"
-            class="th-hero-droplet"
-            :style="{ '--i': DROPLETS - n }"
-          >
-            <img :src="withBase('/icons/hero/droplet-empty.png')" alt="" class="empty" />
-            <img :src="withBase('/icons/hero/droplet-full.png')" alt="" class="full" />
-          </span>
-        </div>
 
         <div class="th-hero-actions">
           <a class="th-hero-button brand" :href="withBase(hero.start.link)">
@@ -81,16 +53,6 @@ const floaters = [
       </div>
 
       <div class="th-hero-visual">
-        <div class="th-hero-glow" aria-hidden="true" />
-        <img
-          v-for="item in floaters"
-          :key="item.src"
-          :src="withBase(item.src)"
-          alt=""
-          aria-hidden="true"
-          class="th-hero-floater"
-          :class="item.class"
-        />
         <HeroSlideshow />
       </div>
     </div>

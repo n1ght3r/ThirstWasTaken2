@@ -21,7 +21,7 @@ npm run docs:build    # must pass before you call a docs change done
 | `.vitepress/config.mts` | Nav, sidebar and the GitHub, Modrinth and CurseForge icons. |
 | `.vitepress/mods.ts` | Every other mod the site links to, with its icon: the sidebar's Integrations group and the home page's "Works with" grid both read it. A new integration is added here once. |
 | `.vitepress/theme/` | Default theme plus `custom.css` for the brand colour. |
-| `public/` | `logo.png` for the navbar and favicon, and `screenshots/`, by subject: `hud/`, `water/`, `recipes/`, `config/`, and `integrations/<mod>/` for each optional mod. A new image goes in the folder of what it shows. The home hero is `.vitepress/theme/HomeHero.vue` in place of VitePress's own, its words under `thirstHero` in `index.md` and its pixel art in `public/icons/hero/`; the slideshow of three screenshots inside it is `HeroSlideshow.vue`. |
+| `public/` | `logo.png` for the navbar and favicon, and `screenshots/`, by subject: `hud/`, `water/`, `recipes/`, `config/`, and `integrations/<mod>/` for each optional mod. A new image goes in the folder of what it shows. The home hero is `.vitepress/theme/HomeHero.vue` in place of VitePress's own, its words under `thirstHero` in `index.md`; the slideshow of screenshots beside it is `HeroSlideshow.vue`. The home page stays plain: Lucide icons and the brand blue, no item textures of this mod. Other mods' icons stay. |
 
 `docs/` contains all player and server documentation. Pages describing gameplay belong in
 `docs/features/`, pages about another mod in `docs/integrations/` (an addon of Farmer's Delight in its
@@ -55,8 +55,7 @@ mod authors' work. An icon drawn inside a wide transparent margin (Farmer's Deli
 addons) goes through wsrv.nl with `trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png`, which
 crops the margin and pads it square again; those show at 24 px on the store pages and a little
 larger on the site (`.mod-icon-lg`). Every sidebar entry has an icon, set in `.vitepress/config.mts`: an
-integration's page the mod's icon, a feature page a texture of this mod (`public/icons/sidebar/`),
-the rest a Lucide icon. Versions
+integration's page the mod's icon, every other page a Lucide icon. Versions
 read "1.21.1 NeoForge", and a mod is named beside a loader only when that loader uses a different one
 (a Refabricated port, Create Fly).
 

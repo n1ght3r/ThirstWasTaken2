@@ -10,11 +10,6 @@ const sidebarMod = (mod: Mod) => ({
   link: mod.link
 })
 
-// A page of this mod with one of its own textures before the name, from public/icons/sidebar/. Sidebar
-// HTML is not rewritten for the base path, so the base is added here.
-const pageIcon = (name: string, file: string) =>
-  `<img class="sidebar-mod-icon sidebar-pixel-icon" src="${BASE.replace(/\/?$/, '/')}icons/sidebar/${file}" alt=""><span>${name}</span>`
-
 // Lucide icons (lucide.dev, ISC), inline so they take the text colour. Only the paths are kept.
 const LUCIDE = {
   home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
@@ -24,7 +19,10 @@ const LUCIDE = {
   terminal: '<path d="M12 19h8"/><path d="m4 17 6-6-6-6"/>',
   settings: '<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>',
   package: '<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/>',
-  code: '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>'
+  code: '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>',
+  droplet: '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>',
+  glassWater: '<path d="M5.116 4.104A1 1 0 0 1 6.11 3h11.78a1 1 0 0 1 .994 1.105L17.19 20.21A2 2 0 0 1 15.2 22H8.8a2 2 0 0 1-2-1.79z"/><path d="M6 12a5 5 0 0 1 6 0 5 5 0 0 0 6 0"/>',
+  funnel: '<path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/>'
 }
 const lucide = (name: string, icon: keyof typeof LUCIDE) =>
   `<svg class="sidebar-mod-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${LUCIDE[icon]}</svg><span>${name}</span>`
@@ -41,9 +39,9 @@ const manualSidebar = [
   {
     text: 'Features',
     items: [
-      { text: pageIcon('Thirst and Quenched', 'thirst.png'), link: '/docs/features/thirst-and-quenched' },
-      { text: pageIcon('Drinking', 'drinking.png'), link: '/docs/features/drinking' },
-      { text: pageIcon('Water Purity', 'water-purity.png'), link: '/docs/features/water-purity' }
+      { text: lucide('Thirst and Quenched', 'droplet'), link: '/docs/features/thirst-and-quenched' },
+      { text: lucide('Drinking', 'glassWater'), link: '/docs/features/drinking' },
+      { text: lucide('Water Purity', 'funnel'), link: '/docs/features/water-purity' }
     ]
   },
   {
