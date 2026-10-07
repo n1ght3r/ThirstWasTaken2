@@ -1,4 +1,4 @@
-# Create
+# ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} Create
 
 With Create installed, the mod adds the Sand Filter, and water keeps its grade through Create's
 pipes, pumps, Spouts and drains.

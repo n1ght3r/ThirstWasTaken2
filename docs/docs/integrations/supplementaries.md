@@ -1,4 +1,4 @@
-# Supplementaries
+# ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} Supplementaries
 
 With Supplementaries installed, water keeps its grade in Jars, Goblets and Faucets, and a Jar or a
 Goblet of water can be drunk.

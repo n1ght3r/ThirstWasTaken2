@@ -55,13 +55,17 @@
   white-space: nowrap;
 }
 
-/* An icon beside every sidebar page: another mod's icon or a Lucide icon. The
-   text stays on one line. */
+/* An icon beside every sidebar page: another mod's icon or a Lucide icon. A name too long for the
+   sidebar (Kaleidoscope Chinese Food) wraps under itself rather than being cut, and the icon keeps
+   level with its first line (24px high). */
 .VPSidebarItem .text:has(> .sidebar-mod-icon) {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
-  white-space: nowrap;
+}
+
+.VPSidebarItem .text > .sidebar-mod-icon {
+  margin-top: 4px;
 }
 
 /* Sidebar pages 36px apart (VitePress: 32px), and 39px in Integrations, whose full-colour mod icons

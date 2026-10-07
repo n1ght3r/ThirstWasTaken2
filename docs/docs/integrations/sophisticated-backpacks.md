@@ -1,4 +1,4 @@
-# Sophisticated Backpacks
+# ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} Sophisticated Backpacks
 
 With ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) installed, the mod
 adds the Drinking Upgrade, and water keeps its grade in the backpack's upgrades. The Drinking Upgrade

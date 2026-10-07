@@ -1,4 +1,4 @@
-# Kaleidoscope Cookery
+# ![](https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png){.mod-icon} Kaleidoscope Cookery
 
 With Kaleidoscope Cookery installed, its teas and soups restore thirst, and water keeps its grade in
 the Stockpot and the Teapot.

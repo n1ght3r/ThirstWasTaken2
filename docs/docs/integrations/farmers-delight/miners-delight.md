@@ -1,4 +1,4 @@
-# Miner's Delight
+# ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FqMxbM4BQ%2F0d6f967d3ad184dd296c62a9891e2b2b7d45f61d.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} Miner's Delight
 
 With Miner's Delight installed, its soups and milk cup restore thirst, and its copper cups treat water
 the way a bucket does.

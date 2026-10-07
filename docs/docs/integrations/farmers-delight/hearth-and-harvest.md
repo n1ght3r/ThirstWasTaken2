@@ -1,4 +1,4 @@
-# Hearth and Harvest
+# ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F8EEEXOzj%2Fe5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} Hearth and Harvest
 
 With Hearth and Harvest installed, its juices, milks, wines and stews restore thirst, and its sinks,
 jugs, troughs and casks treat water the way the rest of this mod does.

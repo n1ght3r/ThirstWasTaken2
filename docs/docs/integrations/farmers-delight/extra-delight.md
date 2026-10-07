@@ -1,4 +1,4 @@
-# Extra Delight
+# ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FyRrY3XII%2Fcec2396cf9f6f74a5b0cff196301a4b8b8124e1e.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} Extra Delight
 
 With Extra Delight installed, its juices, ades, milkshakes, coffee, tea and soups restore thirst, and
 its taps, jars, kegs and kitchen blocks treat water the way the rest of this mod does.
