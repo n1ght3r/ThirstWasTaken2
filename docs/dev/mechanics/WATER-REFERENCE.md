@@ -196,8 +196,7 @@ cauldron, Spelunkery's Spring Water, and underground and Nether loot.
 
 ## Drinking bad water
 
-Clean and Pure water give nothing on any difficulty, and fresh water gives nothing on Peaceful. The
-default Upset Stomach and Poison lines share the group `illness`, so one roll decides both: Poison's
+Clean and Pure water give nothing on any difficulty. Peaceful has the mildest Upset Stomach and Poison. The default Upset Stomach and Poison lines share the group `illness`, so one roll decides both: Poison's
 chance sits inside Upset Stomach's, and Poison never comes alone (`sanitize()` keeps a grouped Poison
 chance at or under its Upset Stomach's). There is no taste Nausea. The tables are `sicknessEffects` in
 the config; `SicknessEffect.defaults()` holds these.
@@ -206,12 +205,14 @@ Read as: chance, time, level.
 
 | | Dirty | Murky |
 |---|---|---|
+| Peaceful, Upset Stomach | 35%, 20 s, I | 15%, 15 s, I |
+| Peaceful, Poison | 5%, 8 s | 2%, 5 s |
 | Easy, Upset Stomach | 50%, 30 s, I | 25%, 20 s, I |
-| Easy, Poison | 15%, 10 s | 5%, 8 s |
+| Easy, Poison | 8%, 10 s | 3%, 8 s |
 | Normal, Upset Stomach | 75%, 45 s, **II** | 50%, 30 s, I |
-| Normal, Poison | 35%, 20 s | 15%, 15 s |
+| Normal, Poison | 20%, 20 s | 8%, 15 s |
 | Hard, Upset Stomach | 90%, 60 s, **II** | 70%, 45 s, **II** |
-| Hard, Poison | 50%, 30 s | 25%, 20 s |
+| Hard, Poison | 30%, 30 s | 15%, 20 s |
 
 - **Upset Stomach** always blocks natural healing, food's and quenched's, with no switch. It drains no
   thirst and cuts no saturation or quenched. It cramps for 1 magic damage after a random wait, drawn

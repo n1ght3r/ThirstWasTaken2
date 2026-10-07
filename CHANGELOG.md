@@ -63,6 +63,8 @@ thirst drains a little even standing still, and food and water each need the oth
   times, more often at level II and on harder difficulties. Like Poison, they stop at half a heart. It
   no longer warps the screen, milk cures it, and Dirty and Murky water cause it less often and for
   less time.
+- Bad water poisons less often on every difficulty.
+- Dirty and Murky water can make the player ill on Peaceful too, more mildly than on Easy.
 - Parched drains 4 thirst a minute, 8 at level II.
 - The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
   and a string, and the Iron Flask three iron and an iron nugget. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.

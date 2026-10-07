@@ -104,10 +104,15 @@ public final class WaterSicknessGameTest {
                         difficulty + ": grade " + grade + " water never makes anyone ill, got " + treated.getActiveEffects());
             }
         }
+        // Peaceful's worst roll on Dirty water: a mild Upset Stomach, I for 20 seconds, and Poison for 8.
         ServerPlayer peaceful = TestFixtures.mockPlayer(helper);
         WaterSickness.drink(peaceful, DIRTY, Difficulty.PEACEFUL, () -> WORST);
-        TestFixtures.check(helper, peaceful.getActiveEffects().isEmpty(),
-                "no water makes anyone ill on Peaceful, got " + peaceful.getActiveEffects());
+        MobEffectInstance mild = Vanilla.getEffect(peaceful, ThirstEffects.UPSET_STOMACH);
+        TestFixtures.check(helper, mild != null && mild.getAmplifier() == 0 && mild.getDuration() == 20 * 20
+                        && Vanilla.getEffect(peaceful, Vanilla.poison()) != null
+                        && Vanilla.getEffect(peaceful, Vanilla.poison()).getDuration() == 8 * 20,
+                "the worst roll on Peaceful Dirty should give Upset Stomach I for 20 s and Poison for 8 s, got "
+                        + peaceful.getActiveEffects());
 
         // Normal Dirty's worst roll: Upset Stomach II for 45 seconds and Poison for 20.
         ServerPlayer unlucky = TestFixtures.mockPlayer(helper);

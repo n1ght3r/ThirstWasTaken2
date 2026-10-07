@@ -92,26 +92,31 @@ public final class SicknessEffect {
 
     /**
      * The tables a fresh config holds, from the purification rework's design. Clean and Pure water make
-     * nobody ill, and neither does any water on Peaceful. Dirty and Murky water roll Upset Stomach, with
-     * Poison nested inside it in one shared roll, more often and for longer the harder the difficulty.
+     * nobody ill. Dirty and Murky water roll Upset Stomach, with Poison nested inside it in one shared
+     * roll, more often and for longer the harder the difficulty. Peaceful gets the mildest of both, so
+     * bad water still costs something there.
      * There is no taste of Nausea any more: the illness and its blocked healing carry the consequence.
      */
     public static Map<String, Map<String, List<SicknessEffect>>> defaults() {
         Map<String, Map<String, List<SicknessEffect>>> tables = new LinkedHashMap<>();
-        tables.put("peaceful", grades(List.of(), List.of(), List.of(), List.of()));
+        tables.put("peaceful", grades(
+                List.of(upset(35, 20, 1), poison(5, 8)),
+                List.of(upset(15, 15, 1), poison(2, 5)),
+                List.of(),
+                List.of()));
         tables.put("easy", grades(
-                List.of(upset(50, 30, 1), poison(15, 10)),
-                List.of(upset(25, 20, 1), poison(5, 8)),
+                List.of(upset(50, 30, 1), poison(8, 10)),
+                List.of(upset(25, 20, 1), poison(3, 8)),
                 List.of(),
                 List.of()));
         tables.put("normal", grades(
-                List.of(upset(75, 45, 2), poison(35, 20)),
-                List.of(upset(50, 30, 1), poison(15, 15)),
+                List.of(upset(75, 45, 2), poison(20, 20)),
+                List.of(upset(50, 30, 1), poison(8, 15)),
                 List.of(),
                 List.of()));
         tables.put("hard", grades(
-                List.of(upset(90, 60, 2), poison(50, 30)),
-                List.of(upset(70, 45, 2), poison(25, 20)),
+                List.of(upset(90, 60, 2), poison(30, 30)),
+                List.of(upset(70, 45, 2), poison(15, 20)),
                 List.of(),
                 List.of()));
         return tables;

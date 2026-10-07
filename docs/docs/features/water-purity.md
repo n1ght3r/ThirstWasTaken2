@@ -81,8 +81,8 @@ Neither improves water already in the cauldron.
 
 ## Drinking bad water
 
-Fresh water always restores thirst. Clean and Pure water are always safe, and so is every grade on
-Peaceful. Dirty and Murky water can make the player ill, more often on harder difficulties.
+Fresh water always restores thirst. Clean and Pure water are always safe. Dirty and Murky water can
+make the player ill, Peaceful included, more often on harder difficulties.
 
 Bad water also leaves little reserve: Dirty water gives no quenched and Murky water only a quarter
 of a serving's, so thirst starts dropping again soon after.
@@ -92,9 +92,10 @@ Poison always comes with Upset Stomach.
 
 | Chance per drink | Dirty | Murky |
 |---|---|---|
-| Easy | 50% Upset Stomach I, 15% also Poison | 25% Upset Stomach I, 5% also Poison |
-| Normal | 75% Upset Stomach II, 35% also Poison | 50% Upset Stomach I, 15% also Poison |
-| Hard | 90% Upset Stomach II, 50% also Poison | 70% Upset Stomach II, 25% also Poison |
+| Peaceful | 35% Upset Stomach I, 5% also Poison | 15% Upset Stomach I, 2% also Poison |
+| Easy | 50% Upset Stomach I, 8% also Poison | 25% Upset Stomach I, 3% also Poison |
+| Normal | 75% Upset Stomach II, 20% also Poison | 50% Upset Stomach I, 8% also Poison |
+| Hard | 90% Upset Stomach II, 30% also Poison | 70% Upset Stomach II, 15% also Poison |
 
 Drinking bad water again while still ill makes Upset Stomach last longer, by half the new dose, but
 never more than one and a half doses from now. The stronger level is kept. This can be switched off
@@ -126,10 +127,10 @@ never kills, and they hurt on Peaceful too.
 
 How long it lasts:
 
-| | Easy | Normal | Hard |
-|---|---|---|---|
-| From Dirty water | 30 seconds | 45 seconds, level II | 60 seconds, level II |
-| From Murky water | 20 seconds | 30 seconds | 45 seconds, level II |
+| | Peaceful | Easy | Normal | Hard |
+|---|---|---|---|---|
+| From Dirty water | 20 seconds | 30 seconds | 45 seconds, level II | 60 seconds, level II |
+| From Murky water | 15 seconds | 20 seconds | 30 seconds | 45 seconds, level II |
 
 ![The thirst bar in green while the player has Upset Stomach](/screenshots/hud/upset-stomach-hud.png)
 
@@ -137,10 +138,10 @@ How long it lasts:
 
 A bad batch. Milk and honey cure it.
 
-| | Easy | Normal | Hard |
-|---|---|---|---|
-| From Dirty water | 10 seconds | 20 seconds | 30 seconds |
-| From Murky water | 8 seconds | 15 seconds | 20 seconds |
+| | Peaceful | Easy | Normal | Hard |
+|---|---|---|---|---|
+| From Dirty water | 8 seconds | 10 seconds | 20 seconds | 30 seconds |
+| From Murky water | 5 seconds | 8 seconds | 15 seconds | 20 seconds |
 
 Poison stops at half a heart, so it never kills.
 
