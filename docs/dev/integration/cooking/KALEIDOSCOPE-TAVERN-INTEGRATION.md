@@ -104,6 +104,7 @@ the official mod by an item.
 | 3. Investigation: what happens to a grade | to do |
 | 4. The barrel keeps the grade | to do |
 | 5. The tap keeps or samples the grade | to do |
+| 5b. The tap into the stockpot and teapot (Kaleidoscope Chinese Food) | to do |
 | 6. Decision: the placed water bottle | **to decide** |
 | 7. Decision: sea water in the barrel and the shaker | **to decide** |
 | 8. Jade line on the barrel | to do, optional |
@@ -220,6 +221,39 @@ to change; with this step it at least copies the right water.
 
 **Check:** a tap on a Dirty cauldron fills a Dirty cauldron; a tap on a waterlogged slab in the ocean
 fills a salty one that refuses to be drunk by hand.
+
+### 5b. The tap into Kaleidoscope Cookery's stockpot and teapot (bug, from Kaleidoscope Chinese Food)
+
+Found 2026-10-07 reading the jars of
+[Kaleidoscope Chinese Food](https://modrinth.com/mod/kaleidoscopechinesefood) 1.1.14 (mod id
+`kaleidoscope_chinesefood`, NeoForge 1.21.1 and Forge 1.20.1, no source published, CC BY-NC-ND 4.0).
+Tavern alone does not do this; the addon adds it, and only when Tavern is present (its
+`TavernMixinConfigPlugin` probes for Tavern).
+
+- **What the addon does**: `com.bmt.kaleidoscope_chinesefood.mixins.tavern.TapBlockMixin` wraps
+  `ITapBehavior.isMatch` and `onStartExtract` in Tavern's `TapBlock.tryOpen`, so a tap whose source is a
+  water cauldron, a waterlogged block or a lava cauldron also fills an empty, lidless stockpot or an
+  empty teapot below. Its private static `kcf$fillCookery(Level, BlockPos, BlockState, BlockState)` sets
+  the fluid through two accessors of its own, `StockpotBlockEntityAccessor.setSoupBaseId` and
+  `TeapotBlockEntityAccessor.setTeaFluidId`, then `setStatus` and `refresh`. Water is
+  `ModSoupBases.WATER` and `minecraft:water`.
+- **Why it is our bug**: [src/main/kaleidoscope](../../../../src/main/kaleidoscope/AGENTS.md) writes the
+  grade only in `addSoupBase` and `addTeaFluid`, so water that comes in this way carries no grade. It
+  comes out as an unstamped bucket, read as Clean, even from a Dirty cauldron or a waterlogged block in
+  the sea, and the teapot brews tea from sea water.
+- **Fix, with step 5**: one `@Inject` at the `TAIL` of `kcf$fillCookery`, applied only when the addon is
+  present (a classpath probe for `TapBlockMixin`, in `KaleidoscopePresence` or the Tavern directory's
+  gate). It stamps the stockpot or teapot below through `BrewedWaterQuality` with the grade step 5
+  takes off the source: the cauldron's grade, or the world sample at the waterlogged block. Targeting a
+  method another mod's mixin merges into Tavern's class is fragile: the name `kcf$fillCookery` can change
+  in any release without notice. Probe it the way `TeapotDripstoneMixin` probes a method only some
+  builds have, and let a missing method skip the mixin rather than fail the load.
+- Lives in the Tavern directory, since it only exists with Tavern installed, and needs the addon as a
+  `compileOnly` dependency on `1.21.1-neoforge` and `1.20.1-forge` only.
+
+**Check:** with Cookery, Tavern and the addon, a tap on a Dirty cauldron over an empty stockpot gives
+back a Dirty bucket; a tap on a waterlogged slab in the ocean over an empty teapot gives a salty bucket
+and brews no tea.
 
 ## 6. Decision: the placed water bottle
 
