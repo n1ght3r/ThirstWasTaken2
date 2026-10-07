@@ -746,6 +746,13 @@ tasks.withType<Jar>().matching { it.name.endsWith("sourcesJar") }.configureEach 
     mustRunAfter("runDatagen")
 }
 
+// checkDataConditions, from gradle/shared.gradle.kts, reads the generated data too, which runDatagen
+// rewrites when checkDatagen runs in the same build, as on CI. Gradle fails a task that reads another's
+// output without an order, so it reads what datagen has just written.
+tasks.matching { it.name == "checkDataConditions" }.configureEach {
+    mustRunAfter("runDatagen")
+}
+
 // The toolchain, the seam checks, the jar excludes and `buildAndCollect` are shared with the
 // NeoForge node, which cannot apply this script. The Java version is passed in because it follows
 // from the node's Minecraft version, which only this script can read.
