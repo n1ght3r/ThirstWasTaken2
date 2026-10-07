@@ -8,21 +8,25 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * The colours and small drawing helpers every part of the config screen shares. The panels are
- * translucent, so the blurred world or title panorama vanilla draws behind every screen still shows.
+ * The colours and small drawing helpers every part of the config screen shares. They are vanilla's:
+ * white for focus and selection, greys for text, and one translucent dark panel under the header and
+ * above the footer, so the blurred world or title panorama vanilla draws behind every screen still
+ * shows. Amber, for a changed setting, is the only colour of the screen's own; the icons carry the rest.
  */
 final class ConfigTheme {
-    /** Water blue, for the selected page, focus and the header rule. */
-    static final int ACCENT = 0xFF4FB8F0;
+    /** White, as vanilla marks a focused or selected widget: the selected page and tab, a hovered button. */
+    static final int FOCUS = 0xFFFFFFFF;
     /** Amber, marking a setting that differs from its default. */
     static final int CHANGED = 0xFFF2B84B;
     static final int TEXT = 0xFFFFFFFF;
-    static final int MUTED = 0xFFA3ADB8;
-    static final int FAINT = 0xFF6E7781;
+    static final int MUTED = 0xFFA0A0A0;
+    static final int FAINT = 0xFF707070;
 
-    static final int BAR = 0xD0101418;
-    static final int SIDEBAR = 0xB00C0F12;
-    static final int PANEL = 0x90000000;
+    /** The list area between header and footer, sidebar included, darkened as vanilla's option lists are. */
+    static final int PANEL = 0x80000000;
+    /** The two lines of vanilla's header and footer separators: a light one beside a dark one. */
+    static final int SEPARATOR_LIGHT = 0x40FFFFFF;
+    static final int SEPARATOR_DARK = 0xC0000000;
     static final int ROW = 0x18FFFFFF;
     static final int ROW_HOVER = 0x30FFFFFF;
     static final int SELECTED = 0x38FFFFFF;

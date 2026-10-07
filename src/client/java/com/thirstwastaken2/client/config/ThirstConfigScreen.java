@@ -98,7 +98,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
     private int sidebarWidth() {
         int widest = 0;
         for (ConfigCategory category : ConfigCategory.values()) widest = Math.max(widest, font.width(category.title()));
-        return Mth.clamp(widest + 40, 96, 140);
+        return Mth.clamp(widest + 24, 80, 140);
     }
 
     private void addSearch() {
@@ -126,17 +126,21 @@ public final class ThirstConfigScreen extends ScrollingScreen {
                         int right = x + widget.getWidth();
                         int bottom = y + widget.getHeight();
                         boolean current = query.isEmpty() && selected == category;
+                        // Selected as a vanilla list selects an entry: a white outline.
                         if (current) {
                             graphics.fill(x, y, right, bottom, ConfigTheme.SELECTED);
-                            graphics.fill(x, y, x + 2, bottom, ConfigTheme.ACCENT);
+                            ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), ConfigTheme.FOCUS);
                         } else if (widget.isHoveredOrFocused()) {
                             graphics.fill(x, y, right, bottom, ConfigTheme.ROW_HOVER);
                         }
-                        int iconX = compact ? x + (widget.getWidth() - 16) / 2 : x + 7;
-                        ConfigTheme.icon(graphics, category.icon(), iconX, y + (widget.getHeight() - 16) / 2);
-                        if (compact) return;
-                        ConfigTheme.clippedText(graphics, font, category.title(), x + 28, y + (widget.getHeight() - 8) / 2,
-                                widget.getWidth() - 32, current || widget.isHoveredOrFocused() ? ConfigTheme.TEXT : ConfigTheme.MUTED);
+                        // Names only, as vanilla's tabs are. A narrow screen has no room for them, so there
+                        // the page's icon stands in.
+                        if (compact) {
+                            ConfigTheme.icon(graphics, category.icon(), x + (widget.getWidth() - 16) / 2, y + (widget.getHeight() - 16) / 2);
+                            return;
+                        }
+                        ConfigTheme.clippedText(graphics, font, category.title(), x + 8, y + (widget.getHeight() - 8) / 2,
+                                widget.getWidth() - 12, current || widget.isHoveredOrFocused() ? ConfigTheme.TEXT : ConfigTheme.MUTED);
                     });
             tab.setPosition(4, HEADER_HEIGHT + 6 + i * TAB_HEIGHT);
             // The tab shows its page's name, so only the icon-only tabs of a narrow screen name it on hover.
@@ -156,16 +160,20 @@ public final class ThirstConfigScreen extends ScrollingScreen {
                 .bounds(width - 8 - FOOTER_BUTTON_WIDTH, y, FOOTER_BUTTON_WIDTH, 20).build());
     }
 
-    /** The header, sidebar, list panel and footer behind every widget, and the list's scrollbar. */
+    /**
+     * The panel behind the sidebar and the list, framed as a vanilla options screen frames its list:
+     * header and footer left clear over the blurred background, a separator line under one and over
+     * the other. Then the list's scrollbar. Drawn in fills rather than vanilla's separator textures,
+     * which 1.20.1 does not have.
+     */
     private void paintFrame(GuiGraphicsExtractor graphics) {
         int footerTop = height - FOOTER_HEIGHT;
-        graphics.fill(0, 0, width, HEADER_HEIGHT, ConfigTheme.BAR);
-        graphics.fill(0, HEADER_HEIGHT - 1, width, HEADER_HEIGHT, ConfigTheme.ACCENT);
-        graphics.fill(0, HEADER_HEIGHT, sidebarWidth, footerTop, ConfigTheme.SIDEBAR);
+        graphics.fill(0, HEADER_HEIGHT, width, footerTop, ConfigTheme.PANEL);
+        graphics.fill(0, HEADER_HEIGHT - 2, width, HEADER_HEIGHT - 1, ConfigTheme.SEPARATOR_LIGHT);
+        graphics.fill(0, HEADER_HEIGHT - 1, width, HEADER_HEIGHT, ConfigTheme.SEPARATOR_DARK);
+        graphics.fill(0, footerTop, width, footerTop + 1, ConfigTheme.SEPARATOR_DARK);
+        graphics.fill(0, footerTop + 1, width, footerTop + 2, ConfigTheme.SEPARATOR_LIGHT);
         graphics.fill(sidebarWidth - 1, HEADER_HEIGHT, sidebarWidth, footerTop, ConfigTheme.LINE);
-        graphics.fill(sidebarWidth, HEADER_HEIGHT, width, footerTop, ConfigTheme.PANEL);
-        graphics.fill(0, footerTop, width, height, ConfigTheme.BAR);
-        graphics.fill(0, footerTop, width, footerTop + 1, ConfigTheme.LINE);
 
         // The full droplet of the thirst bar, at twice its size: the 9px frame at u = 32 of the 41x9 sheet.
         ClientVanilla.blit(graphics, THIRST_ICONS, 9, (HEADER_HEIGHT - 18) / 2, 64, 0, 18, 18, 82, 18, 0xFFFFFFFF);
@@ -261,6 +269,15 @@ public final class ThirstConfigScreen extends ScrollingScreen {
         return query.isEmpty() && selected == ConfigCategory.SICKNESS;
     }
 
+    /**
+     * Whether Reset also puts back the item list, on the Item Values page, from either of its tabs,
+     * the same way: the items are no settings of their own, and each row's arrow still resets that
+     * item alone.
+     */
+    private boolean resetsItemValues() {
+        return query.isEmpty() && selected == ConfigCategory.ITEMS;
+    }
+
     /** The settings Reset acts on: the selected page's, or those the search found. */
     private List<ConfigEntry<?>> resettable() {
         if (query.isEmpty()) return selected.entries();
@@ -339,7 +356,8 @@ public final class ThirstConfigScreen extends ScrollingScreen {
         for (ConfigRow row : rows) row.tick();
         boolean anyChanged = false;
         for (ConfigEntry<?> entry : resettable()) anyChanged |= !entry.isDefault();
-        resetPage.active = anyChanged || (resetsSicknessTables() && SicknessRows.anyChanged());
+        resetPage.active = anyChanged || (resetsSicknessTables() && SicknessRows.anyChanged())
+                || (resetsItemValues() && ItemValueRows.anyChanged());
     }
 
     private void select(ConfigCategory category) {
@@ -367,6 +385,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
     private void resetPage() {
         for (ConfigEntry<?> entry : resettable()) entry.reset();
         if (resetsSicknessTables()) SicknessRows.resetAll();
+        if (resetsItemValues()) ItemValueRows.resetAll();
         // Controls hold the values they were built with, so rebuild them to show the defaults.
         refreshRows();
     }

@@ -33,7 +33,7 @@ Supplementaries' own settings still decide whether a Jar or a Goblet can be used
 
 ## Faucets
 
-![A Faucet pouring from a cauldron into a Copper Hanging Pot, with Jade naming the pot's water Murky](/screenshots/integrations/supplementaries/supplementaries-faucet.png)
+![A Faucet pouring a cauldron of Murky water into the cauldron below it, with Jade naming that water Murky](/screenshots/integrations/supplementaries/supplementaries-faucet.png)
 
 - A Faucet keeps the grade of the water it moves, into and out of a cauldron. A cauldron poured into
   keeps the worse of the two grades, the same as pouring a container in by hand.

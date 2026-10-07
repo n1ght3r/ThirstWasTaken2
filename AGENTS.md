@@ -251,6 +251,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Sophisticated upgrades still to do | [docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md) |
 | Kaleidoscope Cookery work still to do | [docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) |
+| Kaleidoscope Tavern: the plan and its open decisions (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |

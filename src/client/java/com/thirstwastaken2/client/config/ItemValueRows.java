@@ -283,7 +283,7 @@ final class ItemValueRows {
             if (changed) graphics.fill(x, y, x + 2, y + height, ConfigTheme.CHANGED);
             int textX = x + ConfigRow.PADDING;
             if (onToggle != null) {
-                ConfigTheme.glyph(graphics, open ? OPEN_ICON : CLOSED_ICON, textX, y + (height - 8) / 2 + 1, ConfigTheme.ACCENT);
+                ConfigTheme.glyph(graphics, open ? OPEN_ICON : CLOSED_ICON, textX, y + (height - 8) / 2 + 1, ConfigTheme.FOCUS);
                 textX += 12;
             }
             if (Minecraft.getInstance().level != null) {
@@ -488,6 +488,29 @@ final class ItemValueRows {
 
     private static boolean isChanged(String id) {
         return isBlacklisted(id) || !Arrays.equals(value(id), defaultValue(id));
+    }
+
+    /**
+     * Whether any item the page shows differs from the mod's own list: a value changed, an item
+     * switched off, or one added. Ids of mods that are not installed are not shown, so they do not count.
+     */
+    static boolean anyChanged() {
+        for (String id : listedIds()) {
+            if (installed(id) != null && (defaultValue(id) == null || isChanged(id))) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Puts every item the page shows back as its row's arrow would: the mod's value for an item it
+     * lists, the line taken out for any other. Ids of mods that are not installed stay in the file.
+     */
+    static void resetAll() {
+        for (String id : listedIds()) {
+            if (installed(id) == null) continue;
+            if (defaultValue(id) == null) remove(id);
+            else if (isChanged(id)) resetToDefault(id);
+        }
     }
 
     private static void setValue(String id, int index, int amount) {

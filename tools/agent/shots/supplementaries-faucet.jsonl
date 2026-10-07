@@ -1,0 +1,41 @@
+// The Supplementaries faucet docs image: docs/public/screenshots/integrations/supplementaries/
+// supplementaries-faucet.png, a Faucet pouring a cauldron of Murky water into an empty one below it,
+// with Jade naming the lower cauldron's water Murky. Shot on Fabric 1.21.1, the only Fabric node with
+// Supplementaries, on the lakeshore by the plains village near 1192 63 -488, in a copy of the dev
+// world's seed, so the scene is the same every time and the dev world is left alone:
+//     python tools/agent/new_world.py 1.21.1 ShotsAgent --from "New World"
+//     ./gradlew ":1.21.1:runClient" -Pdriven -Pagent=tools/agent/shots/supplementaries-faucet.jsonl -Pquickplay=ShotsAgent
+// -Pdriven opens the window maximised, which is what makes the capture big enough to crop. The faucet
+// moves a bottle a second, so the captures are a second apart while the lower cauldron fills: keep
+// one with the stream in the air, and crop (250, 0, 1850, 900) of a 2048x1191 frame, scaled to 1200
+// wide. The "*Kept" checks have to say "Test passed".
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "quiet", "command": "server.command", "args": {"command": "gamerule sendCommandFeedback false"}}
+{"id": "spectator", "command": "server.command", "args": {"command": "gamemode spectator @p"}}
+{"id": "scene", "command": "server.command", "args": {"command": "tp @p 1195.3 63.4 -486.6 108 22"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set day"}}
+{"id": "hold", "command": "server.command", "args": {"command": "gamerule doDaylightCycle false"}}
+{"id": "clear", "command": "server.command", "args": {"command": "weather clear 100000"}}
+
+// Clear whatever grows on the sand, then the source cauldron on a stripped spruce log with the faucet
+// on its south face, and the empty cauldron under the faucet on the sand. The faucet is open when
+// exactly one of powered and enabled holds; nothing here is wired, so enabled alone opens it. It goes
+// in last, so the flow starts when the scene is complete.
+{"id": "space", "command": "server.command", "args": {"command": "fill 1191 63 -490 1193 66 -487 minecraft:air"}}
+{"id": "sand", "command": "server.command", "args": {"command": "execute if block 1192 62 -488 minecraft:sand"}}
+{"id": "log", "command": "server.command", "args": {"command": "setblock 1192 63 -489 minecraft:stripped_spruce_log"}}
+{"id": "source", "command": "server.command", "args": {"command": "setblock 1192 64 -489 minecraft:water_cauldron[level=3,purity=2]"}}
+{"id": "target", "command": "server.command", "args": {"command": "setblock 1192 63 -488 minecraft:cauldron"}}
+{"id": "faucet", "command": "server.command", "args": {"command": "setblock 1192 64 -488 supplementaries:faucet[facing=south,enabled=true,powered=false]"}}
+
+{"id": "settle", "command": "wait", "args": {"ticks": 25}}
+{"id": "shot1", "command": "client.capture", "args": {"name": "supplementaries-faucet-1"}}
+{"id": "gap1", "command": "wait", "args": {"ticks": 20}}
+{"id": "shot2", "command": "client.capture", "args": {"name": "supplementaries-faucet-2"}}
+{"id": "gap2", "command": "wait", "args": {"ticks": 20}}
+{"id": "shot3", "command": "client.capture", "args": {"name": "supplementaries-faucet-3"}}
+{"id": "done", "command": "wait", "args": {"ticks": 80}}
+{"id": "murkyKept", "command": "server.command", "args": {"command": "execute if block 1192 63 -488 minecraft:water_cauldron[level=3,purity=2]"}}

@@ -69,14 +69,15 @@
 {"id": "faucet3", "command": "server.command", "args": {"command": "setblock -11 201 0 supplementaries:faucet[facing=west,enabled=true,powered=false]"}}
 
 // A faucet draining a hanging pot into a cauldron, and another filling a pot from one. The pot is
-// the mod own water block and keeps its grade in a blockstate, the way a cauldron does.
-{"id": "potSupport", "command": "server.command", "args": {"command": "setblock 9 200 0 minecraft:stone"}}
-{"id": "potFull", "command": "server.command", "args": {"command": "setblock 9 201 0 thirstwastaken2:copper_hanging_pot[level=2,purity=1]"}}
+// the mod own water block and keeps its grade in a blockstate, the way a cauldron does. A pot stands
+// on its legs a block up, with the block under it clear and the floor below that, so the first sits
+// over the gap above the floor and the second one block higher, its faucet and source with it.
+{"id": "potFull", "command": "server.command", "args": {"command": "setblock 9 201 0 thirstwastaken2:copper_hanging_pot[hanging=false,axis=z,level=2,purity=1]"}}
 {"id": "target4", "command": "server.command", "args": {"command": "setblock 8 200 0 minecraft:cauldron"}}
 {"id": "faucet4", "command": "server.command", "args": {"command": "setblock 8 201 0 supplementaries:faucet[facing=west,enabled=true,powered=false]"}}
-{"id": "source5", "command": "server.command", "args": {"command": "setblock 12 201 0 minecraft:water_cauldron[level=3,purity=2]"}}
-{"id": "potEmpty", "command": "server.command", "args": {"command": "setblock 11 200 0 thirstwastaken2:copper_hanging_pot[level=0]"}}
-{"id": "faucet5", "command": "server.command", "args": {"command": "setblock 11 201 0 supplementaries:faucet[facing=west,enabled=true,powered=false]"}}
+{"id": "source5", "command": "server.command", "args": {"command": "setblock 12 202 0 minecraft:water_cauldron[level=3,purity=2]"}}
+{"id": "potEmpty", "command": "server.command", "args": {"command": "setblock 11 201 0 thirstwastaken2:copper_hanging_pot[hanging=false,axis=z,level=0]"}}
+{"id": "faucet5", "command": "server.command", "args": {"command": "setblock 11 202 0 supplementaries:faucet[facing=west,enabled=true,powered=false]"}}
 
 // A dirty water bottle poured into a jar and drawn back out is still dirty.
 {"id": "jarA", "command": "server.command", "args": {"command": "setblock 0 200 0 supplementaries:jar"}}
@@ -190,6 +191,6 @@
 {"id": "sampled", "command": "server.command", "args": {"command": "execute if block -11 200 0 minecraft:water_cauldron[level=3,purity=2]"}}
 {"id": "potDrained", "command": "server.command", "args": {"command": "execute if block 9 201 0 thirstwastaken2:copper_hanging_pot[level=0]"}}
 {"id": "potGaveDirty", "command": "server.command", "args": {"command": "execute if block 8 200 0 minecraft:water_cauldron[level=2,purity=1]"}}
-{"id": "potFilled", "command": "server.command", "args": {"command": "execute if block 11 200 0 thirstwastaken2:copper_hanging_pot[level=3,purity=2]"}}
-{"id": "potSourceDrained", "command": "server.command", "args": {"command": "execute if block 12 201 0 minecraft:cauldron"}}
+{"id": "potFilled", "command": "server.command", "args": {"command": "execute if block 11 201 0 thirstwastaken2:copper_hanging_pot[level=3,purity=2]"}}
+{"id": "potSourceDrained", "command": "server.command", "args": {"command": "execute if block 12 202 0 minecraft:cauldron"}}
 {"id": "unforce", "command": "server.command", "args": {"command": "forceload remove all"}}

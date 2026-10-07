@@ -108,9 +108,14 @@ fill thresholds change here, change them there too.
 `ThirstConfigScreen` is the one screen Mod Menu (Fabric) and the mods list (NeoForge) open. It is built
 from vanilla widgets and plain fills only, no config library: a header with the mod's name and a search
 box, a sidebar with a tab per `ConfigCategory`, the page's rows, and Reset / Cancel / Done. Typing in
-the search box lists matching settings from every page, grouped by page. Below 380 GUI pixels wide the
-sidebar shows icons only. The HUD position is fixed to vanilla's right-hand status-bar stack; there is
+the search box lists matching settings from every page, grouped by page. The sidebar names its pages
+without icons, as vanilla's tabs do; below 380 GUI pixels wide it shows the pages' icons only. The HUD position is fixed to vanilla's right-hand status-bar stack; there is
 no offset setting because the preview cannot show screen position.
+
+It keeps to vanilla's look (`ConfigTheme`): white marks the selected page and tab, text is grey or
+white, the sidebar and list sit on one dark translucent panel between vanilla-style separator lines,
+and amber for a changed setting is the only colour of the screen's own. The item and mod icons carry
+the rest; no accent colour.
 
 ### Grouping settings
 
@@ -150,8 +155,10 @@ screen was constructed. So a control's range must not be wider than the clamp in
 on every call, so it never holds a stale instance after Cancel.
 
 Reset (per row, or the footer's for the page or the search results) copies values from a
-`new ThirstConfig()` and rebuilds the rows, because controls show the value they were built with. The
-item maps are never reset from the footer, only one item row at a time.
+`new ThirstConfig()` and rebuilds the rows, because controls show the value they were built with. On
+the Item Values page the footer's Reset also puts back every item the page shows, as each row's arrow
+would (`ItemValueRows.resetAll`), and lights while any of them differs; ids of mods that are not
+installed are left alone.
 
 ### Item values
 

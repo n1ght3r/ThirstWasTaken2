@@ -99,8 +99,8 @@ Every setting at its default. The long lists are cut short here; see
 
 ::: tip Updating from an older version
 An existing config file keeps its values, so most new defaults only take effect after a reset. Reset
-the **Thirst**, **Water**, **Sickness** and **Containers** pages on the settings screen. Item values
-reset one row at a time, so to take every new value at once, delete the file instead. `defaultPurity`, `rainwaterPurity` and `dripstonePurity` are read once and renamed to
+the **Thirst**, **Water**, **Sickness**, **Item Values** and **Containers** pages on the settings
+screen, or delete the file to take every new value at once. `defaultPurity`, `rainwaterPurity` and `dripstonePurity` are read once and renamed to
 `defaultQuality`, `rainwaterQuality` and `dripstoneQuality`.
 :::
 

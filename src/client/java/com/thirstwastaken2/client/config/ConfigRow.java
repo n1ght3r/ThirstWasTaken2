@@ -116,7 +116,7 @@ abstract class ConfigRow {
                 boolean current = index == selected;
                 boolean lit = current || widget.isHoveredOrFocused();
                 graphics.fill(x, y, right, bottom, current ? ConfigTheme.SELECTED : lit ? ConfigTheme.ROW_HOVER : ConfigTheme.ROW);
-                if (current) graphics.fill(x, bottom - 2, right, bottom, ConfigTheme.ACCENT);
+                if (current) graphics.fill(x, bottom - 1, right, bottom, ConfigTheme.FOCUS);
                 int textWidth = Math.min(font().width(title), widget.getWidth() - PADDING);
                 ConfigTheme.clippedText(graphics, font(), title, x + (widget.getWidth() - textWidth) / 2,
                         y + (widget.getHeight() - 8) / 2, textWidth, lit ? ConfigTheme.TEXT : ConfigTheme.MUTED);
@@ -156,7 +156,7 @@ abstract class ConfigRow {
             int x = widget.getX();
             int y = widget.getY();
             ConfigTheme.icon(graphics, icon, x, y + 1);
-            ClientVanilla.text(graphics, font(), title, x + 20, y + 5, ConfigTheme.ACCENT);
+            ClientVanilla.text(graphics, font(), title, x + 20, y + 5, ConfigTheme.TEXT);
         });
         return new ConfigRow(List.of(canvas)) {
             @Override
@@ -246,7 +246,7 @@ abstract class ConfigRow {
         int y = widget.getY();
         boolean lit = widget.active && widget.isHoveredOrFocused();
         graphics.fill(x, y, x + widget.getWidth(), y + widget.getHeight(), lit ? ConfigTheme.ROW_HOVER : ConfigTheme.ROW);
-        ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), lit ? ConfigTheme.ACCENT : ConfigTheme.LINE);
+        ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), lit ? ConfigTheme.FOCUS : ConfigTheme.LINE);
         int shade = !widget.active ? ConfigTheme.FAINT : lit ? ConfigTheme.TEXT : color;
         ConfigTheme.glyph(graphics, icon, x + (widget.getWidth() - 8) / 2, y + (widget.getHeight() - 8) / 2, shade);
     }
