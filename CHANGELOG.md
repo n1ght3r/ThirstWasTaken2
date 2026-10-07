@@ -2,7 +2,7 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.7.0] - 2026-10-07
 
 This release reworks how water is cleaned and how much it's worth. Boiling now makes water Clean, which
 is safe, and Pure water comes from the new Copper Distiller. Every container restores the same per drink,
@@ -37,6 +37,8 @@ thirst drains a little even standing still, and food and water each need the oth
   - The Tap and the Sinks give Murky water, and a Funnel grades the water it takes up.
   - The Vat and the Mixing Bowl make nothing from sea water, and the Evaporator only turns sea water into
     salt.
+- Kaleidoscope Chinese Food, on NeoForge 1.21.1 and Forge 1.20.1: its teas, soups, porridges and
+  noodles restore thirst, like Kaleidoscope Cookery's.
 
 ### Changed
 
@@ -71,6 +73,8 @@ thirst drains a little even standing still, and food and water each need the oth
 - Dirty and Murky water can make the player ill on Peaceful too, more mildly than on Easy.
 - On the config screen's Sickness page, Reset to Defaults now puts back every difficulty's table too,
   not just the General tab.
+- On the Item Values page, Reset to Defaults now puts back every item's value at once.
+- The config screen takes on the look of vanilla's own options screens.
 - Parched drains 4 thirst a minute, 8 at level II.
 - The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
   and a string, and the Iron Flask three iron and an iron nugget. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.
@@ -83,6 +87,12 @@ thirst drains a little even standing still, and food and water each need the oth
   instead of one per grade of water.
 - A bottle, bowl or other container that a cauldron doesn't take no longer changes the grade of the
   water inside, for example a Dirty bottle clicked on a full cauldron of Pure water.
+
+### Notes
+
+- This update rebalances almost every number in the mod, but an existing config keeps its old values.
+  Resetting to the new defaults is strongly recommended: press Reset to Defaults on every page of the
+  config screen, or delete `config/thirstwastaken2.json`, on a server too.
 
 <details>
 <summary>Configuration file details</summary>
@@ -97,8 +107,6 @@ thirst drains a little even standing still, and food and water each need the oth
 - `quenchedHealMinFood`, in half shanks, is replaced by `quenchedHealMinFoodPercent`.
 - `quenchedHealthRegen` is removed: quenched always heals at saturation's speed.
 - Sickness effects take an optional `group`: effects in one group share a roll.
-- An existing config keeps its old values. Reset the Thirst, Water, Sickness and Containers pages, or
-  delete the file, to take the new defaults, item values included.
 
 </details>
 
