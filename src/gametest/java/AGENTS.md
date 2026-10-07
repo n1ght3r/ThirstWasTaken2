@@ -13,6 +13,17 @@ player, headlessly and in a few seconds.
 
 CI runs this for every node, NeoForge included, on every push. A failing test fails the build.
 
+Locally, run only the classes a change touches with `-Ptests=<class>,<class>` (with or without the
+`GameTest` suffix, case ignored); a name that matches no class fails and lists them all:
+
+```bash
+./gradlew ":26.3.x:runGametest" -Ptests=WaterSickness,Canteen
+```
+
+The test server's heap is capped at 1536 MB, which keeps a run from pushing a 16 GB machine into
+paging; a full run peaks under 1 GB. `-PgametestHeap=2g` raises it. Both are in
+`gradle/shared.gradle.kts`.
+
 ## What this is
 
 GameTest is Mojang's own framework, shipped inside Minecraft
@@ -149,7 +160,7 @@ cauldron bottle draw.
 
 | Class | Covers |
 |---|---|
-| `WaterFillingGameTest` | bottle and bucket filling, that each fill resamples the water, that an abandoned fill leaves nothing behind |
+| `WaterFillingGameTest` | bottle and bucket filling, the bottle from flowing water too, that each fill resamples the water, that an abandoned fill leaves nothing behind |
 | `WaterEffectsGameTest` | salt water, that bad water still quenches, quenched cut by grade and left whole by Upset Stomach, Clean and Pure water, milk and honey, boiling not desalinating |
 | `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, grouped lines sharing one roll and ungrouped ones rolling apart, Upset Stomach extending by half up to 1.5 times and other effects up to twice (and not when switched off), the defaults (no Poison without Upset Stomach, Clean and Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in, a grouped Poison capped at its Upset Stomach |
 | `UpsetStomachGameTest` | Upset Stomach draining no thirst, Nausea still draining on top of it, saturation left whole, and that it never hurts on its own |

@@ -25,7 +25,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
 | `./gradlew ":<node>:build"` | Build one node |
 | `./gradlew ":<node>:runServer"` | Fastest smoke test: applies every mixin, loads registries, idles. Clean run prints `ThirstWasTaken2 initialized for Minecraft <version>` |
 | `./gradlew ":<node>:runClient"` | Dev client |
-| `./gradlew ":<node>:runGametest"` | Automated in-game tests, headless, seconds. **The check that proves behaviour.** CI runs it on every node. See [src/gametest/java/AGENTS.md](src/gametest/java/AGENTS.md) |
+| `./gradlew ":<node>:runGametest"` | Automated in-game tests, headless, seconds. **The check that proves behaviour.** CI runs it on every node. `-Ptests=<Class,...>` runs only those classes. See [src/gametest/java/AGENTS.md](src/gametest/java/AGENTS.md) |
 | `./gradlew ":<node>:runDatagen"` | Regenerate recipes, advancements, tags, damage type and models into `src/main/generated/<mc version>/` (Fabric nodes only) |
 | `./gradlew ":<node>:checkDatagen"` | Fails if generated output differs from what is committed. CI runs it |
 | `./gradlew ":<node>:runBenchmark"` | Server cost in time and memory. See [benchmark/AGENTS.md](src/dev/java/com/thirstwastaken2/dev/benchmark/AGENTS.md) |

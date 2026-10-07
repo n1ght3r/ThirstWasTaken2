@@ -125,6 +125,16 @@ jobs:
           mkdir -p ~/.gradle
           echo "org.gradle.java.installations.fromEnv=JAVA_HOME_17_X64,JAVA_HOME_21_X64,JAVA_HOME_25_X64" >> ~/.gradle/gradle.properties
 
+      # One Gradle invocation per job: the build, the checks, the datagen check and the gametests used to
+      # be three, and each paid Gradle's startup and configuration again. --continue keeps a failed check
+      # from hiding the gametest results, as the separate steps did not.
+      #
+      # checkDatagen regenerates every datapack and asset JSON and fails if the result differs from what
+      # is committed, which is what catches a generator edited without regenerating and a generated file
+      # edited by hand. Fabric runs the generators out of the client's main before a window is ever
+      # created, so it needs no display. runGametest replaces the dedicated server, skips the EULA
+      # prompt and needs no display, so it runs here exactly as it does locally, and fails the build
+      # when a test fails. Every loader writes the JUnit report to the same path.
       - name: Build
         if: ${{ matrix.loader == 'fabric' }}
         # devClasses compiles the dev tools (/thirst benchmark and the agent). They never ship, so
@@ -141,7 +151,7 @@ jobs:
         # when one of the nine lang files lacks a key en_us has. checkDataConditions fails when a data
         # file names another mod's id without a mod_loaded condition, which is how 1.3.0 and 1.4.0 kept
         # every world from opening with Cold Sweat and without Farmer's Delight.
-        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkLang" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkLang" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" ":${{ matrix.version }}:checkDatagen" ":${{ matrix.version }}:runGametest" --continue --stacktrace
 
       # The NeoForge node has the dev tools too, both the agent and the benchmark, and no
       # generators of its own; it reads what the Fabric node of the same Minecraft version
@@ -149,27 +159,13 @@ jobs:
       # that JSON. The seam checks read the same files on every node and are cheap to repeat here.
       - name: Build (NeoForge)
         if: ${{ matrix.loader == 'neoforge' }}
-        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkNeoForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" ":${{ matrix.version }}:runGametest" --continue --stacktrace
 
       # The Forge node, the same steps as NeoForge's: it reads the Fabric node's generated JSON too, and
       # checkForgeResources fails when a Fabric-only key survives its translation.
       - name: Build (Forge)
         if: ${{ matrix.loader == 'forge' }}
-        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" --stacktrace
-
-      # Regenerates every datapack and asset JSON and fails if the result differs from what is
-      # committed, which is what catches a generator edited without regenerating and a generated
-      # file edited by hand. Fabric runs the generators out of the client's main before a window is
-      # ever created, so this needs no display either.
-      - name: Check generated resources
-        if: ${{ matrix.loader == 'fabric' }}
-        run: ./gradlew ":${{ matrix.version }}:checkDatagen" --stacktrace
-
-      # The GameTest runner replaces the dedicated server, skips the EULA prompt and needs no
-      # display, so it runs here exactly as it does locally. It exits non-zero when a test fails.
-      # Both loaders write the JUnit report to the same path.
-      - name: Game tests
-        run: ./gradlew ":${{ matrix.version }}:runGametest" --stacktrace
+        run: ./gradlew ":${{ matrix.version }}:buildAndCollect" ":${{ matrix.version }}:devClasses" ":${{ matrix.version }}:checkForgeResources" ":${{ matrix.version }}:checkAgentCore" ":${{ matrix.version }}:checkLoaderSeam" ":${{ matrix.version }}:checkVersionSeam" ":${{ matrix.version }}:checkOptionalSeam" ":${{ matrix.version }}:checkApiSurface" ":${{ matrix.version }}:checkDataConditions" ":${{ matrix.version }}:runGametest" --continue --stacktrace
 
       - name: Upload game test report
         if: always()

@@ -297,6 +297,36 @@ tasks.named<ProcessResources>("processGametestResources") {
     includeEmptyDirs = false
 }
 
+// Forge 47's gametest server is the dedicated server, which makes its world from server.properties,
+// not vanilla's GameTestServer with its flat world and no mob spawning. Left at the defaults it ran the
+// tests in a random world, and that made them flaky: a mock player joins at the world spawn, scattered
+// within ten blocks, so two players of one test could stand in different biomes, in swamp water or in
+// the air. That failed five tests at random on CI, by a climate factor or a biome check, and generating
+// 441 chunks of real terrain took 31 seconds before the first test. A flat plains world without
+// structures or mobs is what every other node's runner tests in.
+// gradle/shared.gradle.kts deletes the world before each run, so it is made anew with these.
+tasks.named("runGametest") {
+    val properties = rootProject.file("run/${project.name}/gametest/server.properties")
+    doFirst {
+        val wanted = mapOf(
+            "level-type" to "minecraft\\:flat",
+            // The default superflat, written out: the server logs an error for an empty one.
+            "generator-settings" to "{\"layers\":[{\"block\":\"minecraft:bedrock\",\"height\":1}," +
+                "{\"block\":\"minecraft:dirt\",\"height\":2},{\"block\":\"minecraft:grass_block\",\"height\":1}]," +
+                "\"biome\":\"minecraft:plains\"}",
+            "generate-structures" to "false",
+            "spawn-monsters" to "false",
+            "spawn-animals" to "false",
+            "spawn-npcs" to "false",
+        )
+        val lines = if (properties.isFile) properties.readLines() else emptyList()
+        val kept = lines.filter { line -> wanted.keys.none { line.startsWith("$it=") } }
+        properties.parentFile.mkdirs()
+        properties.writeText((kept + wanted.map { (k, v) -> "$k=$v" })
+            .joinToString(System.lineSeparator(), postfix = System.lineSeparator()))
+    }
+}
+
 extra["thirst.integrations"] = integrations.map { it.dir }
 extra["thirst.loaderIndependentIntegrations"] = integrations.filter { it.loaderIndependent }.map { it.dir }
 apply(from = rootProject.file("gradle/shared.gradle.kts"))

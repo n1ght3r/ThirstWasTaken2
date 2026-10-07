@@ -730,3 +730,45 @@ tasks.matching { it.name == "runGametest" }.configureEach {
         gametestDir.resolve("gametestserver").deleteRecursively()
     }
 }
+
+/*
+ * The test server's heap, capped. Left alone the JVM takes a quarter of the machine's memory, which on
+ * top of the Gradle daemon and an IDE pushes a 16 GB machine into paging. A headless server with one
+ * small world needs far less. `-PgametestHeap=<size>` raises it for a run that needs more.
+ */
+val gametestHeap = providers.gradleProperty("gametestHeap").getOrElse("1536m")
+tasks.withType<JavaExec>().matching { it.name == "runGametest" }.configureEach {
+    maxHeapSize = gametestHeap
+}
+
+/*
+ * `-Ptests=WaterSickness,Canteen` runs only those test classes, named with or without the `GameTest`
+ * suffix, case ignored. Every runner, Fabric API's and the NeoForge and Forge harnesses, finds the test
+ * classes in the `fabric-gametest` entrypoints of the gametest mod's fabric.mod.json, so the filter
+ * drops the others from the built copy of that file. A name matching no class fails the build rather
+ * than run nothing. Without the property every class runs, which is what CI does.
+ */
+val gametestFilter = providers.gradleProperty("tests").getOrElse("")
+    .split(',').map { it.trim().lowercase().removeSuffix("gametest") }.filter { it.isNotEmpty() }
+tasks.named<ProcessResources>("processGametestResources") {
+    inputs.property("tests", gametestFilter.joinToString(","))
+    if (gametestFilter.isNotEmpty()) {
+        val manifest = destinationDir.resolve("fabric.mod.json")
+        doLast {
+            @Suppress("UNCHECKED_CAST")
+            val json = groovy.json.JsonSlurper().parse(manifest) as MutableMap<String, Any?>
+            @Suppress("UNCHECKED_CAST")
+            val entrypoints = json["entrypoints"] as MutableMap<String, Any?>
+            @Suppress("UNCHECKED_CAST")
+            val classes = entrypoints["fabric-gametest"] as List<String>
+            fun key(name: String) = name.substringAfterLast('.').lowercase().removeSuffix("gametest")
+            val unknown = gametestFilter.filter { wanted -> classes.none { key(it) == wanted } }
+            require(unknown.isEmpty()) {
+                "-Ptests names no test class: ${unknown.joinToString()}. The classes are:\n" +
+                    classes.joinToString("\n") { it.substringAfterLast('.') }
+            }
+            entrypoints["fabric-gametest"] = classes.filter { key(it) in gametestFilter }
+            manifest.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)))
+        }
+    }
+}
