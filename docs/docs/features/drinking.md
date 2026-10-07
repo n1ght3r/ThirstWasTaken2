@@ -81,7 +81,7 @@ the waterskin, and a bar under the icon shows how full they are.
 
 ![String on top and three copper ingots below make a Copper Canteen](/screenshots/recipes/copper-canteen-recipe.png)
 
-![An iron nugget on top and five iron ingots in a U below make an Iron Flask](/screenshots/recipes/iron-flask-recipe.png)
+![An iron nugget on top and three iron ingots below make an Iron Flask](/screenshots/recipes/iron-flask-recipe.png)
 
 Hold use on a lit campfire to boil the water inside Clean. Both can also go in a furnace. Times are
 on the [water quality page](/docs/features/water-purity#boiling-in-a-canteen-or-flask).

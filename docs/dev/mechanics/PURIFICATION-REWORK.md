@@ -225,7 +225,7 @@ Servings per slot counts a filled stack. All water drinks use the shared 6 / 4 b
 | Terracotta Water Bowl | 3 clay balls for 3 clay bowls, each fired into one bowl | 3 (3 bowls) | 24 / 30 | Stackable supply, sharing |
 | Waterskin | 4 leather | 4 (one skin) | 32 / 40 | One vessel to fill, no separate empties |
 | Copper Canteen | 3 copper ingots + 1 string | 4 (one canteen) | 32 / 40 | Fast field treatment without leather |
-| Iron Flask | 5 iron ingots + 1 iron nugget | 6 (one flask) | 48 / 60 | Longer trips, no leather/string requirement |
+| Iron Flask | 3 iron ingots + 1 iron nugget | 6 (one flask) | 48 / 60 | Longer trips, no leather/string requirement |
 | Water bucket | 3 iron ingots | 3 for closed transfers | Cannot drink directly | Transport and world placement |
 
 Totals are nominal sums over spaced drinks, not what the player's bars store at once.

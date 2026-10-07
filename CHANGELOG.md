@@ -64,7 +64,7 @@ thirst drains a little even standing still, and food and water each need the oth
   It no longer warps the screen, and milk cures it.
 - Parched drains 4 thirst a minute, 8 at level II.
 - The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
-  and a string. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.
+  and a string, and the Iron Flask three iron and an iron nugget. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.
 - Three clay balls make three clay bowls. The Distiller Boiler takes an iron ingot instead of gold.
 - The Boil Your Water advancement is also earned by making a canteen, flask or hanging pot.
 

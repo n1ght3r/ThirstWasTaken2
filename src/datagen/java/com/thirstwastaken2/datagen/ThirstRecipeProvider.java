@@ -294,7 +294,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
             shaped(ThirstItems.IRON_FLASK, 1)
                     .pattern(" N ")
                     .pattern("I I")
-                    .pattern("III")
+                    .pattern(" I ")
                     .define('N', IRON_NUGGETS)
                     .define('I', IRON_INGOTS)
                     .unlockedBy("has_iron_ingot", has(IRON_INGOTS))

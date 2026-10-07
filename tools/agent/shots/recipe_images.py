@@ -5,7 +5,9 @@ the bottom edge, at the capture's own scale, with the result's tooltip drawn by
 tools/generate_docs_images.py's tooltip() where vanilla would put it for a pointer on the result slot,
 from the lines the "*Tooltip" answers gave. The background stays transparent.
 
-    python tools/agent/shots/recipe_images.py run/26.2.x/agent/client
+    python tools/agent/shots/recipe_images.py run/26.2.x/agent/client [name ...]
+
+Names, such as iron-flask-recipe, limit it to those images.
 """
 import json
 import math
@@ -22,6 +24,7 @@ SHOTS = {
     "clay-bowl-recipe": "bowlTooltip",
     "waterskin-recipe": "skinTooltip",
     "copper-canteen-recipe": "canteenTooltip",
+    "iron-flask-recipe": "flaskTooltip",
     "distiller-boiler-recipe": "boilerTooltip",
 }
 PANEL_W, PANEL_H = 176, 166
@@ -53,7 +56,10 @@ def main():
     queue = Path(sys.argv[1])
     replies = answers(queue)
     font = docs.Font()
+    only = set(sys.argv[2:])
     for name, tooltip_id in SHOTS.items():
+        if only and name not in only:
+            continue
         frame = Image.open(queue / "screenshots" / f"{name}.png").convert("RGBA")
         reply = next(r for r in replies.values() if r.get("command") == "client.capture"
                      and Path(r.get("result", {}).get("file", "")).stem == name)

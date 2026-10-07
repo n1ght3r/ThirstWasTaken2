@@ -13,7 +13,7 @@
   "pattern": [
     " N ",
     "I I",
-    "III"
+    " I "
   ],
   "result": {
     "id": "thirstwastaken2:iron_flask"

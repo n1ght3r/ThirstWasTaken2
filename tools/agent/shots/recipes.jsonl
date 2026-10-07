@@ -1,6 +1,7 @@
 // The container recipe images in docs/public/screenshots/recipes/ that changed with the purification
 // rework: clay-bowl (three clay balls, three bowls), waterskin (four leather in a ring), copper-canteen
-// (string over three copper) and distiller-boiler (copper round an iron ingot). Each grid is filled
+// (string over three copper), iron-flask
+// (an iron nugget over three iron) and distiller-boiler (copper round an iron ingot). Each grid is filled
 // through client.slot and captured unhovered; tools/agent/shots/recipe_images.py crops the panel and
 // draws the result's tooltip beside it from the "*Tooltip" answers. Shot on 26.2, in any world:
 //     python tools/agent/new_world.py 26.2.x RecipeShots --from "New World"
@@ -65,6 +66,23 @@
 {"id": "canteenRecipe", "command": "client.capture", "args": {"name": "copper-canteen-recipe"}}
 {"id": "canteenTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:copper_canteen"}}
 {"id": "canteenClose", "command": "client.screen", "args": {"open": "none"}}
+
+{"id": "flaskClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "flaskGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:iron_ingot 3"}}
+{"id": "flaskGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:iron_nugget 1"}}
+{"id": "flaskSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "flaskOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "flaskOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "flaskTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "flaskPut4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "flaskPut6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "flaskPut8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "flaskTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "flaskPut2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "flaskGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:iron_flask"}}
+{"id": "flaskRecipe", "command": "client.capture", "args": {"name": "iron-flask-recipe"}}
+{"id": "flaskTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:iron_flask"}}
+{"id": "flaskClose", "command": "client.screen", "args": {"open": "none"}}
 
 {"id": "boilerClear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "boilerGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:copper_ingot 7"}}

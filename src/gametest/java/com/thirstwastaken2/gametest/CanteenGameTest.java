@@ -218,7 +218,7 @@ public final class CanteenGameTest {
                 ItemStack.EMPTY, copper.copy(), ItemStack.EMPTY)));
         ItemStack flask = TestFixtures.craftGrid(helper, 3, 3, grid(new ItemStack(Items.IRON_NUGGET), iron));
         TestFixtures.check(helper, canteen.is(ThirstItems.COPPER_CANTEEN), "string over three copper should make a canteen, got " + canteen);
-        TestFixtures.check(helper, flask.is(ThirstItems.IRON_FLASK), "a nugget over five iron should make a flask, got " + flask);
+        TestFixtures.check(helper, flask.is(ThirstItems.IRON_FLASK), "a nugget over three iron should make a flask, got " + flask);
         TestFixtures.check(helper, WaterContainers.handles(canteen) && WaterContainers.capacity(flask) == 6,
                 "both should be fluid containers, the flask of six servings");
         helper.succeed();
@@ -266,12 +266,12 @@ public final class CanteenGameTest {
         return stack;
     }
 
-    /** A U of {@code metal} under {@code top}, the flask's shape. */
+    /** Three {@code metal} under {@code top}, two at the sides and one below, the flask's shape. */
     private static List<ItemStack> grid(ItemStack top, ItemStack metal) {
         return new ArrayList<>(List.of(
                 ItemStack.EMPTY, top.copy(), ItemStack.EMPTY,
                 metal.copy(), ItemStack.EMPTY, metal.copy(),
-                metal.copy(), metal.copy(), metal.copy()));
+                ItemStack.EMPTY, metal.copy(), ItemStack.EMPTY));
     }
 
     private static ServerPlayer playerAtCampfire(GameTestHelper helper, BlockState campfire, ItemStack stack) {

@@ -158,7 +158,7 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.IRON_FLASK)
                 .pattern(" N ")
                 .pattern("I I")
-                .pattern("III")
+                .pattern(" I ")
                 .define('N', Items.IRON_NUGGET)
                 .define('I', IRON_INGOTS)
                 .unlockedBy("has_iron_ingot", has(IRON_INGOTS))

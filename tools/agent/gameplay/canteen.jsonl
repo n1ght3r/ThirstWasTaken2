@@ -70,19 +70,17 @@
 {"id": "canteenClose", "command": "client.screen", "args": {"open": "none"}}
 
 {"id": "flaskClear", "command": "server.command", "args": {"command": "clear @p"}}
-{"id": "iron", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:iron_ingot 5"}}
+{"id": "iron", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:iron_ingot 3"}}
 {"id": "nugget", "command": "server.command", "args": {"command": "item replace entity @p container.10 with minecraft:iron_nugget"}}
 {"id": "flaskOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
 {"id": "flaskOpened", "command": "wait", "args": {"ticks": 10}}
 {"id": "takeIron", "command": "client.slot", "args": {"inventory": 9}}
 {"id": "iron4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
 {"id": "iron6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
-{"id": "iron7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
 {"id": "iron8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
-{"id": "iron9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
 {"id": "takeNugget", "command": "client.slot", "args": {"inventory": 10}}
 {"id": "nugget2", "command": "client.slot", "args": {"slot": 2}}
-{"id": "flaskGrid", "command": "client.slots"}
+{"id": "flaskGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:iron_flask"}}
 {"id": "flaskRecipe", "command": "client.capture", "args": {"name": "flask-recipe"}}
 {"id": "flaskTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:iron_flask"}}
 {"id": "flaskClose", "command": "client.screen", "args": {"open": "none"}}
