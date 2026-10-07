@@ -252,6 +252,15 @@ public final class ThirstConfigScreen extends ScrollingScreen {
         return matches;
     }
 
+    /**
+     * Whether Reset also puts back the sickness tables: on the Sickness page itself, not from a search,
+     * whose results never show the tables. The page's Reset is the one way to undo every difficulty at
+     * once; each grade's heading still resets that grade alone.
+     */
+    private boolean resetsSicknessTables() {
+        return query.isEmpty() && selected == ConfigCategory.SICKNESS;
+    }
+
     /** The settings Reset acts on: the selected page's, or those the search found. */
     private List<ConfigEntry<?>> resettable() {
         if (query.isEmpty()) return selected.entries();
@@ -330,7 +339,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
         for (ConfigRow row : rows) row.tick();
         boolean anyChanged = false;
         for (ConfigEntry<?> entry : resettable()) anyChanged |= !entry.isDefault();
-        resetPage.active = anyChanged;
+        resetPage.active = anyChanged || (resetsSicknessTables() && SicknessRows.anyChanged());
     }
 
     private void select(ConfigCategory category) {
@@ -357,6 +366,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
 
     private void resetPage() {
         for (ConfigEntry<?> entry : resettable()) entry.reset();
+        if (resetsSicknessTables()) SicknessRows.resetAll();
         // Controls hold the values they were built with, so rebuild them to show the defaults.
         refreshRows();
     }

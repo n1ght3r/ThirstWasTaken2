@@ -191,7 +191,8 @@ The Sickness page holds `extendSicknessEffects` on its General tab and the `sick
 one tab per difficulty, built by `SicknessRows`. Under each grade, Dirty to Pure, one row per effect: its icon
 and name (a faint id when no installed mod registers it), a chance, seconds and level box, and remove;
 then a box that completes an effect id from the registry and Add. The grade's heading names the three
-columns and resets that grade alone. The footer's Reset only touches the General tab, like the item values.
+columns and resets that grade alone. The footer's Reset, on this page and not from a search, puts back
+the whole page: the General tab and every difficulty's table (`SicknessRows.resetAll`).
 Every edit swaps `sicknessEffects` for an edited copy, for the same reason as the item maps.
 `tools/agent/ui/config-screen.jsonl` opens the Normal tab.
 

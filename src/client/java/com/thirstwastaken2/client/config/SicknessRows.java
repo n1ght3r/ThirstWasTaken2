@@ -297,6 +297,19 @@ final class SicknessRows {
 
     // ---- reading and writing the config -----------------------------------------
 
+    /** The tables a fresh config holds, built once: the screen asks every tick whether any differs. */
+    private static final Map<String, Map<String, List<SicknessEffect>>> DEFAULTS = SicknessEffect.defaults();
+
+    /** Whether any difficulty's table differs from the mod's, for the footer's Reset on this page. */
+    static boolean anyChanged() {
+        return !ThirstConfig.get().sicknessEffects.equals(DEFAULTS);
+    }
+
+    /** Puts every difficulty's table back to the mod's, as a fresh copy the config owns. */
+    static void resetAll() {
+        ThirstConfig.get().sicknessEffects = SicknessEffect.defaults();
+    }
+
     private static List<SicknessEffect> lines(String difficulty, String grade) {
         Map<String, List<SicknessEffect>> grades = ThirstConfig.get().sicknessEffects.get(difficulty);
         List<SicknessEffect> lines = grades == null ? null : grades.get(grade);

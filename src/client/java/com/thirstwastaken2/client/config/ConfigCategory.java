@@ -96,7 +96,8 @@ enum ConfigCategory {
 
     // What bad water does to the drinker is a subject of its own: how effects add up, then one tab per
     // difficulty since each has its own table. The tables are edited line by line (SicknessRows) and
-    // reset one grade at a time, never from the footer, which only resets the General tab.
+    // reset one grade at a time from its heading, or all at once with the General tab by the footer's
+    // Reset while this page is open.
     SICKNESS("sickness", Identifier.withDefaultNamespace("textures/item/spider_eye.png"),
             ConfigSection.of("sickness.general", List.of(
                     ConfigEntry.toggle("extend_sickness_effects",
