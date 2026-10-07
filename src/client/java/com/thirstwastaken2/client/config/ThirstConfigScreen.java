@@ -181,7 +181,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
         int subtitleX = 32 + font.width(title) + 6;
         if (subtitleX + 60 < search.getX()) {
             ClientVanilla.text(graphics, font, Component.translatable("thirstwastaken2.config.subtitle"),
-                    subtitleX, (HEADER_HEIGHT - 8) / 2, ConfigTheme.FAINT);
+                    subtitleX, (HEADER_HEIGHT - 8) / 2, ConfigTheme.SOFT);
         }
 
         int maxScroll = maxScroll();
@@ -208,7 +208,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
 
         int controlWidth = Mth.clamp(listWidth * 2 / 5, 80, 140);
         if (query.isEmpty()) {
-            rows.add(ConfigRow.heading(selected.title(), selected.description(), selected.icon()));
+            rows.add(ConfigRow.heading(selected.title(), selected.description()));
             List<ConfigSection> sections = selected.sections();
             ConfigSection section = sections.get(Math.min(sectionShown.getOrDefault(selected, 0), sections.size() - 1));
             if (sections.size() > 1) {
@@ -226,7 +226,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
             for (ConfigCategory category : ConfigCategory.values()) {
                 List<ConfigEntry<?>> matches = matches(category);
                 if (matches.isEmpty()) continue;
-                results.add(ConfigRow.subheading(category.title(), category.icon()));
+                results.add(ConfigRow.subheading(category.title()));
                 for (ConfigEntry<?> entry : matches) results.add(ConfigRow.option(entry, controlWidth, this::refreshRows));
                 count += matches.size();
             }
@@ -234,13 +234,12 @@ public final class ThirstConfigScreen extends ScrollingScreen {
             List<ConfigRow> items = new ArrayList<>();
             int itemCount = ItemValueRows.addMatching(items, query, this::refreshRows);
             if (itemCount > 0) {
-                results.add(ConfigRow.subheading(Component.translatable("thirstwastaken2.config.item_values"),
-                        ConfigCategory.ITEMS.icon()));
+                results.add(ConfigRow.subheading(Component.translatable("thirstwastaken2.config.item_values")));
                 results.addAll(items);
                 count += itemCount;
             }
             rows.add(ConfigRow.heading(Component.translatable("thirstwastaken2.config.search_results"),
-                    Component.translatable("thirstwastaken2.config.search_results.count", count), null));
+                    Component.translatable("thirstwastaken2.config.search_results.count", count)));
             pinned = 1;
             if (count == 0) rows.add(ConfigRow.note(Component.translatable("thirstwastaken2.config.no_results", search.getValue())));
             rows.addAll(results);

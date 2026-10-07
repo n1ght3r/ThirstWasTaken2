@@ -109,7 +109,7 @@ fill thresholds change here, change them there too.
 from vanilla widgets and plain fills only, no config library: a header with the mod's name and a search
 box, a sidebar with a tab per `ConfigCategory`, the page's rows, and Reset / Cancel / Done. Typing in
 the search box lists matching settings from every page, grouped by page. The sidebar names its pages
-without icons, as vanilla's tabs do; below 380 GUI pixels wide it shows the pages' icons only. The HUD position is fixed to vanilla's right-hand status-bar stack; there is
+without icons, as vanilla's tabs do, and so do the page's heading and the search results' page headings; below 380 GUI pixels wide it shows the pages' icons only. The HUD position is fixed to vanilla's right-hand status-bar stack; there is
 no offset setting because the preview cannot show screen position.
 
 It keeps to vanilla's look (`ConfigTheme`): white marks the selected page and tab, text is grey or

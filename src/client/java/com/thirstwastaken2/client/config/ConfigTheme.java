@@ -19,6 +19,8 @@ final class ConfigTheme {
     /** Amber, marking a setting that differs from its default. */
     static final int CHANGED = 0xFFF2B84B;
     static final int TEXT = 0xFFFFFFFF;
+    /** Vanilla's light grey, for text over the bright blurred background of the header: "Settings". */
+    static final int SOFT = 0xFFE0E0E0;
     static final int MUTED = 0xFFA0A0A0;
     static final int FAINT = 0xFF707070;
 

@@ -7,17 +7,20 @@
 // each click landed.
 //
 //     python tools/agent/new_world.py 26.3.x ShowcaseAgent --from "New World"
-//     ./gradlew ":26.3.x:runClient" -Pagent=tools/agent/ui/config-showcase.jsonl -Pquickplay=ShowcaseAgent
+//     ./gradlew ":26.3.x:runClient" -Pdriven -Pagent=tools/agent/ui/config-showcase.jsonl -Pquickplay=ShowcaseAgent
 //     python tools/agent/make_gif.py run/26.3.x/agent/client/screenshots/config-showcase docs/public/screenshots/config/config-showcase.gif --hold 300
 //
 // A frame every tick, 20 a second, which takes the recording a few minutes; see "Recording a
 // screen" in the agent's AGENTS.md for why. The world behind the screen shows through it, so shoot in
-// real terrain, not on a test floor. Every page should start from the shipped defaults, in
-// run/26.3.x/config/thirstwastaken2.json, or its changed rows show amber.
+// real terrain, not on a test floor. Every page should start from the shipped defaults, or its changed
+// rows show amber: move run/26.3.x/config/thirstwastaken2.json aside for the run, so the client writes
+// a fresh one, and put it back afterwards.
 //
 // Coordinates are for a maximised window with a 512 x 298 GUI (2048 x 1191 at scale 4), the size
 // `window` answers; see config-screen.jsonl for how the screen is laid out. The sidebar is measured
-// from the corner, tab i centred on y = 49 + 24 i; the page from the top, x from the centre. A page's
+// from the corner, tab i centred on y = 49 + 24 i; the page from the top, x from the centre. The
+// sidebar names its pages without icons and is as narrow as its longest name allows, so moving a page
+// name or the sidebar's width moves every x on the page. A page's
 // tab strip sits on y = 81, each tab as wide as its name plus a share of what is left, so the x given
 // for a tab is the middle of where it was measured. Thirst shows no strip here: its Seasons tab needs
 // Serene Seasons, which runClient leaves out.
@@ -39,12 +42,12 @@
 {"id": "recordDrawn", "command": "wait", "args": {"ticks": 9}}
 
 // Depletion Speed: drag the slider up and let the value settle.
-{"id": "toSlider", "command": "client.mouse", "args": {"x": 78, "y": 82, "from": "top", "ticks": 8}}
-{"id": "drag", "command": "client.mouse", "args": {"x": 104, "y": 82, "from": "top", "ticks": 12, "drag": true}}
+{"id": "toSlider", "command": "client.mouse", "args": {"x": 70, "y": 82, "from": "top", "ticks": 8}}
+{"id": "drag", "command": "client.mouse", "args": {"x": 84, "y": 82, "from": "top", "ticks": 12, "drag": true}}
 {"id": "dragDrawn", "command": "wait", "args": {"ticks": 10}}
 
 // No Sprinting When Thirsty: off.
-{"id": "toToggle", "command": "client.mouse", "args": {"x": 128, "y": 130, "from": "top", "ticks": 7}}
+{"id": "toToggle", "command": "client.mouse", "args": {"x": 122, "y": 130, "from": "top", "ticks": 7}}
 {"id": "toggle", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "toggleDrawn", "command": "wait", "args": {"ticks": 12}}
 
@@ -52,13 +55,13 @@
 {"id": "toWater", "command": "client.mouse", "args": {"x": 40, "y": 73, "from": "corner", "ticks": 8}}
 {"id": "water", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "waterDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toQuenched", "command": "client.mouse", "args": {"x": -25, "y": 81, "from": "top", "ticks": 7}}
+{"id": "toQuenched", "command": "client.mouse", "args": {"x": -32, "y": 81, "from": "top", "ticks": 7}}
 {"id": "quenched", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "quenchedDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toSeaWater", "command": "client.mouse", "args": {"x": 57, "y": 81, "from": "top", "ticks": 5}}
+{"id": "toSeaWater", "command": "client.mouse", "args": {"x": 50, "y": 81, "from": "top", "ticks": 5}}
 {"id": "seaWater", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "seaWaterDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toCollected", "command": "client.mouse", "args": {"x": 163, "y": 81, "from": "top", "ticks": 5}}
+{"id": "toCollected", "command": "client.mouse", "args": {"x": 155, "y": 81, "from": "top", "ticks": 5}}
 {"id": "collected", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "collectedDrawn", "command": "wait", "args": {"ticks": 12}}
 
@@ -66,13 +69,13 @@
 {"id": "toSickness", "command": "client.mouse", "args": {"x": 40, "y": 97, "from": "corner", "ticks": 7}}
 {"id": "sickness", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "sicknessDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toPeaceful", "command": "client.mouse", "args": {"x": -16, "y": 81, "from": "top", "ticks": 6}}
+{"id": "toPeaceful", "command": "client.mouse", "args": {"x": -24, "y": 81, "from": "top", "ticks": 6}}
 {"id": "peaceful", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "peacefulDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toEasy", "command": "client.mouse", "args": {"x": 58, "y": 81, "from": "top", "ticks": 5}}
+{"id": "toEasy", "command": "client.mouse", "args": {"x": 50, "y": 81, "from": "top", "ticks": 5}}
 {"id": "easy", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "easyDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toNormal", "command": "client.mouse", "args": {"x": 126, "y": 81, "from": "top", "ticks": 5}}
+{"id": "toNormal", "command": "client.mouse", "args": {"x": 118, "y": 81, "from": "top", "ticks": 5}}
 {"id": "normal", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "normalDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "toTable", "command": "client.mouse", "args": {"x": -40, "y": 150, "from": "top", "ticks": 6}}
@@ -87,12 +90,8 @@
 {"id": "tableScroll5", "command": "client.scroll", "args": {"amount": 1}}
 {"id": "tableScroll5Drawn", "command": "wait", "args": {"ticks": 4}}
 {"id": "tableScroll6", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "tableScroll6Drawn", "command": "wait", "args": {"ticks": 4}}
-{"id": "tableScroll7", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "tableScroll7Drawn", "command": "wait", "args": {"ticks": 4}}
-{"id": "tableScroll8", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "tableScroll8Drawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toHard", "command": "client.mouse", "args": {"x": 195, "y": 81, "from": "top", "ticks": 6}}
+{"id": "tableScroll6Drawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toHard", "command": "client.mouse", "args": {"x": 187, "y": 81, "from": "top", "ticks": 6}}
 {"id": "hard", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "hardDrawn", "command": "wait", "args": {"ticks": 12}}
 
@@ -101,14 +100,14 @@
 {"id": "toAppleSkin", "command": "client.mouse", "args": {"x": 40, "y": 121, "from": "corner", "ticks": 6}}
 {"id": "appleSkin", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "appleSkinDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toOutline", "command": "client.mouse", "args": {"x": 172, "y": 145, "from": "top", "ticks": 7}}
+{"id": "toOutline", "command": "client.mouse", "args": {"x": 122, "y": 149, "from": "top", "ticks": 7}}
 {"id": "outlineIce", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "outlineIceDrawn", "command": "wait", "args": {"ticks": 14}}
 {"id": "outlineGold", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "outlineGoldDrawn", "command": "wait", "args": {"ticks": 14}}
 {"id": "outlineAppleSkin", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "outlineAppleSkinDrawn", "command": "wait", "args": {"ticks": 14}}
-{"id": "toDroplets", "command": "client.mouse", "args": {"x": 172, "y": 169, "from": "top", "ticks": 5}}
+{"id": "toDroplets", "command": "client.mouse", "args": {"x": 122, "y": 173, "from": "top", "ticks": 5}}
 {"id": "droplets", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "dropletsDrawn", "command": "wait", "args": {"ticks": 20}}
 {"id": "dropletsOn", "command": "client.click", "expect": {"result.taken": true}}
@@ -151,10 +150,10 @@
 {"id": "scroll14", "command": "client.scroll", "args": {"amount": 1}}
 {"id": "scroll14Drawn", "command": "wait", "args": {"ticks": 3}}
 {"id": "scroll15", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll15Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll16", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll16Drawn", "command": "wait", "args": {"ticks": 12}}
-// At the end the list is Minecraft's pinned heading, its last item, then Farmer's Delight on y = 150.
+{"id": "scroll15Drawn", "command": "wait", "args": {"ticks": 12}}
+// At the end the list is Minecraft's pinned heading, its last two items, Farmer's Delight on y = 174,
+// Kaleidoscope Cookery below it and the note on the mods that are not installed.
+{"id": "toFarmersDelight", "command": "client.mouse", "args": {"x": -40, "y": 174, "from": "top", "ticks": 5}}
 {"id": "openFarmersDelight", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "openFarmersDelightDrawn", "command": "wait", "args": {"ticks": 12}}
 {"id": "modScroll1", "command": "client.scroll", "args": {"amount": 1}}
@@ -175,7 +174,7 @@
 {"id": "modScroll8Drawn", "command": "wait", "args": {"ticks": 14}}
 
 // Matching, the right half of the strip.
-{"id": "toMatching", "command": "client.mouse", "args": {"x": 136, "y": 81, "from": "top", "ticks": 7}}
+{"id": "toMatching", "command": "client.mouse", "args": {"x": 128, "y": 81, "from": "top", "ticks": 7}}
 {"id": "matching", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "matchingDrawn", "command": "wait", "args": {"ticks": 12}}
 
@@ -183,20 +182,26 @@
 {"id": "toModItems", "command": "client.mouse", "args": {"x": 40, "y": 169, "from": "corner", "ticks": 8}}
 {"id": "modItems", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "modItemsDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toBlocks", "command": "client.mouse", "args": {"x": 135, "y": 81, "from": "top", "ticks": 7}}
+{"id": "toBlocks", "command": "client.mouse", "args": {"x": 126, "y": 81, "from": "top", "ticks": 7}}
 {"id": "blocks", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "blocksDrawn", "command": "wait", "args": {"ticks": 12}}
 
-// Containers, opening on Capacity, then Boil in Hand and Hanging Pots.
+// Containers, opening on Capacity, then Stacks, Boiling, Hanging Pots and Copper Distiller.
 {"id": "toContainers", "command": "client.mouse", "args": {"x": 40, "y": 193, "from": "corner", "ticks": 8}}
 {"id": "containers", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "containersDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toBoiling", "command": "client.mouse", "args": {"x": 35, "y": 81, "from": "top", "ticks": 6}}
+{"id": "toStacks", "command": "client.mouse", "args": {"x": -52, "y": 81, "from": "top", "ticks": 6}}
+{"id": "stacks", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "stacksDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toBoiling", "command": "client.mouse", "args": {"x": 3, "y": 81, "from": "top", "ticks": 5}}
 {"id": "boiling", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "boilingDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toHangingPots", "command": "client.mouse", "args": {"x": 162, "y": 81, "from": "top", "ticks": 5}}
+{"id": "toHangingPots", "command": "client.mouse", "args": {"x": 75, "y": 81, "from": "top", "ticks": 5}}
 {"id": "hangingPots", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "hangingPotsDrawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "hangingPotsDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "toDistiller", "command": "client.mouse", "args": {"x": 169, "y": 81, "from": "top", "ticks": 5}}
+{"id": "distiller", "command": "client.click", "expect": {"result.taken": true}}
+{"id": "distillerDrawn", "command": "wait", "args": {"ticks": 14}}
 
 // The pointer comes to Done, the way a player leaves, and the recording stops a moment later.
 // Cancel is pressed after it, off the recording, so the slider and the toggle are not saved.

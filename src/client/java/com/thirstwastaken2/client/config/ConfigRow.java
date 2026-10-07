@@ -8,7 +8,6 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.ArrayList;
@@ -68,19 +67,14 @@ abstract class ConfigRow {
         return Minecraft.getInstance().font;
     }
 
-    /** The page's name and what it holds, above its rows. */
-    static ConfigRow heading(Component title, Component description, Identifier icon) {
+    /** The page's name and what it holds, above its rows. Text only, as the sidebar names the page. */
+    static ConfigRow heading(Component title, Component description) {
         AbstractWidget canvas = ClientVanilla.canvas(0, 30, title, (graphics, widget, mouseX, mouseY) -> {
             Font font = font();
             int x = widget.getX();
             int y = widget.getY();
-            int textX = x;
-            if (icon != null) {
-                ConfigTheme.icon(graphics, icon, x, y + 2);
-                textX += 20;
-            }
-            ClientVanilla.text(graphics, font, title, textX, y + 2, ConfigTheme.TEXT);
-            ConfigTheme.clippedText(graphics, font, description, textX, y + 13, x + widget.getWidth() - textX, ConfigTheme.MUTED);
+            ClientVanilla.text(graphics, font, title, x, y + 2, ConfigTheme.TEXT);
+            ConfigTheme.clippedText(graphics, font, description, x, y + 13, widget.getWidth(), ConfigTheme.MUTED);
             graphics.fill(x, y + widget.getHeight() - 3, x + widget.getWidth(), y + widget.getHeight() - 2, ConfigTheme.LINE);
         });
         canvas.setTooltip(Tooltip.create(description));
@@ -151,12 +145,9 @@ abstract class ConfigRow {
     }
 
     /** A smaller heading, naming the page the search results below it come from. */
-    static ConfigRow subheading(Component title, Identifier icon) {
+    static ConfigRow subheading(Component title) {
         AbstractWidget canvas = ClientVanilla.canvas(0, 20, title, (graphics, widget, mouseX, mouseY) -> {
-            int x = widget.getX();
-            int y = widget.getY();
-            ConfigTheme.icon(graphics, icon, x, y + 1);
-            ClientVanilla.text(graphics, font(), title, x + 20, y + 5, ConfigTheme.TEXT);
+            ClientVanilla.text(graphics, font(), title, widget.getX(), widget.getY() + 5, ConfigTheme.TEXT);
         });
         return new ConfigRow(List.of(canvas)) {
             @Override
