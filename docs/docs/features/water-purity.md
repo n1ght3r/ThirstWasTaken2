@@ -92,9 +92,9 @@ Poison always comes with Upset Stomach.
 
 | Chance per drink | Dirty | Murky |
 |---|---|---|
-| Easy | 65% Upset Stomach I, 15% also Poison | 35% Upset Stomach I, 5% also Poison |
-| Normal | 90% Upset Stomach II, 35% also Poison | 65% Upset Stomach I, 15% also Poison |
-| Hard | 100% Upset Stomach II, 50% also Poison | 85% Upset Stomach II, 25% also Poison |
+| Easy | 50% Upset Stomach I, 15% also Poison | 25% Upset Stomach I, 5% also Poison |
+| Normal | 75% Upset Stomach II, 35% also Poison | 50% Upset Stomach I, 15% also Poison |
+| Hard | 90% Upset Stomach II, 50% also Poison | 70% Upset Stomach II, 25% also Poison |
 
 Drinking bad water again while still ill makes Upset Stomach last longer, by half the new dose, but
 never more than one and a half doses from now. The stronger level is kept. This can be switched off
@@ -107,16 +107,18 @@ added, with [sicknessEffects](/docs/configuration#sicknesseffects).
 
 ![Upset Stomach effect icon](/icons/upset-stomach.png){.effect-icon}
 
-The common one. It stops natural healing until it wears off, however full the bars are, and now and
-then a cramp costs half a heart. Cramps stop at a floor, so Upset Stomach alone never kills.
+The common one. It stops natural healing until it wears off, however full the bars are, and cramps
+cost half a heart at random times. Like Poison, cramps stop at half a heart, so Upset Stomach alone
+never kills, and they hurt on Peaceful too.
 
-- Every 4 seconds there is a chance of a cramp:
+- The wait between cramps is random, shorter on harder difficulties:
 
-  | | Level I | Level II | Never below |
-  |---|---|---|---|
-  | Easy | 15% | 25% | 5 hearts |
-  | Normal | 25% | 45% | 2 hearts |
-  | Hard | 40% | 60% | half a heart |
+  | | Level I | Level II |
+  |---|---|---|
+  | Peaceful | 10 to 15 seconds | 7.5 to 11 seconds |
+  | Easy | 6 to 15 seconds | 4.5 to 11 seconds |
+  | Normal | 3 to 12 seconds | 2.25 to 9 seconds |
+  | Hard | half a second to 8 seconds | half a second to 6 seconds |
 
 - Armour doesn't soften a cramp, and like any damage it wakes a sleeping player.
 - Milk cures it.
@@ -126,8 +128,8 @@ How long it lasts:
 
 | | Easy | Normal | Hard |
 |---|---|---|---|
-| From Dirty water | 45 seconds | 60 seconds, level II | 90 seconds, level II |
-| From Murky water | 30 seconds | 45 seconds | 60 seconds, level II |
+| From Dirty water | 30 seconds | 45 seconds, level II | 60 seconds, level II |
+| From Murky water | 20 seconds | 30 seconds | 45 seconds, level II |
 
 ![The thirst bar in green while the player has Upset Stomach](/screenshots/hud/upset-stomach-hud.png)
 

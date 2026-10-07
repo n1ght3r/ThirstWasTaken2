@@ -100,18 +100,18 @@ public final class SicknessEffect {
         Map<String, Map<String, List<SicknessEffect>>> tables = new LinkedHashMap<>();
         tables.put("peaceful", grades(List.of(), List.of(), List.of(), List.of()));
         tables.put("easy", grades(
-                List.of(upset(65, 45, 1), poison(15, 10)),
-                List.of(upset(35, 30, 1), poison(5, 8)),
+                List.of(upset(50, 30, 1), poison(15, 10)),
+                List.of(upset(25, 20, 1), poison(5, 8)),
                 List.of(),
                 List.of()));
         tables.put("normal", grades(
-                List.of(upset(90, 60, 2), poison(35, 20)),
-                List.of(upset(65, 45, 1), poison(15, 15)),
+                List.of(upset(75, 45, 2), poison(35, 20)),
+                List.of(upset(50, 30, 1), poison(15, 15)),
                 List.of(),
                 List.of()));
         tables.put("hard", grades(
-                List.of(upset(100, 90, 2), poison(50, 30)),
-                List.of(upset(85, 60, 2), poison(25, 20)),
+                List.of(upset(90, 60, 2), poison(50, 30)),
+                List.of(upset(70, 45, 2), poison(25, 20)),
                 List.of(),
                 List.of()));
         return tables;

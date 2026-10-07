@@ -91,10 +91,10 @@ public final class WaterSicknessGameTest {
     @GameTest
     public void theDefaultTablesKeepTheSicknessDesign(GameTestHelper helper) {
         for (Difficulty difficulty : Difficulty.values()) {
-            // Nothing is certain any more: the best roll on Dirty water gives nothing at all.
+            // Nothing is certain, Hard included: the best roll on Dirty water gives nothing at all.
             ServerPlayer lucky = TestFixtures.mockPlayer(helper);
             WaterSickness.drink(lucky, DIRTY, difficulty, () -> BEST);
-            TestFixtures.check(helper, lucky.getActiveEffects().isEmpty() || difficulty == Difficulty.HARD,
+            TestFixtures.check(helper, lucky.getActiveEffects().isEmpty(),
                     difficulty + ": the best roll on Dirty water should give nothing, got " + lucky.getActiveEffects());
 
             for (int grade = CLEAN; grade <= PURE; grade++) {
@@ -109,14 +109,14 @@ public final class WaterSicknessGameTest {
         TestFixtures.check(helper, peaceful.getActiveEffects().isEmpty(),
                 "no water makes anyone ill on Peaceful, got " + peaceful.getActiveEffects());
 
-        // Normal Dirty's worst roll: Upset Stomach II for 60 seconds and Poison for 20.
+        // Normal Dirty's worst roll: Upset Stomach II for 45 seconds and Poison for 20.
         ServerPlayer unlucky = TestFixtures.mockPlayer(helper);
         WaterSickness.drink(unlucky, DIRTY, Difficulty.NORMAL, () -> WORST);
         MobEffectInstance upset = Vanilla.getEffect(unlucky, ThirstEffects.UPSET_STOMACH);
         MobEffectInstance poison = Vanilla.getEffect(unlucky, Vanilla.poison());
-        TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1 && upset.getDuration() == 60 * 20
+        TestFixtures.check(helper, upset != null && upset.getAmplifier() == 1 && upset.getDuration() == 45 * 20
                         && poison != null && poison.getDuration() == 20 * 20,
-                "the worst roll on Normal Dirty should give Upset Stomach II for 60 s and Poison for 20 s, got "
+                "the worst roll on Normal Dirty should give Upset Stomach II for 45 s and Poison for 20 s, got "
                         + unlucky.getActiveEffects());
         helper.succeed();
     }

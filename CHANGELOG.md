@@ -59,9 +59,10 @@ thirst drains a little even standing still, and food and water each need the oth
 - Dirty and Murky water no longer taste bad: no more Nausea after every drink. Upset Stomach and Poison
   now come from one roll, so Poison only ever comes with Upset Stomach. Clean water never makes the
   player ill.
-- Upset Stomach no longer drains thirst or cuts saturation. Instead, cramps now and then cost half a
-  heart, more often at level II and on harder difficulties, but never below a floor, so it can't kill.
-  It no longer warps the screen, and milk cures it.
+- Upset Stomach no longer drains thirst or cuts saturation. Instead, cramps cost half a heart at random
+  times, more often at level II and on harder difficulties. Like Poison, they stop at half a heart. It
+  no longer warps the screen, milk cures it, and Dirty and Murky water cause it less often and for
+  less time.
 - Parched drains 4 thirst a minute, 8 at level II.
 - The Waterskin holds four drinks and is made of four leather. The Copper Canteen takes three copper
   and a string, and the Iron Flask three iron and an iron nugget. The Copper Hanging Pot holds three drinks and the Iron Hanging Pot six, and both boil faster.

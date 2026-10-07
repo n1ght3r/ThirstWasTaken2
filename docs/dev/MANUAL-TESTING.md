@@ -242,9 +242,9 @@ PR.
       canteen half a full one's time; no experience; `enableFurnaceBoiling` off and `/reload` leaves
       no water recipe in the recipe book.
 - [ ] Upset Stomach's tooltip or effect line makes it clear that food does not heal while it lasts.
-- [ ] Upset Stomach II's cramps hurt in survival, half a heart now and then, and stop at the floor:
-      five hearts on Easy, two on Normal, half a heart on Hard. The gametest checks the rolls, not the
-      hit, since vanilla will not hurt its mock player.
+- [ ] Upset Stomach II's cramps hurt in survival, half a heart at random times, more often on harder
+      difficulties, and stop at half a heart, on Peaceful too. The gametest checks the timing, not
+      the hit, since vanilla will not hurt its mock player.
 - [ ] The tooltip's droplet rows show the actual gain: less at nearly full thirst, none of quenched
       for Dirty water, a quarter of a serving for Murky.
 - [ ] Twenty-minute routes with each vessel: starter survival, building, ordinary exploration,

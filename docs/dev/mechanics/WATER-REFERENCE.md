@@ -206,18 +206,20 @@ Read as: chance, time, level.
 
 | | Dirty | Murky |
 |---|---|---|
-| Easy, Upset Stomach | 65%, 45 s, I | 35%, 30 s, I |
+| Easy, Upset Stomach | 50%, 30 s, I | 25%, 20 s, I |
 | Easy, Poison | 15%, 10 s | 5%, 8 s |
-| Normal, Upset Stomach | 90%, 60 s, **II** | 65%, 45 s, I |
+| Normal, Upset Stomach | 75%, 45 s, **II** | 50%, 30 s, I |
 | Normal, Poison | 35%, 20 s | 15%, 15 s |
-| Hard, Upset Stomach | 100%, 90 s, **II** | 85%, 60 s, **II** |
+| Hard, Upset Stomach | 90%, 60 s, **II** | 70%, 45 s, **II** |
 | Hard, Poison | 50%, 30 s | 25%, 20 s |
 
 - **Upset Stomach** always blocks natural healing, food's and quenched's, with no switch. It drains no
-  thirst and cuts no saturation or quenched. Every 80 ticks it rolls a cramp of 1 magic damage
-  (`effect/UpsetStomach`): Easy 15% / 25% at I / II, Normal 25% / 45%, Hard 40% / 60%, never taking
-  health below 10, 4 and 1. Fixed, no config. Like any damage, a cramp wakes a sleeper. Milk cures it,
-  as it cures Poison; honey cures only Poison.
+  thirst and cuts no saturation or quenched. It cramps for 1 magic damage after a random wait, drawn
+  afresh each time (`effect/UpsetStomach.waitTicks`): Peaceful 10 to 15 s, Easy 6 to 15 s, Normal 3 to
+  12 s, Hard 0.5 to 8 s, three quarters of that at II, never under 0.5 s. The first comes a whole wait
+  after the effect starts. Like Poison it stops at 1 health and works on Peaceful too. Fixed, no
+  config. Like any damage, a cramp wakes a sleeper. Milk cures it, as it cures Poison; honey cures only
+  Poison.
 - **Parched** drains 4 thirst a minute at I and 8 at II, as illness: outside climate and Nourishment.
 - **Drinking again while ill** (`extendSicknessEffects`, on): Upset Stomach becomes
   `max(R, min(R + D / 2, 1.5 * D))` ticks for R left and D incoming; any other effect adds the line's

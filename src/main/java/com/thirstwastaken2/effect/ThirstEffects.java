@@ -16,8 +16,8 @@ public final class ThirstEffects {
      */
     public static final Holder<MobEffect> PARCHED = register("parched", 0xD4B483);
     /**
-     * Bad water's common illness: nothing heals naturally while it lasts, and cramps now and then cost
-     * half a heart, never below a floor set by the difficulty. No switch turns either off, and milk cures
+     * Bad water's common illness: nothing heals naturally while it lasts, and cramps at random times cost
+     * half a heart, down to half a heart as Poison does. No switch turns either off, and milk cures
      * it like any other effect. {@code HealthRegen} stops the healing, {@link UpsetStomach} rolls the
      * cramps. The particles are the green of the bubble in its icon.
      */

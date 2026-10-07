@@ -63,7 +63,7 @@ Every setting at its default. The long lists are cut short here; see
   "sicknessEffects": {
     "normal": {
       "dirty": [
-        { "effect": "thirstwastaken2:upset_stomach", "chance": 90, "seconds": 60, "level": 2, "group": "illness" },
+        { "effect": "thirstwastaken2:upset_stomach", "chance": 75, "seconds": 45, "level": 2, "group": "illness" },
         { "effect": "minecraft:poison", "chance": 35, "seconds": 20, "level": 1, "group": "illness" }
       ]
     }

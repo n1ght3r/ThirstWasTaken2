@@ -232,7 +232,9 @@ public final class ThirstManager {
         ThirstData data = get(player);
         if (!data.enabled() || player.getAbilities().invulnerable) return;
 
-        UpsetStomach.tick(player);
+        UpsetStomach.Step cramp = UpsetStomach.step(player, tracker.crampCountdown);
+        tracker.crampCountdown = cramp.countdown();
+        if (cramp.damage() > 0.0F) UpsetStomach.hurt(player, cramp.damage());
 
         ThirstConfig config = ThirstConfig.get();
         Difficulty difficulty = player.level().getDifficulty();

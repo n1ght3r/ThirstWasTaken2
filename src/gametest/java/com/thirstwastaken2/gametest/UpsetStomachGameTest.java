@@ -13,8 +13,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
 /**
- * Upset Stomach, bad water's common illness: it stops natural healing and cramps now and then, never
- * below a floor. It does not drain thirst or cut the saturation food gives.
+ * Upset Stomach, bad water's common illness: it stops natural healing and cramps at random times, down
+ * to half a heart. It does not drain thirst or cut the saturation food gives.
  *
  * <p>Players are ticked through {@code ThirstManager.tickPlayer} directly, so other tests' players do
  * not tick with them.
@@ -22,8 +22,8 @@ import net.minecraft.world.effect.MobEffects;
 public final class UpsetStomachGameTest {
     /** Several sync steps of baseline drain, so an extra drain would show. */
     private static final int DRAIN_TICKS = 200;
-    /** Thirty rolls, enough that level II cramps on any difficulty but Peaceful. */
-    private static final int HEALTH_TICKS = 30 * UpsetStomach.INTERVAL;
+    /** A minute and a half: at least six cramps at level II on any difficulty. */
+    private static final int HEALTH_TICKS = 1800;
     private static final int NUTRITION = 6;
     private static final float SATURATION_MODIFIER = 0.6F;
 
@@ -82,78 +82,77 @@ public final class UpsetStomachGameTest {
         helper.succeed();
     }
 
-    /** The table, rolled by hand: each difficulty and level cramps under its chance and not at it. */
+    /** The wait before a cramp, rolled by hand: each difficulty's shortest and longest, level II's shorter. */
     @GameTest
-    public void crampsRollByDifficultyAndLevel(GameTestHelper helper) {
-        Difficulty[] difficulties = {Difficulty.EASY, Difficulty.NORMAL, Difficulty.HARD};
-        float[][] chances = {{0.15F, 0.25F}, {0.25F, 0.45F}, {0.40F, 0.60F}};
+    public void crampsWaitByDifficultyAndLevel(GameTestHelper helper) {
+        Difficulty[] difficulties = {Difficulty.PEACEFUL, Difficulty.EASY, Difficulty.NORMAL, Difficulty.HARD};
+        int[][] bounds = {{200, 300}, {120, 300}, {60, 240}, {10, 160}};
         for (int d = 0; d < difficulties.length; d++) {
-            for (int amplifier = 0; amplifier <= 1; amplifier++) {
-                float chance = chances[d][amplifier];
-                float under = UpsetStomach.cramp(difficulties[d], amplifier, 20.0F, chance - 0.01F);
-                float at = UpsetStomach.cramp(difficulties[d], amplifier, 20.0F, chance);
-                TestFixtures.check(helper, under == UpsetStomach.DAMAGE && at == 0.0F,
-                        difficulties[d] + " level " + (amplifier + 1) + " should cramp under " + chance
-                                + " and not at it, got " + under + " and " + at);
-            }
+            int shortest = UpsetStomach.waitTicks(difficulties[d], 0, 0.0F);
+            int longest = UpsetStomach.waitTicks(difficulties[d], 0, 0.9999F);
+            TestFixtures.check(helper, shortest == bounds[d][0] && longest == bounds[d][1],
+                    difficulties[d] + " should wait " + bounds[d][0] + " to " + bounds[d][1] + " ticks, got "
+                            + shortest + " to " + longest);
+            int severe = UpsetStomach.waitTicks(difficulties[d], 1, 0.9999F);
+            TestFixtures.check(helper, severe == Math.max(UpsetStomach.MIN_WAIT, bounds[d][1] * 3 / 4),
+                    difficulties[d] + " level II should wait three quarters as long, got " + severe);
         }
-        TestFixtures.check(helper, UpsetStomach.cramp(Difficulty.PEACEFUL, 1, 20.0F, 0.0F) == 0.0F,
-                "Peaceful should never cramp");
+        TestFixtures.check(helper, UpsetStomach.waitTicks(Difficulty.HARD, 1, 0.0F) == UpsetStomach.MIN_WAIT,
+                "no wait should be shorter than half a second");
         helper.succeed();
     }
 
-    /** A cramp never takes the player under the difficulty's floor, and never kills. */
+    /** Like Poison, a cramp takes health down to half a heart and never further. */
     @GameTest
-    public void crampsStopAtTheFloor(GameTestHelper helper) {
-        float[][] cases = {
-                {10.0F, 10.5F, 0.5F}, {10.0F, 10.0F, 0.0F},
-                {4.0F, 4.5F, 0.5F}, {4.0F, 3.0F, 0.0F},
-                {1.0F, 1.5F, 0.5F}, {1.0F, 1.0F, 0.0F}};
-        Difficulty[] difficulties = {Difficulty.EASY, Difficulty.EASY, Difficulty.NORMAL, Difficulty.NORMAL,
-                Difficulty.HARD, Difficulty.HARD};
-        for (int i = 0; i < cases.length; i++) {
-            float floor = UpsetStomach.floor(difficulties[i]);
-            float damage = UpsetStomach.cramp(difficulties[i], 1, cases[i][1], 0.0F);
-            TestFixtures.check(helper, floor == cases[i][0] && damage == cases[i][2],
-                    difficulties[i] + " at " + cases[i][1] + " health should take " + cases[i][2]
-                            + " above a floor of " + cases[i][0] + ", took " + damage + " above " + floor);
+    public void crampsStopAtHalfAHeart(GameTestHelper helper) {
+        float[][] cases = {{20.0F, 1.0F}, {2.0F, 1.0F}, {1.5F, 0.5F}, {1.0F, 0.0F}};
+        for (float[] c : cases) {
+            float damage = UpsetStomach.cramp(c[0]);
+            TestFixtures.check(helper, damage == c[1],
+                    "at " + c[0] + " health a cramp should take " + c[1] + ", took " + damage);
         }
         helper.succeed();
     }
 
     /**
-     * The worst level, rolled every tick for long enough to cramp many times on the test world's
-     * difficulty: cramps land only on the beat, health drops, and stays at the floor or above.
+     * The worst level, ticked long enough for many cramps on the test world's difficulty: the first comes
+     * a whole wait after the effect starts, each lands only when its countdown runs out, health drops and
+     * stops at half a heart, and without the effect nothing waits.
      *
      * <p>Vanilla will not hurt a mock player (it never finishes loading in, and reports creative), so the
-     * test takes each roll's damage off itself; that the hit lands in game is a manual check.
+     * test takes each cramp's damage off itself; that the hit lands in game is a manual check.
      */
     @GameTest
-    public void upsetStomachHurtsButNeverBelowTheFloor(GameTestHelper helper) {
+    public void upsetStomachCrampsDownToHalfAHeart(GameTestHelper helper) {
         ServerPlayer player = TestFixtures.survivalPlayer(helper);
         Difficulty difficulty = player.level().getDifficulty();
-        float floor = UpsetStomach.floor(difficulty);
-        float start = floor + 3.0F;
-        player.setHealth(start);
+        player.setHealth(4.0F);
         player.addEffect(Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, HEALTH_TICKS * 2, 1));
 
+        UpsetStomach.Step first = UpsetStomach.step(player, 0);
+        TestFixtures.check(helper, first.damage() == 0.0F && first.countdown() >= UpsetStomach.MIN_WAIT,
+                "the first cramp should wait, got " + first);
+        int countdown = first.countdown();
+        int cramps = 0;
         for (int i = 0; i < HEALTH_TICKS; i++) {
-            player.tickCount++;
-            float damage = UpsetStomach.crampNow(player);
-            TestFixtures.check(helper, damage == 0.0F || player.tickCount % UpsetStomach.INTERVAL == 0,
-                    "a cramp should only roll every " + UpsetStomach.INTERVAL + " ticks, one landed on " + player.tickCount);
-            player.setHealth(player.getHealth() - damage);
+            UpsetStomach.Step step = UpsetStomach.step(player, countdown);
+            boolean due = countdown == 1;
+            TestFixtures.check(helper, step.damage() == 0.0F || due,
+                    "a cramp should land only when its countdown runs out, one landed at " + countdown);
+            TestFixtures.check(helper, step.countdown() >= 1 && step.countdown() <= UpsetStomach.MAX_WAIT,
+                    "the next wait should be half a second to 15 seconds, got " + step.countdown());
+            if (due) cramps++;
+            player.setHealth(player.getHealth() - step.damage());
+            countdown = step.countdown();
         }
 
-        TestFixtures.check(helper, player.getHealth() >= floor,
-                "Upset Stomach must stop at " + floor + " health on " + difficulty + ", went to " + player.getHealth());
-        if (difficulty != Difficulty.PEACEFUL) {
-            TestFixtures.check(helper, player.getHealth() < start,
-                    "Upset Stomach II should cramp in " + HEALTH_TICKS + " ticks on " + difficulty);
-        }
+        TestFixtures.check(helper, cramps >= HEALTH_TICKS / UpsetStomach.MAX_WAIT,
+                "Upset Stomach II should cramp at least every 15 seconds on " + difficulty + ", cramped " + cramps + " times");
+        TestFixtures.check(helper, player.getHealth() == UpsetStomach.MIN_HEALTH,
+                "cramps should take health down to half a heart and stop, went to " + player.getHealth());
         player.removeAllEffects();
-        TestFixtures.check(helper, UpsetStomach.crampNow(player) == 0.0F,
-                "without Upset Stomach there should be no cramp, even on the beat");
+        TestFixtures.check(helper, UpsetStomach.step(player, 1).equals(new UpsetStomach.Step(0, 0.0F)),
+                "without Upset Stomach no cramp should land or wait");
         helper.succeed();
     }
 

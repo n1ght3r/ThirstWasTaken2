@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
- * Per-player scratch state for the exhaustion path, added to every {@link Player} by
+ * Per-player scratch state for the exhaustion path and the tick, added to every {@link Player} by
  * {@code PlayerMixin}. None of it is persisted or synced: it lives on the entity so that the exhaustion
  * hook neither writes the attachment nor recomputes the modifier every time vanilla charges exhaustion.
  *
@@ -21,6 +21,8 @@ public final class ExhaustionTracker {
     float unsynced;
     /** Ticks since the last heal quenched paid for, counted like vanilla's saturation heal timer. */
     int quenchedHealTimer;
+    /** Ticks until Upset Stomach's next cramp, 0 while none is waiting; see {@code UpsetStomach.Step}. */
+    int crampCountdown;
     float modifier;
     int modifierExpiresAt;
     int modifierGeneration;
