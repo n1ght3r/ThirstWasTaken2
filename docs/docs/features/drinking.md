@@ -89,8 +89,11 @@ on the [water quality page](/docs/features/water-purity#boiling-in-a-canteen-or-
 ## Drinking by hand
 
 Sneak and use an empty hand on water. Each click is one sip of 3 thirst, half a serving, with quenched
-cut by the grade the same way. The water keeps its grade, so swamp water is still risky. It can be
-turned off with [canDrinkByHand](/docs/configuration#candrinkbyhand).
+cut by the grade the same way. The water keeps its grade, so swamp water is still risky.
+
+Using a water cauldron with an empty hand, sneaking or not, drinks a whole serving from it and takes
+one level, the same as drawing a bottle and drinking it. Both can be turned off with
+[canDrinkByHand](/docs/configuration#candrinkbyhand).
 
 ## Finding water
 

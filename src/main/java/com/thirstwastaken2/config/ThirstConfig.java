@@ -62,13 +62,12 @@ public final class ThirstConfig {
     public boolean dehydrationHaltsHealthRegen = true;
     /** How full, in percent, the thirst bar has to be for food to heal. */
     public int foodHealMinThirstPercent = 50;
+    // quenchedHealthRegen, quenched's healing speed, was dropped: quenched heals exactly as fast as
+    // saturation. An old file's key is ignored and gone on the next save.
     /**
-     * How fast quenched heals on its own, as a share of saturation's speed: 0 turns it off. It needs a
-     * full thirst bar, no saturation left, since saturation heals first, the food bar at
-     * {@link #quenchedHealMinFoodPercent}, and no Upset Stomach.
+     * How full, in percent, the food bar has to be for quenched to heal. Quenched also needs a full
+     * thirst bar, no saturation left, since saturation heals first, and no Upset Stomach.
      */
-    public double quenchedHealthRegen = 0.5;
-    /** How full, in percent, the food bar has to be for quenched to heal. */
     public int quenchedHealMinFoodPercent = 50;
     /**
      * With Cold Sweat installed, the drain follows the temperature it measures around the player in
@@ -450,7 +449,6 @@ public final class ThirstConfig {
         // Gson reads a name it does not know, including a hand typo, as null.
         if (appleskinQuenchedOverlay == null) appleskinQuenchedOverlay = QuenchedOverlay.DIAMOND;
         thirstDepletionModifier = clamp(thirstDepletionModifier, 0.0, 10.0);
-        quenchedHealthRegen = clamp(quenchedHealthRegen, 0.0, 1.0);
         foodHealMinThirstPercent = clamp(foodHealMinThirstPercent, 0, 100);
         quenchedHealMinFoodPercent = clamp(quenchedHealMinFoodPercent, 0, 100);
         seasonDrainSpring = clamp(seasonDrainSpring, MIN_SEASON_DRAIN, MAX_SEASON_DRAIN);

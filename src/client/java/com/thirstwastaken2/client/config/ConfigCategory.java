@@ -37,8 +37,6 @@ enum ConfigCategory {
                             config -> config.dehydrationHaltsHealthRegen, (config, value) -> config.dehydrationHaltsHealthRegen = value),
                     ConfigEntry.number("food_heal_min_thirst_percent", 0, 100, ConfigEntry::wholePercent,
                             config -> config.foodHealMinThirstPercent, (config, value) -> config.foodHealMinThirstPercent = value),
-                    ConfigEntry.percent("quenched_health_regen", 0, 100,
-                            config -> config.quenchedHealthRegen, (config, value) -> config.quenchedHealthRegen = value),
                     ConfigEntry.number("quenched_heal_min_food_percent", 0, 100, ConfigEntry::wholePercent,
                             config -> config.quenchedHealMinFoodPercent, (config, value) -> config.quenchedHealMinFoodPercent = value),
                     // Only Cold Sweat measures the temperature this reads, so without it the switch is left off the page.

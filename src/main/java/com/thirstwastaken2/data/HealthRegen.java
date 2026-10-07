@@ -46,16 +46,15 @@ public final class HealthRegen {
     }
 
     /**
-     * Heals the player from quenched the way vanilla heals from saturation, scaled by
-     * {@code quenchedHealthRegen}, and returns the thirst exhaustion that heal costs, zero on a tick that
-     * does not heal. Called once per tick by {@code ThirstManager.tickPlayer}, which adds the cost to its
+     * Heals the player from quenched exactly the way vanilla heals from saturation: every 10 ticks,
+     * {@code min(quenched, 6) / 6} health for {@code min(quenched, 6)} thirst exhaustion. Returns
+     * the thirst exhaustion that heal costs, zero on a tick that does not heal. Called once per tick by {@code ThirstManager.tickPlayer}, which adds the cost to its
      * one write. It needs a full thirst bar, the food bar at {@code quenchedHealMinFoodPercent} or more,
      * no saturation left, since saturation heals first, and no Upset Stomach.
      */
     static float healWithQuenched(ServerPlayer player, ThirstData data, ExhaustionTracker tracker) {
         ThirstConfig config = ThirstConfig.get();
-        double scale = config.quenchedHealthRegen;
-        if (scale <= 0.0 || data.thirst() < ThirstData.MAX || data.quenched() <= 0 || !player.isHurt()
+        if (data.thirst() < ThirstData.MAX || data.quenched() <= 0 || !player.isHurt()
                 || player.getFoodData().getSaturationLevel() > 0.0F
                 || player.getFoodData().getFoodLevel() * 100 < ThirstData.MAX * config.quenchedHealMinFoodPercent
                 || !Vanilla.naturalRegeneration(player) || ill(player)) {
@@ -64,8 +63,8 @@ public final class HealthRegen {
         }
         if (++tracker.quenchedHealTimer < QUENCHED_HEAL_INTERVAL) return 0.0F;
         tracker.quenchedHealTimer = 0;
-        // Vanilla heals f / 6 for f exhaustion; scaling both keeps quenched's rate of exchange with it.
-        float spent = (float) scale * Math.min(data.quenched(), QUENCHED_PER_HEAL);
+        // Vanilla heals f / 6 for f exhaustion, f the saturation it has up to 6; quenched pays the same.
+        float spent = Math.min(data.quenched(), QUENCHED_PER_HEAL);
         player.heal(spent / QUENCHED_PER_HEAL);
         return spent;
     }

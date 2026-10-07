@@ -26,7 +26,6 @@ Every setting at its default. The long lists are cut short here; see
   "canDrinkByHand": true,
   "dehydrationHaltsHealthRegen": true,
   "foodHealMinThirstPercent": 50,
-  "quenchedHealthRegen": 0.5,
   "quenchedHealMinFoodPercent": 50,
   "coldSweatClimate": true,
   "sereneSeasonsClimate": true,
@@ -128,12 +127,6 @@ Default `true`. Food only heals with the thirst bar at `foodHealMinThirstPercent
 
 Default `50`, from `0` to `100`. How full the thirst bar has to be for food to heal.
 
-### quenchedHealthRegen
-
-Default `0.5`, from `0` to `1`. How fast quenched heals on its own, as a share of saturation's speed,
-spending quenched as it goes. It needs a full thirst bar and heals only once saturation is spent. `0`
-turns it off. See [Healing](/docs/features/thirst-and-quenched#healing).
-
 ### quenchedHealMinFoodPercent
 
 Default `50`, from `0` to `100`. How full the food bar has to be for quenched to heal. It replaces
@@ -161,7 +154,8 @@ Default `2`, Clean. The grade for water that has none, such as drinks from other
 
 ### canDrinkByHand
 
-Default `true`. Sneak and use an empty hand on water to sip it.
+Default `true`. Sneak and use an empty hand on water to sip it, or use an empty hand on a water
+cauldron to drink from it.
 
 ### plainWaterValue
 

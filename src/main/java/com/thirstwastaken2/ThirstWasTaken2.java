@@ -64,6 +64,7 @@ public final class ThirstWasTaken2 {
         Loader.onServerTickEnd(ThirstManager::tick);
         Loader.onServerTickEnd(WaterInteractions::tick);
         Loader.onUseBlock(ThirstManager::drinkByHand);
+        Loader.onUseBlock(ThirstManager::drinkFromCauldron);
         Loader.onUseBlock(HangingPotInteractions::use);
         Loader.onUseBlock(DistillerInteractions::fillTub);
         Loader.onUseBlock(DistillerInteractions::useMachine);

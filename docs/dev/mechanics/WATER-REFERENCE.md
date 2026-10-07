@@ -30,6 +30,7 @@ A thirst bar is 20. Thirst past a full bar is lost, from every source, and quenc
 |---|---|---|---|
 | A serving of water: bottle, Terracotta Water Bowl, Waterskin, Copper Canteen, Iron Flask (`plainWaterValue`) | 6 | 4 | 32 ticks (`plainWaterDrinkTicks`; a bottle is always vanilla's 32) |
 | A sip by hand from a water block (`canDrinkByHand`) | 3 | 2 (not in the config) | one click while sneaking |
+| A drink by hand from a water cauldron (`canDrinkByHand`), one level | 6 | 4 | one click |
 | Any other potion | 6 | 8 | vanilla |
 | Prepared soups and non-alcoholic drinks, from any mod | 6 | 4 | |
 | Milk bucket | 4 | 0 | |

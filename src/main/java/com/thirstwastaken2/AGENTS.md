@@ -60,7 +60,7 @@ Events registered there, in registration order per event:
 
 - `Loader.onServerTickEnd` → `ThirstManager.tick`, then `WaterInteractions.tick` (drains the deferred
   queue).
-- `Loader.onUseBlock` → `ThirstManager.drinkByHand`, `HangingPotInteractions.use`,
+- `Loader.onUseBlock` → `ThirstManager.drinkByHand`, `ThirstManager.drinkFromCauldron`, `HangingPotInteractions.use`,
   `WaterInteractions.emptyWaterskinOnBlock`,
   `WaterInteractions.fillWaterskinFromCauldron`, `WaterInteractions.transferCauldronPurity`. A
   handler that returns anything but `PASS` stops the rest, which is why `transferCauldronPurity`

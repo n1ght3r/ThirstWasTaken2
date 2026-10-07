@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "口渴條低於下方設定的比例時，食物不會回血。",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "食物回血：最低口渴",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "食物回血所需的口渴條比例。",
-  "thirstwastaken2.config.quenched_health_regen": "解渴值回血",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "解渴值自行回血的速度，按飽和度回血速度的比例計。需要口渴條滿，並在飽和度耗盡後才回血。0% 為關閉。",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "解渴值回血：最低飢餓",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "解渴值回血所需的飢餓條比例。",
   "thirstwastaken2.config.cold_sweat_climate": "Cold Sweat 氣候",

@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Thức ăn không hồi máu khi thanh khát thấp hơn mức đặt bên dưới.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Hồi bằng ăn: khát tối thiểu",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "Thanh khát phải đầy ít nhất bao nhiêu để thức ăn hồi máu.",
-  "thirstwastaken2.config.quenched_health_regen": "Hồi máu bằng giải khát",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "Tốc độ giải khát tự hồi máu, so với tốc độ hồi của độ no. Cần thanh khát đầy, và chỉ hồi khi độ no đã hết. 0% là tắt.",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "Hồi bằng giải khát: đói tối thiểu",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "Thanh đói phải đầy ít nhất bao nhiêu để giải khát hồi máu.",
   "thirstwastaken2.config.cold_sweat_climate": "Khí hậu Cold Sweat",

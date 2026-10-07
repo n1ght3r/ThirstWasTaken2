@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Jedzenie nie leczy, gdy pasek pragnienia jest poniżej ustawionej niżej części.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Leczenie jedzeniem: min. picie",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "Jak pełny musi być pasek pragnienia, by jedzenie leczyło.",
-  "thirstwastaken2.config.quenched_health_regen": "Leczenie z ugaszenia",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "Jak szybko ugaszenie leczy samo, jako część szybkości nasycenia. Wymaga pełnego paska pragnienia i leczy, gdy nasycenie się skończy. 0% wyłącza.",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "Leczenie z ugaszenia: min. głód",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "Jak pełny musi być pasek głodu, by ugaszenie leczyło.",
   "thirstwastaken2.config.cold_sweat_climate": "Klimat Cold Sweat",

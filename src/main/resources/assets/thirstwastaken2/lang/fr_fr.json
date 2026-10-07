@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "La nourriture ne soigne pas tant que la barre de soif est sous la part réglée plus bas.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Soin nourriture : soif min.",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "À quel point la barre de soif doit être pleine pour que la nourriture soigne.",
-  "thirstwastaken2.config.quenched_health_regen": "Soin par désaltération",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "Vitesse à laquelle la désaltération soigne seule, en part de celle de la saturation. Il faut une barre de soif pleine, et elle soigne une fois la saturation épuisée. 0 % la désactive.",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "Soin désaltération : faim min.",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "À quel point la barre de faim doit être pleine pour que la désaltération soigne.",
   "thirstwastaken2.config.cold_sweat_climate": "Climat de Cold Sweat",

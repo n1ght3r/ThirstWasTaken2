@@ -52,12 +52,12 @@ Health comes back two ways, and each needs the other bar:
 
 - **Food** heals as in vanilla while the thirst bar is at least half full. Below that, hunger stays
   full but health does not come back, and no food is spent on it.
-- **Quenched** heals on its own while thirst is full and the food bar is at least half full, at half
-  the speed saturation heals, spending quenched as it goes. Saturation goes first: quenched only heals
+- **Quenched** heals on its own while thirst is full and the food bar is at least half full, exactly
+  like saturation: just as fast, spending quenched as it goes. Saturation goes first: quenched only heals
   once the food's saturation has run out, so a big meal is spent before the water reserve.
 
-[Upset Stomach](/docs/features/water-purity#upset-stomach) always stops both. The `naturalRegeneration` game rule still applies. The speed and both
-halves can be changed, see [Configuration](/docs/configuration#dehydrationhaltshealthregen).
+[Upset Stomach](/docs/features/water-purity#upset-stomach) always stops both. The `naturalRegeneration` game rule still applies. Both halves can be
+changed, see [Configuration](/docs/configuration#dehydrationhaltshealthregen).
 
 ## Running low
 

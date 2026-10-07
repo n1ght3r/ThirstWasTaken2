@@ -19,6 +19,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -236,6 +238,73 @@ public final class DrinkingGameTest {
                 "an empty off hand should drink while the main hand holds something, got " + ThirstManager.get(holding));
 
         helper.succeed();
+    }
+
+    @GameTest
+    public void anEmptyHandDrinksAServingFromACauldron(GameTestHelper helper) {
+        BlockPos cauldron = waterCauldron(helper);
+        ServerPlayer player = thirstyPlayer(helper);
+
+        // Standing: unlike water in the world, a cauldron needs no crouch.
+        InteractionResult result = ThirstManager.drinkFromCauldron(player, helper.getLevel(), InteractionHand.MAIN_HAND, aimAt(cauldron));
+
+        int serving = ThirstConfig.get().plainWaterValue[0];
+        TestFixtures.check(helper, result != InteractionResult.PASS, "drinking from a cauldron should handle the click, got " + result);
+        TestFixtures.check(helper, ThirstManager.get(player).thirst() == 10 + serving,
+                "a cauldron drink should restore a serving, " + serving + " thirst, got " + ThirstManager.get(player));
+        TestFixtures.check(helper, helper.getLevel().getBlockState(cauldron).getValue(LayeredCauldronBlock.LEVEL) == 2,
+                "a cauldron drink should take one level, got " + helper.getLevel().getBlockState(cauldron));
+
+        // The last level empties the cauldron.
+        helper.getLevel().setBlockAndUpdate(cauldron, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 1));
+        ThirstManager.drinkFromCauldron(thirstyPlayer(helper), helper.getLevel(), InteractionHand.MAIN_HAND, aimAt(cauldron));
+        TestFixtures.check(helper, helper.getLevel().getBlockState(cauldron).is(Blocks.CAULDRON),
+                "drinking the last level should leave an empty cauldron, got " + helper.getLevel().getBlockState(cauldron));
+        helper.succeed();
+    }
+
+    @GameTest
+    public void cauldronDrinkingNeedsAnEmptyHandAndRoom(GameTestHelper helper) {
+        BlockPos cauldron = waterCauldron(helper);
+
+        ServerPlayer holding = thirstyPlayer(helper);
+        holding.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Items.STONE));
+        refusedAtCauldron(helper, holding, InteractionHand.MAIN_HAND, cauldron, "a player holding something");
+
+        // Full quenched too: Clean or Pure water may still top up a full bar while quenched has room.
+        ServerPlayer full = TestFixtures.survivalPlayer(helper);
+        ThirstManager.set(full, ThirstData.full().withLevels(ThirstData.MAX, ThirstData.MAX));
+        refusedAtCauldron(helper, full, InteractionHand.MAIN_HAND, cauldron, "a player with a full bar and full quenched");
+
+        ServerPlayer bothEmpty = thirstyPlayer(helper);
+        refusedAtCauldron(helper, bothEmpty, InteractionHand.OFF_HAND, cauldron,
+                "the off hand of a player whose main hand is empty too");
+
+        TestFixtures.withConfig(config -> config.canDrinkByHand = false, () ->
+                refusedAtCauldron(helper, thirstyPlayer(helper), InteractionHand.MAIN_HAND, cauldron,
+                        "a player on a server with can_drink_by_hand off"));
+
+        // Positive control: the same cauldron, untouched by the refusals, still serves a thirsty player.
+        ThirstManager.drinkFromCauldron(thirstyPlayer(helper), helper.getLevel(), InteractionHand.MAIN_HAND, aimAt(cauldron));
+        TestFixtures.check(helper, helper.getLevel().getBlockState(cauldron).getValue(LayeredCauldronBlock.LEVEL) == 2,
+                "a thirsty player with an empty hand should drink, got " + helper.getLevel().getBlockState(cauldron));
+        helper.succeed();
+    }
+
+    private static void refusedAtCauldron(GameTestHelper helper, ServerPlayer player, InteractionHand hand,
+                                          BlockPos cauldron, String who) {
+        ThirstData before = ThirstManager.get(player);
+        InteractionResult result = ThirstManager.drinkFromCauldron(player, helper.getLevel(), hand, aimAt(cauldron));
+        TestFixtures.check(helper, result == InteractionResult.PASS && ThirstManager.get(player).equals(before)
+                        && helper.getLevel().getBlockState(cauldron).getValue(LayeredCauldronBlock.LEVEL) == 3,
+                who + " should not drink from a cauldron, got " + result + " and " + ThirstManager.get(player));
+    }
+
+    /** A full water cauldron on the test's floor, as an absolute position. */
+    private static BlockPos waterCauldron(GameTestHelper helper) {
+        BlockPos pos = helper.absolutePos(new BlockPos(1, 2, 1));
+        helper.getLevel().setBlockAndUpdate(pos, Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3));
+        return pos;
     }
 
     private static void refused(GameTestHelper helper, ServerPlayer player, BlockPos target, String who) {

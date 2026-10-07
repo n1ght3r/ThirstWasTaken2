@@ -123,19 +123,17 @@ public final class HealthRegenGameTest {
         helper.succeed();
     }
 
-    /** With six quenched at the default half speed, one heal draws 3 exhaustion and restores half a point. */
+    /** With six quenched, one heal draws 6 exhaustion and restores a point, as saturation's does. */
     @GameTest
     public void quenchedHealsOnceSaturationIsSpentAndPaysForIt(GameTestHelper helper) {
         ServerPlayer player = quenchedHealer(helper, 20, 6, 20, null);
         for (int i = 0; i < ONE_QUENCHED_HEAL; i++) ThirstManager.tickPlayer(player);
-        float share = (float) ThirstConfig.get().quenchedHealthRegen;
-        TestFixtures.check(helper, share == 0.5F, "quenched should heal at half saturation's speed by default, got " + share);
-        TestFixtures.check(helper, Math.abs(player.getHealth() - (START_HEALTH + 0.5F)) < 1.0E-4F,
-                "one quenched heal should restore half a point, got " + (player.getHealth() - START_HEALTH));
+        TestFixtures.check(helper, Math.abs(player.getHealth() - (START_HEALTH + 1.0F)) < 1.0E-4F,
+                "one quenched heal should restore a point, got " + (player.getHealth() - START_HEALTH));
         float exhaustion = spent(ThirstManager.get(player), 6);
         // The ticks add a little baseline drain on top of the cost.
-        TestFixtures.check(helper, exhaustion >= 3.0F - 1.0E-4F && exhaustion < 3.1F,
-                "the heal should cost 3 exhaustion, got " + exhaustion);
+        TestFixtures.check(helper, exhaustion >= 6.0F - 1.0E-4F && exhaustion < 6.1F,
+                "the heal should cost 6 exhaustion, got " + exhaustion);
         helper.succeed();
     }
 
@@ -165,11 +163,6 @@ public final class HealthRegenGameTest {
             ServerPlayer player = quenchedHealer(helper, 20, 6, 19, null);
             for (int i = 0; i < ONE_QUENCHED_HEAL; i++) ThirstManager.tickPlayer(player);
             TestFixtures.check(helper, player.getHealth() == START_HEALTH, "at 100% food 19 should stop quenched healing");
-        });
-        TestFixtures.withConfig(config -> config.quenchedHealthRegen = 0.0, () -> {
-            ServerPlayer player = quenchedHealer(helper, 20, 6, 20, null);
-            for (int i = 0; i < ONE_QUENCHED_HEAL; i++) ThirstManager.tickPlayer(player);
-            TestFixtures.check(helper, player.getHealth() == START_HEALTH, "0% should turn quenched healing off");
         });
         helper.succeed();
     }

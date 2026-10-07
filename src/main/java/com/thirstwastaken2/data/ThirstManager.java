@@ -31,6 +31,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.function.ToDoubleFunction;
@@ -327,6 +331,47 @@ public final class ThirstManager {
                     WaterPurity.quenched(quality, HAND_DRINK_QUENCHED));
         }
         ThirstAdvancements.drank(player, quality);
+        handDrinkEffects(player, level, pos);
+        return InteractionResult.SUCCESS_SERVER;
+    }
+
+    /**
+     * A serving drunk straight from a water cauldron by using it with an empty hand, sneaking or not:
+     * one level per click, worth what a bottle drawn from it would be, its grade and sickness included.
+     * Refused while the player could not drink that bottle either, so a full bar leaves the cauldron
+     * alone. Server only. Not in the original, where a cauldron was only drunk from through a container.
+     */
+    public static InteractionResult drinkFromCauldron(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
+        if (level.isClientSide()) return InteractionResult.PASS;
+        BlockPos pos = hit.getBlockPos();
+        BlockState state = level.getBlockState(pos);
+        if (!state.is(Blocks.WATER_CAULDRON) || !ThirstConfig.get().canDrinkByHand
+                || player.getAbilities().invulnerable || !get(player).enabled()
+                || !player.getItemInHand(hand).isEmpty()) {
+            return InteractionResult.PASS;
+        }
+        // The same one-sip-per-click guard as drinkByHand: with both hands empty, skip the off hand's copy.
+        if (hand == InteractionHand.OFF_HAND && player.getMainHandItem().isEmpty()) return InteractionResult.PASS;
+
+        WaterQuality quality = WaterPurity.sampleAt(level, pos);
+        ItemStack sample = WaterPurity.setQuality(
+                new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), quality);
+        if (!canDrinkWater(player, sample)) return InteractionResult.PASS;
+
+        int[] serving = ThirstConfig.get().plainWaterValue;
+        if (WaterPurity.applyEffects(player, sample)) {
+            // No item was drunk, so listeners get an empty stack, as for a sip from the world.
+            drinkThroughEvent(player, ItemStack.EMPTY, serving[0], WaterPurity.quenched(quality, serving[1]));
+        }
+        ThirstAdvancements.drank(player, quality);
+        LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+        level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
+        handDrinkEffects(player, level, pos);
+        return InteractionResult.SUCCESS_SERVER;
+    }
+
+    /** The drinking sound and a few splashes over the water at {@code pos}, for a drink taken by hand. */
+    private static void handDrinkEffects(Player player, Level level, BlockPos pos) {
         // Player#playSound routes through Level#playSound with itself as the excluded listener, so a
         // server-side call is heard by everyone *except* the drinker. Vanilla gets away with it
         // because consumption effects also run client-side; hand drinking is server-only, so the
@@ -339,7 +384,6 @@ public final class ThirstManager {
             server.sendParticles(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5,
                     HAND_DRINK_SPLASHES, 0.2, 0.0, 0.2, 0.0);
         }
-        return InteractionResult.SUCCESS_SERVER;
     }
 
     /** The water block a hand drink would take from, or {@code null} when this click is not one. */

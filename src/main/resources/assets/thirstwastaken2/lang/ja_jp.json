@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "渇きゲージが下の割合を下回る間、食べ物では回復しません。",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "食べ物回復の最低渇き",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "食べ物で回復するのに必要な渇きゲージの割合です。",
-  "thirstwastaken2.config.quenched_health_regen": "潤いによる回復",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "潤いだけで回復する速さを、満腹度による回復との比で表します。渇きゲージが満タンで、満腹度が尽きてから回復します。0%で無効。",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "潤い回復の最低空腹",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "潤いで回復するのに必要な空腹ゲージの割合です。",
   "thirstwastaken2.config.cold_sweat_climate": "Cold Sweatの気候",

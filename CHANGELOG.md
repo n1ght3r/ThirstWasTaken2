@@ -18,6 +18,8 @@ thirst drains a little even standing still, and food and water each need the oth
 - Novice Leatherworkers can sell a Waterskin, and novice Clerics a Clean water bottle, so emeralds buy
   water before a player can boil any.
 - When another mod adds salt, distilling sea water leaves some of it behind.
+- Using a water cauldron with an empty hand drinks one serving from it, a bottle's worth, at the
+  cauldron's grade.
 - Filled terracotta water bowls stack to three, as long as their water is the same.
 - The Copper Canteen can go in a furnace too, like the Iron Flask.
 - With Jade installed, looking at a distiller shows both its tanks and whether its cooling tub is dry.
@@ -55,6 +57,8 @@ thirst drains a little even standing still, and food and water each need the oth
 - Food heals only while the thirst bar is at least half full, and quenched heals only while the food
   bar is. Quenched now waits for saturation to run out before it heals, instead of healing alongside
   it, and Upset Stomach always stops both.
+- Quenched heals exactly like saturation: just as fast, and spending quenched the way saturation is
+  spent.
 - Water in a cave or under a roof is at best Murky. Deep water is no longer cleaner.
 - Dirty and Murky water no longer taste bad: no more Nausea after every drink. Upset Stomach and Poison
   now come from one roll, so Poison only ever comes with Upset Stomach. Clean water never makes the
@@ -91,6 +95,7 @@ thirst drains a little even standing still, and food and water each need the oth
 - `defaultPurity`, `rainwaterPurity` and `dripstonePurity` are now `defaultQuality`,
   `rainwaterQuality` and `dripstoneQuality`. An old file is converted on load.
 - `quenchedHealMinFood`, in half shanks, is replaced by `quenchedHealMinFoodPercent`.
+- `quenchedHealthRegen` is removed: quenched always heals at saturation's speed.
 - Sickness effects take an optional `group`: effects in one group share a roll.
 - An existing config keeps its old values. Reset the Thirst, Water, Sickness and Containers pages, or
   delete the file, to take the new defaults, item values included.

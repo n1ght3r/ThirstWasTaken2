@@ -117,8 +117,6 @@
   "thirstwastaken2.config.dehydration_halts_health_regen.tooltip": "Food does not heal you while the thirst bar is under the share set below.",
   "thirstwastaken2.config.food_heal_min_thirst_percent": "Food Heal: Min Thirst",
   "thirstwastaken2.config.food_heal_min_thirst_percent.tooltip": "How full the thirst bar has to be for food to heal you.",
-  "thirstwastaken2.config.quenched_health_regen": "Quenched Healing",
-  "thirstwastaken2.config.quenched_health_regen.tooltip": "How fast quenched heals you on its own, as a share of saturation's speed. It needs a full thirst bar and heals once saturation runs out. 0% turns it off.",
   "thirstwastaken2.config.quenched_heal_min_food_percent": "Quenched Heal: Min Food",
   "thirstwastaken2.config.quenched_heal_min_food_percent.tooltip": "How full the food bar has to be for quenched to heal you.",
   "thirstwastaken2.config.cold_sweat_climate": "Cold Sweat Climate",
