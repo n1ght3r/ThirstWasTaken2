@@ -92,5 +92,4 @@ pot of Pure water loses the Pure water with no warning. If that should change, t
 `HangingPotInteractions.use`: refuse the pour when `poured.salty()` and the pot holds fresh water, the
 way a tank refuses a second grade.
 
-Taking the salt out is distillation, which the Copper Distiller does; see
-[DISTILLATION-PLAN.md](DISTILLATION-PLAN.md).
+Taking the salt out is distillation, which the Copper Distiller does (`block/DistillerBlockEntity`).

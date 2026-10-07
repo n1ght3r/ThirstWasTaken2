@@ -234,8 +234,8 @@ files; CI runs both on every node.
 
 ## Purification rework
 
-The design's playtests ([PURIFICATION-REWORK.md](mechanics/PURIFICATION-REWORK.md#validation-and-tuning)).
-They judge balance, so they are played, not scripted. Record the numbers each asks for in the release
+The rework's playtests. The numbers they check are in
+[WATER-REFERENCE.md](mechanics/WATER-REFERENCE.md). They judge balance, so they are played, not scripted. Record the numbers each asks for in the release
 PR.
 
 - [ ] Furnace and smoker times on screen: a bottle 8 s and 4 s, a bucket 24 s and 12 s, a half-full

@@ -26,8 +26,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * The copper distiller's machine, on its boiler half: its two tanks, its fire, how far the serving on the
- * boil has got, the salt it has left behind, and its slots. See
- * {@code docs/dev/mechanics/DISTILLATION-PLAN.md}.
+ * boil has got, the salt it has left behind, and its slots. Its numbers are in
+ * {@code docs/dev/mechanics/WATER-REFERENCE.md}.
  *
  * <p>Each tick on the server it pours the container in {@link #WATER_IN} into the boiler, fills the one
  * in {@link #EMPTY_IN} from the basin, and boils: while the boiler holds water, the basin has room and

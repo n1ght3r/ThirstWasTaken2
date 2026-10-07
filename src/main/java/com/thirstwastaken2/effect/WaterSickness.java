@@ -16,8 +16,8 @@ import java.util.Map;
 /**
  * What a drink of fresh water does to the player: the effects the config's {@code sicknessEffects} lists
  * for the difficulty and the water's grade. Salt water is handled by {@code WaterPurity.applyEffects}
- * before this. The defaults, and why they are what they are, are in
- * docs/dev/mechanics/PURIFICATION-REWORK.md.
+ * before this. The defaults are {@code SicknessEffect.defaults}, listed in
+ * docs/dev/mechanics/WATER-REFERENCE.md.
  */
 public final class WaterSickness {
     private static final int TICKS_PER_SECOND = 20;

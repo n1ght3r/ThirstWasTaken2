@@ -3,7 +3,7 @@
 Drinking Dirty or Murky water is a risk that grows with the difficulty: a nuisance on Easy, a
 setback on Normal, a gamble with your life on Hard. Boiling the water first always avoids it.
 
-**The purification rework changed steps 1 to 4** ([PURIFICATION-REWORK.md](PURIFICATION-REWORK.md#sickness)):
+**The purification rework changed steps 1 to 4**:
 Clean water is safe on every difficulty, Upset Stomach and Poison share one roll, there is no taste
 Nausea and no Nausea bursts. A later change (2026-10-07) left Upset Stomach blocking healing with no
 switch and cramping for half a heart at random times, down to half a heart like Poison; it no longer drains

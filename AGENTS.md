@@ -247,9 +247,6 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | The API and data pack format other mods use | the site's developer pages, [docs/docs/developers/](docs/docs/developers/java-api.md) |
 | Water reference: sources, grades, sickness chances by difficulty, purification methods | [docs/dev/mechanics/WATER-REFERENCE.md](docs/dev/mechanics/WATER-REFERENCE.md) |
 | Where sea water is refused, kept salty, or mixed in (hanging pot) | [docs/dev/mechanics/SALT-WATER-REFUSALS.md](docs/dev/mechanics/SALT-WATER-REFUSALS.md) |
-| Purification rework (planned): plain heat stops at Clean, no campfire slots | [docs/dev/mechanics/PURIFICATION-REWORK.md](docs/dev/mechanics/PURIFICATION-REWORK.md) |
-| Purification rework: step order, where the code goes, performance budget | [docs/dev/mechanics/PURIFICATION-REWORK-IMPLEMENTATION.md](docs/dev/mechanics/PURIFICATION-REWORK-IMPLEMENTATION.md) |
-| Copper Distiller at work (planned): GUI, fuel, sea and fresh water to Pure, salt only from other mods | [docs/dev/mechanics/DISTILLATION-PLAN.md](docs/dev/mechanics/DISTILLATION-PLAN.md) |
 | Every integration plan, by folder (`lets-do/`, `cooking/`, `storage/`, `climate/`), with its state | [docs/dev/integration/README.md](docs/dev/integration/README.md) |
 | Sophisticated upgrades still to do | [docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md) |

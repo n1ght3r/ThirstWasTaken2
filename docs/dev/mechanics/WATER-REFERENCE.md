@@ -3,8 +3,7 @@
 Every way to get water, what each grade of water does when drunk, by difficulty, and how the ways of
 cleaning it compare.
 
-**It describes the game as the code stands today**, after the purification rework
-([PURIFICATION-REWORK.md](PURIFICATION-REWORK.md), the design and its reasons). The design of the
+**It describes the game as the code stands today**, after the purification rework. The design of the
 sickness itself is in [WATER-SICKNESS.md](WATER-SICKNESS.md).
 
 Every number below is a default. Most are in the config (`ThirstConfig`); the ones that are not say so.
@@ -143,7 +142,7 @@ leatherworkers, and two clerics in three, offer it. See `compat/TradeIntegration
 
 Heat makes Dirty and Murky water Clean in one go and never goes further: `WaterPurity.boil` and, for
 Cold Sweat's Boiler, `boilStep` (+1 a pass, to Clean). Only the Copper Distiller makes Pure water from
-anything, and only it takes the salt out of sea water; see [DISTILLATION-PLAN.md](DISTILLATION-PLAN.md).
+anything, and only it takes the salt out of sea water (`block/DistillerBlockEntity`).
 Create's Sand Filter is the one other way to Pure. With Spelunkery, a furnace boils a sea water bucket
 down to a salt bucket, and nothing to drink. Clean and Pure water have no recipe anywhere, so heat
 never takes them.
