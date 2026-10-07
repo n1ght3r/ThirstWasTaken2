@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +22,15 @@ abstract class BottleItemMixin {
     private void thirst$clearCapture(Level level, Player player, InteractionHand hand,
                                      CallbackInfoReturnable<InteractionResult> cir) {
         FillCapture.clear();
+    }
+
+    // Diverges from vanilla and upstream: a bottle fills from flowing water too, as the bowl and the
+    // waterskin already do. The ray stops at the first water block, source or not, and vanilla's own
+    // water tag check that follows accepts both; a bottle takes nothing from the world either way.
+    @ModifyArg(method = "use", index = 2, at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/item/BottleItem;getPlayerPOVHitResult(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/ClipContext$Fluid;)Lnet/minecraft/world/phys/BlockHitResult;"))
+    private ClipContext.Fluid thirst$anyWater(ClipContext.Fluid mode) {
+        return ClipContext.Fluid.ANY;
     }
 
     @ModifyExpressionValue(method = "use", at = @At(value = "INVOKE",

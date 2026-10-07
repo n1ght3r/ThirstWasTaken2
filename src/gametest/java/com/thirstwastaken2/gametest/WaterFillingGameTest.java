@@ -10,6 +10,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 
 /**
  * Filling a container from a water block has to stamp the quality of the water it was actually
@@ -58,6 +59,26 @@ public final class WaterFillingGameTest {
         ItemStack filled = TestFixtures.findSampledWater(player);
         TestFixtures.check(helper, !filled.isEmpty(),
                 "using a glass bottle on water should produce a container carrying water quality");
+        TestFixtures.check(helper, WaterPurity.quality(filled).equals(expected),
+                "bottle should carry the sampled " + expected + ", got " + WaterPurity.quality(filled));
+        helper.succeed();
+    }
+
+    /** Vanilla only fills a bottle from a source; this mod lets it fill from flowing water too. */
+    @GameTest
+    public void bottleFillsFromFlowingWater(GameTestHelper helper) {
+        BlockPos water = TestFixtures.water(helper);
+        helper.setBlock(TestFixtures.WATER, Blocks.WATER.defaultBlockState().setValue(LiquidBlock.LEVEL, 1));
+        ServerPlayer player = TestFixtures.playerAboveWater(helper);
+        TestFixtures.check(helper, !helper.getLevel().getFluidState(water).isSource(),
+                "the fixture should be flowing water, not a source");
+        WaterQuality expected = WaterPurity.sampleAt(helper.getLevel(), water);
+
+        fill(player, Items.GLASS_BOTTLE);
+
+        ItemStack filled = TestFixtures.findSampledWater(player);
+        TestFixtures.check(helper, !filled.isEmpty(),
+                "using a glass bottle on flowing water should fill it");
         TestFixtures.check(helper, WaterPurity.quality(filled).equals(expected),
                 "bottle should carry the sampled " + expected + ", got " + WaterPurity.quality(filled));
         helper.succeed();
