@@ -79,6 +79,11 @@ so the grade lives in a `@Unique` field on the block entity, saved as one int un
   `thirst$heldWater` answers null otherwise, which is what is saved, what Jade shows and what a remove
   call stamps. Every way into that state writes the field again, so a stale value is never read and
   nothing needs clearing when the soup is served.
+  **One way does not, yet**: with Kaleidoscope Tavern and Kaleidoscope Chinese Food installed, a tap
+  fills either block through the addon's own accessors, past `addSoupBase` and `addTeaFluid`, so the
+  field keeps whatever the last fill left (null, or a stale grade). Step 5b of
+  [KALEIDOSCOPE-TAVERN-INTEGRATION.md](../../../docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md)
+  is the fix.
 - **Out wherever the bucket lands while a remove call runs.** `ReturnedWater.during` holds the grade
   for the length of the call and restores what was there however it ends. It is a `ThreadLocal`
   because both blocks run their calls on the client too, and in single player the two threads run them

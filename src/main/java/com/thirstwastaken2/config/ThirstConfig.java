@@ -411,6 +411,9 @@ public final class ThirstConfig {
         // And for Extra Delight, added after that.
         extraDelightDrinks(drinks);
         extraDelightFoods(foods);
+        // And for Kaleidoscope Chinese Food, added after that.
+        kaleidoscopeChineseFoodDrinks(drinks);
+        kaleidoscopeChineseFoodFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -584,6 +587,7 @@ public final class ThirstConfig {
         minersDelightDrinks(values);
         kaleidoscopeFloraDrinks(values);
         extraDelightDrinks(values);
+        kaleidoscopeChineseFoodDrinks(values);
         return values;
     }
 
@@ -622,6 +626,7 @@ public final class ThirstConfig {
         croptopiaFoods(values);
         minersDelightFoods(values);
         extraDelightFoods(values);
+        kaleidoscopeChineseFoodFoods(values);
         return values;
     }
 
@@ -1025,6 +1030,29 @@ public final class ThirstConfig {
                     mod + "rabbit_stew_cup", mod + "cave_soup_cup", mod + "bat_soup_cup", mod + "insect_stew_cup");
             putMissing(foods, 3, 2, mod + "bone_broth_cup", mod + "beetroot_soup_cup");
         }
+    }
+
+    /**
+     * Kaleidoscope Chinese Food's teas, by id alone like the other mods'. Its NeoForge 1.21.1 build and
+     * its Forge 1.20.1 one (both 1.1.14) register the same ids, through Kaleidoscope Cookery's teacup
+     * registry under their own namespace, so each is a teacup brewed in Cookery's teapot. Dianhong is
+     * brewed from water and gets the flower tea's value, Hong Kong milk tea from milk and the milk tea's.
+     */
+    private static void kaleidoscopeChineseFoodDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 6, 4, "kaleidoscope_chinesefood:dianhong_tea");
+        putMissing(drinks, 6, 4, "kaleidoscope_chinesefood:hk_milk_tea");
+    }
+
+    /**
+     * Kaleidoscope Chinese Food's soups, porridges and noodles, cooked in Cookery's stockpot and eaten out
+     * of a bowl in hand, on Cookery's own scale; see {@link #kaleidoscopeCookeryDrinks}. Maocai is cooked
+     * in lava, as Cookery's fearsome thick soup is, and gets its value. Its feasts (the yellow croaker
+     * soups, the Sichuan fish and pork pots, the four joy meatballs) are eaten off a placed block, and the
+     * lamb pilaf and the wok dishes are dry, so none of them is here.
+     */
+    private static void kaleidoscopeChineseFoodFoods(Map<String, int[]> foods) {
+        putMissing(foods, 6, 4, "kaleidoscope_chinesefood:douzhi", "kaleidoscope_chinesefood:seaweed_egg_drop_soup", "kaleidoscope_chinesefood:tomato_egg_drop_soup", "kaleidoscope_chinesefood:century_egg_congee", "kaleidoscope_chinesefood:pumpkin_porridge", "kaleidoscope_chinesefood:yangrou_paomo", "kaleidoscope_chinesefood:maocai");
+        putMissing(foods, 3, 2, "kaleidoscope_chinesefood:wonton_noodles", "kaleidoscope_chinesefood:sauerkraut_beef_noodles", "kaleidoscope_chinesefood:sichuan_wonton");
     }
 
     /**

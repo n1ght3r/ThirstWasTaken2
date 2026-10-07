@@ -29,7 +29,7 @@ folder), and pages listing config keys directly in `docs/`. A new integration pa
 sidebar's Integrations group in `.vitepress/config.mts`. It gets a row in `MODRINTH.md` and
 `CURSEFORGE.md` only when it is a Farmer's Delight addon, a Let's Do mod or a Kaleidoscope Cookery addon, or when the maintainer
 asks; any other new integration stays off the store pages, which point to the site's full list. There, Mod Compatibility opens with one collapsed section per family of mods, with no
-heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews, Beachparty and Vinery, then Kaleidoscope Cookery and its addon Kaleidoscope Flora), then
+heading of its own (Farmer's Delight and its addons, then Let's Do: Farm & Charm with Candlelight, HerbalBrews, Beachparty and Vinery, then Kaleidoscope Cookery and its addons Kaleidoscope Flora and Kaleidoscope Chinese Food), then
 the main table, a screenshot per mod beside its icon and name, then the "Also works with" table, the
 mod's banner and versions beside one sentence, for a smaller integration (Cold Sweat, Serene Seasons,
 Spelunkery). That table stays short: the rest are left to "...and more. [View full list]", which links

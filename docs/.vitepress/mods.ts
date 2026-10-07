@@ -145,5 +145,10 @@ export const KALEIDOSCOPE_ADDONS: Mod[] = [
     name: 'Kaleidoscope Flora',
     icon: 'https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png',
     link: '/docs/integrations/kaleidoscope-cookery/kaleidoscope-flora'
+  },
+  {
+    name: 'Kaleidoscope Chinese Food',
+    icon: 'https://cdn.modrinth.com/data/cuIIkdlx/748a556a3658f0a5f67068f4d8d5cf0041b794a7.png',
+    link: '/docs/integrations/kaleidoscope-cookery/kaleidoscope-chinese-food'
   }
 ]

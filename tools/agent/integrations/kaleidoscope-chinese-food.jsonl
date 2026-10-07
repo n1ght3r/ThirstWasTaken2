@@ -1,0 +1,59 @@
+// Kaleidoscope Chinese Food in a real client: the ids ThirstConfig lists match the addon's items, and its
+// soup and its tea restore what ThirstConfig says. Values only, by id; no code of ours names the addon.
+// It runs on 1.21.1-neoforge (and 1.20.1-forge, in kaleidoscope-chinese-food-1.20.1 once written), with the addon's
+// jar (1.1.14-neoforge+1.21.1, Modrinth version 9CclxgVk) dropped into run/1.21.1-neoforge/mods by hand:
+// it is not a dependency of the build. Run it unattended in a singleplayer world:
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/kaleidoscope-chinese-food.jsonl -Pquickplay=ChineseFoodAgent
+// ChineseFoodAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py 1.21.1-neoforge ChineseFoodAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/1.21.1-neoforge/agent/client tools/agent/integrations/kaleidoscope-chinese-food.jsonl --verify --max-age 15
+// A bowl soup and a teacup are eaten and drunk from thirst 4, quenched 0, and must land on 10 and 4, the
+// 6 and 4 ThirstConfig gives them. A dev config from before these ids were added gets them merged in.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "arrived", "command": "client.state"}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+
+// Every id ThirstConfig lists is an item of the addon: give fails on an id that does not exist.
+{"id": "has_dianhong_tea", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:dianhong_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_hk_milk_tea", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:hk_milk_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_douzhi", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:douzhi"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_seaweed_egg_drop_soup", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:seaweed_egg_drop_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_tomato_egg_drop_soup", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:tomato_egg_drop_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_century_egg_congee", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:century_egg_congee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_pumpkin_porridge", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:pumpkin_porridge"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_yangrou_paomo", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:yangrou_paomo"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_maocai", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:maocai"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_wonton_noodles", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:wonton_noodles"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_sauerkraut_beef_noodles", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:sauerkraut_beef_noodles"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+{"id": "has_sichuan_wonton", "command": "server.command", "args": {"command": "give @p kaleidoscope_chinesefood:sichuan_wonton"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave"}]}
+
+// A bowl soup eaten for real, then a teacup drunk for real.
+{"id": "eatClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "eatStand", "command": "server.command", "args": {"command": "execute as @p at @s run tp @s ~ ~ ~ 0 -60"}}
+{"id": "eatHunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 6 255 true"}}
+{"id": "eatHungry", "command": "wait", "args": {"ticks": 140}}
+{"id": "eatSet", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "eatGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with kaleidoscope_chinesefood:seaweed_egg_drop_soup"}}
+{"id": "eatSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "eatBefore", "command": "client.state"}
+{"id": "eatUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "eatDone", "command": "wait", "args": {"ticks": 10}}
+{"id": "eatAfter", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 4}}
+{"id": "eatBowl", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bowl"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+{"id": "drinkClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drinkSet", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drinkGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with kaleidoscope_chinesefood:dianhong_tea"}}
+{"id": "drinkSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drinkBefore", "command": "client.state"}
+{"id": "drinkUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drinkDone", "command": "wait", "args": {"ticks": 10}}
+{"id": "drinkAfter", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 4}}
+{"id": "drinkCup", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand kaleidoscope_cookery:empty_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+{"id": "shot", "command": "client.capture"}

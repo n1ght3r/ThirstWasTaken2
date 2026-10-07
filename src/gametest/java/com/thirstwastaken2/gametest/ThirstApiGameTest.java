@@ -732,6 +732,68 @@ public final class ThirstApiGameTest {
     }
 
     /**
+     * Kaleidoscope Chinese Food is never installed here either. Its teas are Cookery's teas, its bowl
+     * soups Cookery's soups and its noodles Cookery's noodles; its feasts and dry dishes are not listed.
+     */
+    @GameTest
+    public void kaleidoscopeChineseFoodIsMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"dianhong_tea", "hk_milk_tea"};
+        String[] foods = {"douzhi", "seaweed_egg_drop_soup", "maocai", "wonton_noodles", "sichuan_wonton"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("kaleidoscope_chinesefood:" + drink),
+                    "the default drinks should list kaleidoscope_chinesefood:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("kaleidoscope_chinesefood:" + food),
+                    "the default foods should list kaleidoscope_chinesefood:" + food);
+        }
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("kaleidoscope_chinesefood:dianhong_tea"),
+                        defaults.drinks.get("kaleidoscope_cookery:flower_tea")),
+                "Dianhong should restore what Cookery's teas do");
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("kaleidoscope_chinesefood:hk_milk_tea"),
+                        defaults.drinks.get("kaleidoscope_cookery:clay_pot_milk_tea")),
+                "Hong Kong milk tea, brewed in milk, should restore what Cookery's milk tea does");
+        TestFixtures.check(helper, Arrays.equals(defaults.foods.get("kaleidoscope_chinesefood:seaweed_egg_drop_soup"),
+                        defaults.foods.get("kaleidoscope_cookery:pork_bone_soup")),
+                "a bowl soup should restore what Cookery's soups do");
+        TestFixtures.check(helper, Arrays.equals(defaults.foods.get("kaleidoscope_chinesefood:wonton_noodles"),
+                        defaults.foods.get("kaleidoscope_cookery:beef_noodle")),
+                "a bowl of noodles should restore what Cookery's noodles do");
+        for (String dry : new String[]{"yellow_croaker_soup", "sichuan_boiled_fish", "four_joy_meatballs",
+                "lamb_pilaf", "dry_pot_chicken", "dianhong_tea_bag"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("kaleidoscope_chinesefood:" + dry)
+                            && !defaults.drinks.containsKey("kaleidoscope_chinesefood:" + dry),
+                    "kaleidoscope_chinesefood:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("kaleidoscope_chinesefood:" + drink);
+            for (String food : foods) config.foods.remove("kaleidoscope_chinesefood:" + food);
+            // A player's own value, which merging must leave alone.
+            config.foods.put("kaleidoscope_chinesefood:pumpkin_porridge", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "kaleidoscope_chinesefood:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "kaleidoscope_chinesefood:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.foods.get("kaleidoscope_chinesefood:pumpkin_porridge"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.foods.get("kaleidoscope_chinesefood:pumpkin_porridge")));
+        });
+        helper.succeed();
+    }
+
+    /**
      * Extra Delight is never installed here either. A juice restores more than lemon juice drunk neat,
      * and the rice dishes, jellies and ingredients are not listed.
      */
