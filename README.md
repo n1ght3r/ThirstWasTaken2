@@ -31,7 +31,7 @@ Every mechanic is explained on the [documentation site](https://n1ght3r.github.i
 
 | Minecraft | Java | Fabric Loader (min.) | Fabric API | NeoForge / Forge |
 | :--- | :---: | :--- | :--- | :--- |
-| 26.3 | 25 | 0.19.5 | 0.162.0+26.3 | 26.3.0.51-beta |
+| 26.3 | 25 | 0.19.5 | 0.162.0+26.3 | 26.3.0.52-beta |
 | 26.2 | 25 | 0.19.5 | 0.161.0+26.2 | 26.2.0.88 |
 | 26.1 – 26.1.2 | 25 | 0.19.5 | 0.155.3+26.1.2 | 26.1.2.114 |
 | 1.21.11 | 21 | 0.19.5 | 0.141.6+1.21.11 | 21.11.45 |
