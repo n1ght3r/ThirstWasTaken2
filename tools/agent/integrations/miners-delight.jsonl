@@ -2,7 +2,8 @@
 // for the mod exists, that a copper cup scooping a swamp or ocean source is stamped with that
 // water's grade (CopperCupItemMixin), that a salty water cup poured into an empty cauldron leaves a
 // cauldron of sea water rather than Clean water, that a copper cup drawn from a Dirty cauldron comes
-// out Dirty, that a water cup on a full cauldron changes nothing, and that the milk cup and a soup
+// out Dirty, that a water cup on a full cauldron changes nothing, that both cups pour into and draw
+// from a hanging pot and a distiller a bucket at a time, and that the milk cup and a soup
 // cup restore their values. Runs on 1.21.1-neoforge;
 // miners-delight-1.20.1.jsonl is the Forge 1.20.1 copy. Run it unattended in a singleplayer world:
 //     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/miners-delight.jsonl -Pquickplay=MinersAgent
@@ -119,6 +120,50 @@
 {"id": "fullWaterGone", "command": "server.command", "args": {"command": "fill -1 200 1 1 202 3 minecraft:air replace minecraft:water"}}
 {"id": "cauldronGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
 
+// A cup holds a bucket, so a Dirty water cup fills an empty copper hanging pot (three servings) and
+// hands back the copper cup, and that cup draws the pot's three servings back out as a Dirty water cup.
+{"id": "potPlace", "command": "server.command", "args": {"command": "setblock 0 200 2 thirstwastaken2:copper_hanging_pot"}}
+{"id": "potPourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "potPourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minersdelight:water_cup[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "potPourStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "potPourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potPourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourBlock", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "potPoured", "command": "server.command", "args": {"command": "execute if block 0 200 2 thirstwastaken2:copper_hanging_pot[level=3,purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potPourCupBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minersdelight:copper_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "potDrawSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "potDrawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potDrawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potDrawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "potDrawDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minersdelight:water_cup[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawEmptied", "command": "server.command", "args": {"command": "execute if block 0 200 2 thirstwastaken2:copper_hanging_pot[level=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// The distiller takes a cup as it takes a bucket: a Dirty water cup pours its three servings into the
+// boiler and hands back the copper cup, and that cup draws three from the basin as a Pure water cup.
+{"id": "distTub", "command": "server.command", "args": {"command": "setblock -1 200 2 thirstwastaken2:copper_distiller[facing=north,part=tub,piped=true,cooled=true]"}}
+{"id": "distBoiler", "command": "server.command", "args": {"command": "setblock 0 200 2 thirstwastaken2:copper_distiller[facing=north,part=boiler,piped=true]"}}
+{"id": "distPourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "distPourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minersdelight:water_cup[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "distPourStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "distPourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "distPourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "distPourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "distPourBlock", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "distPoured", "command": "server.command", "args": {"command": "execute if data block 0 200 2 {boiler: 3}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distPourCupBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minersdelight:copper_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distBasin", "command": "server.command", "args": {"command": "data merge block 0 200 2 {boiler: 0, basin: 3}"}}
+{"id": "distDrawStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "distDrawSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "distDrawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "distDrawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "distDrawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "distDrawPure", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minersdelight:water_cup[thirstwastaken2:water_purity=3]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distDrawEmptied", "command": "server.command", "args": {"command": "execute if data block 0 200 2 {basin: 0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distGone", "command": "server.command", "args": {"command": "fill -1 200 2 0 200 2 minecraft:air"}}
+
 // An unstamped water cup's tooltip says Clean, defaultPurity, with no droplet rows: it is a
 // container, like the water bucket, not a drink. Read by hand.
 {"id": "plainClear", "command": "server.command", "args": {"command": "clear @p"}}
@@ -126,7 +171,8 @@
 {"id": "plainSettle", "command": "wait", "args": {"ticks": 10}}
 {"id": "plainTooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 
-// Drinking: the milk cup restores 6 and a beef stew cup 2, from thirst 4 and quenched 0.
+// Drinking: the milk cup restores 4 and no quenched, a beef stew cup 3 and 2, from thirst 4 and
+// quenched 0. The values of the purification rework (2026-10-06): milk 4, 0, a soup cup half a bowl's 6, 4.
 {"id": "drink_milk_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_milk_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
 {"id": "drink_milk_hungry", "command": "wait", "args": {"ticks": 60}}
@@ -136,7 +182,7 @@
 {"id": "drink_milk_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "drink_milk_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
 {"id": "drink_milk_done", "command": "wait", "args": {"ticks": 10}}
-{"id": "drink_milk_state", "command": "client.state", "expect": {"result.thirst": 10}}
+{"id": "drink_milk_state", "command": "client.state", "expect": {"result.thirst": 8, "result.quenched": 0}}
 {"id": "drink_stew_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_stew_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
 {"id": "drink_stew_hungry", "command": "wait", "args": {"ticks": 60}}
@@ -146,6 +192,6 @@
 {"id": "drink_stew_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "drink_stew_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
 {"id": "drink_stew_done", "command": "wait", "args": {"ticks": 10}}
-{"id": "drink_stew_state", "command": "client.state", "expect": {"result.thirst": 6}}
+{"id": "drink_stew_state", "command": "client.state", "expect": {"result.thirst": 7, "result.quenched": 2}}
 
 {"id": "done", "command": "client.state"}

@@ -8,6 +8,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - With AppleSkin, an item's tooltip shows how much thirst and quenched it restores again, even when
   your thirst bar is full. In Survival the droplets used to shrink or disappear as the bar filled.
+- With Miner's Delight, a Water Cup pours into a hanging pot or a distiller and an empty Copper Cup
+  draws from one, a bucket's worth at a time, keeping the water's grade.
+- With Cold Sweat, its Waterskin pours into a hanging pot or a distiller and an empty one draws from
+  them, one drink at a time.
 
 ## [1.7.0] - 2026-10-07
 

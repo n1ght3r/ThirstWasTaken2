@@ -26,7 +26,8 @@ import net.minecraft.world.phys.BlockHitResult;
  * Pouring water into a hanging pot, copper or iron, and drawing it back out.
  *
  * <p>The pot is the mod's own block, so unlike a cauldron nothing in vanilla handles these; everything
- * happens here, inline. A bucket is {@link HangingPotBlock#BUCKET} servings and everything else one.
+ * happens here, inline. A bucket is {@link HangingPotBlock#BUCKET} servings and a bottle one; another
+ * mod's container, such as Miner's Delight's cups, what {@link WaterPurity#vessel} says it holds.
  * Poured water mixes the way it does in a cauldron, keeping the worse grade, and adds its own boiling
  * time to what is left; see {@link HangingPotBlock#pour}. What the pot holds is its block entity's,
  * which the client is told, so both sides decide a click the same way.
@@ -96,6 +97,19 @@ public final class HangingPotInteractions {
         if (held.is(Items.WATER_BUCKET)) {
             return room >= HangingPotBlock.BUCKET
                     ? Transfer.pour(HangingPotBlock.BUCKET, new ItemStack(Items.BUCKET), SoundEvents.BUCKET_EMPTY)
+                    : null;
+        }
+        // Another mod's cup or skin moves what it holds, whole: a Miner's Delight cup a bucket's servings.
+        WaterPurity.Vessel vessel = WaterPurity.vessel(held.getItem());
+        if (vessel != null) {
+            int moved = vessel.servings();
+            if (WaterPurity.isWaterContainer(held)) {
+                return room >= moved
+                        ? Transfer.pour(moved, new ItemStack(vessel.swap()), moved > 1 ? SoundEvents.BUCKET_EMPTY : SoundEvents.BOTTLE_EMPTY)
+                        : null;
+            }
+            return servings >= moved
+                    ? Transfer.draw(moved, new ItemStack(vessel.swap()), moved > 1 ? SoundEvents.BUCKET_FILL : SoundEvents.BOTTLE_FILL)
                     : null;
         }
         if (held.is(Items.POTION) && WaterPurity.isWaterContainer(held)) {

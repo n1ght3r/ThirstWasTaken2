@@ -121,7 +121,8 @@
 {"id": "plainSettle", "command": "wait", "args": {"ticks": 10}}
 {"id": "plainTooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 
-// Drinking: the milk cup restores 6 and a beef stew cup 2, from thirst 4 and quenched 0.
+// Drinking: the milk cup restores 4 and no quenched, a beef stew cup 3 and 2, from thirst 4 and
+// quenched 0. The values of the purification rework (2026-10-06): milk 4, 0, a soup cup half a bowl's 6, 4.
 {"id": "drink_milk_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_milk_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
 {"id": "drink_milk_hungry", "command": "wait", "args": {"ticks": 60}}
@@ -131,7 +132,7 @@
 {"id": "drink_milk_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "drink_milk_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
 {"id": "drink_milk_done", "command": "wait", "args": {"ticks": 10}}
-{"id": "drink_milk_state", "command": "client.state", "expect": {"result.thirst": 10}}
+{"id": "drink_milk_state", "command": "client.state", "expect": {"result.thirst": 8, "result.quenched": 0}}
 {"id": "drink_stew_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_stew_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
 {"id": "drink_stew_hungry", "command": "wait", "args": {"ticks": 60}}
@@ -141,6 +142,6 @@
 {"id": "drink_stew_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "drink_stew_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
 {"id": "drink_stew_done", "command": "wait", "args": {"ticks": 10}}
-{"id": "drink_stew_state", "command": "client.state", "expect": {"result.thirst": 6}}
+{"id": "drink_stew_state", "command": "client.state", "expect": {"result.thirst": 7, "result.quenched": 2}}
 
 {"id": "done", "command": "client.state"}

@@ -94,6 +94,10 @@ both namespaces. Proposed (thirst, quenched):
 | | `bone_broth_cup`, `beetroot_soup_cup` | 3, 4, half of 5, 7 rounded up |
 | Left out | `water_cup` (a container, no value, like the water bucket), `powder_snow_cup`, `bowl_of_stuffed_squid`, the plates and every dry food | — |
 
+The purification rework (2026-10-06) rebalanced these with every other mod's: the milk cup is 4, 0,
+as milk now is everywhere; the three bowls 6, 4; the soup cups 3, 2, half a bowl rounded up. The
+player page and both agent scripts follow; the run notes below keep the values of their day.
+
 ## Status
 
 | # | Item | Kind | Nodes | Status |

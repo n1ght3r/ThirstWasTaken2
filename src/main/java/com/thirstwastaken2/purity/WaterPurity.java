@@ -10,6 +10,7 @@ import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -103,8 +104,16 @@ public final class WaterPurity {
     /** Purity that has to be looked up from the config instead of being baked into the item. */
     private static final int PURITY_FROM_CONFIG = -1;
 
-    /** {@code drawsWater}: an empty container a full water cauldron fills, as a bucket. */
-    private record ItemInfo(boolean container, boolean plainWater, int staticPurity, boolean drawsWater) { }
+    /**
+     * {@code drawsWater}: an empty container a full water cauldron fills, as a bucket. {@code vessel}: for
+     * another mod's container of plain water, what it swaps with and how much; see {@link #vessel}.
+     */
+    private record ItemInfo(boolean container, boolean plainWater, int staticPurity, boolean drawsWater,
+                            Vessel vessel) {
+        ItemInfo(boolean container, boolean plainWater, int staticPurity, boolean drawsWater) {
+            this(container, plainWater, staticPurity, drawsWater, null);
+        }
+    }
 
     private static final ItemInfo NOT_A_CONTAINER = new ItemInfo(false, false, PURITY_FROM_CONFIG, false);
     private static final ItemInfo DRAWS_WATER = new ItemInfo(false, false, PURITY_FROM_CONFIG, true);
@@ -126,6 +135,23 @@ public final class WaterPurity {
      */
     public static boolean drawsFromCauldron(ItemStack stack) {
         return !stack.isEmpty() && info(stack.getItem()).drawsWater();
+    }
+
+    /**
+     * Another mod's container of plain water that is emptied or filled whole, {@code servings} at a time,
+     * and becomes {@code swap} when it is: the full one the empty one, and the other way round.
+     */
+    public record Vessel(Item swap, int servings) { }
+
+    /**
+     * {@code item} as another mod's container of plain water, or null: Miner's Delight's water cup and
+     * copper cup, a bucket each, and Cold Sweat's filled and empty waterskin, a bottle each, at Cold
+     * Sweat's default of one use. Whether it is the full one is {@link #isWaterContainer}. Not
+     * drinks made with water, such as tea, nor Croptopia's water bottle, an ingredient with no grade that
+     * a bucket makes sixteen of. Vanilla's containers are not here; callers handle them themselves.
+     */
+    public static Vessel vessel(Item item) {
+        return info(item).vessel();
     }
 
     /** Water-only drinks are blocked at a full thirst bar, unlike drinks with other gameplay uses. */
@@ -492,15 +518,33 @@ public final class WaterPurity {
         if (namespace.equals("cold_sweat")) {
             // Cold Sweat's filled waterskin, graded when it is filled. Not plain water: its default use
             // pours it over the player and a sip also warms or cools, so a full thirst bar stops neither.
-            return path.equals("filled_waterskin") ? new ItemInfo(true, false, PURITY_FROM_CONFIG, false) : NOT_A_CONTAINER;
+            if (path.equals("filled_waterskin")) {
+                return new ItemInfo(true, false, PURITY_FROM_CONFIG, false, vessel(namespace, "waterskin", 1));
+            }
+            return path.equals("waterskin")
+                    ? new ItemInfo(false, false, PURITY_FROM_CONFIG, false, vessel(namespace, "filled_waterskin", 1))
+                    : NOT_A_CONTAINER;
         }
         // Miner's Delight names itself minersdelight on 1.21.1 and miners_delight on 1.20.1. Its copper cup
         // is a small bucket: the water cup holds a bucket of water, not drinkable, and the empty cup draws
         // one from a full cauldron. Graded like the bucket, so the cup cannot turn sea water fresh.
         if (namespace.equals("minersdelight") || namespace.equals("miners_delight")) {
-            if (path.equals("water_cup")) return new ItemInfo(true, false, PURITY_FROM_CONFIG, false);
-            return path.equals("copper_cup") ? DRAWS_WATER : NOT_A_CONTAINER;
+            if (path.equals("water_cup")) {
+                return new ItemInfo(true, false, PURITY_FROM_CONFIG, false, vessel(namespace, "copper_cup", 3));
+            }
+            return path.equals("copper_cup")
+                    ? new ItemInfo(false, false, PURITY_FROM_CONFIG, true, vessel(namespace, "water_cup", 3))
+                    : NOT_A_CONTAINER;
         }
         return NOT_A_CONTAINER;
+    }
+
+    /**
+     * A vessel swapping with the registered item {@code namespace:path}, or null when there is none. Only
+     * from {@link #resolve}, so once per item.
+     */
+    private static Vessel vessel(String namespace, String path, int servings) {
+        Item swap = BuiltInRegistries.ITEM.getOptional(Identifier.fromNamespaceAndPath(namespace, path)).orElse(Items.AIR);
+        return swap == Items.AIR ? null : new Vessel(swap, servings);
     }
 }

@@ -13,9 +13,10 @@ import net.minecraft.world.item.Items;
 
 /**
  * Which containers the distiller takes water from and fills with it, in servings: a bucket is three, a
- * bottle and a terracotta bowl one, and a waterskin, canteen or flask what it holds or has room for. A
- * bucket moves its three at once; a carried container as many as it can. What the distiller fills is
- * always Pure.
+ * bottle and a terracotta bowl one, and a waterskin, canteen or flask what it holds or has room for.
+ * Another mod's container of plain water, a {@link WaterPurity#vessel}, holds what that says: a Miner's
+ * Delight cup a bucket's three, a Cold Sweat waterskin one. A bucket or a vessel moves its servings at
+ * once; a carried container as many as it can. What the distiller fills is always Pure.
  */
 final class DistillerWater {
     /** The distiller's water, whatever went in. */
@@ -29,6 +30,8 @@ final class DistillerWater {
         if (stack.is(Items.WATER_BUCKET)) return BUCKET;
         if (stack.is(Items.POTION) && WaterPurity.isWaterContainer(stack)) return 1;
         if (stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)) return 1;
+        WaterPurity.Vessel vessel = WaterPurity.vessel(stack.getItem());
+        if (vessel != null) return WaterPurity.isWaterContainer(stack) ? vessel.servings() : 0;
         return WaterskinItem.is(stack) ? WaterskinItem.servings(stack) : 0;
     }
 
@@ -36,6 +39,8 @@ final class DistillerWater {
     static int room(ItemStack stack) {
         if (stack.is(Items.BUCKET)) return BUCKET;
         if (stack.is(Items.GLASS_BOTTLE) || stack.is(ThirstItems.TERRACOTTA_BOWL)) return 1;
+        WaterPurity.Vessel vessel = WaterPurity.vessel(stack.getItem());
+        if (vessel != null) return WaterPurity.isWaterContainer(stack) ? 0 : vessel.servings();
         return WaterskinItem.is(stack) ? WaterskinItem.capacity(stack) - WaterskinItem.servings(stack) : 0;
     }
 
@@ -49,6 +54,8 @@ final class DistillerWater {
         if (stack.is(Items.WATER_BUCKET)) return new ItemStack(Items.BUCKET);
         if (stack.is(Items.POTION)) return new ItemStack(Items.GLASS_BOTTLE);
         if (stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)) return new ItemStack(ThirstItems.TERRACOTTA_BOWL);
+        WaterPurity.Vessel vessel = WaterPurity.vessel(stack.getItem());
+        if (vessel != null) return new ItemStack(vessel.swap());
         ItemStack skin = stack.copyWithCount(1);
         WaterskinItem.removeWater(skin, servings);
         return skin;
@@ -59,6 +66,8 @@ final class DistillerWater {
         if (stack.is(Items.BUCKET)) return WaterPurity.setQuality(new ItemStack(Items.WATER_BUCKET), PURE);
         if (stack.is(Items.GLASS_BOTTLE)) return WaterPurity.setQuality(Vanilla.waterBottle(), PURE);
         if (stack.is(ThirstItems.TERRACOTTA_BOWL)) return WaterContainers.holding(stack, PURE, 1);
+        WaterPurity.Vessel vessel = WaterPurity.vessel(stack.getItem());
+        if (vessel != null) return WaterPurity.setQuality(new ItemStack(vessel.swap()), PURE);
         ItemStack skin = stack.copyWithCount(1);
         WaterskinItem.addWater(skin, PURE, servings);
         return skin;
@@ -66,13 +75,13 @@ final class DistillerWater {
 
     /** The sound of pouring {@code stack} out. */
     static SoundEvent pourSound(ItemStack stack) {
-        return stack.is(Items.WATER_BUCKET) || stack.is(ThirstItems.TERRACOTTA_WATER_BOWL)
+        return stack.is(Items.WATER_BUCKET) || stack.is(ThirstItems.TERRACOTTA_WATER_BOWL) || held(stack) >= BUCKET
                 ? SoundEvents.BUCKET_EMPTY : SoundEvents.BOTTLE_EMPTY;
     }
 
     /** The sound of filling {@code stack}. */
     static SoundEvent fillSound(ItemStack stack) {
-        return stack.is(Items.BUCKET) || stack.is(ThirstItems.TERRACOTTA_BOWL)
+        return stack.is(Items.BUCKET) || stack.is(ThirstItems.TERRACOTTA_BOWL) || !WaterskinItem.is(stack) && room(stack) >= BUCKET
                 ? SoundEvents.BUCKET_FILL : SoundEvents.BOTTLE_FILL;
     }
 }

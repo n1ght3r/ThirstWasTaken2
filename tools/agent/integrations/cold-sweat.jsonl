@@ -258,3 +258,47 @@
 {"id": "hudSkin", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with cold_sweat:filled_waterskin[thirstwastaken2:water_purity=2,thirstwastaken2:water_salty=false]"}}
 {"id": "settleHud", "command": "wait", "args": {"ticks": 20}}
 {"id": "hud", "command": "client.capture", "args": {"name": "cold-sweat-hud"}}
+
+// The skin holds one serving, at Cold Sweat's default of one use, and is emptied or filled whole. A Dirty
+// skin pours one serving into an empty copper hanging pot and comes back empty; the empty skin draws it
+// back out as a Dirty skin. Then the distiller: a Dirty skin pours one serving into the boiler, and an
+// empty skin draws one from the basin as a Pure skin.
+{"id": "potPlace", "command": "server.command", "args": {"command": "setblock 12 200 2 thirstwastaken2:copper_hanging_pot"}}
+{"id": "potPourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "potPourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with cold_sweat:filled_waterskin[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "potPourStand", "command": "server.command", "args": {"command": "tp @p 12.5 200 0.5 0 30"}}
+{"id": "potPourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potPourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourBlock", "command": "server.command", "args": {"command": "data get block 12 200 2"}}
+{"id": "potPoured", "command": "server.command", "args": {"command": "execute if data block 12 200 2 {servings: 1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potPouredDirty", "command": "server.command", "args": {"command": "execute if block 12 200 2 thirstwastaken2:copper_hanging_pot[purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potPourSkinBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand cold_sweat:waterskin"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawStand", "command": "server.command", "args": {"command": "tp @p 12.5 200 0.5 0 30"}}
+{"id": "potDrawSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "potDrawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potDrawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potDrawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "potDrawDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand cold_sweat:filled_waterskin[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawEmptied", "command": "server.command", "args": {"command": "execute if block 12 200 2 thirstwastaken2:copper_hanging_pot[level=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potGone", "command": "server.command", "args": {"command": "setblock 12 200 2 minecraft:air"}}
+{"id": "distTub", "command": "server.command", "args": {"command": "setblock 11 200 2 thirstwastaken2:copper_distiller[facing=north,part=tub,piped=true,cooled=true]"}}
+{"id": "distBoiler", "command": "server.command", "args": {"command": "setblock 12 200 2 thirstwastaken2:copper_distiller[facing=north,part=boiler,piped=true]"}}
+{"id": "distPourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "distPourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with cold_sweat:filled_waterskin[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "distPourStand", "command": "server.command", "args": {"command": "tp @p 12.5 200 0.5 0 30"}}
+{"id": "distPourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "distPourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "distPourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "distPourBlock", "command": "server.command", "args": {"command": "data get block 12 200 2"}}
+{"id": "distPoured", "command": "server.command", "args": {"command": "execute if data block 12 200 2 {boiler: 1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distPourSkinBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand cold_sweat:waterskin"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distBasin", "command": "server.command", "args": {"command": "data merge block 12 200 2 {boiler: 0, basin: 1}"}}
+{"id": "distDrawStand", "command": "server.command", "args": {"command": "tp @p 12.5 200 0.5 0 30"}}
+{"id": "distDrawSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "distDrawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "distDrawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "distDrawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "distDrawPure", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand cold_sweat:filled_waterskin[thirstwastaken2:water_purity=3]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distDrawEmptied", "command": "server.command", "args": {"command": "execute if data block 12 200 2 {basin: 0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "distGone", "command": "server.command", "args": {"command": "fill 11 200 2 12 200 2 minecraft:air"}}
