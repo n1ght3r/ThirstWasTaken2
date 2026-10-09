@@ -278,6 +278,13 @@ val kaleidoscopeCookery = findProperty("deps.kaleidoscope_cookery") as String?
 val kaleidoscopeTavern = findProperty("deps.kaleidoscope_tavern") as String?
 
 /**
+ * False on a node whose pinned Kaleidoscope Tavern cannot start: it is still compiled against, but kept
+ * off runClient and runDatagen, which would crash. See `runtime.kaleidoscope_tavern` in
+ * stonecutter.properties.toml.
+ */
+val kaleidoscopeTavernRuns = findProperty("runtime.kaleidoscope_tavern")?.toString() != "false"
+
+/**
  * Brewin' and Chewin's Modrinth version id, set on `1.21.1` and `1.21.1-neoforge` only: it has no
  * release for a newer Minecraft version. See docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
  */
@@ -583,6 +590,12 @@ dependencies {
         "modCompileOnly"("maven.modrinth:kaleidoscope-tavern-refabricated:$kaleidoscopeTavern") { isTransitive = false }
         // Test the barrel, the tap, the placed bottle and the shaker in runClient. The gametests and
         // runServer run without it, which is what proves the mod is unchanged when it is absent.
+        val names = listOf("kaleidoscope-tavern", "kaleidoscope-tavern-refabricated", "kaleidoscope_tavern")
+        // Keeps the names known to `-PwithoutOptional` on a node where it does not run.
+        optionalRunMods.include(names)
+    }
+
+    if (kaleidoscopeTavern != null && kaleidoscopeTavernRuns) {
         val names = listOf("kaleidoscope-tavern", "kaleidoscope-tavern-refabricated", "kaleidoscope_tavern")
         runClientMod(names, "maven.modrinth:kaleidoscope-tavern-refabricated:$kaleidoscopeTavern")
         // On 1.20.1 it requires Reach Entity Attributes, nested in its own jar beside Fabric API modules

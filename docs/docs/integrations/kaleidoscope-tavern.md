@@ -8,7 +8,9 @@ NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with
 ![](https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png){.mod-icon} [Kaleidoscope Tavern](https://modrinth.com/mod/kaleidoscopetavern) 1.2.0, and Fabric, every
 supported Minecraft version, with
 ![](https://cdn.modrinth.com/data/UMblNdlF/bfeeabb4b3f926a0afbc953490c32892a0999122.png){.mod-icon} [Kaleidoscope Tavern Refabricated](https://modrinth.com/mod/kaleidoscope-tavern-refabricated).
-Kaleidoscope Tavern has no NeoForge version for newer Minecraft versions yet.
+Kaleidoscope Tavern has no NeoForge version for newer Minecraft versions yet. Kaleidoscope Tavern
+Refabricated 1.2.0.5 for Minecraft 1.21.11 crashes the game on launch on its own, with or without
+ThirstWasTaken2.
 :::
 
 ## Drinks

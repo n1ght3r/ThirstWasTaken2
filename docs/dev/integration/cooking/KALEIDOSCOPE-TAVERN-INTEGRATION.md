@@ -131,6 +131,10 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 - **`1.21.1-fabric` does have the Jade plugin** at `compat/jade/ModPlugin`.
 - **Refabricated 26.x needs no Forge Config API Port**; `1.20.1`, `1.21.1` and `1.21.11` require it, and
   `1.20.1` also Reach Entity Attributes, nested in its jar.
+- **Refabricated's `1.21.11` build (1.2.0.5) crashes on launch** with current Fabric API: its
+  `PlayerMixin` registers an entity data serializer the old way, which Fabric API refuses. CI's
+  `runDatagen` on `1.21.11` crashed on it. That node compiles against it but keeps it off `runClient` and
+  `runDatagen` (`runtime.kaleidoscope_tavern = false`) until a fixed build is out. Not reported upstream yet.
 - **The tap can be opened by redstone** (`neighborChanged`), which is how the agent script drives it.
 - **Kaleidoscope Chinese Food's fill** (step 5b) needs no class of Tavern's: the source and the
   destination are block states, and the tap's facing gives the source position. So it lives in

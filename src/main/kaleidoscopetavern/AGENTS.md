@@ -48,6 +48,12 @@ On `1.20.1`, `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port,
 `1.20.1` also Reach Entity Attributes, nested in its jar beside Fabric API modules the run already has,
 so `build.gradle.kts` unpacks only that one. From 26.1 on it needs neither.
 
+**The `1.21.11` build cannot start.** Refabricated 1.2.0.5's `PlayerMixin` registers an entity data
+serializer from `Player`'s static initializer, which current Fabric API refuses, so any 1.21.11 game with
+it crashes on launch, with or without this mod. `runtime.kaleidoscope_tavern = false` in that node's table
+keeps it compiled against but off `runClient` and `runDatagen` (CI's datagen crashed on it). The
+integration is built there and untested in game; remove the key once a fixed build is pinned.
+
 ```
 kaleidoscopetavern/java/com/thirstwastaken2/kaleidoscopetavern/
   KaleidoscopeTavernPresence     the gate: a classpath probe for the barrel, one per mixin target, and

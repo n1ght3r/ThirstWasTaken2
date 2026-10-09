@@ -342,6 +342,10 @@ deps.forge_config_api_port = "uXrWPsCu"
 # Kaleidoscope Tavern Refabricated, as in the 1.21.1 table. Its 1.21.11 build trails the others.
 # 1.2.0.5-fabric+mc1.21.11, the Fabric upload.
 deps.kaleidoscope_tavern = "Zq3a4bZQ"
+# Compiled against but never run here: this build's PlayerMixin registers an entity data serializer in
+# Player's static initializer, which Fabric API refuses, so any game with it crashes at startup,
+# runClient and runDatagen included. Remove once a fixed 1.21.11 build is pinned.
+runtime.kaleidoscope_tavern = false
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 21.11.0.4, the Fabric upload.
 deps.serene_seasons = "6GpaVF7N"
