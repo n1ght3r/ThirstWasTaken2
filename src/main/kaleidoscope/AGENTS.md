@@ -89,7 +89,9 @@ so the grade lives in a `@Unique` field on the block entity, saved as one int un
   tap by string and none of Tavern's classes, so it lives here. It is applied only where
   `KaleidoscopePresence.hasChineseFoodTap` finds the addon's mixin still declaring that method, at a
   priority above the addon's so the method is merged first, with `require = 0` so a renamed one skips
-  it rather than fail the game.
+  it rather than fail the game. Checked in game by
+  `tools/agent/integrations/kaleidoscope-chinese-food-tap.jsonl`, with the addon's `runClientMod` line
+  uncommented.
 - **Out wherever the bucket lands while a remove call runs.** `ReturnedWater.during` holds the grade
   for the length of the call and restores what was there however it ends. It is a `ThreadLocal`
   because both blocks run their calls on the client too, and in single player the two threads run them

@@ -104,12 +104,12 @@ the official mod by an item.
 | 3. Investigation: what happens to a grade | done, from the sources and in game; see below |
 | 4. The barrel keeps the grade | done |
 | 5. The tap keeps or samples the grade | done |
-| 5b. The tap into the stockpot and teapot (Kaleidoscope Chinese Food) | built, in `src/main/kaleidoscope`; not run in game with the addon |
+| 5b. The tap into the stockpot and teapot (Kaleidoscope Chinese Food) | done, in `src/main/kaleidoscope`; run in game with the addon on `1.21.1-neoforge` and `1.20.1-forge` |
 | 6. Decision: the placed water bottle | **decided: (a)**, built |
 | 7. Decision: sea water in the barrel and the shaker | **decided: (a)**, built |
 | 8. Jade line on the barrel | done, from any of its blocks |
 | 9. Docs | done |
-| 10. Optional seam | done: `checkOptionalSeam` passes, boot without the mod, agent script on five nodes |
+| 10. Optional seam | done: `checkOptionalSeam` passes, boot without the mod, agent script on all seven nodes |
 
 How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/main/kaleidoscopetavern/AGENTS.md).
 
@@ -121,8 +121,8 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 - **Refabricated does eat our containers** (step 3.2), and worse than the plan feared: `emptyItem` hands
   back `onConsumed(result)`, an empty bucket for any fluid container that is not a bucket, and `fillItem`
   hands back `resource.getFluid().getBucket()`, a full bucket, whatever was held out, so an empty canteen
-  drew a whole bucket for one serving. The barrel refuses this mod's containers on Fabric. Not reported
-  upstream yet.
+  drew a whole bucket for one serving. The barrel refuses this mod's containers on Fabric. Reported
+  upstream as #29.
 - **The barrel's tank names a loader on both builds** (NeoForge or Forge `FluidTank`, Fabric
   `SingleVariantStorage`). Both build a `BarrelRecipeContainer` from it, whose `getFluid()` is a plain
   `Fluid`, so the mixin reads the tank that way and names neither.
@@ -149,8 +149,13 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 `26.3.x`, and on `1.21.1-neoforge` every one but `canteenRefused`, which only Fabric refuses. Its
 `-1.20.1` copy: every check on `1.20.1`, and on `1.20.1-forge` every one but `canteenRefused`. The Jade
 capture reads Dirty from a side block of the barrel, and Salty on the cauldron the tap filled from the
-sea. `smoke/boot.jsonl` with `-PwithoutOptional=kaleidoscope_tavern` came up on `1.21.1-neoforge`. Not run
-yet: `26.1.x`, `26.2.x`, and step 5b with Kaleidoscope Chinese Food installed.
+sea. `smoke/boot.jsonl` with `-PwithoutOptional=kaleidoscope_tavern` came up on `1.21.1-neoforge`. Every
+check passed on `26.1.x` and `26.2.x` too, on 2026-10-09.
+
+Step 5b: `tools/agent/integrations/kaleidoscope-chinese-food-tap.jsonl` on `1.21.1-neoforge` and
+`1.20.1-forge` with Kaleidoscope Chinese Food 1.1.14, 2026-10-09: every check passed on both. A tap on a Dirty cauldron fills the
+stockpot below with Dirty water, and one on a waterlogged slab in the ocean fills the teapot below with
+sea water, which keeps its tea bag and brews nothing.
 
 ### Reported upstream
 

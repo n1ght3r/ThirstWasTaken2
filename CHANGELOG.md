@@ -10,7 +10,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - Wines, cocktails, juices and grapes restore thirst. Spirits and vinegar restore none.
   - Water poured into the Barrel and taken back out keeps its grade. The Barrel won't take sea water.
   - On Fabric, the Barrel won't take Waterskins, Canteens, Flasks or terracotta bowls, which it would
-    hand back as a bucket.
+    hand back as a bucket. They'll be allowed once
+    [Refabricated #29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29) is fixed.
   - The Tap passes on the grade of the cauldron it draws from, and a Tap on a waterlogged block in the
     sea draws sea water.
   - A Water Bottle put down as a block keeps its grade when picked up or broken again.
@@ -20,13 +21,19 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 ### Fixed
 
 - With AppleSkin, an item's tooltip shows how much thirst and quenched it restores again, even when
-  your thirst bar is full. In Survival the droplets used to shrink or disappear as the bar filled.
+  the thirst bar is full. In Survival the droplets used to shrink or disappear as the bar filled.
 - With Kaleidoscope Chinese Food and Kaleidoscope Tavern, a Tap filling a Kaleidoscope Cookery Stockpot
   or Teapot keeps the water's grade, and the Teapot brews no tea from sea water it drew.
 - With Miner's Delight, a Water Cup pours into a hanging pot or a distiller and an empty Copper Cup
   draws from one, a bucket's worth at a time, keeping the water's grade.
 - With Cold Sweat, its Waterskin pours into a hanging pot or a distiller and an empty one draws from
   them, one drink at a time.
+
+### Notes
+
+- Kaleidoscope Tavern Refabricated 1.2.0.5 crashes the game on Minecraft 1.21.11, so this mod has no
+  Kaleidoscope Tavern support there yet. Reported upstream as
+  [Refabricated #28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28).
 
 ## [1.7.0] - 2026-10-07
 

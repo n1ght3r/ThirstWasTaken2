@@ -4,8 +4,12 @@
 // grade, a teapot item scooping world water samples it, sea water included,
 // and dripstone fills a teapot with dripstonePurity water. It runs on every node with the
 // integration, 1.21.1-neoforge and the five Fabric ones. Only the 1.21.1 builds let dripstone fill a
-// teapot, so on the others dripGraded and pureF fail, and are the only lines that may. Run it
-// unattended in a singleplayer world:
+// teapot, so on the others dripGraded and pureF fail, and are the only lines that may. On 1.21.11,
+// Refabricated 1.3.0.x has no tea bags and brews barley tea from twelve wheat seeds, and a teapot
+// with no recipe for its ingredient throws it out, so freshBrews and seaKeepsBag fail there too. To
+// check the teapot there, run a copy with every kaleidoscope_cookery:barley_tea_bag replaced by
+// minecraft:wheat_seeds and the two count:1 beside it by count:12. Run it unattended in a singleplayer
+// world:
 //     ./gradlew ":<node>:runClient" -Pagent=tools/agent/integrations/kaleidoscope-cookery.jsonl -Pquickplay=KaleidoscopeAgent
 // KaleidoscopeAgent is a throwaway world, made fresh for each run by
 //     python tools/agent/new_world.py <node> KaleidoscopeAgent

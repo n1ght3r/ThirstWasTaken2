@@ -1,0 +1,67 @@
+// Kaleidoscope Chinese Food's tap fill in a real client: a Kaleidoscope Tavern tap on a Dirty cauldron fills
+// the empty stockpot below with Dirty water, and one on a waterlogged slab in the ocean fills the empty
+// teapot below with sea water, which then brews nothing. That fill is the addon's, merged into Tavern's
+// tap, and TapCookeryMixin in src/main/kaleidoscope stamps it. It runs on 1.21.1-neoforge and
+// 1.20.1-forge, with the addon's runClientMod line in build.neoforge.gradle.kts or build.forge.gradle.kts
+// uncommented, and Cookery and Tavern in runClient as they are by default. Run it unattended in a
+// singleplayer world:
+//     ./gradlew ":<node>:runClient" -Pagent=tools/agent/integrations/kaleidoscope-chinese-food-tap.jsonl -Pquickplay=ChineseFoodTapAgent
+// ChineseFoodTapAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> ChineseFoodTapAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/kaleidoscope-chinese-food-tap.jsonl --verify --max-age 15
+// Every "execute" line checks that it said "Test passed". stockpotFilled and teapotFilled fail when the
+// addon is not installed or no longer fills from a tap; the grade lines then mean nothing.
+//
+// Each tap faces north with its source behind it and is opened by a redstone block above it, as in
+// kaleidoscope-tavern.jsonl. A grade is stored on the block as one int, thirstwastaken2:water_quality:
+// 1 to 4 for Dirty, Murky, Clean and Pure, 5 for sea water, as a cauldron stores it.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "arrived", "command": "client.state"}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 15 8"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+{"id": "view", "command": "server.command", "args": {"command": "tp @p 4.5 202 5.5 180 30"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 15 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -8 199 -8 15 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -8 190 -8 15 212 8 minecraft:plains"}}
+{"id": "ocean", "command": "server.command", "args": {"command": "fillbiome 6 192 -4 11 208 7 minecraft:ocean"}}
+
+// A tap on a Dirty water cauldron over an empty stockpot. Without TapCookeryMixin the stockpot held
+// unstamped water, read as Clean.
+{"id": "sourceS", "command": "server.command", "args": {"command": "setblock 1 201 1 minecraft:water_cauldron[level=3,purity=1]"}}
+{"id": "tapS", "command": "server.command", "args": {"command": "setblock 1 201 0 kaleidoscope_tavern:tap[facing=north]"}}
+{"id": "belowS", "command": "server.command", "args": {"command": "setblock 1 200 0 kaleidoscope_cookery:stockpot"}}
+{"id": "openS", "command": "server.command", "args": {"command": "setblock 1 202 0 minecraft:redstone_block"}}
+{"id": "pouringS", "command": "wait", "args": {"ticks": 100}}
+{"id": "stockpotS", "command": "server.command", "args": {"command": "data get block 1 200 0"}}
+{"id": "stockpotFilled", "command": "server.command", "args": {"command": "execute if data block 1 200 0 {SoupBaseId:\"minecraft:water\"}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "stockpotDirty", "command": "server.command", "args": {"command": "execute if data block 1 200 0 {\"thirstwastaken2:water_quality\":1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A tap on a waterlogged slab in the ocean over an empty teapot on a magma block. Stone walls the slab
+// in, since water flows out of a waterlogged slab's open sides. Then a barley tea bag goes in, through
+// the block's data: sea water brews nothing, so the teapot stays at Status 0 with its bag. The bag is
+// written with both count (1.21.1) and Count (1.20.1); each version ignores the other's key.
+{"id": "heatT", "command": "server.command", "args": {"command": "setblock 9 199 0 minecraft:magma_block"}}
+{"id": "wallT", "command": "server.command", "args": {"command": "fill 8 200 1 10 202 2 minecraft:stone"}}
+{"id": "sourceT", "command": "server.command", "args": {"command": "setblock 9 201 1 minecraft:oak_slab[type=bottom,waterlogged=true]"}}
+{"id": "tapT", "command": "server.command", "args": {"command": "setblock 9 201 0 kaleidoscope_tavern:tap[facing=north]"}}
+{"id": "belowT", "command": "server.command", "args": {"command": "setblock 9 200 0 kaleidoscope_cookery:teapot"}}
+{"id": "openT", "command": "server.command", "args": {"command": "setblock 9 202 0 minecraft:redstone_block"}}
+{"id": "pouringT", "command": "wait", "args": {"ticks": 100}}
+{"id": "teapotT", "command": "server.command", "args": {"command": "data get block 9 200 0"}}
+{"id": "teapotFilled", "command": "server.command", "args": {"command": "execute if data block 9 200 0 {TeaFluidId:\"minecraft:water\"}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "teapotSalty", "command": "server.command", "args": {"command": "execute if data block 9 200 0 {\"thirstwastaken2:water_quality\":5}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "bagT", "command": "server.command", "args": {"command": "data merge block 9 200 0 {Input:{id:\"kaleidoscope_cookery:barley_tea_bag\",count:1,Count:1b}}"}}
+{"id": "brewingT", "command": "wait", "args": {"ticks": 200}}
+{"id": "seaBrewsNothing", "command": "server.command", "args": {"command": "execute if data block 9 200 0 {Status:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "seaKeepsBag", "command": "server.command", "args": {"command": "execute if data block 9 200 0 {Input:{id:\"kaleidoscope_cookery:barley_tea_bag\"}}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+{"id": "cleanup", "command": "server.command", "args": {"command": "forceload remove all"}}

@@ -97,6 +97,13 @@ builds have (`receiveDripstoneFluid`, `giveItemToPlayer`), and `InventoryMixin`,
 teapot fills a bucket through the Fabric Transfer API, in the player's slot, and never through
 `ItemUtils`. The agent script passes on all six nodes, the dripstone lines only on the two 1.21.1 ones.
 
+**On `1.21.11` the script's teapot lines need a copy** (found 2026-10-09, Cookery 1.3.0.10).
+Refabricated 1.3.0.x has no tea bags: barley tea brews from `minecraft:wheat_seeds`, and a recipe with
+no `ingredient_count` there needs twelve (`DEFAULT_INGREDIENT_COUNT = 12`; the 1.6 recipes ask for one bag). A
+teapot with no recipe for its ingredient throws it out, so with the script's one tea bag `freshBrews`
+and `seaKeepsBag` failed. They were never a bug of ours: with twelve wheat seeds every teapot line
+passes there, sea water brewing nothing and keeping its seeds. The script's header says how to make the copy.
+
 Order of work: **build `1.21.1-neoforge` and `1.21.1` first** (one Minecraft version, both loaders, no
 version branch), and get items 1–4 working there. Then widen to `26.3.x`, which has every version
 difference at once. `26.1.x` and `26.2.x` then cost nothing more. `1.21.11` comes last, and only if its
