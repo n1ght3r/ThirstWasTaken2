@@ -245,8 +245,8 @@ PR.
 - [ ] Upset Stomach II's cramps hurt in survival, half a heart at random times, more often on harder
       difficulties, and stop at half a heart, on Peaceful too. The gametest checks the timing, not
       the hit, since vanilla will not hurt its mock player.
-- [ ] The tooltip's droplet rows show the actual gain: less at nearly full thirst, none of quenched
-      for Dirty water, a quarter of a serving for Murky.
+- [ ] The tooltip's droplet rows show the item's value, the same at a full bar as in Creative: none
+      of quenched for Dirty water, a quarter of a serving for Murky.
 - [ ] Twenty-minute routes with each vessel: starter survival, building, ordinary exploration,
       repeated combat and the Nether. Count drinks, treatment time, slots, and health, food and water
       spent. Ordinary travel should not need a drink more than about once a minute.

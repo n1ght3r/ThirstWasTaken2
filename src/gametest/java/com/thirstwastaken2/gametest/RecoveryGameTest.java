@@ -4,7 +4,6 @@ import com.thirstwastaken2.api.ThirstApi;
 import com.thirstwastaken2.config.ThirstConfig;
 import com.thirstwastaken2.data.ThirstData;
 import com.thirstwastaken2.data.ThirstManager;
-import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.item.WaterskinItem;
 import com.thirstwastaken2.platform.Vanilla;
@@ -131,33 +130,21 @@ public final class RecoveryGameTest {
         helper.succeed();
     }
 
-    /** The droplet rows a player sees say what drinking would give them now, cap and illness included. */
+    /** The droplet rows show the item's own value, even to a player whose bar is already full. */
     @GameTest
-    public void tooltipRowsShowTheActualGain(GameTestHelper helper) {
-        ServerPlayer player = TestFixtures.survivalPlayer(helper);
-        ThirstTooltip.setViewer(() -> player);
-        try {
-            // A full bar with room for 2 more quenched: no thirst row at all, and 2 of Pure's 4 quenched.
-            TestFixtures.setState(player, 20, 18, 20, 20.0F, null);
-            java.util.List<net.minecraft.network.chat.Component> lines = new java.util.ArrayList<>();
-            ThirstTooltip.appendTo(bowl(WaterPurity.MAX), lines::add, true);
-            String quenched = ThirstTooltip.quenched(2, com.thirstwastaken2.compat.AppleSkin.quenchedOverlay()).getString();
-            String anyThirst = ThirstTooltip.thirst(1).getString().substring(0, 1);
-            TestFixtures.check(helper, lines.stream().noneMatch(line -> line.getString().startsWith(anyThirst)),
-                    "at a full bar there should be no thirst row, got " + lines);
-            TestFixtures.check(helper, lines.stream().anyMatch(line -> line.getString().equals(quenched)),
-                    "only the 2 quenched that fit should show, got " + lines);
-
-            TestFixtures.setState(player, 10, 0, 20, 20.0F,
-                    Vanilla.effectInstance(ThirstEffects.UPSET_STOMACH, 200, 0));
-            lines.clear();
-            ThirstTooltip.appendTo(bowl(WaterPurity.MAX), lines::add, true);
-            String full = ThirstTooltip.quenched(4, com.thirstwastaken2.compat.AppleSkin.quenchedOverlay()).getString();
-            TestFixtures.check(helper, lines.stream().anyMatch(line -> line.getString().equals(full)),
-                    "Upset Stomach should leave Pure's 4 quenched whole in the row, got " + lines);
-        } finally {
-            ThirstTooltip.setViewer(() -> null);
-        }
+    public void tooltipRowsShowTheItemsValue(GameTestHelper helper) {
+        TestFixtures.setState(TestFixtures.survivalPlayer(helper), 20, 20, 20, 20.0F, null);
+        ItemStack pure = bowl(WaterPurity.MAX);
+        int[] values = ThirstApi.thirstValues(pure);
+        java.util.List<net.minecraft.network.chat.Component> lines = new java.util.ArrayList<>();
+        ThirstTooltip.appendTo(pure, lines::add, true);
+        String thirst = ThirstTooltip.thirst(values[0]).getString();
+        String quenched = ThirstTooltip.quenched(WaterPurity.quenched(WaterPurity.quality(pure), values[1]),
+                com.thirstwastaken2.compat.AppleSkin.quenchedOverlay()).getString();
+        TestFixtures.check(helper, lines.stream().anyMatch(line -> line.getString().equals(thirst)),
+                "a full bar should not hide the thirst row, got " + lines);
+        TestFixtures.check(helper, lines.stream().anyMatch(line -> line.getString().equals(quenched)),
+                "a full bar should not hide the quenched row, got " + lines);
         helper.succeed();
     }
 

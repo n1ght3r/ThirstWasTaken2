@@ -2,6 +2,13 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- With AppleSkin, an item's tooltip shows how much thirst and quenched it restores again, even when
+  your thirst bar is full. In Survival the droplets used to shrink or disappear as the bar filled.
+
 ## [1.7.0] - 2026-10-07
 
 This release reworks how water is cleaned and how much it's worth. Boiling now makes water Clean, which

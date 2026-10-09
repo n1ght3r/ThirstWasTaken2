@@ -11,11 +11,9 @@ import com.thirstwastaken2.purity.WaterQuality;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Renders item thirst as two droplet rows instead of numbers. Thirst uses filled droplets on the
@@ -60,19 +58,7 @@ public final class ThirstTooltip {
     private static final Component CLAY_BOWL_HINT =
             Component.translatable("tooltip.thirstwastaken2.clay_bowl").withStyle(ChatFormatting.GRAY);
 
-    /**
-     * The player a tooltip is shown to, so the rows can say what drinking would actually give them:
-     * the client's own player, set by the client at init, and nobody on a dedicated server or in a
-     * benchmark, where the rows show the item's value as it is.
-     */
-    private static Supplier<Player> viewer = () -> null;
-
     private ThirstTooltip() { }
-
-    /** Called once by the client, with the local player. */
-    public static void setViewer(Supplier<Player> localPlayer) {
-        viewer = localPlayer;
-    }
 
     /**
      * Appends every line the mod contributes to an item tooltip: the clay bowl hint, waterskin fill,
@@ -115,15 +101,8 @@ public final class ThirstTooltip {
         // Bad water gives less quenched, so the row shows what this grade gives rather than the item's value.
         int quenchedAmount = WaterPurity.isWaterContainer(stack)
                 ? WaterPurity.quenched(WaterPurity.quality(stack), values[1]) : values[1];
-        Player player = viewer.get();
-        if (player != null && ThirstApi.isEnabled(player)) {
-            // What this player would actually gain: thirst stops at a full bar, and quenched cannot pass thirst.
-            int thirstNow = ThirstApi.thirst(player);
-            int quenchedNow = ThirstApi.quenched(player);
-            int thirstAfter = Math.min(ThirstApi.maxThirst(), thirstNow + thirstAmount);
-            quenchedAmount = Math.min(thirstAfter, quenchedNow + quenchedAmount) - quenchedNow;
-            thirstAmount = thirstAfter - thirstNow;
-        }
+        // The item's own value, never capped by the viewer's bar: AppleSkin's food rows show the
+        // nominal value too, and a row that changed with game mode and thirst read as broken.
         Component thirst = thirst(thirstAmount);
         Component quenched = quenched(quenchedAmount, AppleSkin.quenchedOverlay());
         if (thirst != null) tooltip.accept(thirst);
