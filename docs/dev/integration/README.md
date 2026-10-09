@@ -28,7 +28,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Kaleidoscope Cookery | [cooking/KALEIDOSCOPE-COOKERY](cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) | `src/main/kaleidoscope` | see plan | see plan |
 | Kaleidoscope Tavern | [cooking/KALEIDOSCOPE-TAVERN](cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) | `src/main/kaleidoscopetavern` | `1.21.1-neoforge`, `1.20.1-forge`, every Fabric node but `1.21.11` | built |
 | Sophisticated Backpacks and Storage | [storage/SOPHISTICATED](storage/SOPHISTICATED-INTEGRATION.md) | `src/main/sophisticated` | NeoForge but 26.3 | see plan |
-| Create Pipes n Physics | [storage/PIPES-N-PHYSICS](storage/PIPES-N-PHYSICS-INTEGRATION.md) | `src/main/create` | `1.21.1-neoforge` | built; upstream issues not posted |
+| Create Pipes n Physics | [storage/PIPES-N-PHYSICS](storage/PIPES-N-PHYSICS-INTEGRATION.md) | `src/main/create` | `1.21.1-neoforge` | built; upstream #89, #90 open |
 | Supplementaries | [storage/SUPPLEMENTARIES](storage/SUPPLEMENTARIES-INTEGRATION.md) | `src/main/supplementaries` | both 1.21.1 | see plan |
 | Cold Sweat | [climate/COLD-SWEAT](climate/COLD-SWEAT-INTEGRATION.md) | `src/main/coldsweat`, `coldsweatforge` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
 | Serene Seasons | [climate/SERENE-SEASONS](climate/SERENE-SEASONS-INTEGRATION.md) | `src/main/sereneseasons` | every node | see plan |

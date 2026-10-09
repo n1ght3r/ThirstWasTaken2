@@ -5,8 +5,8 @@ What ThirstWasTaken2 does with [Create Pipes n Physics](https://modrinth.com/mod
 of Create's pipes and pumps with its own engine: pressure and gravity, pumps that add head instead of
 range, siphons, viscosity, a centrifuge. It adds no water of its own. What it changes is how water
 already graded by this mod moves between Create's blocks. This file sets the order of work, what each
-step needs and how each one is checked. Steps 1 to 5 and 7 are built and checked; how the result
-works is in [src/main/create/AGENTS.md](../../../../src/main/create/AGENTS.md). Step 6 waits on posting.
+step needs and how each one is checked. Every step is done; how the result works is in
+[src/main/create/AGENTS.md](../../../../src/main/create/AGENTS.md).
 
 Written on 2026-10-09 from:
 
@@ -31,7 +31,7 @@ this.
 `TiltedTankFluid.resolve` on the first windowed Fluid Tank a Flywheel client renders, when Sable
 Companion is absent. The call is not behind its own gate. This is not ours to fix, but every test run
 hits it: set `fluidTiltEnabled = false` in `run/1.21.1-neoforge/config/pipesnphysics-client.toml`.
-Report it upstream (step 6).
+Reported upstream as [#89](https://github.com/StaticFX/create-pipes-n-physics/issues/89).
 
 ## What it changes for water
 
@@ -84,7 +84,7 @@ normally. The addon's own answer is the `pipesnphysics:separate_ports` block tag
 | 3. The intake mismatch: a mixin | done, checked 2026-10-09; built differently from the plan, see below |
 | 4. Hose Pulley and cauldron intake | checked 2026-10-09: both keep their grade |
 | 5. Decision: the centrifuge | decided: not planned |
-| 6. Upstream | drafted in [PIPES-N-PHYSICS-UPSTREAM.md](PIPES-N-PHYSICS-UPSTREAM.md), not posted |
+| 6. Upstream | posted 2026-10-09: [#89](https://github.com/StaticFX/create-pipes-n-physics/issues/89) (Sable crash), [#90](https://github.com/StaticFX/create-pipes-n-physics/issues/90) (intake probe) |
 | 7. Docs | done |
 
 **Checked on 2026-10-09**, with `pipesnphysics-water.jsonl` on `1.21.1-neoforge` (Create 6.0.10, Pipes n
@@ -225,8 +225,8 @@ written for the author to act on, with the steps above as the reproduction:
    `removeFluidFromSpace(true)` (simulate), or for an API hook to decorate it. Either removes step 3's
    mixin into an internal class.
 
-Ask before posting. Both are messages sent in the user's name. Drafted in
-[PIPES-N-PHYSICS-UPSTREAM.md](PIPES-N-PHYSICS-UPSTREAM.md).
+Posted on 2026-10-09 as [#89](https://github.com/StaticFX/create-pipes-n-physics/issues/89) and [#90](https://github.com/StaticFX/create-pipes-n-physics/issues/90). When [#90](https://github.com/StaticFX/create-pipes-n-physics/issues/90) is fixed, `BoundaryColumnMixin`,
+`PipesPresence` and `IntakeSamples` can go.
 
 ## 7. Docs
 
