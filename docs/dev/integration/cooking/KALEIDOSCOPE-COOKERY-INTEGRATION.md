@@ -28,7 +28,7 @@ NeoForge release.
 | `1.21.1` | Refabricated | `1.6.0.3-fabric+mc1.21.1` | `pZfoi25M` | yes | yes |
 | `1.20.1-forge` | official | `1.6.0-forge+mc1.20.1` | `Ghp0qCKY` | yes | yes |
 | `1.20.1` | Refabricated | `1.6.0.3-fabric+mc1.20.1` | `iCin2rRE` | yes | yes |
-| `1.21.11` | Refabricated | `1.3.0.9-fabric+mc1.21.11`, **frozen** ("1.4+ no longer supported") | `Gns9Xmuq` | yes | no |
+| `1.21.11` | Refabricated | `1.3.0.10-fabric+mc1.21.11`, hotfixes only from 1.3.0.10 on ("no longer update future contents") | `T5QYqq9P` | yes | no |
 | `26.1.x` | Refabricated | `1.6.0.3-fabric+mc26.1.2` | `zNVmvzF4` | yes | no |
 | `26.2.x` | Refabricated | `1.6.0.3-fabric+mc26.2` | `ciM7zQQb` | yes | no |
 | `26.3.x` | Refabricated | `1.6.0.3-fabric+mc26.3` | `Yf5VytNq` | yes | no |
@@ -448,7 +448,7 @@ Moonlight, Create, Create Fly and Kaleidoscope Cookery. Tick them on the nodes t
   support both.
 - **If a node is retired**, this integration does not hold it back: drop the key from the table along
   with the node.
-- **Frozen 1.21.11.** 1.3.0.9 is older than the others. If its methods differ at all, leave `1.21.11`
+- **1.21.11 takes hotfixes only.** Its 1.3.0.x is older than the others. If its methods differ at all, leave `1.21.11`
   out, rather than write a separate branch for it.
 - **`ReturnedWater` is state across calls.** It must be cleared at RETURN every time, even when the call
   fails. Use `@Inject(RETURN)` on every return point, or `try/finally` through `@WrapMethod`, so a

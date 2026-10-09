@@ -370,7 +370,7 @@ Also works with:
   </tr>
   <tr>
     <td><img alt="Kaleidoscope Tavern icon" src="https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-tavern">Kaleidoscope Tavern</a></td>
-    <td>every version (Refabricated)</td>
+    <td>every version but 1.21.11 (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>

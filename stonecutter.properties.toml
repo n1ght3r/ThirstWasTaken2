@@ -332,20 +332,17 @@ deps.appleskin = "59ti1rvg"
 deps.cloth_config = "21.11.153+fabric"
 deps.jade = "21.1.6+fabric"
 deps.farmersdelight = "1.21.11-3.6.16"
-# Kaleidoscope Cookery Refabricated, as in the 1.21.1 table. Frozen: its author no longer supports
-# 1.21.11 past this build, so update_mc_deps.py leaves it alone.
-# 1.3.0.9-fabric+mc1.21.11, the Fabric upload.
-deps.kaleidoscope_cookery = "Gns9Xmuq"
+# Kaleidoscope Cookery Refabricated, as in the 1.21.1 table. Its 1.21.11 line gets no new content past
+# 1.3.0.x, only hotfixes for serious bugs, which update_mc_deps.py picks up like any other build.
+# 1.3.0.10-fabric+mc1.21.11, the Fabric upload.
+deps.kaleidoscope_cookery = "T5QYqq9P"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
 # 21.11.1, the Fabric upload.
 deps.forge_config_api_port = "uXrWPsCu"
-# Kaleidoscope Tavern Refabricated, as in the 1.21.1 table. Its 1.21.11 build trails the others.
-# 1.2.0.5-fabric+mc1.21.11, the Fabric upload.
-deps.kaleidoscope_tavern = "Zq3a4bZQ"
-# Compiled against but never run here: this build's PlayerMixin registers an entity data serializer in
-# Player's static initializer, which Fabric API refuses, so any game with it crashes at startup,
-# runClient and runDatagen included. Remove once a fixed 1.21.11 build is pinned.
-runtime.kaleidoscope_tavern = false
+# No `deps.kaleidoscope_tavern`, for now: Kaleidoscope Tavern Refabricated's 1.21.11 build (1.2.0.5,
+# Modrinth id Zq3a4bZQ) crashes on launch, its PlayerMixin registering an entity data serializer from
+# Player's static initializer, which Fabric API refuses. Set it again once a fixed build is out. See
+# docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md.
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 21.11.0.4, the Fabric upload.
 deps.serene_seasons = "6GpaVF7N"

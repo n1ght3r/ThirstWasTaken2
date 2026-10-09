@@ -26,7 +26,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Extra Delight | [cooking/EXTRA-DELIGHT](cooking/EXTRA-DELIGHT-INTEGRATION.md) | `src/main/extradelight` | `1.21.1-neoforge` | done |
 | Croptopia | [cooking/CROPTOPIA](cooking/CROPTOPIA-INTEGRATION.md) | `src/main/croptopia` | 26.2, 26.1.x, 1.21.1 both loaders; 1.20.1 Fabric and Forge | built |
 | Kaleidoscope Cookery | [cooking/KALEIDOSCOPE-COOKERY](cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) | `src/main/kaleidoscope` | see plan | see plan |
-| Kaleidoscope Tavern | [cooking/KALEIDOSCOPE-TAVERN](cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) | `src/main/kaleidoscopetavern` | `1.21.1-neoforge`, `1.20.1-forge`, every Fabric node | built |
+| Kaleidoscope Tavern | [cooking/KALEIDOSCOPE-TAVERN](cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) | `src/main/kaleidoscopetavern` | `1.21.1-neoforge`, `1.20.1-forge`, every Fabric node but `1.21.11` | built |
 | Sophisticated Backpacks and Storage | [storage/SOPHISTICATED](storage/SOPHISTICATED-INTEGRATION.md) | `src/main/sophisticated` | NeoForge but 26.3 | see plan |
 | Supplementaries | [storage/SUPPLEMENTARIES](storage/SUPPLEMENTARIES-INTEGRATION.md) | `src/main/supplementaries` | both 1.21.1 | see plan |
 | Cold Sweat | [climate/COLD-SWEAT](climate/COLD-SWEAT-INTEGRATION.md) | `src/main/coldsweat`, `coldsweatforge` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |

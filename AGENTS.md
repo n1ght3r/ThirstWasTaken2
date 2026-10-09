@@ -196,7 +196,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Sophisticated Backpacks and Storage | `deps.sophisticated_core`: every NeoForge node but `26.3.x-neoforge` | [src/main/sophisticated/AGENTS.md](src/main/sophisticated/AGENTS.md) |
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
-| Kaleidoscope Tavern | `deps.kaleidoscope_tavern`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscopetavern/AGENTS.md](src/main/kaleidoscopetavern/AGENTS.md) |
+| Kaleidoscope Tavern | `deps.kaleidoscope_tavern`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node but `1.21.11` (Refabricated) | [src/main/kaleidoscopetavern/AGENTS.md](src/main/kaleidoscopetavern/AGENTS.md) |
 | Brewin' and Chewin' | `deps.brewin_and_chewin`: both 1.21.1 nodes | [src/main/brewinandchewin/AGENTS.md](src/main/brewinandchewin/AGENTS.md) |
 | Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md), [src/main/coldsweatforge/AGENTS.md](src/main/coldsweatforge/AGENTS.md) |
 | Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge`, `1.20.1-forge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
@@ -252,7 +252,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Sophisticated upgrades still to do | [docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md) |
 | Kaleidoscope Cookery work still to do | [docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) |
-| Kaleidoscope Tavern: the plan, its decisions and what was found in game (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |
+| Kaleidoscope Tavern: the plan, its decisions and what was found in game (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node but `1.21.11`) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |

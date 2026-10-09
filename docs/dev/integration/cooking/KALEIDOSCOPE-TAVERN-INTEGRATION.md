@@ -31,7 +31,7 @@ every Fabric node, nothing on NeoForge past 1.21.1.
 | `1.20.1-forge` | official | `1.2.0-forge+mc1.20.1` (2026-07-01) | `mUnU2u9e` |
 | `1.20.1` | Refabricated | `1.2.0.10-fabric+mc1.20.1` | `xRazdSRF` |
 | `1.21.1` | Refabricated | `1.2.0.10-fabric+mc1.21.1` | `3F22ge98` |
-| `1.21.11` | Refabricated | `1.2.0.5-fabric+mc1.21.11` (2026-10-04, behind the others) | `Zq3a4bZQ` |
+| `1.21.11` | none for now: Refabricated `1.2.0.5-fabric+mc1.21.11` crashes on launch, see below | — |
 | `26.1.x` | Refabricated | `1.2.0.10-fabric+mc26.1.2` | `gsiaxkwo` |
 | `26.2.x` | Refabricated | `1.2.0.10-fabric+mc26.2` | `alGf2ccW` |
 | `26.3.x` | Refabricated | `1.2.0.11-fabric+mc26.3` | `FOhx6x47` |
@@ -99,7 +99,7 @@ the official mod by an item.
 
 | Step | State |
 |---|---|
-| 1. Build dependency and gate | done, all eight nodes build |
+| 1. Build dependency and gate | done, seven nodes build; `1.21.11` left out until Refabricated fixes its crash |
 | 2. Thirst values | done; spirits at 0, 0 |
 | 3. Investigation: what happens to a grade | done, from the sources and in game; see below |
 | 4. The barrel keeps the grade | done |
@@ -133,8 +133,9 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
   `1.20.1` also Reach Entity Attributes, nested in its jar.
 - **Refabricated's `1.21.11` build (1.2.0.5) crashes on launch** with current Fabric API: its
   `PlayerMixin` registers an entity data serializer the old way, which Fabric API refuses. CI's
-  `runDatagen` on `1.21.11` crashed on it. That node compiles against it but keeps it off `runClient` and
-  `runDatagen` (`runtime.kaleidoscope_tavern = false`) until a fixed build is out. Not reported upstream yet.
+  `runDatagen` on `1.21.11` crashed on it. **Decided 2026-10-09: `1.21.11` is left out** (no
+  `deps.kaleidoscope_tavern` there) until a fixed build is out; code that cannot run is not built. Both
+  this and the container bug are reported upstream, see "Reported upstream" below.
 - **The tap can be opened by redstone** (`neighborChanged`), which is how the agent script drives it.
 - **Kaleidoscope Chinese Food's fill** (step 5b) needs no class of Tavern's: the source and the
   destination are block states, and the tap's facing gives the source position. So it lives in
@@ -149,7 +150,26 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 `-1.20.1` copy: every check on `1.20.1`, and on `1.20.1-forge` every one but `canteenRefused`. The Jade
 capture reads Dirty from a side block of the barrel, and Salty on the cauldron the tap filled from the
 sea. `smoke/boot.jsonl` with `-PwithoutOptional=kaleidoscope_tavern` came up on `1.21.1-neoforge`. Not run
-yet: `1.21.11`, `26.1.x`, `26.2.x`, and step 5b with Kaleidoscope Chinese Food installed.
+yet: `26.1.x`, `26.2.x`, and step 5b with Kaleidoscope Chinese Food installed.
+
+### Reported upstream
+
+To [NightEpiphany/KaleidoscopeTavern-Refabricated](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues):
+
+1. **1.21.11 crashes on launch** (`1.21.11-fabric` at `c52f6a0`, 1.2.0.5). `mixin/PlayerMixin` calls
+   `EntityDataSerializers.registerSerializer` from a static initializer; Fabric API's object builder module
+   refuses that and asks for `FabricTrackedDataRegistry.register`. The `26.x` branches avoid it with
+   `OPTIONAL_UNSIGNED_INT`. When a fixed build is out: set `deps.kaleidoscope_tavern` on `[fabric."1.21.11"]`,
+   run `runDatagen` and the agent script there.
+2. **The barrel swaps containers for buckets** (every Fabric branch, `util/fluids/FluidUtils`):
+   `emptyItem` hands back `onConsumed(result)`, an empty bucket for any fluid container that is not a
+   bucket, and `fillItem` hands back `resource.getFluid().getBucket()`, a full bucket, for whatever was held
+   out, so one serving drawn into a canteen becomes 1000 mB. While it stands, the integration refuses this
+   mod's containers on Fabric (`TavernWater.refusesContainer`); drop that once fixed.
+
+Filed 2026-10-09 as [#28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28) (the
+1.21.11 crash) and [#29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29) (the
+containers). The repository has no issue template; titles follow its `[Bug]` convention.
 
 ## 1. Build dependency and gate
 

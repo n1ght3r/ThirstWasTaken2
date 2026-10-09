@@ -6,7 +6,7 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Added
 
-- Kaleidoscope Tavern, on NeoForge 1.21.1, Forge 1.20.1 and Fabric (Refabricated):
+- Kaleidoscope Tavern, on NeoForge 1.21.1, Forge 1.20.1 and Fabric (Refabricated) except 1.21.11:
   - Wines, cocktails, juices and grapes restore thirst. Spirits and vinegar restore none.
   - Water poured into the Barrel and taken back out keeps its grade. The Barrel won't take sea water.
   - On Fabric, the Barrel won't take Waterskins, Canteens, Flasks or terracotta bowls, which it would

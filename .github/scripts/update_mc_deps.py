@@ -170,11 +170,11 @@ MODRINTH_DEPS = [
     ModrinthDep("moonlight", "moonlight", by_id=True, **NO_PAGE),
     # Refabricated is the Fabric port and the official mod is the NeoForge build, under one mod id. Its
     # Fabric uploads of different Minecraft versions share one version number, so it is pinned by id.
-    # 1.21.11 is frozen upstream at 1.3.0.9. The installation page prints every build, and so does the
+    # Its 1.21.11 line takes only hotfixes now, which are still picked up. The installation page prints every build, and so does the
     # integration page's table, with its id.
     ModrinthDep("kaleidoscope_cookery", "kaleidoscope-cookery-refabricated", by_id=True,
                 mirrors=(INSTALLATION, KALEIDOSCOPE_DOC), neoforge_mirrors=(INSTALLATION, KALEIDOSCOPE_DOC),
-                neoforge_project="kaleidoscope-cookery", frozen=("1.21.11",)),
+                neoforge_project="kaleidoscope-cookery"),
     # Kaleidoscope Tavern, the same shape as Kaleidoscope Cookery: Refabricated on the Fabric nodes, the
     # official mod (a project of its own) on NeoForge 1.21.1 and Forge 1.20.1, pinned by id. Its plan's
     # table prints every build with its id.

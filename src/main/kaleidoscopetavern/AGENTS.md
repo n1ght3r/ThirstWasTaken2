@@ -7,8 +7,8 @@ Every one of them kept a fluid or a block and nothing else, so the grade a conta
 the way through. This directory is where that gets fixed. The plan, the order of work and what was found
 are in [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](../../../docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md).
 
-**Built on the eight nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and the six Fabric
-nodes. What it does there:
+**Built on the seven nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node
+but `1.21.11`, whose Refabricated build cannot start (below). What it does there:
 
 - **the barrel keeps the grade** of the water poured in, the worse of two grades poured together, and
   hands it back on the container drawn out;
@@ -36,23 +36,25 @@ is Cookery's and it needs no class of Tavern's.
 | Node | Mod | Modrinth project |
 |---|---|---|
 | `1.21.1-neoforge`, `1.20.1-forge` | the official mod | `kaleidoscopetavern` |
-| `1.20.1`, `1.21.1`, `1.21.11`, `26.1.x`, `26.2.x`, `26.3.x` | Refabricated, the Fabric port | `kaleidoscope-tavern-refabricated` |
+| `1.20.1`, `1.21.1`, `26.1.x`, `26.2.x`, `26.3.x` | Refabricated, the Fabric port | `kaleidoscope-tavern-refabricated` |
+| `1.21.11` | none for now, see below | |
 
 The official mod has published no NeoForge build past 1.21.1 (its `26.1.2` branch builds one that was
 never uploaded), so the other NeoForge nodes do not set the key. Refabricated has the same mod id and the
 same package, and everything touched names no loader, so **all three loaders compile this directory**,
 and `checkLoaderSeam` keeps it that way. Each key is pinned by Modrinth version id.
 
-On `1.20.1`, `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port,
+On `1.20.1` and `1.21.1` Refabricated requires Forge Config API Port,
 `deps.forge_config_api_port`, on the `runClient` classpath only, as Kaleidoscope Cookery does; on
 `1.20.1` also Reach Entity Attributes, nested in its jar beside Fabric API modules the run already has,
 so `build.gradle.kts` unpacks only that one. From 26.1 on it needs neither.
 
-**The `1.21.11` build cannot start.** Refabricated 1.2.0.5's `PlayerMixin` registers an entity data
-serializer from `Player`'s static initializer, which current Fabric API refuses, so any 1.21.11 game with
-it crashes on launch, with or without this mod. `runtime.kaleidoscope_tavern = false` in that node's table
-keeps it compiled against but off `runClient` and `runDatagen` (CI's datagen crashed on it). The
-integration is built there and untested in game; remove the key once a fixed build is pinned.
+**`1.21.11` is left out for now.** Refabricated's only 1.21.11 build, 1.2.0.5, crashes on launch with
+or without this mod: its `PlayerMixin` registers an entity data serializer from `Player`'s static
+initializer, which current Fabric API refuses (CI's `runDatagen` crashed on it). Code that cannot run
+there is not built there either: the node sets no key. Reported upstream as
+[#28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28); set the key again once a fixed
+build is out, and run the agent script there before calling it supported.
 
 ```
 kaleidoscopetavern/java/com/thirstwastaken2/kaleidoscopetavern/
@@ -113,7 +115,8 @@ water). It holds four buckets.
   back `resource.getFluid().getBucket()`, a full bucket, whatever was held out. So a canteen poured in came
   back a bucket, and an empty one held out came back a whole bucket of water for one serving. The barrel
   refuses this mod's containers there (`WaterContainers.handles`), with an action bar message; the
-  official mod fills and empties them through their own fluid handler and keeps them.
+  official mod fills and empties them through their own fluid handler and keeps them. Reported upstream as
+  [#29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29); drop the refusal once it is fixed.
 
 **The tap.** It never drains its source, by the mod's design; the integration only makes it copy the
 right water. Both behaviours rebuild the cauldron below from `WATER_CAULDRON.defaultBlockState()`, whose

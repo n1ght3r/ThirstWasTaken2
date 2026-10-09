@@ -36,8 +36,8 @@ supported. Refabricated has the same mod id and the same package, so one directo
 since it names no loader and no fluid API, **all three loaders compile it**, as with
 [src/main/supplementaries](../supplementaries/AGENTS.md), and `checkLoaderSeam` keeps it that way.
 Each key is pinned by Modrinth version id; the
-Fabric uploads of different Minecraft versions share one version number. `1.21.11` is frozen upstream at
-1.3.0.9, and `update_mc_deps.py` leaves it alone.
+Fabric uploads of different Minecraft versions share one version number. `1.21.11` takes only hotfixes upstream
+(1.3.0.10 is one), which `update_mc_deps.py` picks up like any other build.
 
 On `1.20.1`, `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port, `deps.forge_config_api_port`, on
 the `runClient` classpath only. Its Night Config is nested in its jar, which Loom does not unpack into a
@@ -175,7 +175,9 @@ Vanilla's own differences go through `Vanilla`: the item's block entity data (`p
   teapot of Murky water picked up, placed and emptied, a teapot item dipped in a swamp and in the sea,
   and dripstone, and leaves two Jade screenshots. It passed whole on `1.21.1-neoforge` and `1.21.1`
   on 2026-09-23, and on `1.21.11`, `26.1.x`, `26.2.x` and `26.3.x` with only the two dripstone lines
-  failing, as they must there. Run again on the four Fabric nodes after the pins moved to
+  failing, as they must there. On 2026-10-09 `1.21.11` also failed `freshBrews` and `seaKeepsBag`, with
+  1.3.0.9 and 1.3.0.10 alike, so not from the bump: neither teapot set up from block data on magma
+  brews or keeps its bag there. Not yet looked into. Run again on the four Fabric nodes after the pins moved to
   Refabricated 1.5.1, with the same result. Make its world with `tools/agent/new_world.py`, which
   also copies the `data/minecraft` files 26.x keeps its world generation settings in.
 - [tools/agent/integrations/kaleidoscope-cookery-1.20.1.jsonl](../../../tools/agent/integrations/kaleidoscope-cookery-1.20.1.jsonl)
