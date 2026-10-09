@@ -39,12 +39,22 @@ A client script runs in a throwaway world, made fresh for each run:
 python tools/agent/new_world.py 1.21.1 BrewinAgent
 ```
 
-It reuses the seed and spawn point of another world of that node, and leaves out what a copied
-`level.dat` used to bring along: the old player, who arrived mid air or under water and died during the
-opening wait. The player now stands on the spawn point, at noon, in clear weather, with no mobs
-spawning. Difficulty is left alone, since Peaceful refills thirst. `--datapack <folder>` adds a data
-pack; the tool's docstring has the rest. `nbt.py` is the NBT reader and writer it uses, with no
-dependency.
+By default the world is a **sky floor**: a superflat overworld with one layer of stone at y 199 and
+nothing below it, one biome (plains, or `--biome <id>`), no structures. The player arrives standing on
+it at y 200, at noon, in clear weather, with no mobs spawning. Most scripts build at y 199 to 206, so
+their scene sits on the floor. Nothing is under it to fall into, no powder snow or cave is near, and
+chunks generate in a fraction of the time and disk real terrain takes. `fillbiome` still sets a biome
+where a script needs one.
+
+Pass **`--terrain`** only when the script needs real ground: docs screenshots (`shots/`, the
+config showcase), natural biomes, heights or caves. That world keeps the generator, seed and spawn point
+of another world of the node, and the player arrives on that spawn point, which may be powder snow: a
+terrain script teleports first.
+
+Either way it leaves out what a copied `level.dat` used to bring along: the old player, who arrived
+mid air or under water and died during the opening wait. Difficulty is left alone, since Peaceful
+refills thirst. `--datapack <folder>` adds a data pack; the tool's docstring has the rest. `nbt.py` is
+the NBT reader and writer it uses, with no dependency.
 
 So a script needs no `kill` and `client.respawn` at the start; `client.state` expecting
 `result.alive` is enough to show the world came up.

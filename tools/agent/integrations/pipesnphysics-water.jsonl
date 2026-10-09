@@ -1,0 +1,124 @@
+// Water quality through Create Pipes n Physics (pipesnphysics), which replaces Create's pipe and pump
+// transport with its own engine. 1.21.1-neoforge only, the one node either mod is built for. Needs
+// Create and Pipes n Physics on runClient: uncomment both runClientMod lines in
+// build.neoforge.gradle.kts, or drop both jars into run/1.21.1-neoforge/mods by hand. Pipes n Physics
+// 3.2.1 crashes the client on the first windowed Fluid Tank without Sable; set
+// fluidTiltEnabled = false in run/1.21.1-neoforge/config/pipesnphysics-client.toml. See
+// docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md.
+//
+// Six rows, read with client.command; the answers are the "[CHAT]" lines in the client's log:
+// - "seaRead"/"seaCheck": a Mechanical Pump drawing a one-block sea-water pool through an open pipe end
+//   into a Fluid Tank. The tank should hold water with water_salty true, and "seaPool" should fail
+//   (the pool was drunk);
+// - "lavaRead": the same with lava, the control. Lava carries no component of ours, so it flows;
+// - "tankRead"/"tankCheck": a tank of Murky water (purity 1) pumped into an empty tank keeps purity 1;
+// - "gravityRead"/"gravityCheck": with no pump, a tank of Murky water above a Sand Filter, piped down
+//   through it into a tank below: the lower tank should hold Clean water (purity 2);
+// - "pumpedFilter"/"pumpedRead": the same column with a pump under the filter and 1000 mB of Clean
+//   water already in its output: the lower tank should end with 3000 mB of purity 2;
+// - "mixRead": Murky water pumped towards a tank holding 500 mB of Pure water (purity 3) must not
+//   enter it; "mixCheck" passes while the tank still holds 500 mB of purity 3.
+//
+//     python tools/agent/new_world.py 1.21.1-neoforge PipesAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/pipesnphysics-water.jsonl -Pquickplay=PipesAgent
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "effects", "command": "server.command", "args": {"command": "effect clear @p"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "up", "command": "server.command", "args": {"command": "tp @p -240.5 213 160.5 0 90"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 60}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -250 199 148 -230 212 172 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -250 199 148 -230 200 172 minecraft:stone"}}
+{"id": "biome", "command": "server.command", "args": {"command": "fillbiome -250 190 148 -230 215 172 minecraft:ocean"}}
+
+// Row 1, z=152: sea water pool -> pump -> tank.
+{"id": "sWall1", "command": "server.command", "args": {"command": "setblock -235 201 152 minecraft:stone"}}
+{"id": "sWall2", "command": "server.command", "args": {"command": "setblock -236 201 151 minecraft:stone"}}
+{"id": "sWall3", "command": "server.command", "args": {"command": "setblock -236 201 153 minecraft:stone"}}
+{"id": "sPool", "command": "server.command", "args": {"command": "setblock -236 201 152 minecraft:water"}}
+{"id": "sPipeIn", "command": "server.command", "args": {"command": "setblock -237 201 152 create:fluid_pipe[east=true,west=true]"}}
+{"id": "sPump", "command": "server.command", "args": {"command": "setblock -238 201 152 create:mechanical_pump[facing=west]"}}
+{"id": "sPipeOut", "command": "server.command", "args": {"command": "setblock -239 201 152 create:fluid_pipe[east=true,west=true]"}}
+{"id": "sTank", "command": "server.command", "args": {"command": "setblock -240 201 152 create:fluid_tank"}}
+{"id": "sCog", "command": "server.command", "args": {"command": "setblock -238 201 153 create:cogwheel[axis=x]"}}
+
+// Row 2, z=156: lava pool -> pump -> tank, the control.
+{"id": "lWall1", "command": "server.command", "args": {"command": "setblock -235 201 156 minecraft:stone"}}
+{"id": "lWall2", "command": "server.command", "args": {"command": "setblock -236 201 155 minecraft:stone"}}
+{"id": "lWall3", "command": "server.command", "args": {"command": "setblock -236 201 157 minecraft:stone"}}
+{"id": "lPool", "command": "server.command", "args": {"command": "setblock -236 201 156 minecraft:lava"}}
+{"id": "lPipeIn", "command": "server.command", "args": {"command": "setblock -237 201 156 create:fluid_pipe[east=true,west=true]"}}
+{"id": "lPump", "command": "server.command", "args": {"command": "setblock -238 201 156 create:mechanical_pump[facing=west]"}}
+{"id": "lPipeOut", "command": "server.command", "args": {"command": "setblock -239 201 156 create:fluid_pipe[east=true,west=true]"}}
+{"id": "lTank", "command": "server.command", "args": {"command": "setblock -240 201 156 create:fluid_tank"}}
+{"id": "lCog", "command": "server.command", "args": {"command": "setblock -238 201 157 create:cogwheel[axis=x]"}}
+
+// Row 3, z=160: tank of Murky water -> pump -> empty tank.
+{"id": "tSource", "command": "server.command", "args": {"command": "setblock -236 201 160 create:fluid_tank"}}
+{"id": "tPipeIn", "command": "server.command", "args": {"command": "setblock -237 201 160 create:fluid_pipe[east=true,west=true]"}}
+{"id": "tPump", "command": "server.command", "args": {"command": "setblock -238 201 160 create:mechanical_pump[facing=west]"}}
+{"id": "tPipeOut", "command": "server.command", "args": {"command": "setblock -239 201 160 create:fluid_pipe[east=true,west=true]"}}
+{"id": "tTank", "command": "server.command", "args": {"command": "setblock -240 201 160 create:fluid_tank"}}
+{"id": "tCog", "command": "server.command", "args": {"command": "setblock -238 201 161 create:cogwheel[axis=x]"}}
+
+// Row 5, z=168: tank of Murky water -> pump -> tank already holding Pure water.
+{"id": "mSource", "command": "server.command", "args": {"command": "setblock -236 201 168 create:fluid_tank"}}
+{"id": "mPipeIn", "command": "server.command", "args": {"command": "setblock -237 201 168 create:fluid_pipe[east=true,west=true]"}}
+{"id": "mPump", "command": "server.command", "args": {"command": "setblock -238 201 168 create:mechanical_pump[facing=west]"}}
+{"id": "mPipeOut", "command": "server.command", "args": {"command": "setblock -239 201 168 create:fluid_pipe[east=true,west=true]"}}
+{"id": "mTank", "command": "server.command", "args": {"command": "setblock -240 201 168 create:fluid_tank"}}
+{"id": "mCog", "command": "server.command", "args": {"command": "setblock -238 201 169 create:cogwheel[axis=x]"}}
+
+// Row 4, x=-246 z=164: no pump. Tank, pipe, Sand Filter, pipe, tank, top to bottom.
+{"id": "gTankTop", "command": "server.command", "args": {"command": "setblock -246 207 164 create:fluid_tank"}}
+{"id": "gPipe1", "command": "server.command", "args": {"command": "setblock -246 206 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "gFilter", "command": "server.command", "args": {"command": "setblock -246 205 164 thirstwastaken2:sand_filter"}}
+{"id": "gPipe2", "command": "server.command", "args": {"command": "setblock -246 204 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "gPipe3", "command": "server.command", "args": {"command": "setblock -246 203 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "gTankBottom", "command": "server.command", "args": {"command": "setblock -246 202 164 create:fluid_tank"}}
+
+// Row 6, x=-242 z=164: the same column with a Mechanical Pump under the filter, pushing down.
+{"id": "pTankTop", "command": "server.command", "args": {"command": "setblock -242 207 164 create:fluid_tank"}}
+{"id": "pPipe1", "command": "server.command", "args": {"command": "setblock -242 206 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "pFilter", "command": "server.command", "args": {"command": "setblock -242 205 164 thirstwastaken2:sand_filter"}}
+{"id": "pPipe2", "command": "server.command", "args": {"command": "setblock -242 204 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "pPump", "command": "server.command", "args": {"command": "setblock -242 203 164 create:mechanical_pump[facing=down]"}}
+{"id": "pTankBottom", "command": "server.command", "args": {"command": "setblock -242 202 164 create:fluid_tank"}}
+{"id": "pCog", "command": "server.command", "args": {"command": "setblock -241 203 164 create:cogwheel[axis=y]"}}
+
+{"id": "placed", "command": "wait", "args": {"ticks": 20}}
+{"id": "tFill", "command": "client.command", "args": {"command": "data merge block -236 201 160 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
+{"id": "mFill", "command": "client.command", "args": {"command": "data merge block -236 201 168 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
+{"id": "mPure", "command": "client.command", "args": {"command": "data merge block -240 201 168 {TankContent:{Fluid:{id:\"minecraft:water\",amount:500,components:{\"thirstwastaken2:water_purity\":3}}}}"}}
+{"id": "gFill", "command": "client.command", "args": {"command": "data merge block -246 207 164 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
+{"id": "pFill", "command": "client.command", "args": {"command": "data merge block -242 207 164 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
+{"id": "pOut", "command": "client.command", "args": {"command": "data merge block -242 205 164 {OutputTanks:[{TankContent:{Fluid:{id:\"minecraft:water\",amount:1000,components:{\"thirstwastaken2:water_purity\":2}}}}]}"}}
+{"id": "filled", "command": "wait", "args": {"ticks": 5}}
+{"id": "readyRead", "command": "client.command", "args": {"command": "data get block -236 201 160 TankContent"}}
+
+// Motors last, so every pump starts with its source already filled.
+{"id": "sMotor", "command": "server.command", "args": {"command": "setblock -239 201 153 create:creative_motor[facing=east]"}}
+{"id": "lMotor", "command": "server.command", "args": {"command": "setblock -239 201 157 create:creative_motor[facing=east]"}}
+{"id": "tMotor", "command": "server.command", "args": {"command": "setblock -239 201 161 create:creative_motor[facing=east]"}}
+{"id": "mMotor", "command": "server.command", "args": {"command": "setblock -239 201 169 create:creative_motor[facing=east]"}}
+{"id": "pMotor", "command": "server.command", "args": {"command": "setblock -241 202 164 create:creative_motor[facing=up]"}}
+{"id": "running", "command": "wait", "args": {"ticks": 400}}
+
+{"id": "seaRead", "command": "client.command", "args": {"command": "data get block -240 201 152 TankContent"}}
+{"id": "seaPool", "command": "client.command", "args": {"command": "execute if block -236 201 152 minecraft:water[level=0]"}}
+{"id": "seaCheck", "command": "client.command", "args": {"command": "execute if data block -240 201 152 TankContent.Fluid.components{\"thirstwastaken2:water_salty\":1b}"}}
+{"id": "lavaRead", "command": "client.command", "args": {"command": "data get block -240 201 156 TankContent"}}
+{"id": "tankRead", "command": "client.command", "args": {"command": "data get block -240 201 160 TankContent"}}
+{"id": "tankSource", "command": "client.command", "args": {"command": "data get block -236 201 160 TankContent"}}
+{"id": "tankCheck", "command": "client.command", "args": {"command": "execute if data block -240 201 160 TankContent.Fluid.components{\"thirstwastaken2:water_purity\":1}"}}
+{"id": "gravityTop", "command": "client.command", "args": {"command": "data get block -246 207 164 TankContent"}}
+{"id": "gravityFilter", "command": "client.command", "args": {"command": "data get block -246 205 164"}}
+{"id": "gravityRead", "command": "client.command", "args": {"command": "data get block -246 202 164 TankContent"}}
+{"id": "gravityCheck", "command": "client.command", "args": {"command": "execute if data block -246 202 164 TankContent.Fluid.components{\"thirstwastaken2:water_purity\":2}"}}
+{"id": "pumpedFilter", "command": "client.command", "args": {"command": "data get block -242 205 164 OutputTanks"}}
+{"id": "pumpedRead", "command": "client.command", "args": {"command": "data get block -242 202 164 TankContent"}}
+{"id": "mixRead", "command": "client.command", "args": {"command": "data get block -240 201 168 TankContent"}}
+{"id": "mixCheck", "command": "client.command", "args": {"command": "execute if data block -240 201 168 TankContent.Fluid{amount:500,components:{\"thirstwastaken2:water_purity\":3}}"}}
+{"id": "chat", "command": "wait", "args": {"ticks": 10}}
+{"id": "shot", "command": "client.capture", "args": {"name": "pipesnphysics"}}

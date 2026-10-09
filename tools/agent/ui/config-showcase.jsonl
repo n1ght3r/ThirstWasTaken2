@@ -6,7 +6,7 @@
 // nothing it changed is saved. Evidence for a person, not a check; nothing here is asserted but that
 // each click landed.
 //
-//     python tools/agent/new_world.py 26.3.x ShowcaseAgent --from "New World"
+//     python tools/agent/new_world.py 26.3.x ShowcaseAgent --terrain --from "New World"
 //     ./gradlew ":26.3.x:runClient" -Pdriven -Pagent=tools/agent/ui/config-showcase.jsonl -Pquickplay=ShowcaseAgent
 //     python tools/agent/make_gif.py run/26.3.x/agent/client/screenshots/config-showcase docs/public/screenshots/config/config-showcase.gif --hold 300
 //

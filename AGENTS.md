@@ -250,6 +250,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Where sea water is refused, kept salty, or mixed in (hanging pot) | [docs/dev/mechanics/SALT-WATER-REFUSALS.md](docs/dev/mechanics/SALT-WATER-REFUSALS.md) |
 | Every integration plan, by folder (`lets-do/`, `cooking/`, `storage/`, `climate/`), with its state | [docs/dev/integration/README.md](docs/dev/integration/README.md) |
 | Sophisticated upgrades still to do | [docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md](docs/dev/integration/storage/SOPHISTICATED-INTEGRATION.md) |
+| Create Pipes n Physics: the plan, and what was found in game (`1.21.1-neoforge`) | [docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md](docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md) |
 | Kaleidoscope Cookery work still to do | [docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) |
 | Kaleidoscope Tavern: the plan, its decisions and what was found in game (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node but `1.21.11`) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |

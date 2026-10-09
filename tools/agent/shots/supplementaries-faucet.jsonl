@@ -3,7 +3,7 @@
 // with Jade naming the lower cauldron's water Murky. Shot on Fabric 1.21.1, the only Fabric node with
 // Supplementaries, on the lakeshore by the plains village near 1192 63 -488, in a copy of the dev
 // world's seed, so the scene is the same every time and the dev world is left alone:
-//     python tools/agent/new_world.py 1.21.1 ShotsAgent --from "New World"
+//     python tools/agent/new_world.py 1.21.1 ShotsAgent --terrain --from "New World"
 //     ./gradlew ":1.21.1:runClient" -Pdriven -Pagent=tools/agent/shots/supplementaries-faucet.jsonl -Pquickplay=ShotsAgent
 // -Pdriven opens the window maximised, which is what makes the capture big enough to crop. The faucet
 // moves a bottle a second, so the captures are a second apart while the lower cauldron fills: keep

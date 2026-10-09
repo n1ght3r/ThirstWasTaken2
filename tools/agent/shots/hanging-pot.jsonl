@@ -2,7 +2,7 @@
 // iron-hanging-pot.png, each boiling over a campfire, and copper-hanging-pot-ground.png, the pot standing
 // on its legs on the grass with no campfire under it. Shot on 26.2 on the plains at -256 73 192, in a
 // copy of the dev world's seed, so the scene is the same every time and the dev world is left alone:
-//     python tools/agent/new_world.py 26.2.x PotShots --from "New World"
+//     python tools/agent/new_world.py 26.2.x PotShots --terrain --from "New World"
 //     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/hanging-pot.jsonl -Pquickplay=PotShots
 // -Pdriven opens the window maximised, which is what makes the capture big enough to crop. Each scene
 // is captured three times a second and a half apart, since campfire smoke drifts across the pot: keep

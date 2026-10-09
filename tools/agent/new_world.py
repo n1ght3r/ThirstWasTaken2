@@ -1,13 +1,25 @@
 """Make a fresh throwaway world for an agent script, where the player arrives alive, on the ground, at
 noon, with nothing hostile around.
 
-    python tools/agent/new_world.py <node> <World> [--from <source world>] [--datapack <folder>]... [--force]
+    python tools/agent/new_world.py <node> <World> [--terrain] [--biome <id>] [--from <source world>] [--datapack <folder>]... [--force]
 
 then run the script with `-Pquickplay=<World>`. It builds run/<node>/saves/<World> out of the world
 settings of another world of the same node (`--from`, or the first one in run/<node>/saves), since a
-level.dat cannot be written for every Minecraft version by hand. From it, it keeps the seed and the
-spawn point, so the terrain and the ground under spawn are the ones that world was created with. What it
-drops or changes, and why:
+level.dat cannot be written for every Minecraft version by hand.
+
+**By default the world is a sky floor**: a superflat overworld of nothing but one layer of stone at
+y 199 (`FLOOR_Y`), one biome (`--biome`, plains by default), no structures, features or lakes. The
+player stands on it at y 200, at the source world's spawn x and z. Most scripts build their scene at
+y 199 to 206 anyway, so they land on the floor; nothing generates under it for the player to fall into,
+no snow, cave or mob is near, and chunks generate in a fraction of the time and disk of real terrain.
+`fillbiome` still works on it, and water above y 100 grades as it did over real terrain.
+
+**`--terrain`** keeps the source world's own generator instead, with its seed, for what needs real
+ground: docs screenshots (never taken on the sky floor), natural biomes, heights and caves. The player
+arrives on the source world's spawn point, which may be in powder snow or water: a terrain script
+teleports first.
+
+What it drops or changes either way, and why:
 
 - **The player.** A 1.21.x level.dat carries the singleplayer player (position, motion, air, effects)
   in `Data.Player`, so a copy dropped them wherever the other world left them, often mid air or under
@@ -63,6 +75,12 @@ RULES = {
 # world's own state (scoreboard, boss bars, raids) and stays behind.
 MOVED_OUT = ("world_gen_settings.dat", "game_rules.dat", "weather.dat", "world_clocks.dat")
 
+# The sky floor: one layer at this height, the player on top of it. The overworld starts at y -64 on
+# every node.
+FLOOR_Y = 199
+MIN_Y = -64
+FLOOR_BLOCK = "minecraft:stone"
+
 NOON = 6000
 CLEAR_FOR = 1_000_000
 
@@ -71,6 +89,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("node", help="the Gradle node, e.g. 1.21.1 or 26.3.x-neoforge")
     parser.add_argument("world", help="the world to make, as -Pquickplay names it")
+    parser.add_argument("--terrain", action="store_true", help="real terrain from the source world's generator, instead of the sky floor")
+    parser.add_argument("--biome", default="minecraft:plains", help="the sky floor's one biome (default: minecraft:plains)")
     parser.add_argument("--from", dest="source", help="the world whose settings to reuse (default: the first one there)")
     parser.add_argument("--datapack", action="append", default=[], help="a data pack folder to copy into the world")
     parser.add_argument("--force", action="store_true", help="delete a world of that name this tool did not make")
@@ -91,6 +111,10 @@ def main():
     data["LevelName"] = nbt.string(args.world)
     if "GameRules" in data:
         fresh_legacy(data)
+    if not args.terrain:
+        if "WorldGenSettings" in data:
+            sky_floor(data["WorldGenSettings"], args.biome)
+        stand_on_floor(data)
     nbt.save(target / "level.dat", level, name)
 
     moved = source / "data" / "minecraft"
@@ -100,6 +124,11 @@ def main():
             if (moved / file).exists():
                 shutil.copyfile(moved / file, target / "data" / "minecraft" / file)
         fresh_moved_out(target / "data" / "minecraft")
+        if not args.terrain:
+            settings_file = target / "data" / "minecraft" / "world_gen_settings.dat"
+            root, root_name = nbt.load(settings_file)
+            sky_floor(root["data"], args.biome)
+            nbt.save(settings_file, root, root_name)
 
     for pack in args.datapack:
         pack = (ROOT / pack).resolve() if not Path(pack).is_absolute() else Path(pack)
@@ -152,6 +181,38 @@ def fresh_moved_out(folder):
                            ("thunder_time", CLEAR_FOR), ("clear_weather_time", CLEAR_FOR)):
             keep_type(weather, key, value)
         nbt.save(weather_file, root, name)
+
+
+def sky_floor(settings, biome):
+    """Swaps the overworld's generator for a superflat one: air up to FLOOR_Y, one layer of FLOOR_BLOCK.
+    The same shape from 1.20.1 to 26.x, in level.dat's WorldGenSettings or in world_gen_settings.dat."""
+    layers = nbt.TagList(nbt.COMPOUND, [
+        {"block": nbt.string("minecraft:air"), "height": nbt.integer(FLOOR_Y - MIN_Y)},
+        {"block": nbt.string(FLOOR_BLOCK), "height": nbt.integer(1)},
+    ])
+    flat = {
+        "layers": layers,
+        "biome": nbt.string(biome),
+        "features": nbt.byte(0),
+        "lakes": nbt.byte(0),
+        "structure_overrides": nbt.TagList(nbt.END, []),
+    }
+    overworld = settings["dimensions"]["minecraft:overworld"]
+    overworld["generator"] = {"type": nbt.string("minecraft:flat"), "settings": flat}
+    for key in ("generate_features", "generate_structures"):
+        if key in settings:
+            settings[key] = nbt.byte(0)
+
+
+def stand_on_floor(data):
+    """Moves the spawn point onto the floor, keeping its x and z. 1.21.x and older: SpawnY. 26.1+:
+    spawn.pos, an int array."""
+    if "SpawnY" in data:
+        data["SpawnY"] = nbt.integer(FLOOR_Y + 1)
+    spawn = data.get("spawn")
+    if isinstance(spawn, dict) and "pos" in spawn:
+        x, _, z = spawn["pos"].value
+        spawn["pos"] = nbt.Tag(spawn["pos"].type, [x, FLOOR_Y + 1, z])
 
 
 def keep_type(compound, key, value):

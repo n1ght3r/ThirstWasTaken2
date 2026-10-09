@@ -11,6 +11,7 @@ out/
 src/main/generated/*/.cache/
 *.iml
 .idea/
+.vscode/
 # The sprite and logo workbench: generated images and the scripts that draw them, kept locally.
 # `tools/*` rather than `tools/`, because git cannot re-include anything under an excluded directory,
 # and tools/agent below has to be re-included.

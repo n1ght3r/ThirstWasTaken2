@@ -5,7 +5,7 @@
 // cooling-tub, brick-firebox, copper-distiller), each with the result's name drawn beside it by
 // tools/generate_docs_images.py's tooltip() from the "*Tooltip" answers. Shot on 26.2 on the plains at
 // -256 72 192, the hanging pot's spot, in a copy of the dev world's seed:
-//     python tools/agent/new_world.py 26.2.x DistillerShots --from "New World"
+//     python tools/agent/new_world.py 26.2.x DistillerShots --terrain --from "New World"
 //     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/distiller.jsonl -Pquickplay=DistillerShots
 // The machine faces north, the boiler at -256 and the tub to its west; the camera stands north of it.
 // tp sets the feet; the eye is 1.62 above, so the scene's camera stands on the ground for Jade to read the

@@ -4,7 +4,7 @@
 // (an iron nugget over three iron) and distiller-boiler (copper round an iron ingot). Each grid is filled
 // through client.slot and captured unhovered; tools/agent/shots/recipe_images.py crops the panel and
 // draws the result's tooltip beside it from the "*Tooltip" answers. Shot on 26.2, in any world:
-//     python tools/agent/new_world.py 26.2.x RecipeShots --from "New World"
+//     python tools/agent/new_world.py 26.2.x RecipeShots --terrain --from "New World"
 //     ./gradlew ":26.2.x:runClient" -Pdriven -Pagent=tools/agent/shots/recipes.jsonl -Pquickplay=RecipeShots
 // Turn Jade's itemModNameTooltip off first (run/26.2.x/config/jade/jade.json), or the tooltip answers
 // gain a mod name line. Grid slots are 1 to 9, row by row.
