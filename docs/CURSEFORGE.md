@@ -270,7 +270,8 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
       <img alt="Create icon" src="https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp" width="20" height="20" align="absmiddle"> <b><a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create">Create</a></b><br>
       <i>1.21.1 NeoForge and 1.20.1 Forge<br>
       26.1.2 and 26.2 Fabric: <img alt="Create Fly icon" src="https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/create-fly">Create Fly</a></i><br><br>
-      Adds a Sand Filter to purify dirty water by one grade. Water also keeps its purity grade through pipes, pumps, tanks, drains, and spouts.
+      Adds a Sand Filter to purify dirty water by one grade. Water also keeps its purity grade through pipes, pumps, tanks, drains, and spouts.<br><br>
+      <i>Also works with <img alt="Create Pipes n Physics icon" src="https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/create-pipesn-physics">Create Pipes n Physics</a> on 1.21.1 NeoForge.</i>
     </td>
     <td width="45%">
       <img alt="Engineer's Goggles showing Murky water entering the Sand Filter and Clean water leaving it" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/integrations/create/create-sand-filter-goggles.png" width="100%">

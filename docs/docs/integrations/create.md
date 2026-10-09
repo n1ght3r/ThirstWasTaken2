@@ -5,7 +5,7 @@ pipes, pumps, Spouts and drains.
 
 ::: warning Supported versions
 - Fabric, Minecraft 26.2 and 26.1.2: ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly).
-- NeoForge, Minecraft 1.21.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.10.
+- NeoForge, Minecraft 1.21.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.10, with or without ![](https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp){.mod-icon} [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) 3.2.1.
 - Forge, Minecraft 1.20.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.8.
 
 Other versions ignore Create.
@@ -37,3 +37,12 @@ The recipe unlocks once a Nozzle is picked up.
 - A Spout fills a waterskin in one go, and a terracotta bowl too. An Item Drain empties both. The
   water keeps its grade, and a waterskin only takes water of the grade it already holds.
 - Water of different grades does not mix in one tank or pipe.
+
+## Create Pipes n Physics
+
+On NeoForge 1.21.1, [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) changes
+how Create's pipes and pumps move fluids. Everything above works the same with it installed:
+
+- Pumps and Hose Pulleys draw water from the world and from cauldrons with its grade.
+- Water flowing down by gravity alone keeps its grade too.
+- Water fed into a Sand Filter comes out of the bottom one grade cleaner, with or without a pump.
