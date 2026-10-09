@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "以带标签饮品的数值添加该物品，可在下方编辑。灰色文字为 ID 补全。",
   "thirstwastaken2.message.boiling": "煮沸中：%s%%",
   "thirstwastaken2.message.boiled": "水已煮沸",
-  "thirstwastaken2.message.cannot_boil_salt": "煮沸无法去除盐分"
+  "thirstwastaken2.message.cannot_boil_salt": "煮沸无法去除盐分",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "海水会毁了酒桶",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "海水会毁了鸡尾酒",
+  "thirstwastaken2.message.barrel_takes_buckets": "酒桶只能用桶装水"
 }

@@ -209,7 +209,7 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 
 </div>
 
-<p><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <b>Kaleidoscope Cookery and its addons</b></p>
+<p><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <b>Kaleidoscope Cookery, its addons and Kaleidoscope Tavern</b></p>
 
 <div class="spoiler">
 
@@ -235,6 +235,10 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
   <tr>
     <td width="45%"><img alt="Kaleidoscope Chinese Food icon" src="https://cdn.modrinth.com/data/cuIIkdlx/748a556a3658f0a5f67068f4d8d5cf0041b794a7.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery/kaleidoscope-chinese-food">Kaleidoscope Chinese Food</a><br><i>1.21.1 NeoForge, 1.20.1 Forge</i></td>
     <td width="55%">Its teas, soups and noodles restore thirst.</td>
+  </tr>
+  <tr>
+    <td width="45%"><img alt="Kaleidoscope Tavern icon" src="https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-tavern">Kaleidoscope Tavern</a><br><i>1.21.1 NeoForge, 1.20.1 Forge; Fabric: <img alt="Kaleidoscope Tavern Refabricated icon" src="https://cdn.modrinth.com/data/UMblNdlF/bfeeabb4b3f926a0afbc953490c32892a0999122.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/kaleidoscope-tavern-refabricated">Refabricated</a></i></td>
+    <td width="55%">Its wines, cocktails and juices restore thirst, and water keeps its grade in the Barrel, through the Tap and in a placed Water Bottle. The Barrel and the Shaker won't take sea water.</td>
   </tr>
 </table>
 
@@ -360,6 +364,12 @@ Also works with:
   </tr>
   <tr>
     <td><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery/">Kaleidoscope Cookery</a></td>
+    <td>every version (Refabricated)</td>
+    <td>1.21.1</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td><img alt="Kaleidoscope Tavern icon" src="https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-tavern">Kaleidoscope Tavern</a></td>
     <td>every version (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>

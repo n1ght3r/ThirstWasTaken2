@@ -35,9 +35,17 @@ public final class KaleidoscopeMixinPlugin implements IMixinConfigPlugin {
         return null;
     }
 
+    /**
+     * The mixin on Kaleidoscope Tavern's tap, which is not this mod's class: applied only where Kaleidoscope
+     * Chinese Food has merged its stockpot fill into it.
+     */
+    private static final String CHINESE_FOOD_TAP_MIXIN = "TapCookeryMixin";
+
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        String method = NEEDS_METHOD.get(mixinClassName.substring(mixinClassName.lastIndexOf('.') + 1));
+        String simpleName = mixinClassName.substring(mixinClassName.lastIndexOf('.') + 1);
+        if (simpleName.equals(CHINESE_FOOD_TAP_MIXIN)) return KaleidoscopePresence.hasChineseFoodTap();
+        String method = NEEDS_METHOD.get(simpleName);
         return method == null
                 ? KaleidoscopePresence.hasTarget(targetClassName)
                 : KaleidoscopePresence.hasMethod(targetClassName, method);

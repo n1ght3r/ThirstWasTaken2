@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "Dodaje przedmiot z wartością napojów z tagiem, do edycji poniżej. Szary tekst uzupełnia ID.",
   "thirstwastaken2.message.boiling": "Gotowanie: %s%%",
   "thirstwastaken2.message.boiled": "Woda została przegotowana",
-  "thirstwastaken2.message.cannot_boil_salt": "Gotowanie nie usuwa soli"
+  "thirstwastaken2.message.cannot_boil_salt": "Gotowanie nie usuwa soli",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "Woda morska zepsułaby beczkę",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "Woda morska zepsułaby koktajl",
+  "thirstwastaken2.message.barrel_takes_buckets": "Beczka przyjmuje wodę tylko z wiadra"
 }

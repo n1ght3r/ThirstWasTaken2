@@ -34,7 +34,15 @@ public final class KaleidoscopePresence {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("thirstwastaken2");
 
+    /**
+     * Kaleidoscope Chinese Food's mixin on Kaleidoscope Tavern's tap, which merges {@code kcf$fillCookery}
+     * into it: a tap on water fills a stockpot or a teapot below through accessors of its own.
+     */
+    private static final String CHINESE_FOOD_TAP = "com/bmt/kaleidoscope_chinesefood/mixins/tavern/TapBlockMixin.class";
+    private static final String CHINESE_FOOD_FILL = "kcf$fillCookery";
+
     private static volatile Boolean supported;
+    private static volatile Boolean chineseFoodTap;
     private static final Map<String, Boolean> TARGETS = new ConcurrentHashMap<>();
 
     private KaleidoscopePresence() { }
@@ -78,8 +86,10 @@ public final class KaleidoscopePresence {
      * the builds without it skip that mixin rather than fail it. Asked once per mixin, at startup.
      */
     public static boolean hasMethod(String targetClassName, String method) {
-        if (!hasTarget(targetClassName)) return false;
-        String resource = targetClassName.replace('.', '/') + ".class";
+        return hasTarget(targetClassName) && declares(targetClassName.replace('.', '/') + ".class", method);
+    }
+
+    private static boolean declares(String resource, String method) {
         try (InputStream in = KaleidoscopePresence.class.getClassLoader().getResourceAsStream(resource)) {
             if (in == null) return false;
             boolean[] found = {false};
@@ -92,9 +102,24 @@ public final class KaleidoscopePresence {
             }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
             return found[0];
         } catch (IOException e) {
-            LOGGER.warn("Could not read {} to look for {}; leaving that part of the integration off", targetClassName, method, e);
+            LOGGER.warn("Could not read {} to look for {}; leaving that part of the integration off", resource, method, e);
             return false;
         }
+    }
+
+    /**
+     * Whether Kaleidoscope Tavern's tap fills a stockpot or a teapot here: Kaleidoscope Chinese Food is
+     * installed and its mixin still has {@code kcf$fillCookery}, read off its class file like
+     * {@link #hasMethod}. A name that can change in any release of the addon, so a missing one turns only
+     * this part off, quietly: most players have neither mod.
+     */
+    public static boolean hasChineseFoodTap() {
+        Boolean known = chineseFoodTap;
+        if (known == null) {
+            known = isSupported() && has(CHINESE_FOOD_TAP) && declares(CHINESE_FOOD_TAP, CHINESE_FOOD_FILL);
+            chineseFoodTap = known;
+        }
+        return known;
     }
 
     private static boolean has(String resource) {

@@ -206,6 +206,20 @@ val integrations: List<Integration> = listOf(
         fabricEntrypoints = mapOf("jade" to listOf("com.thirstwastaken2.client.kaleidoscope.KaleidoscopeJade")),
         neoForgeDependencies = listOf("kaleidoscope_cookery"),
     ),
+    // Every loader, as Kaleidoscope Cookery: the official mod on NeoForge 1.21.1 and Forge 1.20.1,
+    // Refabricated on every Fabric node, one mod id and package. What it touches names neither loader's
+    // fluid API. Its own directory rather than Cookery's, since the two mods are installed apart. The Jade
+    // reader is a Fabric entrypoint; NeoForge and Forge find it by its annotation.
+    // See src/main/kaleidoscopetavern/AGENTS.md.
+    Integration(
+        dir = "kaleidoscopetavern",
+        depsKey = "deps.kaleidoscope_tavern",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE, Loader.FORGE),
+        client = true,
+        mixinConfig = "thirstwastaken2.kaleidoscopetavern.mixins.json",
+        fabricEntrypoints = mapOf("jade" to listOf("com.thirstwastaken2.client.kaleidoscopetavern.KaleidoscopeTavernJade")),
+        neoForgeDependencies = listOf("kaleidoscope_tavern"),
+    ),
     // Both loaders: everything it touches is in the mod's own common module, which names neither. Only
     // the two 1.21.1 nodes set the key, since the mod has no build for a newer Minecraft version. The
     // Jade reader is a Fabric entrypoint; NeoForge finds it by its annotation. Jade reads it whether or

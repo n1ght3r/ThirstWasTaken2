@@ -81,8 +81,9 @@ VERSION_DIFFERENCES = ROOT / "docs" / "dev" / "VERSION-DIFFERENCES.md"
 # and has to keep saying so, and docs/dev names versions inside prose no rewrite can follow.
 DOC_MIRRORS = (README, INSTALLATION, VERSION_DIFFERENCES)
 KALEIDOSCOPE_DOC = ROOT / "docs" / "dev" / "integration" / "cooking" / "KALEIDOSCOPE-COOKERY-INTEGRATION.md"
+TAVERN_DOC = ROOT / "docs" / "dev" / "integration" / "cooking" / "KALEIDOSCOPE-TAVERN-INTEGRATION.md"
 # Every page some dependency mirrors, in the order they are rewritten and reported.
-ALL_MIRRORS = DOC_MIRRORS + (KALEIDOSCOPE_DOC,)
+ALL_MIRRORS = DOC_MIRRORS + (KALEIDOSCOPE_DOC, TAVERN_DOC)
 # Files that name a version only as a record of what something was built, written or tested against,
 # so they keep the old number on purpose and the pull request does not ask anyone to update them. A
 # file goes here only when every version it names is such a record; one that also states a current
@@ -174,6 +175,15 @@ MODRINTH_DEPS = [
     ModrinthDep("kaleidoscope_cookery", "kaleidoscope-cookery-refabricated", by_id=True,
                 mirrors=(INSTALLATION, KALEIDOSCOPE_DOC), neoforge_mirrors=(INSTALLATION, KALEIDOSCOPE_DOC),
                 neoforge_project="kaleidoscope-cookery", frozen=("1.21.11",)),
+    # Kaleidoscope Tavern, the same shape as Kaleidoscope Cookery: Refabricated on the Fabric nodes, the
+    # official mod (a project of its own) on NeoForge 1.21.1 and Forge 1.20.1, pinned by id. Its plan's
+    # table prints every build with its id.
+    ModrinthDep("kaleidoscope_tavern", "kaleidoscope-tavern-refabricated", by_id=True,
+                mirrors=(INSTALLATION, TAVERN_DOC), neoforge_mirrors=(INSTALLATION, TAVERN_DOC),
+                neoforge_project="kaleidoscopetavern"),
+    # Kaleidoscope Chinese Food, whose mixin lets Tavern's tap fill Cookery's stockpot and teapot.
+    # NeoForge 1.21.1 and Forge 1.20.1, runClient only, pinned by id like the others.
+    ModrinthDep("kaleidoscope_chinese_food", "kaleidoscopechinesefood", by_id=True, **NO_PAGE),
     # Kaleidoscope Cookery's required library on the Fabric 1.21.x nodes, runClient only.
     ModrinthDep("forge_config_api_port", "forge-config-api-port", by_id=True, **NO_PAGE),
     # Brewin' and Chewin' shares one version number between its Fabric and NeoForge uploads, so it is

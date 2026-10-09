@@ -215,6 +215,59 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /**
+     * Kaleidoscope Tavern is never installed here either; see the Kaleidoscope Cookery test above. Its
+     * spirits and vinegar are listed at zero, so a tag or a keyword never gives them a value.
+     */
+    @GameTest
+    public void kaleidoscopeTavernDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"wine", "miners_star", "honey_wine", "vodka", "brandy", "mojito", "mystery_cocktail",
+                "watermelon_juice", "vinegar", "grape_bucket", "glow_berries_bucket"};
+        String[] foods = {"grape", "green_grape"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("kaleidoscope_tavern:" + drink),
+                    "the default drinks should list kaleidoscope_tavern:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("kaleidoscope_tavern:" + food),
+                    "the default foods should list kaleidoscope_tavern:" + food);
+        }
+        for (String zero : new String[]{"vodka", "whiskey", "rum", "brandy", "vinegar"}) {
+            TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("kaleidoscope_tavern:" + zero), new int[]{0, 0}),
+                    "kaleidoscope_tavern:" + zero + " should restore nothing, got "
+                            + Arrays.toString(defaults.drinks.get("kaleidoscope_tavern:" + zero)));
+        }
+        TestFixtures.check(helper, !defaults.drinks.containsKey("kaleidoscope_tavern:molotov"),
+                "a molotov is thrown, not drunk, and should not be listed");
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("kaleidoscope_tavern:" + drink);
+            for (String food : foods) config.foods.remove("kaleidoscope_tavern:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("kaleidoscope_tavern:wine", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                if (drink.equals("wine")) continue;
+                String id = "kaleidoscope_tavern:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "kaleidoscope_tavern:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("kaleidoscope_tavern:wine"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("kaleidoscope_tavern:wine")));
+        });
+        helper.succeed();
+    }
+
     /** Brewin' and Chewin' is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void brewinAndChewinDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {

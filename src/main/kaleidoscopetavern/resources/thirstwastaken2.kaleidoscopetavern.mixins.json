@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "com.thirstwastaken2.kaleidoscopetavern.mixin",
+  "plugin": "com.thirstwastaken2.kaleidoscopetavern.KaleidoscopeTavernMixinPlugin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "BarrelBlockEntityMixin",
+    "BottleDropMixin",
+    "BottlePlaceMixin",
+    "ItemUtilsMixin",
+    "ShakerBlockEntityMixin",
+    "WaterCauldronTapMixin",
+    "WaterloggedTapMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

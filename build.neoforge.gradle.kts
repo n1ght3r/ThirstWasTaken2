@@ -161,6 +161,12 @@ val spelunkeryVersion = findProperty("deps.spelunkery") as String?
 val kaleidoscopeCookeryVersion = findProperty("deps.kaleidoscope_cookery") as String?
 
 /**
+ * Kaleidoscope Tavern's Modrinth version id, set on `1.21.1-neoforge` and nowhere else: the official mod
+ * has published no NeoForge build past 1.21.1. See docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md.
+ */
+val kaleidoscopeTavernVersion = findProperty("deps.kaleidoscope_tavern") as String?
+
+/**
  * Brewin' and Chewin's Modrinth version id, set on `1.21.1-neoforge` and nowhere else among the NeoForge
  * nodes. See docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
  */
@@ -352,6 +358,22 @@ dependencies {
         // is what proves the mod is unchanged when it is absent.
         runClientMod(listOf("kaleidoscope-cookery", "kaleidoscope-cookery-refabricated", "kaleidoscope_cookery"),
             "maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookeryVersion") { isTransitive = false }
+    }
+
+    if (kaleidoscopeTavernVersion != null) {
+        compileOnly("maven.modrinth:kaleidoscopetavern:$kaleidoscopeTavernVersion") { isTransitive = false }
+        // Test the barrel, the tap, the placed bottle and the shaker in runClient. The gametests and
+        // runServer run without it, which is what proves the mod is unchanged when it is absent.
+        runClientMod(listOf("kaleidoscope-tavern", "kaleidoscope-tavern-refabricated", "kaleidoscope_tavern"),
+            "maven.modrinth:kaleidoscopetavern:$kaleidoscopeTavernVersion") { isTransitive = false }
+        // Kaleidoscope Chinese Food, whose tap fills Kaleidoscope Cookery's stockpot and teapot; nothing
+        // compiles against it. Off by default: uncomment to work on that part of src/main/kaleidoscope.
+        findProperty("deps.kaleidoscope_chinese_food")?.let {
+            // runClientMod(listOf("kaleidoscope-chinese-food", "kaleidoscope_chinesefood", "kaleidoscope-tavern",
+            //     "kaleidoscope_tavern", "kaleidoscope-cookery", "kaleidoscope_cookery"),
+            //     "maven.modrinth:kaleidoscopechinesefood:$it") { isTransitive = false }
+            optionalRunMods.include(listOf("kaleidoscope-chinese-food", "kaleidoscope_chinesefood"))
+        }
     }
 
     if (brewinAndChewinVersion != null) {

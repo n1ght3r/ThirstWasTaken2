@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "Ajoute l'objet avec la valeur des boissons étiquetées, à modifier ci-dessous. Le texte gris complète l'identifiant.",
   "thirstwastaken2.message.boiling": "Ébullition : %s%%",
   "thirstwastaken2.message.boiled": "L'eau a bouilli",
-  "thirstwastaken2.message.cannot_boil_salt": "L'ébullition n'enlève pas le sel"
+  "thirstwastaken2.message.cannot_boil_salt": "L'ébullition n'enlève pas le sel",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "L'eau de mer gâcherait le tonneau",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "L'eau de mer gâcherait le cocktail",
+  "thirstwastaken2.message.barrel_takes_buckets": "Le tonneau ne prend l'eau que d'un seau"
 }

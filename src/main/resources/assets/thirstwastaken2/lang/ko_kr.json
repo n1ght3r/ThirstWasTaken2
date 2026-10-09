@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "태그된 음료의 값으로 아이템을 추가하고 아래에서 편집합니다. 회색 글자는 ID 자동 완성입니다.",
   "thirstwastaken2.message.boiling": "끓이는 중: %s%%",
   "thirstwastaken2.message.boiled": "물이 끓었습니다",
-  "thirstwastaken2.message.cannot_boil_salt": "끓여도 소금은 빠지지 않습니다"
+  "thirstwastaken2.message.cannot_boil_salt": "끓여도 소금은 빠지지 않습니다",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "바닷물은 술통을 망칩니다",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "바닷물은 칵테일을 망칩니다",
+  "thirstwastaken2.message.barrel_takes_buckets": "술통에는 양동이로만 물을 부을 수 있습니다"
 }

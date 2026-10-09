@@ -51,11 +51,11 @@ class BuildLogicTest {
     @Test
     fun nodesGetOnlyWhatTheirLoaderCompiles() {
         val everything: (String) -> Boolean = { true }
-        assertEquals(listOf("createfly", "farmersdelight", "supplementaries", "kaleidoscope", "brewinandchewin", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"),
+        assertEquals(listOf("createfly", "farmersdelight", "supplementaries", "kaleidoscope", "kaleidoscopetavern", "brewinandchewin", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"),
             integrationsFor(Loader.FABRIC, everything).map { it.dir })
-        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest", "extradelight", "nomansland", "croptopia"),
+        assertEquals(listOf("create", "sophisticated", "supplementaries", "kaleidoscope", "kaleidoscopetavern", "brewinandchewin", "coldsweat", "culturaldelights", "fruitsdelight", "expandeddelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "hearthandharvest", "extradelight", "nomansland", "croptopia"),
             integrationsFor(Loader.NEOFORGE, everything).map { it.dir })
-        assertEquals(listOf("supplementaries", "kaleidoscope", "brewinandchewin", "fruitsdelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"), integrations.filter { it.loaderIndependent }.map { it.dir })
+        assertEquals(listOf("supplementaries", "kaleidoscope", "kaleidoscopetavern", "brewinandchewin", "fruitsdelight", "minersdelight", "sereneseasons", "farmandcharm", "herbalbrews", "beachparty", "spelunkery", "croptopia"), integrations.filter { it.loaderIndependent }.map { it.dir })
     }
 
     @Test
@@ -135,13 +135,14 @@ class BuildLogicTest {
         integrationsFor(Loader.FABRIC) { true }.forEach { it.patchFabricManifest(json) }
         assertEquals(listOf("thirstwastaken2.mixins.json", "thirstwastaken2.createfly.mixins.json",
             "thirstwastaken2.client.mixins.json", "thirstwastaken2.farmersdelight.mixins.json", "thirstwastaken2.supplementaries.mixins.json",
-            "thirstwastaken2.kaleidoscope.mixins.json", "thirstwastaken2.brewinandchewin.mixins.json", "thirstwastaken2.farmandcharm.mixins.json",
+            "thirstwastaken2.kaleidoscope.mixins.json", "thirstwastaken2.kaleidoscopetavern.mixins.json", "thirstwastaken2.brewinandchewin.mixins.json", "thirstwastaken2.farmandcharm.mixins.json",
             "thirstwastaken2.herbalbrews.mixins.json", "thirstwastaken2.beachparty.mixins.json",
             "thirstwastaken2.spelunkery.mixins.json", "thirstwastaken2.croptopia.mixins.json"), json["mixins"])
         @Suppress("UNCHECKED_CAST")
         val entrypoints = json["entrypoints"] as Map<String, Any?>
         assertEquals(listOf("a.Jade", "com.thirstwastaken2.client.supplementaries.SupplementariesJade",
             "com.thirstwastaken2.client.kaleidoscope.KaleidoscopeJade",
+            "com.thirstwastaken2.client.kaleidoscopetavern.KaleidoscopeTavernJade",
             "com.thirstwastaken2.client.brewinandchewin.BrewinAndChewinJade"), entrypoints["jade"])
         assertEquals(listOf("com.thirstwastaken2.sereneseasons.SereneSeasonsEntrypoint"), entrypoints["thirstwastaken2:integration"])
         assertEquals(listOf("jade", "thirstwastaken2:createfly", "thirstwastaken2:createfly_client", "thirstwastaken2:integration"),

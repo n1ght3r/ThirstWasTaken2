@@ -226,6 +226,19 @@ dependencies {
         runClientMod(listOf("kaleidoscope-cookery", "kaleidoscope-cookery-refabricated", "kaleidoscope_cookery"),
             "maven.modrinth:kaleidoscope-cookery:$kaleidoscopeCookery") { isTransitive = false }
     }
+    findProperty("deps.kaleidoscope_tavern")?.let { kaleidoscopeTavern ->
+        // Mixed into, and in SRG names, so remapped. See src/main/kaleidoscopetavern/AGENTS.md.
+        modCompileOnly("maven.modrinth:kaleidoscopetavern:$kaleidoscopeTavern") { isTransitive = false }
+        runClientMod(listOf("kaleidoscope-tavern", "kaleidoscope-tavern-refabricated", "kaleidoscope_tavern"),
+            "maven.modrinth:kaleidoscopetavern:$kaleidoscopeTavern") { isTransitive = false }
+        // Kaleidoscope Chinese Food, as in build.neoforge.gradle.kts: off by default.
+        findProperty("deps.kaleidoscope_chinese_food")?.let {
+            // runClientMod(listOf("kaleidoscope-chinese-food", "kaleidoscope_chinesefood", "kaleidoscope-tavern",
+            //     "kaleidoscope_tavern", "kaleidoscope-cookery", "kaleidoscope_cookery"),
+            //     "maven.modrinth:kaleidoscopechinesefood:$it") { isTransitive = false }
+            optionalRunMods.include(listOf("kaleidoscope-chinese-food", "kaleidoscope_chinesefood"))
+        }
+    }
     // Fruits Delight: nothing compiles against it, its mixins name their targets by string. Only here to
     // test them. Its L2 libraries are nested in its jar, which Forge loads itself. Off in runClient by
     // default, for the reason build.neoforge.gradle.kts gives; uncomment the lines below to work on it.

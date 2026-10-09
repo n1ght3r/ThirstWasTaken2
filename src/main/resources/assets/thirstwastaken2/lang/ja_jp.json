@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "タグ付きの飲み物と同じ値でアイテムを追加し、下で編集できます。灰色の文字はIDの補完です。",
   "thirstwastaken2.message.boiling": "煮沸中: %s%%",
   "thirstwastaken2.message.boiled": "水が沸騰した",
-  "thirstwastaken2.message.cannot_boil_salt": "煮沸しても塩は取れない"
+  "thirstwastaken2.message.cannot_boil_salt": "煮沸しても塩は取れない",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "海水では樽が台無しになる",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "海水ではカクテルが台無しになる",
+  "thirstwastaken2.message.barrel_takes_buckets": "樽にはバケツの水しか入れられない"
 }

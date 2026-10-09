@@ -272,6 +272,12 @@ val supplementaries = findProperty("deps.supplementaries") as String?
 val kaleidoscopeCookery = findProperty("deps.kaleidoscope_cookery") as String?
 
 /**
+ * Kaleidoscope Tavern's Modrinth version id: Refabricated, the Fabric port, on every Fabric node.
+ * See docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md.
+ */
+val kaleidoscopeTavern = findProperty("deps.kaleidoscope_tavern") as String?
+
+/**
  * Brewin' and Chewin's Modrinth version id, set on `1.21.1` and `1.21.1-neoforge` only: it has no
  * release for a newer Minecraft version. See docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md.
  */
@@ -568,6 +574,28 @@ dependencies {
             val library = names + listOf("forge-config-api-port", "forgeconfigapiport")
             runClientMod(library, "maven.modrinth:forge-config-api-port:$forgeConfigApiPort")
             // Unpacked when the classpath is resolved; see Farmer's Delight above.
+            runClientMod(library, files(provider { nestedMods("forge-config-api-port", forgeConfigApiPort.toString()) }))
+        }
+    }
+
+    if (kaleidoscopeTavern != null) {
+        // Mixed into, so it has to be a remapped mod rather than a plain library, as Kaleidoscope Cookery is.
+        "modCompileOnly"("maven.modrinth:kaleidoscope-tavern-refabricated:$kaleidoscopeTavern") { isTransitive = false }
+        // Test the barrel, the tap, the placed bottle and the shaker in runClient. The gametests and
+        // runServer run without it, which is what proves the mod is unchanged when it is absent.
+        val names = listOf("kaleidoscope-tavern", "kaleidoscope-tavern-refabricated", "kaleidoscope_tavern")
+        runClientMod(names, "maven.modrinth:kaleidoscope-tavern-refabricated:$kaleidoscopeTavern")
+        // On 1.20.1 it requires Reach Entity Attributes, nested in its own jar beside Fabric API modules
+        // the run already has, so only that one comes out. Unpacked when the classpath is resolved; see
+        // Farmer's Delight above.
+        runClientMod(names, files(provider {
+            nestedMods("kaleidoscope-tavern-refabricated", kaleidoscopeTavern).filter { it.name.startsWith("reach-entity-attributes") }
+        }))
+        // Required by it on the 1.21.x and 1.20.1 nodes, as by Kaleidoscope Cookery, and named again here
+        // so leaving Cookery out leaves it in. Gradle adds the same dependency once.
+        findProperty("deps.forge_config_api_port")?.let { forgeConfigApiPort ->
+            val library = names + listOf("forge-config-api-port", "forgeconfigapiport")
+            runClientMod(library, "maven.modrinth:forge-config-api-port:$forgeConfigApiPort")
             runClientMod(library, files(provider { nestedMods("forge-config-api-port", forgeConfigApiPort.toString()) }))
         }
     }

@@ -36,6 +36,10 @@ deps.kaleidoscope_cookery = "iCin2rRE"
 # Forge Config API Port, which it requires here, only on the runClient classpath.
 # v8.0.3-1.20.1-Fabric, the Fabric upload.
 deps.forge_config_api_port = "HvR3IdRE"
+# Kaleidoscope Tavern Refabricated; see [fabric."1.21.1"]. Here it also requires Reach Entity
+# Attributes, nested in its own jar.
+# 1.2.0.10-fabric+mc1.20.1, the Fabric upload.
+deps.kaleidoscope_tavern = "xRazdSRF"
 # Croptopia and EpheroLib, by CurseForge file id; see [fabric."1.21.1"].
 # Croptopia-1.20.1-FABRIC-4.0.1.
 deps.croptopia = "8066551"
@@ -64,6 +68,12 @@ deps.glitchcore = "pYPZ5MNI"
 # Kaleidoscope Cookery, the original, which publishes a Forge build for 1.20.1.
 # 1.6.0-forge+mc1.20.1, the Forge upload.
 deps.kaleidoscope_cookery = "Ghp0qCKY"
+# Kaleidoscope Tavern, the original, which publishes a Forge build for 1.20.1.
+# 1.2.0-forge+mc1.20.1, the Forge upload.
+deps.kaleidoscope_tavern = "mUnU2u9e"
+# Kaleidoscope Chinese Food; see [neoforge."1.21.1"].
+# 1.1.14-1.20.1, the Forge upload.
+deps.kaleidoscope_chinese_food = "IxG4BNHD"
 # Fruits Delight; see [neoforge."1.21.1"]. Its 1.20.1 build is Forge only, with L2 Library nested.
 # 1.1.3, the Forge upload.
 deps.fruits_delight = "E7H5IrKI"
@@ -119,6 +129,12 @@ deps.kaleidoscope_cookery = "pZfoi25M"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
 # v21.1.6-1.21.1-Fabric, the Fabric upload.
 deps.forge_config_api_port = "N5qzq0XV"
+# Kaleidoscope Tavern Refabricated, Kaleidoscope Cookery's sibling ported by the same person: the
+# official mod publishes no Fabric build. Same mod id and package as the official one, so one
+# integration serves both, and pinned by Modrinth version id for the same reason as Cookery. It requires
+# Forge Config API Port here too. See docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md.
+# 1.2.0.10-fabric+mc1.21.1, the Fabric upload.
+deps.kaleidoscope_tavern = "3F22ge98"
 # Brewin' and Chewin', whose keg holds water. Both 1.21.1 nodes build it, and only they: it has no
 # release for a newer Minecraft version. Pinned by Modrinth version id, since its Fabric and NeoForge
 # uploads share a version number. Its Greenhouse Config is nested in its jar. See
@@ -213,6 +229,15 @@ deps.moonlight = "YfHkk7hg"
 # It has no NeoForge build past 1.21.1, so no other NeoForge table sets this.
 # 1.6.0-neoforge+mc1.21.1, the NeoForge upload.
 deps.kaleidoscope_cookery = "g8w0b2ly"
+# Kaleidoscope Tavern, the official NeoForge build, which the Fabric tables' Refabricated is a port of.
+# It has no published NeoForge build past 1.21.1, so no other NeoForge table sets this.
+# 1.2.0-neoforge+mc1.21.1, the NeoForge upload.
+deps.kaleidoscope_tavern = "W9ILsQt7"
+# Kaleidoscope Chinese Food, whose mixin lets Tavern's tap fill Kaleidoscope Cookery's stockpot and
+# teapot. Nothing compiles against it; runClient only, and off there by default. Pinned by id, since its
+# uploads put the Minecraft version in the number in no fixed place.
+# 1.1.14-neoforge+1.21.1, the NeoForge upload.
+deps.kaleidoscope_chinese_food = "9CclxgVk"
 # Brewin' and Chewin', the same integration the Fabric table builds; see there.
 # v4.5.0+1.21.1-neoforge, the NeoForge upload.
 deps.brewin_and_chewin = "MbcR48Ou"
@@ -314,6 +339,9 @@ deps.kaleidoscope_cookery = "Gns9Xmuq"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
 # 21.11.1, the Fabric upload.
 deps.forge_config_api_port = "uXrWPsCu"
+# Kaleidoscope Tavern Refabricated, as in the 1.21.1 table. Its 1.21.11 build trails the others.
+# 1.2.0.5-fabric+mc1.21.11, the Fabric upload.
+deps.kaleidoscope_tavern = "Zq3a4bZQ"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 21.11.0.4, the Fabric upload.
 deps.serene_seasons = "6GpaVF7N"
@@ -358,6 +386,10 @@ deps.create_fly = "26.1.2-6.0.9-4"
 # 26.1 on, so it is not named here.
 # 1.6.0.3-fabric+mc26.1.2, the Fabric upload.
 deps.kaleidoscope_cookery = "zNVmvzF4"
+# Kaleidoscope Tavern Refabricated, as in the 1.21.1 table. It needs no Forge Config API Port from
+# 26.1 on.
+# 1.2.0.10-fabric+mc26.1.2, the Fabric upload.
+deps.kaleidoscope_tavern = "gsiaxkwo"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.7, the Fabric upload.
 deps.serene_seasons = "kxB8vG5W"
@@ -422,6 +454,9 @@ deps.create_fly = "26.2-rc-2-6.0.9-1"
 # Kaleidoscope Cookery Refabricated, as in the 26.1.x table.
 # 1.6.0.3-fabric+mc26.2, the Fabric upload.
 deps.kaleidoscope_cookery = "ciM7zQQb"
+# Kaleidoscope Tavern Refabricated, as in the 26.1.x table.
+# 1.2.0.10-fabric+mc26.2, the Fabric upload.
+deps.kaleidoscope_tavern = "alGf2ccW"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.6, the Fabric upload.
 deps.serene_seasons = "q5mzi8wy"
@@ -484,6 +519,9 @@ deps.farmersdelight = "26.3-3.6.28"
 # Kaleidoscope Cookery Refabricated, as in the 26.1.x table.
 # 1.6.0.3-fabric+mc26.3, the Fabric upload.
 deps.kaleidoscope_cookery = "Yf5VytNq"
+# Kaleidoscope Tavern Refabricated, as in the 26.1.x table.
+# 1.2.0.11-fabric+mc26.3, the Fabric upload.
+deps.kaleidoscope_tavern = "FOhx6x47"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.7, the Fabric upload.
 deps.serene_seasons = "V9PxJPuw"

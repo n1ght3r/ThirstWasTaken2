@@ -198,6 +198,22 @@ looks and sounds.
 - [x] The advancement tab has its icon and terracotta background, and the recipe book lists the
       purification recipes once a bottle, bowl or bucket is held.
 
+### Kaleidoscope Tavern
+
+`tools/agent/integrations/kaleidoscope-tavern.jsonl` (and `-1.20.1`) runs these; its header says how.
+In a world with the mod, on one node per loader:
+
+- [ ] A Dirty bucket poured into a Barrel comes back out Dirty in a fresh bucket; Pure then Dirty
+      comes back Dirty.
+- [ ] A sea-water bucket is refused by the Barrel, stays full in the hand and spills nothing.
+- [ ] On Fabric a canteen is refused by the Barrel and keeps its water; on NeoForge and Forge it goes
+      in and stays a canteen.
+- [ ] A Tap on a Dirty cauldron fills a Dirty cauldron; on a waterlogged slab in the ocean, a salty one.
+- [ ] A Tap over a placed Empty Bottle makes a Water Bottle that drops Dirty when broken.
+- [ ] A sea-water bottle shift-placed and picked up again by hand is still salty.
+- [ ] The Shaker refuses a sea-water bottle and takes a Dirty one.
+- [ ] Jade shows the Barrel's grade looking at a side block.
+
 ### Without the optional mods
 
 - [x] Remove Mod Menu, AppleSkin and Cloth Config from the run: the game loads and the bar draws
@@ -220,6 +236,7 @@ looks and sounds.
         `1.20.1-forge`. Run on 2026-09-28 on `1.20.1`, `1.20.1-forge`, `1.21.1` and `26.3.x`, with
         `create` and `all` on `1.20.1-forge` and `all` on `1.20.1`: every one came up and stayed up
       - `kaleidoscope_cookery` on `1.21.1-neoforge` and every Fabric node
+      - `kaleidoscope_tavern` on `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node
 - [ ] The same with `-PwithoutOptional=all`, on one node per loader.
 - [ ] A world **opens** with an integration's mod and without a mod its data names, for every
       integration that ships data about another mod. Reaching the title screen is not enough: a broken

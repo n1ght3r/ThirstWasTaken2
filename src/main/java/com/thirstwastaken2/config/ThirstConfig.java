@@ -414,6 +414,9 @@ public final class ThirstConfig {
         // And for Kaleidoscope Chinese Food, added after that.
         kaleidoscopeChineseFoodDrinks(drinks);
         kaleidoscopeChineseFoodFoods(foods);
+        // And for Kaleidoscope Tavern, added after that.
+        kaleidoscopeTavernDrinks(drinks);
+        kaleidoscopeTavernFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -588,6 +591,7 @@ public final class ThirstConfig {
         kaleidoscopeFloraDrinks(values);
         extraDelightDrinks(values);
         kaleidoscopeChineseFoodDrinks(values);
+        kaleidoscopeTavernDrinks(values);
         return values;
     }
 
@@ -627,6 +631,7 @@ public final class ThirstConfig {
         minersDelightFoods(values);
         extraDelightFoods(values);
         kaleidoscopeChineseFoodFoods(values);
+        kaleidoscopeTavernFoods(values);
         return values;
     }
 
@@ -1053,6 +1058,53 @@ public final class ThirstConfig {
     private static void kaleidoscopeChineseFoodFoods(Map<String, int[]> foods) {
         putMissing(foods, 6, 4, "kaleidoscope_chinesefood:douzhi", "kaleidoscope_chinesefood:seaweed_egg_drop_soup", "kaleidoscope_chinesefood:tomato_egg_drop_soup", "kaleidoscope_chinesefood:century_egg_congee", "kaleidoscope_chinesefood:pumpkin_porridge", "kaleidoscope_chinesefood:yangrou_paomo", "kaleidoscope_chinesefood:maocai");
         putMissing(foods, 3, 2, "kaleidoscope_chinesefood:wonton_noodles", "kaleidoscope_chinesefood:sauerkraut_beef_noodles", "kaleidoscope_chinesefood:sichuan_wonton");
+    }
+
+    /**
+     * Kaleidoscope Tavern's drinks, by id alone like the other mods': the official build and Refabricated
+     * share one mod id, so these reach every node, and none of the drinks is tagged {@code c:drinks} or has
+     * food properties, so without these they restore nothing. Keyword matching would take {@code wine} and
+     * {@code juice} and miss the spirits and the cocktails.
+     *
+     * <p>A bottle or a glass is one drink, on Brewin' and Chewin's scale: wines and cocktails a third of a
+     * bottle of water, mead a little under it, juice about a bottle. The four spirits are listed at zero
+     * rather than left out, as Cultural Delights' are: a spirit is strong enough to take as much water as
+     * it gives, and zero keeps a tag or a keyword from ever giving it one. That the barrel ferments them
+     * from water earns them nothing: what comes out is a spirit. The mystery cocktail, a failed mix,
+     * gets less than any other cocktail, and vinegar is not drunk for its water. A juice bucket gets a
+     * bottle's value, as milk does in a bucket and a bottle alike. The brew level (one to five stars)
+     * changes the mod's effects, not this value. Fermented drinks are safe whatever water went into the
+     * barrel, as tea is.
+     */
+    private static void kaleidoscopeTavernDrinks(Map<String, int[]> drinks) {
+        String mod = "kaleidoscope_tavern:";
+        for (String wine : new String[]{"wine", "champagne", "carignan", "sakura_wine", "plum_wine", "ice_wine",
+                "polaris_sweet_white", "red_queen", "riesling_dry_white", "sunset_glow", "madame_shexiang",
+                "sweet_berry_wine", "sherry", "mother_snow", "luminous_bride", "glowflower_brew",
+                "sauvignon_blanc_dry_white", "miners_star"}) {
+            putMissing(drinks, 3, 1, mod + wine);
+        }
+        putMissing(drinks, 5, 2, mod + "honey_wine");
+        putMissing(drinks, 0, 0, mod + "vodka", mod + "whiskey", mod + "rum", mod + "brandy");
+        for (String cocktail : new String[]{"white_lady", "emerald", "brass_heart", "godfather", "grasshopper",
+                "screwdriver", "mojito", "allium_garden", "depth_charge", "nether_special", "bloody_mary",
+                "sculk_special", "signature_cocktail"}) {
+            putMissing(drinks, 3, 1, mod + cocktail);
+        }
+        putMissing(drinks, 2, 0, mod + "mystery_cocktail");
+        putMissing(drinks, 6, 4, mod + "watermelon_juice");
+        putMissing(drinks, 0, 0, mod + "vinegar");
+        putMissing(drinks, 6, 4, mod + "grape_bucket", mod + "ice_grape_bucket", mod + "gold_grape_bucket",
+                mod + "green_grape_bucket", mod + "sweet_berries_bucket", mod + "glow_berries_bucket");
+    }
+
+    /**
+     * Kaleidoscope Tavern's four grapes, eaten raw: a juicy fruit, as a tomato is, so they get its value;
+     * see {@link #kaleidoscopeTavernDrinks}.
+     */
+    private static void kaleidoscopeTavernFoods(Map<String, int[]> foods) {
+        putMissing(foods, 2, 0, "kaleidoscope_tavern:grape", "kaleidoscope_tavern:ice_grape",
+                "kaleidoscope_tavern:gold_grape", "kaleidoscope_tavern:green_grape");
     }
 
     /**

@@ -4,10 +4,25 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Kaleidoscope Tavern, on NeoForge 1.21.1, Forge 1.20.1 and Fabric (Refabricated):
+  - Wines, cocktails, juices and grapes restore thirst. Spirits and vinegar restore none.
+  - Water poured into the Barrel and taken back out keeps its grade. The Barrel won't take sea water.
+  - On Fabric, the Barrel won't take Waterskins, Canteens, Flasks or terracotta bowls, which it would
+    hand back as a bucket.
+  - The Tap passes on the grade of the cauldron it draws from, and a Tap on a waterlogged block in the
+    sea draws sea water.
+  - A Water Bottle put down as a block keeps its grade when picked up or broken again.
+  - The Shaker won't take a sea-water bottle.
+  - With Jade installed, looking at a Barrel of water shows its grade.
+
 ### Fixed
 
 - With AppleSkin, an item's tooltip shows how much thirst and quenched it restores again, even when
   your thirst bar is full. In Survival the droplets used to shrink or disappear as the bar filled.
+- With Kaleidoscope Chinese Food and Kaleidoscope Tavern, a Tap filling a Kaleidoscope Cookery Stockpot
+  or Teapot keeps the water's grade, and the Teapot brews no tea from sea water it drew.
 - With Miner's Delight, a Water Cup pours into a hanging pot or a distiller and an empty Copper Cup
   draws from one, a bucket's worth at a time, keeping the water's grade.
 - With Cold Sweat, its Waterskin pours into a hanging pot or a distiller and an empty one draws from

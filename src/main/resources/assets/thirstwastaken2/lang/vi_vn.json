@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "Thêm vật phẩm với giá trị của đồ uống có tag, rồi chỉnh ở dưới. Chữ xám là phần gợi ý hoàn tất ID.",
   "thirstwastaken2.message.boiling": "Đang đun: %s%%",
   "thirstwastaken2.message.boiled": "Nước đã sôi",
-  "thirstwastaken2.message.cannot_boil_salt": "Đun sôi không khử được muối"
+  "thirstwastaken2.message.cannot_boil_salt": "Đun sôi không khử được muối",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "Nước biển sẽ làm hỏng thùng ủ",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "Nước biển sẽ làm hỏng ly cocktail",
+  "thirstwastaken2.message.barrel_takes_buckets": "Thùng ủ chỉ nhận nước từ xô"
 }

@@ -1,0 +1,192 @@
+// Kaleidoscope Tavern in a real client: water keeps its grade through the barrel, two grades poured
+// together keep the worse, sea water is refused by the barrel and the shaker, a tap copies a Dirty
+// cauldron's grade and samples a waterlogged slab in the sea, a water bottle the tap fills keeps its
+// grade when broken, and a sea-water bottle shift-placed and picked up again comes back salty. It runs
+// on every node with the integration, 1.21.1-neoforge and the Fabric ones from 1.21.1 on; 1.20.1 has its
+// own copy in that version's NBT. Run it unattended in a singleplayer world:
+//     ./gradlew ":<node>:runClient" -Pagent=tools/agent/integrations/kaleidoscope-tavern.jsonl -Pquickplay=TavernAgent
+// TavernAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> TavernAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/kaleidoscope-tavern.jsonl --verify --max-age 15
+// Every "execute" line checks that it said "Test passed", and the captures in
+// run/<node>/agent/client/screenshots/ show Jade's line beside a barrel of Dirty water, looked at from a
+// side block with no block entity of its own, and on the salty cauldron a tap filled.
+//
+// canteenRefused passes only on Fabric, where Refabricated's barrel would hand a canteen back as a
+// bucket and so refuses it; on NeoForge the canteen goes in, and that line is the only one that may fail.
+//
+// The barrel is three blocks a side, placed by the player like any block, with its one block entity at
+// the bottom centre (0 200 0) and its lid at the top centre (0 202 0), which takes containers while it
+// is open, as it is when placed. The lid is clicked by standing on it and looking straight down. Each
+// tap is opened by a redstone block above it. A grade is stored on the barrel as one int,
+// thirstwastaken2:water_quality: 1 to 4 for Dirty, Murky, Clean and Pure, 5 for sea water, as a cauldron
+// stores it in its purity property.
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "arrived", "command": "client.state"}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -16 -8 15 8"}}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:slow_falling 600 0 true"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+{"id": "view", "command": "server.command", "args": {"command": "tp @p 0.5 202 4.5 180 20"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -16 200 -8 15 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -16 199 -8 15 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -16 190 -8 15 212 8 minecraft:plains"}}
+{"id": "ocean", "command": "server.command", "args": {"command": "fillbiome 6 192 -4 11 208 7 minecraft:ocean"}}
+
+// The barrel, placed by hand from four blocks south, looking at the floor where its centre goes.
+{"id": "clearBarrel", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "barrelItem", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with kaleidoscope_tavern:barrel"}}
+{"id": "aimBarrel", "command": "server.command", "args": {"command": "tp @p 0.5 200 4.5 180 22"}}
+{"id": "settleBarrel", "command": "wait", "args": {"ticks": 20}}
+{"id": "placeBarrel", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "placedBarrel", "command": "wait", "args": {"ticks": 10}}
+{"id": "barrelBuilt", "command": "server.command", "args": {"command": "execute if block 0 202 0 kaleidoscope_tavern:barrel[layer=ceiling,index=4]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A Dirty bucket poured into the barrel and drawn back out with a fresh bucket is still Dirty. A fresh
+// one, since on Fabric the bucket emptied keeps its components. Without the integration it came back
+// plain, which reads as defaultPurity, Clean.
+{"id": "dirtyBucketA", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "onLidA", "command": "server.command", "args": {"command": "tp @p 0.5 203 0.5 0 90"}}
+{"id": "settleA", "command": "wait", "args": {"ticks": 20}}
+{"id": "pourA", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredA", "command": "wait", "args": {"ticks": 10}}
+{"id": "barrelAHolds", "command": "server.command", "args": {"command": "data get block 0 200 0"}}
+{"id": "barrelAGraded", "command": "server.command", "args": {"command": "execute if data block 0 200 0 {\"thirstwastaken2:water_quality\":1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "emptiedA", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "freshBucketA", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "drawA", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "drawnA", "command": "wait", "args": {"ticks": 10}}
+{"id": "stillDirtyA", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "barrelAForgot", "command": "server.command", "args": {"command": "execute unless data block 0 200 0 {\"thirstwastaken2:water_quality\":1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// Pure then Dirty: the barrel keeps the worse, as a cauldron does, and hands Dirty back for both buckets.
+{"id": "pureBucketB", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=3,thirstwastaken2:water_salty=false]"}}
+{"id": "pourPureB", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredPureB", "command": "wait", "args": {"ticks": 10}}
+{"id": "barrelBPure", "command": "server.command", "args": {"command": "execute if data block 0 200 0 {\"thirstwastaken2:water_quality\":4}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "dirtyBucketB", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "pourDirtyB", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredDirtyB", "command": "wait", "args": {"ticks": 10}}
+{"id": "barrelBWorse", "command": "server.command", "args": {"command": "execute if data block 0 200 0 {\"thirstwastaken2:water_quality\":1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "freshBucketB1", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "drawB1", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "drawnB1", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirtyB1", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "barrelBStill", "command": "server.command", "args": {"command": "execute if data block 0 200 0 {\"thirstwastaken2:water_quality\":1}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "freshBucketB2", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "drawB2", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "drawnB2", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirtyB2", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// Sea water is refused, and the click is used up: the bucket stays full in the hand and is not emptied
+// over the lid.
+{"id": "seaBucketC", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "pourSeaC", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredSeaC", "command": "wait", "args": {"ticks": 10}}
+{"id": "seaKeptC", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "noSeaInBarrelC", "command": "server.command", "args": {"command": "execute unless data block 0 200 0 {\"thirstwastaken2:water_quality\":5}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "noSpillC", "command": "server.command", "args": {"command": "execute unless block 0 203 0 minecraft:water"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// Jade from the side, on a block of the barrel with no block entity of its own: the reader goes through
+// the barrel's origin.
+{"id": "dirtyBucketJ", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "pourJ", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredJ", "command": "wait", "args": {"ticks": 10}}
+{"id": "emptyHandJ", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:air"}}
+{"id": "lookAtBarrel", "command": "server.command", "args": {"command": "tp @p 0.5 200 3.5 180 0"}}
+{"id": "settleJ", "command": "wait", "args": {"ticks": 40}}
+{"id": "jadeBarrel", "command": "client.capture", "args": {"name": "kaleidoscope-tavern-barrel-jade"}}
+{"id": "backOnLid", "command": "server.command", "args": {"command": "tp @p 0.5 203 0.5 0 90"}}
+{"id": "freshBucketJ", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:bucket"}}
+{"id": "settleJ2", "command": "wait", "args": {"ticks": 20}}
+{"id": "drawJ", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "drawnJ", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirtyJ", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A canteen stays a canteen. On Fabric the barrel refuses it, and canteenRefused checks that it still
+// holds its two servings; on NeoForge it is poured in, and that line fails there, as it must.
+{"id": "canteenD", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2,thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "pourCanteenD", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pouredCanteenD", "command": "wait", "args": {"ticks": 10}}
+{"id": "stillCanteen", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "canteenRefused", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A tap on a Dirty water cauldron fills the empty cauldron below with Dirty water. The source is not
+// drained, by the mod's design.
+{"id": "sourceT1", "command": "server.command", "args": {"command": "setblock 5 201 1 minecraft:water_cauldron[level=3,purity=1]"}}
+{"id": "tapT1", "command": "server.command", "args": {"command": "setblock 5 201 0 kaleidoscope_tavern:tap[facing=north]"}}
+{"id": "belowT1", "command": "server.command", "args": {"command": "setblock 5 200 0 minecraft:cauldron"}}
+{"id": "openT1", "command": "server.command", "args": {"command": "setblock 5 202 0 minecraft:redstone_block"}}
+{"id": "pouringT1", "command": "wait", "args": {"ticks": 100}}
+{"id": "dirtyT1", "command": "server.command", "args": {"command": "execute if block 5 200 0 minecraft:water_cauldron[level=3,purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A tap on a waterlogged slab in the ocean draws sea water: the cauldron below is salty. Stone walls the
+// slab in, since water flows out of a waterlogged slab's open sides.
+{"id": "wallT2", "command": "server.command", "args": {"command": "fill 8 200 1 10 202 2 minecraft:stone"}}
+{"id": "sourceT2", "command": "server.command", "args": {"command": "setblock 9 201 1 minecraft:oak_slab[type=bottom,waterlogged=true]"}}
+{"id": "tapT2", "command": "server.command", "args": {"command": "setblock 9 201 0 kaleidoscope_tavern:tap[facing=north]"}}
+{"id": "belowT2", "command": "server.command", "args": {"command": "setblock 9 200 0 minecraft:cauldron"}}
+{"id": "openT2", "command": "server.command", "args": {"command": "setblock 9 202 0 minecraft:redstone_block"}}
+{"id": "pouringT2", "command": "wait", "args": {"ticks": 100}}
+{"id": "cauldronT2", "command": "server.command", "args": {"command": "data get block 9 200 0"}}
+{"id": "filledT2", "command": "server.command", "args": {"command": "execute if block 9 200 0 minecraft:water_cauldron"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "saltyT2", "command": "server.command", "args": {"command": "execute if block 9 200 0 minecraft:water_cauldron[purity=5]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "lookAtT2", "command": "server.command", "args": {"command": "tp @p 9.5 200 2.5 180 30"}}
+{"id": "settleT2", "command": "wait", "args": {"ticks": 40}}
+{"id": "jadeT2", "command": "client.capture", "args": {"name": "kaleidoscope-tavern-tap-jade"}}
+
+// A tap on a Dirty cauldron over a placed empty bottle makes a placed water bottle, which keeps the grade
+// beside it and drops a Dirty bottle when broken.
+{"id": "sourceT3", "command": "server.command", "args": {"command": "setblock 13 201 1 minecraft:water_cauldron[level=3,purity=1]"}}
+{"id": "tapT3", "command": "server.command", "args": {"command": "setblock 13 201 0 kaleidoscope_tavern:tap[facing=north]"}}
+{"id": "belowT3", "command": "server.command", "args": {"command": "setblock 13 200 0 kaleidoscope_tavern:empty_bottle"}}
+{"id": "openT3", "command": "server.command", "args": {"command": "setblock 13 202 0 minecraft:redstone_block"}}
+{"id": "pouringT3", "command": "wait", "args": {"ticks": 100}}
+{"id": "bottledT3", "command": "server.command", "args": {"command": "execute if block 13 200 0 kaleidoscope_tavern:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "breakT3", "command": "server.command", "args": {"command": "setblock 13 200 0 minecraft:air destroy"}}
+{"id": "droppedT3", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirtyDropT3", "command": "server.command", "args": {"command": "execute positioned 13.5 200.5 0.5 if items entity @e[type=item,distance=..2,limit=1,sort=nearest] contents minecraft:potion[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A sea-water bottle shift-placed on the floor and picked up again by hand comes back salty. Without the
+// integration it came back fresh and drinkable.
+{"id": "clearP", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "seaBottleP", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_salty=true]"}}
+{"id": "aimP", "command": "server.command", "args": {"command": "tp @p -5.5 200 2.5 180 39"}}
+{"id": "settleP", "command": "wait", "args": {"ticks": 20}}
+{"id": "crouchP", "command": "client.key", "args": {"key": "sneak", "down": true}}
+{"id": "crouchedP", "command": "wait", "args": {"ticks": 10}}
+{"id": "placeP", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "placedP", "command": "wait", "args": {"ticks": 10}}
+{"id": "crouchKeyUpP", "command": "client.key", "args": {"key": "sneak", "down": false}}
+{"id": "standDownP", "command": "client.key", "args": {"key": "sneak", "down": true}}
+{"id": "standWaitP", "command": "wait", "args": {"ticks": 2}}
+{"id": "standUpP", "command": "client.key", "args": {"key": "sneak", "down": false}}
+{"id": "standingP", "command": "wait", "args": {"ticks": 10}}
+{"id": "bottlePlacedP", "command": "server.command", "args": {"command": "execute if block -6 200 0 kaleidoscope_tavern:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "emptyHandP", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pickUpP", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pickedUpP", "command": "wait", "args": {"ticks": 10}}
+{"id": "bottleGoneP", "command": "server.command", "args": {"command": "execute unless block -6 200 0 kaleidoscope_tavern:water_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "stillSaltyP", "command": "server.command", "args": {"command": "execute if items entity @p container.* minecraft:potion[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// The shaker refuses a sea-water bottle, which stays in the hand, and takes a Dirty one, handing back
+// the glass bottle.
+{"id": "shaker", "command": "server.command", "args": {"command": "setblock -6 200 -4 kaleidoscope_tavern:shaker"}}
+{"id": "clearS", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "seaBottleS", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_salty=true]"}}
+{"id": "aboveShaker", "command": "server.command", "args": {"command": "tp @p -5.5 201.5 -3.5 0 90"}}
+{"id": "settleS", "command": "wait", "args": {"ticks": 20}}
+{"id": "shakeSea", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "shookSea", "command": "wait", "args": {"ticks": 10}}
+{"id": "seaRefusedS", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "dirtyBottleS", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "shakeDirty", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "shookDirty", "command": "wait", "args": {"ticks": 10}}
+{"id": "dirtyTakenS", "command": "server.command", "args": {"command": "execute unless items entity @p weapon.mainhand minecraft:potion"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}

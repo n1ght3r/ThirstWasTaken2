@@ -55,6 +55,25 @@ public final class JadeIntegration implements IWailaPlugin {
         CONTAINERS.add(container);
     }
 
+    /**
+     * Blocks that keep their water on a block entity somewhere else, as each part of Kaleidoscope Tavern's
+     * eight-block barrel does on the one block entity it shares, so the block under the crosshair has none
+     * of its own. Asked for every block Jade looks at, so a reader rules out a block that is not its own
+     * first, and answers null for it. Added to and read as {@link #CONTAINERS} is.
+     */
+    private static final List<BlockWater> BLOCKS = new ArrayList<>();
+
+    /** @see #BLOCKS */
+    public static void addBlock(BlockWater block) {
+        BLOCKS.add(block);
+    }
+
+    /** The water a block keeps elsewhere, or null; see {@link #BLOCKS}. */
+    @FunctionalInterface
+    public interface BlockWater {
+        WaterQuality held(Level level, BlockPos pos, BlockState state);
+    }
+
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         // Registered on Block rather than LiquidBlock, because a waterlogged block holds water that a
@@ -138,6 +157,7 @@ public final class JadeIntegration implements IWailaPlugin {
             // A block that holds its water somewhere an integration knows about answers first: it has
             // the grade already, where everything below has to read a blockstate or sample the world.
             WaterQuality held = fromContainer(accessor.getBlockEntity());
+            if (held == null) held = fromBlock(accessor.getLevel(), accessor.getPosition(), accessor.getBlockState());
             if (held != null) {
                 tooltip.add(line(held));
                 return;
@@ -162,6 +182,14 @@ public final class JadeIntegration implements IWailaPlugin {
             if (blockEntity == null) return null;
             for (Function<BlockEntity, WaterQuality> container : CONTAINERS) {
                 WaterQuality quality = container.apply(blockEntity);
+                if (quality != null) return quality;
+            }
+            return null;
+        }
+
+        private static WaterQuality fromBlock(Level level, BlockPos pos, BlockState state) {
+            for (BlockWater block : BLOCKS) {
+                WaterQuality quality = block.held(level, pos, state);
                 if (quality != null) return quality;
             }
             return null;

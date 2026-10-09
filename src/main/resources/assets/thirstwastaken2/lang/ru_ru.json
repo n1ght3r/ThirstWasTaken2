@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "Добавляет предмет со значением напитков с тегом, для правки ниже. Серый текст дополняет ID.",
   "thirstwastaken2.message.boiling": "Кипячение: %s%%",
   "thirstwastaken2.message.boiled": "Вода прокипячена",
-  "thirstwastaken2.message.cannot_boil_salt": "Кипячение не убирает соль"
+  "thirstwastaken2.message.cannot_boil_salt": "Кипячение не убирает соль",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "Морская вода испортит бочку",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "Морская вода испортит коктейль",
+  "thirstwastaken2.message.barrel_takes_buckets": "В бочку можно налить воду только из ведра"
 }

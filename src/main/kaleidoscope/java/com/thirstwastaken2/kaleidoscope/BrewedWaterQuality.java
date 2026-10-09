@@ -5,13 +5,16 @@ import com.thirstwastaken2.purity.WaterPurity;
 import com.thirstwastaken2.purity.WaterQuality;
 import com.thirstwastaken2.platform.Vanilla;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
@@ -56,6 +59,29 @@ public final class BrewedWaterQuality {
                                   Consumer<WaterQuality> scooped, Supplier<ItemStack> pickup) {
         scooped.accept(sample(level, pos, state));
         return pickup.get();
+    }
+
+    /**
+     * Kaleidoscope Tavern's tap about to fill the stockpot or the teapot below {@code tapPos}, which
+     * Kaleidoscope Chinese Food lets it do through accessors of its own, past {@code addSoupBase} and
+     * {@code addTeaFluid}. The block is handed the grade of the tap's source first, so the save and the sync
+     * the addon makes right after carry it: a water cauldron's own grade, or the world's water behind a
+     * waterlogged block sampled where it lies, sea water included. Lava, or a tap whose facing cannot be
+     * read, holds no grade, which also clears what the last fill left.
+     */
+    public static void tapped(Level level, BlockPos tapPos, BlockState source) {
+        if (level.getBlockEntity(tapPos.below()) instanceof BrewedWater block) {
+            block.thirst$holdWater(tappedWater(level, tapPos, source));
+        }
+    }
+
+    private static WaterQuality tappedWater(Level level, BlockPos tapPos, BlockState source) {
+        if (source.is(Blocks.WATER_CAULDRON)) return WaterPurity.storedQuality(source);
+        if (!source.getFluidState().is(FluidTags.WATER)) return null;
+        BlockState tap = level.getBlockState(tapPos);
+        if (!tap.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) return null;
+        Direction facing = tap.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        return WaterPurity.sampleAt(level, tapPos.relative(facing.getOpposite()));
     }
 
     /** Whether a block holds sea water: {@code held} is its {@code thirst$heldWater}, null for none. */

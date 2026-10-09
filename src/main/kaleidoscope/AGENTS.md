@@ -60,6 +60,8 @@ kaleidoscope/java/com/thirstwastaken2/kaleidoscope/
   mixin/ItemUtilsMixin             stamps the bucket both blocks hand back through ItemUtils
   mixin/ItemUtilsPlayerMixin       the same through giveItemToPlayer, which only Refabricated has
   mixin/InventoryMixin             the same where Refabricated's teapot fills a bucket in the slot
+  mixin/TapCookeryMixin            Kaleidoscope Tavern's tap into either block, which only Kaleidoscope
+                                   Chinese Food adds
 kaleidoscope/resources/
   thirstwastaken2.kaleidoscope.mixins.json
 ../../client/kaleidoscope/java/com/thirstwastaken2/client/kaleidoscope/
@@ -79,11 +81,15 @@ so the grade lives in a `@Unique` field on the block entity, saved as one int un
   `thirst$heldWater` answers null otherwise, which is what is saved, what Jade shows and what a remove
   call stamps. Every way into that state writes the field again, so a stale value is never read and
   nothing needs clearing when the soup is served.
-  **One way does not, yet**: with Kaleidoscope Tavern and Kaleidoscope Chinese Food installed, a tap
-  fills either block through the addon's own accessors, past `addSoupBase` and `addTeaFluid`, so the
-  field keeps whatever the last fill left (null, or a stale grade). Step 5b of
-  [KALEIDOSCOPE-TAVERN-INTEGRATION.md](../../../docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md)
-  is the fix.
+  **A tap writes it too.** With Kaleidoscope Tavern and Kaleidoscope Chinese Food installed, a tap fills
+  either block through the addon's own accessors, in `kcf$fillCookery`, a method the addon's mixin merges
+  into Tavern's `TapBlock`, past `addSoupBase` and `addTeaFluid`. `TapCookeryMixin` hands the block the
+  grade at that method's head, before the addon saves and syncs it: a water cauldron's own grade, or the
+  world's water behind a waterlogged block, sampled where it lies (lava, nothing). It names Tavern's
+  tap by string and none of Tavern's classes, so it lives here. It is applied only where
+  `KaleidoscopePresence.hasChineseFoodTap` finds the addon's mixin still declaring that method, at a
+  priority above the addon's so the method is merged first, with `require = 0` so a renamed one skips
+  it rather than fail the game.
 - **Out wherever the bucket lands while a remove call runs.** `ReturnedWater.during` holds the grade
   for the length of the call and restores what was there however it ends. It is a `ThreadLocal`
   because both blocks run their calls on the client too, and in single player the two threads run them

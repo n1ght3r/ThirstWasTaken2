@@ -75,6 +75,11 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Croptopia',
     icon: 'https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png',
     link: '/docs/integrations/croptopia'
+  },
+  {
+    name: 'Kaleidoscope Tavern',
+    icon: 'https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png',
+    link: '/docs/integrations/kaleidoscope-tavern'
   }
 ]
 

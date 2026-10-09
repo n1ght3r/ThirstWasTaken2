@@ -65,7 +65,7 @@ node's `fabric.mod.json` at the pinned version before adding anything.
 
 | Place | What it does with water | What happens to the grade today |
 |---|---|---|
-| **Barrel** (`BarrelBlockEntity`, a 2×2×2 multiblock) | holds one bucket (`MAX_FLUID_AMOUNT`) of any fluid. With water plus sugar cane, potato or wheat it ferments rum, vodka or whiskey; any fluid and ingredients no recipe matches ferment into 16 vinegar. Water can be **taken back out** with a bucket while the lid is open and it is not brewing | **lost both ways.** The tank keeps a fluid and nothing else. Refabricated's `fillItem` even hands over `fluid.getBucket().getDefaultInstance()`, a fresh bucket |
+| **Barrel** (`BarrelBlockEntity`, a 3×3×3 multiblock) | holds four buckets (`MAX_FLUID_AMOUNT`) of any fluid. With water plus sugar cane, potato or wheat it ferments rum, vodka or whiskey; any fluid and ingredients no recipe matches ferment into 16 vinegar. Water can be **taken back out** with a bucket while the lid is open and it is not brewing | **lost both ways.** The tank keeps a fluid and nothing else. Refabricated's `fillItem` even hands over `fluid.getBucket().getDefaultInstance()`, a fresh bucket |
 | **Tap on a water cauldron** (`WaterCauldronTapBehavior`) | fills an empty or part-full cauldron below to **full**, or a placed empty bottle below into a placed water bottle. The source cauldron is **not drained** | the new cauldron is `WATER_CAULDRON.defaultBlockState()`, so its `purity` value is 0, unset, read as `defaultQuality` (Clean). A Dirty cauldron makes Clean ones |
 | **Tap on any waterlogged block** (`WaterloggedBehavior`, the fallback when no behaviour is registered for the block) | the same two outcomes, from a waterlogged slab, stairs, fence and so on | the water is never sampled: a waterlogged block in the sea or a swamp gives an unset, Clean cauldron |
 | **Placed water bottle** (`VanillaBottlePlaceEvent`, shift-use with a water bottle; config `WATER_BOTTLE_PLACEMENT`) | turns the bottle into the `water_bottle` block, a plain `BottleBlock` with no block entity. Picked up by hand or broken, its loot table drops `Potions.WATER` | **lost.** The bottle that comes back has no `water_purity` and no `water_salty`, so a Dirty or sea-water bottle comes back Clean and fresh |
@@ -99,19 +99,53 @@ the official mod by an item.
 
 | Step | State |
 |---|---|
-| 1. Build dependency and gate | to do |
-| 2. Thirst values | to do |
-| 3. Investigation: what happens to a grade | to do |
-| 4. The barrel keeps the grade | to do |
-| 5. The tap keeps or samples the grade | to do |
-| 5b. The tap into the stockpot and teapot (Kaleidoscope Chinese Food) | to do |
-| 6. Decision: the placed water bottle | **to decide** |
-| 7. Decision: sea water in the barrel and the shaker | **to decide** |
-| 8. Jade line on the barrel | to do, optional |
-| 9. Docs | to do |
-| 10. Optional seam | to do |
+| 1. Build dependency and gate | done, all eight nodes build |
+| 2. Thirst values | done; spirits at 0, 0 |
+| 3. Investigation: what happens to a grade | done, from the sources and in game; see below |
+| 4. The barrel keeps the grade | done |
+| 5. The tap keeps or samples the grade | done |
+| 5b. The tap into the stockpot and teapot (Kaleidoscope Chinese Food) | built, in `src/main/kaleidoscope`; not run in game with the addon |
+| 6. Decision: the placed water bottle | **decided: (a)**, built |
+| 7. Decision: sea water in the barrel and the shaker | **decided: (a)**, built |
+| 8. Jade line on the barrel | done, from any of its blocks |
+| 9. Docs | done |
+| 10. Optional seam | done: `checkOptionalSeam` passes, boot without the mod, agent script on five nodes |
 
-Steps 1 and 2 ship alone if the rest waits: they are what a player notices first.
+How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/main/kaleidoscopetavern/AGENTS.md).
+
+### What was found, correcting the plan below
+
+- **The barrel is three blocks a side** (27 blocks, `LAYER` floor, wall, ceiling, `INDEX` 0 to 8), one
+  block entity at the bottom centre, the lid at the top centre. It holds **four buckets**
+  (`MAX_FLUID_AMOUNT = 4000`) on every branch, not one.
+- **Refabricated does eat our containers** (step 3.2), and worse than the plan feared: `emptyItem` hands
+  back `onConsumed(result)`, an empty bucket for any fluid container that is not a bucket, and `fillItem`
+  hands back `resource.getFluid().getBucket()`, a full bucket, whatever was held out, so an empty canteen
+  drew a whole bucket for one serving. The barrel refuses this mod's containers on Fabric. Not reported
+  upstream yet.
+- **The barrel's tank names a loader on both builds** (NeoForge or Forge `FluidTank`, Fabric
+  `SingleVariantStorage`). Both build a `BarrelRecipeContainer` from it, whose `getFluid()` is a plain
+  `Fluid`, so the mixin reads the tank that way and names neither.
+- **A refused container has to use the click up.** The barrel tries `removeFluid` when `addFluid` fails,
+  then passes the click on, and a bucket would empty itself over the lid.
+- **`1.21.1-fabric` does have the Jade plugin** at `compat/jade/ModPlugin`.
+- **Refabricated 26.x needs no Forge Config API Port**; `1.20.1`, `1.21.1` and `1.21.11` require it, and
+  `1.20.1` also Reach Entity Attributes, nested in its jar.
+- **The tap can be opened by redstone** (`neighborChanged`), which is how the agent script drives it.
+- **Kaleidoscope Chinese Food's fill** (step 5b) needs no class of Tavern's: the source and the
+  destination are block states, and the tap's facing gives the source position. So it lives in
+  Cookery's directory, which owns the blocks it writes to, and names Tavern's tap by string.
+- **A waterlogged slab spills water** out of its open sides, and `getBiome` blurs biome cells near
+  their edges; the agent script walls the slab in and paints a wide ocean.
+
+### In game
+
+`tools/agent/integrations/kaleidoscope-tavern.jsonl` on 2026-10-09: every check passed on `1.21.1` and
+`26.3.x`, and on `1.21.1-neoforge` every one but `canteenRefused`, which only Fabric refuses. Its
+`-1.20.1` copy: every check on `1.20.1`, and on `1.20.1-forge` every one but `canteenRefused`. The Jade
+capture reads Dirty from a side block of the barrel, and Salty on the cauldron the tap filled from the
+sea. `smoke/boot.jsonl` with `-PwithoutOptional=kaleidoscope_tavern` came up on `1.21.1-neoforge`. Not run
+yet: `1.21.11`, `26.1.x`, `26.2.x`, and step 5b with Kaleidoscope Chinese Food installed.
 
 ## 1. Build dependency and gate
 
@@ -276,6 +310,10 @@ placed and picked up again is Clean, and a sea-water bottle becomes drinkable. O
   launders, but punishes a Pure bottle put on a shelf.
 - **(d) Accept the loss** and say so in the docs.
 
+**Decided: (a)**, scoped to the one block, in `platform/SavedPositions`. Read and removed in
+`BlockBehaviour.getDrops`, which every drop goes through (breaking, explosions, pistons, picking up by
+hand); a bottle removed without a drop (creative, an arrow, `/setblock`) leaves its entry, which only a
+command-placed bottle in the same place can meet, since shift-use and the tap write the entry afresh.
 **Recommended: (a)**, scoped to the one block. It is the only option that keeps what the player put
 down, and the tap needs somewhere to write to anyway. If it proves fragile in step 3's testing, fall
 back to (c) for sea water only (a placed sea-water bottle comes back salty) and accept the fresh-water
@@ -289,7 +327,7 @@ into perfectly safe rum.
 
 - **(a) The barrel refuses sea water**, from a bucket or a canteen, with the action bar message the keg
   uses. In `addFluid`, before the call, since we read the stack there anyway. **Recommended**, for
-  consistency.
+  consistency. **Decided and built**, with the shaker refusing sea water too.
 - **(b) Sea water ferments into vinegar**, the mod's own result for anything no recipe matches, by
   making the recipe lookup miss when the held grade is salty. Fits the mod, but it hides the reason from
   the player.

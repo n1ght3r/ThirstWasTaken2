@@ -260,5 +260,8 @@
   "thirstwastaken2.config.item_values.add.tooltip": "Lists the item with the value tagged drinks get, to edit below. The grey text completes the id.",
   "thirstwastaken2.message.boiling": "Boiling: %s%%",
   "thirstwastaken2.message.boiled": "The water has boiled",
-  "thirstwastaken2.message.cannot_boil_salt": "Boiling cannot take the salt out"
+  "thirstwastaken2.message.cannot_boil_salt": "Boiling cannot take the salt out",
+  "thirstwastaken2.message.no_sea_water_in_barrel": "Sea water would spoil the barrel",
+  "thirstwastaken2.message.no_sea_water_in_shaker": "Sea water would spoil the cocktail",
+  "thirstwastaken2.message.barrel_takes_buckets": "The barrel only takes water from a bucket"
 }

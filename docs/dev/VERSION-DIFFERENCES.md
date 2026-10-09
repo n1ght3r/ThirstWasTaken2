@@ -144,6 +144,7 @@ versions write `recipe`. Nothing else in the generated files moved.
 
 | Difference | Code |
 |---|---|
+| A saved data type's id is an `Identifier`, not a file name | `platform/SavedPositions.typeId` |
 | An item's crafting remainder is a template, which may be missing | `Vanilla.craftingRemainder`, for the distiller's lava bucket |
 | A container screen extracts its background in `extractBackground` and its tooltips in `extractTooltip`, takes its size in the constructor, and draws the hovered slot's tooltip itself; before, `renderBg`, two size fields, and `render` calling `renderTooltip` | `client/platform/MachineScreen`, which `DistillerScreen` extends |
 | The cauldron interaction maps became `CauldronInteractions`' dispatchers, asked with the stack and answering a do-nothing default; before, `CauldronInteraction`'s maps by item (`InteractionMap.map()`, a plain map on 1.20.1) | `Vanilla.cauldronHasInteraction` |
@@ -214,6 +215,7 @@ already has by default. The stack the furnace hands out is the same; see
 | Tests register through the test function registry, and the server writes its own JUnit report with `--report` | NeoForge `ThirstWasTaken2GameTests` and `build.neoforge.gradle.kts`; before it the harness registers and reports itself |
 | A `CompoundTag`'s getters answer with an `Optional` or a fallback | `Vanilla.getString`, `getInt`, which `DrinkingUpgradeContainer.handlePacket` (Sophisticated) calls |
 | A block entity saves through `ValueOutput` and loads through `ValueInput`, and `ContainerHelper` takes those | `platform/SavedBlockEntity` |
+| Saved data is a `SavedDataType` with a codec and no `save` method | `platform/SavedPositions`, the placed water bottles of Kaleidoscope Tavern |
 | A block entity that is a container spills its contents itself when removed; before, the block did it in `onRemove` | `SupportedBlock`, which does it before 1.21.5 for any such block entity |
 | A villager profession is a registry key, and a trade's `getOffer` takes the level | `Loader.addVillagerTrade`, `TestFixtures.noviceOffers` |
 
@@ -274,6 +276,7 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | A container screen does not dim the world behind itself; `renderBackground` is asked to | `client/platform/MachineScreen` |
 | `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
 | A block entity saves to a tag alone and loads through `load`, and its update tag takes no registries | `platform/SavedBlockEntity`; `MachineSeamsGameTest` saves and loads one the way the chunk does |
+| Saved data is made by a loader function handed to `computeIfAbsent` and saved to a tag alone; from 1.20.5 a `SavedData.Factory` and a save that takes registries | `platform/SavedPositions` |
 | `getUseDuration` takes no entity; no `hasInfiniteMaterials`, `blockInteractionRange` or white smoke | `DrinkItem`, `Vanilla.hasInfiniteMaterials`, `Vanilla.blockReach`, `Vanilla.steamParticle` (a cloud) |
 | Hover text is handed the level; `FoodData` adds food through `eat(int, float)`; the cauldron is told its weather by a predicate | `ItemStackMixin`, `FoodDataMixin`, `BlocksMixin` |
 | No GUI sprite atlas: vanilla's HUD icons are regions of `textures/gui/icons.png` | `ClientVanilla.blitSprite` knows the food icons the config preview draws; the dev `GuiDrawMixin` records food and air from `blit` |

@@ -66,6 +66,10 @@ means the exact release a call changed in was not pinned down; with no node betw
 `SupportedBlock` hands a block one `supportChanged` call when the block below it changes, and breaks the
 block first when `canSurvive` no longer holds.
 
+`SavedPositions` is one too: one small int per block position kept with a level, for a block with no
+block entity of its own (Kaleidoscope Tavern's placed water bottle). Saved data's save is an override
+before 1.21.5 and a codec from it, and its id an `Identifier` from 26.1.
+
 `SavedBlockEntity` is a class for the same reason: a block entity's save and load are overrides, whose
 shape changed in 1.20.5 and again in 1.21.5. It hands the mod's block entities one `save` and `load`
 over a small `Output` and `Input` of named values and one list of items, and sends what it saves to the
