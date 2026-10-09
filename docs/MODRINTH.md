@@ -216,7 +216,7 @@ Change every setting in game, with a live preview of the thirst bar. Open it thr
 </details>
 
 <details>
-<summary><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <b>Kaleidoscope Cookery, its addons and Kaleidoscope Tavern</b>, click to expand</summary>
+<summary><img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> <b>Kaleidoscope mods</b>, click to expand</summary>
 <br>
 
 <table>
@@ -362,6 +362,12 @@ Also works with:
     <td>26.1.x, 26.2 (Create Fly)</td>
     <td>1.21.1</td>
     <td>yes</td>
+  </tr>
+  <tr>
+    <td><img alt="Create Pipes n Physics icon" src="https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create#create-pipes-n-physics">Create Pipes n Physics</a></td>
+    <td>–</td>
+    <td>1.21.1</td>
+    <td>–</td>
   </tr>
   <tr>
     <td><img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/sophisticated-backpacks">Sophisticated Backpacks</a><br><img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/sophisticated-storage">Sophisticated Storage</a></td>

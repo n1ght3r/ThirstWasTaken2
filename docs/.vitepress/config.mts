@@ -64,7 +64,7 @@ const manualSidebar = [
         items: LETS_DO.map(sidebarMod)
       },
       {
-        // Kaleidoscope Cookery and its addons, the same way.
+        // The Kaleidoscope mods under Kaleidoscope Cookery, the same way.
         ...sidebarMod(KALEIDOSCOPE_COOKERY),
         collapsed: true,
         items: KALEIDOSCOPE_ADDONS.map(sidebarMod)

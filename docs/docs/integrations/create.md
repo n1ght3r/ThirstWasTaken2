@@ -5,7 +5,8 @@ pipes, pumps, Spouts and drains.
 
 ::: warning Supported versions
 - Fabric, Minecraft 26.2 and 26.1.2: ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly).
-- NeoForge, Minecraft 1.21.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.10, with or without ![](https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp){.mod-icon} [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) 3.2.1.
+- NeoForge, Minecraft 1.21.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.10.
+  - Optional: ![](https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp){.mod-icon} [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) 3.2.1, see [below](#create-pipes-n-physics).
 - Forge, Minecraft 1.20.1: ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) 6.0.8.
 
 Other versions ignore Create.

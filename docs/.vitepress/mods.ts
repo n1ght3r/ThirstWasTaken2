@@ -75,11 +75,6 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Croptopia',
     icon: 'https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png',
     link: '/docs/integrations/croptopia'
-  },
-  {
-    name: 'Kaleidoscope Tavern',
-    icon: 'https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png',
-    link: '/docs/integrations/kaleidoscope-tavern'
   }
 ]
 
@@ -138,7 +133,8 @@ export const LETS_DO: Mod[] = [
   }
 ]
 
-// Kaleidoscope Cookery and its addons, grouped the same way, in kaleidoscope-cookery/.
+// The Kaleidoscope mods, grouped under Kaleidoscope Cookery the same way: its addons Flora and Chinese
+// Food in kaleidoscope-cookery/, then Kaleidoscope Tavern, a mod of its own that keeps its page outside.
 export const KALEIDOSCOPE_COOKERY: Mod = {
   name: 'Kaleidoscope Cookery',
   icon: 'https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png',
@@ -155,5 +151,10 @@ export const KALEIDOSCOPE_ADDONS: Mod[] = [
     name: 'Kaleidoscope Chinese Food',
     icon: 'https://cdn.modrinth.com/data/cuIIkdlx/748a556a3658f0a5f67068f4d8d5cf0041b794a7.png',
     link: '/docs/integrations/kaleidoscope-cookery/kaleidoscope-chinese-food'
+  },
+  {
+    name: 'Kaleidoscope Tavern',
+    icon: 'https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png',
+    link: '/docs/integrations/kaleidoscope-tavern'
   }
 ]

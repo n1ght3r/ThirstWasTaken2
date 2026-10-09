@@ -7,7 +7,7 @@ const groups: { title: string; mods: Mod[] }[] = [
   { title: 'Integrations', mods: [...SHOWS_ONLY, ...INTEGRATIONS] },
   { title: "Farmer's Delight and its addons", mods: [FARMERS_DELIGHT, ...DELIGHT_ADDONS] },
   { title: "Let's Do mods", mods: [FARM_AND_CHARM, ...LETS_DO] },
-  { title: 'Kaleidoscope Cookery and its addons', mods: [KALEIDOSCOPE_COOKERY, ...KALEIDOSCOPE_ADDONS] }
+  { title: 'Kaleidoscope mods', mods: [KALEIDOSCOPE_COOKERY, ...KALEIDOSCOPE_ADDONS] }
 ]
 </script>
 
