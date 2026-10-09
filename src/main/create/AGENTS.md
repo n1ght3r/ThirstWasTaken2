@@ -15,7 +15,11 @@ the same filter for it lives in [src/main/createforge](../createforge/AGENTS.md)
 java/com/thirstwastaken2/create/
   CreatePresence          the gate: FML's mod file for `create`, and a marker class inside it
   CreateEntrypoint        a second @Mod class for the mod id; FML constructs it next to the loader's own
-  CreateMixinPlugin       applies the mixins below only when the gate passes
+  CreateMixinPlugin       applies the mixins below only when the gate passes, BoundaryColumnMixin only
+                          when PipesPresence passes too
+  PipesPresence           the gate for Create Pipes n Physics: its mod file, and the engine methods read
+                          off its class file
+  IntakeSamples           the quality at each open pipe end that addon probes, by position
   SandFilter              block, item, block entity type, fluid capability, creative tab entry
   SandFilterBlock         IBE and IWrenchable; the comparator reads the output tank
   SandFilterBlockEntity   two one-bucket tanks, the transfer, and the goggle tooltip
@@ -23,7 +27,8 @@ java/com/thirstwastaken2/create/
 resources/
   thirstwastaken2.create.mixins.json
   assets/…                copies of the Create Fly blockstate, model and texture
-  data/…                  recipe, recipe unlock, loot table (NeoForge conditions), pickaxe tag
+  data/…                  recipe, recipe unlock, loot table (NeoForge conditions), pickaxe tag, and
+                          pipesnphysics:separate_ports
 ```
 
 ## How it stays optional
@@ -63,6 +68,39 @@ does not remap, so none of the Create Fly workarounds apply.
 - **Goggles** read `IHaveGoggleInformation` straight off the block entity, as every Create block
   entity on NeoForge does, so there is no client-only half.
 
+## Create Pipes n Physics
+
+[Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) (`pipesnphysics`, NeoForge
+1.21.1 only) replaces the transport of Create's pipes and pumps with its own engine. It copies stacks
+with their components and compares them with `isSameFluidSameComponents`, so grades already travel
+and never merge. Two things needed fixing, both here, since they only matter where the Sand Filter and
+the mixins above exist. It has no deps key and nothing compiles against it. The plan, and what was
+found in game, are in
+[PIPES-N-PHYSICS-INTEGRATION.md](../../../docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md).
+
+- **The Sand Filter is two ports.** The engine joins every pipe touching a handler into one network
+  and asks the `null` side, the output tank, for the upstream fluid, so the filter's output never left.
+  `data/pipesnphysics/tags/block/separate_ports.json` puts the filter in the addon's own tag, behind a
+  `neoforge:mod_loaded` condition.
+- **The intake probe is stamped.** The engine plans from a plain `FluidStack` it builds for an open
+  pipe end (`BoundaryColumn.drinkableSource`), then drains through Create's `removeFluidFromSpace`,
+  which `OpenEndedPipeMixin` stamps, and moves nothing when the two differ. `BoundaryColumnMixin`
+  stamps the first probe in `intakeFluid`, the pipe's own mouth, with `IntakeSamples`, which samples
+  the way `SampledWater` does. It leaves the probe plain when the mouth is on a Sable sub-level
+  (`worldOutputPos` differs from the mouth): the addon drains that one itself, unstamped, and our
+  `@ModifyReturnValue` never runs on its cancelled path.
+
+`BoundaryColumnMixin` is `@Pseudo` with a string target, in this directory's mixin config, and its
+injector is `require = 0`. The addon says its engine classes move between releases, and a `@Shadow`
+that finds nothing fails the class, so `PipesPresence` reads `BoundaryColumn`'s class file out of the
+addon's jar and the plugin applies the mixin only when `drinkableSource`, `worldOutputPos` and
+`intakeFluid` are there with 3.2.1's descriptors. Otherwise it logs a warning and intake is back to
+moving nothing, with no crash.
+
+Its `runClientMod` line sits under Create's in `build.neoforge.gradle.kts`, commented out like it,
+pinned by Modrinth version id and bumped by hand. 3.2.1 crashes a client without Sable on the first
+windowed Fluid Tank: set `fluidTiltEnabled = false` in `run/1.21.1-neoforge/config/pipesnphysics-client.toml`.
+
 ## Testing
 
 The gametests run without Create and prove the node still loads without it. With Create, drive
@@ -92,5 +130,8 @@ servings of the tank's grade, and 750 mB gone from the Spout's 1000, so one fill
 Item Drain empty a dirty water bowl (250 mB of `water_purity: 0`). Create reaches them through the
 capability; the item mixins stamp the result again, to the same grade.
 
-Not yet checked in game: the Hose Pulley. A creative motor placed by command would not turn the pulley
-the lowering way.
+[tools/agent/integrations/pipesnphysics-water.jsonl](../../../tools/agent/integrations/pipesnphysics-water.jsonl)
+does the same with Create Pipes n Physics, nine rows; its header says what each should read. Run on
+2026-10-09, every row passed, the Hose Pulley among them. A Hose Pulley takes its pipe on the side
+counter-clockwise of its `facing`, not on top, and a creative motor at `ScrollValue:-32` on the other
+side lowers the hose. With Create alone the pulley is still not checked.

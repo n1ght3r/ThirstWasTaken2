@@ -6,7 +6,7 @@
 // fluidTiltEnabled = false in run/1.21.1-neoforge/config/pipesnphysics-client.toml. See
 // docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md.
 //
-// Six rows, read with client.command; the answers are the "[CHAT]" lines in the client's log:
+// Nine rows, read with client.command; the answers are the "[CHAT]" lines in the client's log:
 // - "seaRead"/"seaCheck": a Mechanical Pump drawing a one-block sea-water pool through an open pipe end
 //   into a Fluid Tank. The tank should hold water with water_salty true, and "seaPool" should fail
 //   (the pool was drunk);
@@ -17,7 +17,13 @@
 // - "pumpedFilter"/"pumpedRead": the same column with a pump under the filter and 1000 mB of Clean
 //   water already in its output: the lower tank should end with 3000 mB of purity 2;
 // - "mixRead": Murky water pumped towards a tank holding 500 mB of Pure water (purity 3) must not
-//   enter it; "mixCheck" passes while the tank still holds 500 mB of purity 3.
+//   enter it; "mixCheck" passes while the tank still holds 500 mB of purity 3;
+// - "cauldronRead"/"cauldronCheck": a water cauldron with purity=2 drawn through an open end by a pump.
+//   The tank should hold water_purity 1 (Murky), and "cauldronLeft" should fail (the cauldron is empty);
+// - "mouthRead"/"mouthCheck": no pump, a sea-water pool on the open top end of a pipe running down into
+//   a tank. The tank should hold water_salty water and "mouthPool" should fail;
+// - "pulleyRead"/"pulleyCheck": a Hose Pulley over a sea-water pool, a pump lifting into a tank. The
+//   tank should hold water_salty water; "pulleyState" shows the hose lowered (Value 1.0).
 //
 //     python tools/agent/new_world.py 1.21.1-neoforge PipesAgent
 //     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/pipesnphysics-water.jsonl -Pquickplay=PipesAgent
@@ -87,6 +93,36 @@
 {"id": "pTankBottom", "command": "server.command", "args": {"command": "setblock -242 202 164 create:fluid_tank"}}
 {"id": "pCog", "command": "server.command", "args": {"command": "setblock -241 203 164 create:cogwheel[axis=y]"}}
 
+// Row 7, z=172: a water cauldron with purity=2 (Murky) -> pump -> tank, through an open pipe end.
+{"id": "cCauldron", "command": "server.command", "args": {"command": "setblock -236 201 172 minecraft:water_cauldron[level=3,purity=2]"}}
+{"id": "cPipeIn", "command": "server.command", "args": {"command": "setblock -237 201 172 create:fluid_pipe[east=true,west=true]"}}
+{"id": "cPump", "command": "server.command", "args": {"command": "setblock -238 201 172 create:mechanical_pump[facing=west]"}}
+{"id": "cPipeOut", "command": "server.command", "args": {"command": "setblock -239 201 172 create:fluid_pipe[east=true,west=true]"}}
+{"id": "cTank", "command": "server.command", "args": {"command": "setblock -240 201 172 create:fluid_tank"}}
+{"id": "cCog", "command": "server.command", "args": {"command": "setblock -238 201 171 create:cogwheel[axis=x]"}}
+
+// Row 8, x=-232 z=164: no pump. A one-block sea-water pool sits on the open top end of a pipe that
+// runs down into a tank.
+{"id": "dTank", "command": "server.command", "args": {"command": "setblock -232 202 164 create:fluid_tank"}}
+{"id": "dPipe1", "command": "server.command", "args": {"command": "setblock -232 203 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "dPipe2", "command": "server.command", "args": {"command": "setblock -232 204 164 create:fluid_pipe[up=true,down=true]"}}
+{"id": "dWall1", "command": "server.command", "args": {"command": "setblock -233 205 164 minecraft:stone"}}
+{"id": "dWall2", "command": "server.command", "args": {"command": "setblock -231 205 164 minecraft:stone"}}
+{"id": "dWall3", "command": "server.command", "args": {"command": "setblock -232 205 163 minecraft:stone"}}
+{"id": "dWall4", "command": "server.command", "args": {"command": "setblock -232 205 165 minecraft:stone"}}
+{"id": "dPool", "command": "server.command", "args": {"command": "setblock -232 205 164 minecraft:water"}}
+
+// Row 9, x=-248 z=151: a Hose Pulley over a 3x3 sea-water pool sunk into the floor. A pulley facing
+// north turns on the x axis and takes its pipe on its west side, not on top; a pump above that pipe
+// pushes up into a tank.
+{"id": "hPool", "command": "server.command", "args": {"command": "fill -249 200 150 -247 200 152 minecraft:water"}}
+{"id": "hPulley", "command": "server.command", "args": {"command": "setblock -248 201 151 create:hose_pulley[facing=north]"}}
+{"id": "hPipe1", "command": "server.command", "args": {"command": "setblock -249 201 151 create:fluid_pipe[east=true,up=true]"}}
+{"id": "hPump", "command": "server.command", "args": {"command": "setblock -249 202 151 create:mechanical_pump[facing=up]"}}
+{"id": "hPipe2", "command": "server.command", "args": {"command": "setblock -249 203 151 create:fluid_pipe[up=true,down=true]"}}
+{"id": "hTank", "command": "server.command", "args": {"command": "setblock -249 204 151 create:fluid_tank"}}
+{"id": "hCog", "command": "server.command", "args": {"command": "setblock -249 202 152 create:cogwheel[axis=y]"}}
+
 {"id": "placed", "command": "wait", "args": {"ticks": 20}}
 {"id": "tFill", "command": "client.command", "args": {"command": "data merge block -236 201 160 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
 {"id": "mFill", "command": "client.command", "args": {"command": "data merge block -236 201 168 {TankContent:{Fluid:{id:\"minecraft:water\",amount:2000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
@@ -103,6 +139,9 @@
 {"id": "tMotor", "command": "server.command", "args": {"command": "setblock -239 201 161 create:creative_motor[facing=east]"}}
 {"id": "mMotor", "command": "server.command", "args": {"command": "setblock -239 201 169 create:creative_motor[facing=east]"}}
 {"id": "pMotor", "command": "server.command", "args": {"command": "setblock -241 202 164 create:creative_motor[facing=up]"}}
+{"id": "cMotor", "command": "server.command", "args": {"command": "setblock -239 201 171 create:creative_motor[facing=east]"}}
+{"id": "hPulleyMotor", "command": "server.command", "args": {"command": "setblock -247 201 151 create:creative_motor[facing=west]{ScrollValue:-32}"}}
+{"id": "hMotor", "command": "server.command", "args": {"command": "setblock -249 201 152 create:creative_motor[facing=up]"}}
 {"id": "running", "command": "wait", "args": {"ticks": 400}}
 
 {"id": "seaRead", "command": "client.command", "args": {"command": "data get block -240 201 152 TankContent"}}
@@ -120,5 +159,14 @@
 {"id": "pumpedRead", "command": "client.command", "args": {"command": "data get block -242 202 164 TankContent"}}
 {"id": "mixRead", "command": "client.command", "args": {"command": "data get block -240 201 168 TankContent"}}
 {"id": "mixCheck", "command": "client.command", "args": {"command": "execute if data block -240 201 168 TankContent.Fluid{amount:500,components:{\"thirstwastaken2:water_purity\":3}}"}}
+{"id": "cauldronRead", "command": "client.command", "args": {"command": "data get block -240 201 172 TankContent"}}
+{"id": "cauldronLeft", "command": "client.command", "args": {"command": "execute if block -236 201 172 minecraft:water_cauldron"}}
+{"id": "cauldronCheck", "command": "client.command", "args": {"command": "execute if data block -240 201 172 TankContent.Fluid.components{\"thirstwastaken2:water_purity\":1}"}}
+{"id": "mouthRead", "command": "client.command", "args": {"command": "data get block -232 202 164 TankContent"}}
+{"id": "mouthPool", "command": "client.command", "args": {"command": "execute if block -232 205 164 minecraft:water[level=0]"}}
+{"id": "mouthCheck", "command": "client.command", "args": {"command": "execute if data block -232 202 164 TankContent.Fluid.components{\"thirstwastaken2:water_salty\":1b}"}}
+{"id": "pulleyState", "command": "client.command", "args": {"command": "data get block -248 201 151 Offset"}}
+{"id": "pulleyRead", "command": "client.command", "args": {"command": "data get block -249 204 151 TankContent"}}
+{"id": "pulleyCheck", "command": "client.command", "args": {"command": "execute if data block -249 204 151 TankContent.Fluid.components{\"thirstwastaken2:water_salty\":1b}"}}
 {"id": "chat", "command": "wait", "args": {"ticks": 10}}
 {"id": "shot", "command": "client.capture", "args": {"name": "pipesnphysics"}}

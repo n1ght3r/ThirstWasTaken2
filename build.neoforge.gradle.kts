@@ -303,6 +303,12 @@ dependencies {
         // runClientMod(listOf("create"), "maven.modrinth:create:$createVersion") { isTransitive = false }
         // Keeps `-PwithoutOptional=create` in the agent scripts a known name while the line above is off.
         optionalRunMods.include(listOf("create"))
+        // Create Pipes n Physics, a Create addon whose pipe engine the Sand Filter's tag and the intake mixin
+        // are for; nothing compiles against it. Pinned by Modrinth version id, bumped by hand. Needs Create's
+        // runClientMod line too. 3.2.1 crashes a client without Sable: set fluidTiltEnabled = false in
+        // run/<node>/config/pipesnphysics-client.toml. See docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md.
+        // runClientMod(listOf("pipesnphysics", "create-pipes-n-physics"), "maven.modrinth:create-pipes-n-physics:kH90vhqN") { isTransitive = false }
+        optionalRunMods.include(listOf("pipesnphysics", "create-pipes-n-physics"))
     }
 
     if (sophisticatedCoreVersion != null) {

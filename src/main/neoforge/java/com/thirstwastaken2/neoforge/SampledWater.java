@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * <p>It holds a position and a quality, nothing that keeps a level or a chunk alive.
  */
 public final class SampledWater {
-    private static final int RESAMPLE_TICKS = 100;
+    public static final int RESAMPLE_TICKS = 100;
 
     private WaterQuality quality;
     private BlockPos pos;

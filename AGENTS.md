@@ -192,7 +192,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Terralith | all | two optional entries in the `stagnant_water` biome tag, from `ThirstBiomeTagProvider` in `src/datagen`; no class references, no deps key
 | Create Fly | `deps.create_fly`: Fabric 26.1.x, 26.2.x (no 26.3 build) | [src/main/createfly/AGENTS.md](src/main/createfly/AGENTS.md) |
 | Farmer's Delight Refabricated's Cooking Pot | `deps.farmersdelight`, Fabric nodes | [src/main/farmersdelight/AGENTS.md](src/main/farmersdelight/AGENTS.md) |
-| Create | `deps.create`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/create/AGENTS.md](src/main/create/AGENTS.md), [src/main/createforge/AGENTS.md](src/main/createforge/AGENTS.md) |
+| Create, and the Create Pipes n Physics addon with no deps key of its own | `deps.create`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory (the addon: `1.21.1-neoforge` only) | [src/main/create/AGENTS.md](src/main/create/AGENTS.md), [src/main/createforge/AGENTS.md](src/main/createforge/AGENTS.md) |
 | Sophisticated Backpacks and Storage | `deps.sophisticated_core`: every NeoForge node but `26.3.x-neoforge` | [src/main/sophisticated/AGENTS.md](src/main/sophisticated/AGENTS.md) |
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |

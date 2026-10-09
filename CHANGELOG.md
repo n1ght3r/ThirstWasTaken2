@@ -28,6 +28,8 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   draws from one, a bucket's worth at a time, keeping the water's grade.
 - With Cold Sweat, its Waterskin pours into a hanging pot or a distiller and an empty one draws from
   them, one drink at a time.
+- With Create Pipes n Physics on NeoForge 1.21.1, a pump draws water from the world and from
+  cauldrons through an open pipe end again, and water fed into a Sand Filter comes out of its bottom.
 
 ### Notes
 

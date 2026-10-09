@@ -1,12 +1,12 @@
 # Create Pipes n Physics integration plan
 
-What ThirstWasTaken2 should do with [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics)
+What ThirstWasTaken2 does with [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics)
 (mod id `pipesnphysics`, package `de.devin.pipesnphysics`), a Create addon that replaces the transport
 of Create's pipes and pumps with its own engine: pressure and gravity, pumps that add head instead of
 range, siphons, viscosity, a centrifuge. It adds no water of its own. What it changes is how water
 already graded by this mod moves between Create's blocks. This file sets the order of work, what each
-step needs and how each one is checked. Once the work is built, how it works goes in
-[src/main/create/AGENTS.md](../../../../src/main/create/AGENTS.md).
+step needs and how each one is checked. Steps 1 to 5 and 7 are built and checked; how the result
+works is in [src/main/create/AGENTS.md](../../../../src/main/create/AGENTS.md). Step 6 waits on posting.
 
 Written on 2026-10-09 from:
 
@@ -47,7 +47,7 @@ because the engine compares stacks it builds itself against stacks this mod has 
 | Pump drawing world water through an open pipe end (sea, river, lake, cauldron) | `water_salty` / graded water arrives | **nothing moves**. The pool stays, the tank stays empty. Lava, the control, flows (940 mB) | see [the intake mismatch](#the-intake-mismatch) |
 | Water above a Sand Filter, filter output piped down | needs a pump above; output drains with a pump below | input fills, filter works, **output never leaves**, even with a pump below and nothing above | see [the Sand Filter as one body](#the-sand-filter-as-one-body) |
 | Same, with the filter tagged `pipesnphysics:separate_ports` (data pack) | — | **works**: 2000 mB Murky came out 2000 mB Clean by gravity alone, and 3000 mB Clean through the pump | |
-| Spout, Item Drain, Hose Pulley | grade kept | Spout and Item Drain are untouched by the addon. Hose Pulley: not yet checked | the addon mixes into `HosePulleyBlockEntity` |
+| Spout, Item Drain, Hose Pulley | grade kept | Spout and Item Drain are untouched by the addon. Hose Pulley: **grade kept** (2468 mB of `water_salty` from a sea pool, step 4) | the addon probes and drains the same Create handler |
 
 ### The intake mismatch
 
@@ -79,17 +79,32 @@ normally. The addon's own answer is the `pipesnphysics:separate_ports` block tag
 
 | Step | State |
 |---|---|
-| 1. The mod on the `runClient` classpath | to do |
-| 2. The Sand Filter's ports: a tag | to do, proven by a data pack |
-| 3. The intake mismatch: a mixin | to do |
-| 4. Hose Pulley and cauldron intake | to check |
-| 5. Decision: the centrifuge | needs a decision |
-| 6. Upstream | to do |
-| 7. Docs | to do |
+| 1. The mod on the `runClient` classpath | done |
+| 2. The Sand Filter's ports: a tag | done, checked 2026-10-09 |
+| 3. The intake mismatch: a mixin | done, checked 2026-10-09; built differently from the plan, see below |
+| 4. Hose Pulley and cauldron intake | checked 2026-10-09: both keep their grade |
+| 5. Decision: the centrifuge | decided: not planned |
+| 6. Upstream | drafted in [PIPES-N-PHYSICS-UPSTREAM.md](PIPES-N-PHYSICS-UPSTREAM.md), not posted |
+| 7. Docs | done |
+
+**Checked on 2026-10-09**, with `pipesnphysics-water.jsonl` on `1.21.1-neoforge` (Create 6.0.10, Pipes n
+Physics 3.2.1, no hand-made data pack), every row in one run:
+
+| Row | Result |
+|---|---|
+| sea, pump through an open end | 928 mB of `water_salty`, the pool drunk (was: nothing) |
+| lava, the control | 940 mB |
+| tank to tank, Murky | 1930 mB of purity 1 |
+| gravity through the Sand Filter | 2000 mB of purity 2, the filter empty |
+| pumped through the Sand Filter | 3000 mB of purity 2 |
+| Murky towards Pure | refused, 500 mB of purity 3 |
+| cauldron `purity=2`, pump through an open end | 965 mB of purity 1, the cauldron emptied |
+| sea pool on an open top end, no pump | 1000 mB of `water_salty`, the pool drunk |
+| Hose Pulley over a sea pool, pump above | 2468 mB of `water_salty` |
 
 ## 1. The mod on the `runClient` classpath
 
-In `build.neoforge.gradle.kts`, beside Create's line and commented out like it (Create is off in
+**Done.** In `build.neoforge.gradle.kts`, beside Create's line and commented out like it (Create is off in
 `runClient` by default):
 
 ```kotlin
@@ -107,7 +122,7 @@ that directory, not a directory of its own.
 
 ## 2. The Sand Filter's ports: a tag
 
-`src/main/create/resources/data/pipesnphysics/tags/block/separate_ports.json`:
+**Done.** `src/main/create/resources/data/pipesnphysics/tags/block/separate_ports.json`:
 
 ```json
 {
@@ -121,9 +136,30 @@ Data, not code, so nothing to keep off the load path. `checkDataConditions` want
 rather than `FluidHandlerApi.declareSeparatePorts`, since the call would need the addon's API on the
 classpath and an entrypoint gate for one line.
 
-**Check:** rows "gravity" and "pumped" of the script, without the hand-made data pack.
+**Check:** rows "gravity" and "pumped" of the script, without the hand-made data pack. Both passed.
 
 ## 3. The intake mismatch: a mixin
+
+**Done, differently in three places.** What was built is `BoundaryColumnMixin`, `PipesPresence` and
+`IntakeSamples` in `src/main/create`:
+
+- **It stamps the first probe in `intakeFluid`, not every return of `drinkableSource`.** `intakeFluid`
+  also probes the world position of a Sable sub-level's mouth and, through `SableCompat`, overlapping
+  contraptions, and both of those drain through the addon's own `drainSourceAt`, unstamped. Stamping
+  them would have turned the Sable gap below into nothing moving at all. The probe is also left plain
+  when `worldOutputPos` says the mouth itself is on a sub-level, for the same reason.
+- **In `thirstwastaken2.create.mixins.json`, not a config of its own.** The integration table gives a
+  directory one mixin config; `CreateMixinPlugin` applies this one mixin only when `PipesPresence`
+  passes, which is the same effect without a build-logic field only this would use.
+- **The gate reads the class file.** The mixin `@Shadow`s `worldOutputPos`, and a shadow that finds
+  nothing fails the class however `require` is set, so `PipesPresence` checks that `BoundaryColumn`
+  in the addon's jar declares `drinkableSource`, `worldOutputPos` and `intakeFluid` with 3.2.1's
+  descriptors, as `ColdSweatPresence` does for Cold Sweat. The injector is still `require = 0`.
+
+`IntakeSamples` is the cache below: one sample per position and level for `SampledWater.RESAMPLE_TICKS`,
+pruned once per that many ticks, the cauldron never cached.
+
+The plan as written:
 
 The fix is to make the probe carry the same stamp the drain will. A `@ModifyReturnValue` on
 `BoundaryColumn.drinkableSource(Level, BlockPos, boolean, boolean)` that stamps a returned water stack
@@ -153,6 +189,14 @@ river with no pump (the addon's siphon), since both go through `drinkableSource`
 
 ## 4. Hose Pulley and cauldron intake
 
+**Checked: both keep their grade** (rows "cauldron" and "pulley" of the script). The addon probes and
+drains a pulley through the same Create handler, which `FluidDrainingBehaviourMixin` stamps both times,
+so the two agree. The motor problem below was the rig, not the motor: a Hose Pulley takes its pipe on
+the side counter-clockwise of its `facing` (west for `facing=north`, turning on the x axis), never on
+top. A creative motor at `ScrollValue:-32` on its east side lowers the hose.
+
+The plan as written:
+
 The addon mixes into `HosePulleyBlockEntity` and probes `FluidDrainingBehaviour` through an accessor.
 Our `FluidDrainingBehaviourMixin` stamps `getDrainableFluid`. If the addon compares its probe against
 the stamped value, the pulley breaks the same way the open end does. Add a row: a Hose Pulley over a
@@ -161,6 +205,8 @@ motor placed by command did not do for `create-water.jsonl`. Try `rotation_speed
 negative speed.
 
 ## 5. Decision: the centrifuge
+
+**Decided: not planned**, as proposed.
 
 The addon splits a fluid into component fluids by recipe (`CentrifugeApi`, or data packs). A recipe
 from `water` with `water_salty` to fresh water would be a second way to desalinate besides the Distiller.
@@ -179,9 +225,12 @@ written for the author to act on, with the steps above as the reproduction:
    `removeFluidFromSpace(true)` (simulate), or for an API hook to decorate it. Either removes step 3's
    mixin into an internal class.
 
-Ask before posting. Both are messages sent in the user's name.
+Ask before posting. Both are messages sent in the user's name. Drafted in
+[PIPES-N-PHYSICS-UPSTREAM.md](PIPES-N-PHYSICS-UPSTREAM.md).
 
 ## 7. Docs
+
+**Done.**
 
 - [src/main/create/AGENTS.md](../../../../src/main/create/AGENTS.md): a section on the addon (the tag, the
   mixin, its gate and `require = 0`), and the script in its testing section.
