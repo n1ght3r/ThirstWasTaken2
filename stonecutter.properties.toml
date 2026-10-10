@@ -72,8 +72,8 @@ deps.kaleidoscope_cookery = "Ghp0qCKY"
 # 1.2.0-forge+mc1.20.1, the Forge upload.
 deps.kaleidoscope_tavern = "mUnU2u9e"
 # Kaleidoscope Chinese Food; see [neoforge."1.21.1"].
-# 1.1.14-1.20.1, the Forge upload.
-deps.kaleidoscope_chinese_food = "IxG4BNHD"
+# 1.1.14-1.20.1-feature, the Forge upload.
+deps.kaleidoscope_chinese_food = "8eQnNETS"
 # Fruits Delight; see [neoforge."1.21.1"]. Its 1.20.1 build is Forge only, with L2 Library nested.
 # 1.1.3, the Forge upload.
 deps.fruits_delight = "E7H5IrKI"
@@ -146,10 +146,10 @@ deps.brewin_and_chewin = "O3PobqCR"
 # they: neither has a newer build, and their 1.20.1 line is no longer updated. Pinned by Modrinth
 # version id, since the Fabric and NeoForge uploads share a version number. Candlelight has no code of
 # its own here, only runClient. See src/main/farmandcharm/AGENTS.md.
-# 1.1.26, the Fabric upload.
-deps.farm_and_charm = "isj5qmqa"
-# 2.1.13, the Fabric upload.
-deps.candlelight = "DEKqjSw9"
+# 1.1.27, the Fabric upload.
+deps.farm_and_charm = "Jka2rwSN"
+# 2.1.14, the Fabric upload.
+deps.candlelight = "tdvaSxlF"
 # Let's Do: HerbalBrews, whose Tea Kettle takes no sea water and whose placed Jug is drunk as its teas,
 # and Let's Do: Beachparty, whose placed cocktails are sipped. Same versions story as Farm & Charm: both
 # 1.21.1 nodes, and only they. See docs/dev/integration/lets-do/.
@@ -199,7 +199,7 @@ deps.glitchcore = "sux8kYHe"
 mod.mc_compat = "[1.21.1,1.21.2)"
 mod.mc_releases = ["1.21.1"]
 
-deps.neoforge = "21.1.256"
+deps.neoforge = "21.1.257"
 # 3.0.9+mc1.21, the NeoForge upload.
 deps.appleskin = "uAKA6Laj"
 deps.cloth_config = "15.0.140+neoforge"
@@ -236,16 +236,16 @@ deps.kaleidoscope_tavern = "W9ILsQt7"
 # Kaleidoscope Chinese Food, whose mixin lets Tavern's tap fill Kaleidoscope Cookery's stockpot and
 # teapot. Nothing compiles against it; runClient only, and off there by default. Pinned by id, since its
 # uploads put the Minecraft version in the number in no fixed place.
-# 1.1.14-neoforge+1.21.1, the NeoForge upload.
-deps.kaleidoscope_chinese_food = "9CclxgVk"
+# 1.1.14-neoforge+1.21.1-feature, the NeoForge upload.
+deps.kaleidoscope_chinese_food = "yyn9XqgV"
 # Brewin' and Chewin', the same integration the Fabric table builds; see there.
 # v4.5.0+1.21.1-neoforge, the NeoForge upload.
 deps.brewin_and_chewin = "MbcR48Ou"
 # Farm & Charm, Candlelight and Architectury, the same integration the Fabric table builds; see there.
-# 1.1.26, the NeoForge upload.
-deps.farm_and_charm = "Y8Uh3mlO"
-# 2.1.13, the NeoForge upload.
-deps.candlelight = "Cxu0FvZB"
+# 1.1.27, the NeoForge upload.
+deps.farm_and_charm = "lAc3mEva"
+# 2.1.14, the NeoForge upload.
+deps.candlelight = "aa3WioYe"
 # HerbalBrews and Beachparty, the same integrations the Fabric table builds; see there.
 # 1.1.4, the NeoForge upload.
 deps.herbalbrews = "kGYbyn9P"
@@ -300,8 +300,8 @@ deps.lodestone = "CohX6yP1"
 # Hearth and Harvest, whose tanks keep a water's grade, whose sink and jug stop making Clean water from
 # nothing or from the sea, and whose cask ages no sea water. NeoForge 1.21.1 is its newest build.
 # See src/main/hearthandharvest/AGENTS.md.
-# 1.3.4, the NeoForge upload.
-deps.hearth_and_harvest = "7nTyt27O"
+# 1.4.0, the NeoForge upload.
+deps.hearth_and_harvest = "QhKYKLA5"
 # Extra Delight, whose jars, kegs, vat and mixing bowl keep a water's grade, whose tap and sink stop
 # making Clean water from nothing, and whose recipes take no sea water. NeoForge 1.21.1 is its only
 # official build. See src/main/extradelight/AGENTS.md.
@@ -406,18 +406,18 @@ deps.epherolib = "7937978"
 # Compiled against 26.1.2, like the Fabric node.
 mod.mc_compat = "[26.1,26.2)"
 
-deps.neoforge = "26.1.2.114"
+deps.neoforge = "26.1.2.115"
 # 3.0.9+mc26.1, the NeoForge upload.
 deps.appleskin = "i8MiVItH"
 deps.cloth_config = "26.1.154+neoforge"
 # The newest release; 26.1.11+neoforge is a beta.
 deps.jade = "26.1.10+neoforge"
-# 26.1.2-1.5.7.2377, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
-deps.sophisticated_core = "MKrSdHBA"
-# 26.1.2-3.26.9.2193, only on the runClient classpath.
-deps.sophisticated_backpacks = "thjFLz7b"
-# 26.1.2-1.5.116.2155, only on the runClient classpath.
-deps.sophisticated_storage = "YceRDC55"
+# 26.1.2-1.5.9.2384, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
+deps.sophisticated_core = "ScJfgS7L"
+# 26.1.2-3.26.10.2197, only on the runClient classpath.
+deps.sophisticated_backpacks = "Bg58fLnw"
+# 26.1.2-1.5.117.2161, only on the runClient classpath.
+deps.sophisticated_storage = "n3uXXBMq"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 26.1.2.0.7, the NeoForge upload.
 deps.serene_seasons = "atclxQCD"
@@ -477,13 +477,13 @@ deps.epherolib = "8544496"
 # Range written into neoforge.mods.toml, in NeoForge's syntax.
 mod.mc_compat = "[26.2,26.3)"
 
-deps.neoforge = "26.2.0.88"
+deps.neoforge = "26.2.0.89"
 # 3.0.10+mc26.2, the NeoForge upload. Pinned by Modrinth version id for the reason the Fabric table gives.
 deps.appleskin = "slnk1Qah"
 deps.cloth_config = "26.2.155+neoforge"
 deps.jade = "26.2.10+neoforge"
-# 26.2-1.5.5.2379, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
-deps.sophisticated_core = "vjuYjD8F"
+# 26.2-1.5.6.2385, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
+deps.sophisticated_core = "nj5gRTWv"
 # 26.2-3.26.9.2191, only on the runClient classpath.
 deps.sophisticated_backpacks = "QfSnSqMl"
 # 26.2-1.5.117.2157, only on the runClient classpath.
@@ -534,7 +534,7 @@ deps.glitchcore = "aaUghyGp"
 mod.mc_compat = "[26.3,26.4)"
 
 # NeoForge has published only betas for 26.3. This is the newest, and the lower bound players need.
-deps.neoforge = "26.3.0.57-beta"
+deps.neoforge = "26.3.0.64-beta"
 # 3.0.10+mc26.3, the NeoForge upload. Pinned by Modrinth version id for the reason the 26.2 table gives.
 deps.appleskin = "6vok7cLb"
 deps.jade = "26.3.5+neoforge"
