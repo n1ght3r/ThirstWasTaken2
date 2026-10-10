@@ -14,11 +14,11 @@ Supported nodes and their jars:
 | `1.21.11` | `+1.21.11` | 1.21.11 | 21 | Fabric API 0.141.6+1.21.11 |
 | `1.21.1` | `+1.21.1` | 1.21, 1.21.1 | 21 | Fabric API 0.116.17+1.21.1 |
 | `1.20.1` | `+1.20.1` | 1.20.1 | 17 | Fabric API 0.92.12+1.20.1 |
-| `26.3.x-neoforge` | `+26.3-neoforge` | 26.3 | 25 | NeoForge 26.3.0.57-beta |
-| `26.2.x-neoforge` | `+26.2-neoforge` | 26.2 | 25 | NeoForge 26.2.0.88 |
-| `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.114 |
+| `26.3.x-neoforge` | `+26.3-neoforge` | 26.3 | 25 | NeoForge 26.3.0.64-beta |
+| `26.2.x-neoforge` | `+26.2-neoforge` | 26.2 | 25 | NeoForge 26.2.0.89 |
+| `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.115 |
 | `1.21.11-neoforge` | `+1.21.11-neoforge` | 1.21.11 | 21 | NeoForge 21.11.45 |
-| `1.21.1-neoforge` | `+1.21.1-neoforge` | 1.21.1 | 21 | NeoForge 21.1.256 |
+| `1.21.1-neoforge` | `+1.21.1-neoforge` | 1.21.1 | 21 | NeoForge 21.1.257 |
 | `1.20.1-forge` | `+1.20.1-forge` | 1.20.1 | 17 | Forge 47.4.26 |
 
 The NeoForge jars are built and tested on every node. A NeoForge node builds the same Minecraft
