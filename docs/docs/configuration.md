@@ -75,7 +75,7 @@ Every setting at its default. The long lists are cut short here; see
   "enableDrinkTagMatching": true,
   "drinkTagValue": [6, 4],
   "enableKeywordMatching": false,
-  "keywordBlacklist": "dried|candied|leaf|leaves|gummy|crate|jam|sauce|bucket|seed|cookie|pie|bush|sapling|bean|curry|cake|candy",
+  "keywordBlacklist": "dried|candied|leaf|leaves|gummy|crate|jam|sauce|bucket|seed|cookie|pie|bush|sapling|bean|curry|curries|cake|candy|candies|toast|sandwich",
   "drinkKeywords": "drink|juice|tea|soda|coffee|wine|beer|cider|yogurt|milkshake|smoothie",
   "soupKeywords": "soup|stew|porridge",
   "fruitKeywords": "fruit|berry|berries|grape|orange|peach|pear|coconut|lemon|melon|cherry|apple",
@@ -256,10 +256,12 @@ Default `false`. Guesses a value from the item id, so any `strawberry_juice` cou
 ### drinkKeywords, soupKeywords and fruitKeywords
 
 Words matched against the id, worth `keywordDrinkValue`, `keywordSoupValue` or `keywordFruitValue`.
+A keyword only matches a whole word of the id, with or without an "s" or "es" on the end, so `tea`
+matches `green_tea` and `teas` but not `steak_sandwich`.
 
 ### keywordBlacklist
 
-Words that stop a guess, so `melon_seed` is not fruit.
+Words that stop a guess, so `melon_seeds` is not fruit. Matched the same way as the keywords.
 
 ## Mod items
 

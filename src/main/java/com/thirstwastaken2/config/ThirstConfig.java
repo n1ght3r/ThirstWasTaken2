@@ -174,7 +174,8 @@ public final class ThirstConfig {
     public boolean enableDrinkTagMatching = true;
     public int[] drinkTagValue = {6, 4};
     public boolean enableKeywordMatching = false;
-    public String keywordBlacklist = "dried|candied|leaf|leaves|gummy|crate|jam|sauce|bucket|seed|cookie|pie|bush|sapling|bean|curry|cake|candy";
+    // Keywords are whole words of the id, so the blacklist spells out the plurals "s" and "es" do not make.
+    public String keywordBlacklist = "dried|candied|leaf|leaves|gummy|crate|jam|sauce|bucket|seed|cookie|pie|bush|sapling|bean|curry|curries|cake|candy|candies|toast|sandwich";
     public String drinkKeywords = "drink|juice|tea|soda|coffee|wine|beer|cider|yogurt|milkshake|smoothie";
     public String soupKeywords = "soup|stew|porridge";
     public String fruitKeywords = "fruit|berry|berries|grape|orange|peach|pear|coconut|lemon|melon|cherry|apple";
@@ -485,7 +486,10 @@ public final class ThirstConfig {
     private static Pattern compile(String pattern) {
         if (pattern == null || pattern.isBlank()) return null;
         try {
-            return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+            // Whole words of the id only, with an optional plural: a substring match made steak_sandwich
+            // a drink for the "tea" inside it. Anything but a letter or digit separates words.
+            return Pattern.compile("(?<![a-z0-9])(?:" + pattern + ")(?:e?s)?(?![a-z0-9])",
+                    Pattern.CASE_INSENSITIVE);
         } catch (Exception exception) {
             ThirstWasTaken2.LOGGER.error("Invalid keyword pattern '{}', ignoring it", pattern, exception);
             return null;

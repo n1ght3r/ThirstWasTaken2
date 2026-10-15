@@ -26,6 +26,9 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Fixed
 
+- With Keyword Matching on, a keyword only matches a whole word of an item's name, so a Steak
+  Sandwich no longer counts as tea. Toast and sandwiches are now on the keyword blacklist; an existing
+  config file keeps its own list, so add `toast|sandwich` to `keywordBlacklist` there.
 - With Hearth and Harvest 1.4.0, only a bottle of sea water boils down to salt in a Cooking Pot again.
 
 ### Removed

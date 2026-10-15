@@ -1028,6 +1028,21 @@ public final class ThirstApiGameTest {
     }
 
     @GameTest
+    public void keywordsMatchWholeWordsOfTheId(GameTestHelper helper) {
+        ThirstConfig config = ThirstConfig.get();
+        // More Delight's steak_sandwich was a drink while "tea" matched inside "steak".
+        TestFixtures.check(helper, !config.drinkKeywordPattern().matcher("steak_sandwich").find(),
+                "a keyword inside another word should not match");
+        TestFixtures.check(helper, config.drinkKeywordPattern().matcher("strawberry_juice").find()
+                        && config.drinkKeywordPattern().matcher("mixed_berry_juices").find(),
+                "a keyword should match a word of the id, plural included");
+        TestFixtures.check(helper, config.keywordBlacklistPattern().matcher("melon_seeds").find()
+                        && config.keywordBlacklistPattern().matcher("toast_with_sweet_berries").find(),
+                "the blacklist should catch plurals and toast");
+        helper.succeed();
+    }
+
+    @GameTest
     public void aBrokenKeywordPatternIsIgnoredRatherThanFatal(GameTestHelper helper) {
         TestFixtures.withConfig(config -> {
             config.enableKeywordMatching = true;
