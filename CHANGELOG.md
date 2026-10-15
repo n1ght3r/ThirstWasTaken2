@@ -2,7 +2,10 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.9.0] - 2026-10-15
+
+This release adds two late-game flasks and brings water grades to Mekanism, Immersive Engineering and
+Hearth and Harvest's machines. The settings screen also looks more at home next to Minecraft's own.
 
 ### Added
 
@@ -25,6 +28,7 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Changed
 
+- The settings screen looks more like Minecraft's own menus, with far less white.
 - With Kaleidoscope Tavern Refabricated 1.2.0.12 or newer (1.2.0.6 on 1.21.11), the Barrel takes
   Waterskins, Canteens, Flasks and terracotta bowls on Fabric too, and hands them back as they were.
 
