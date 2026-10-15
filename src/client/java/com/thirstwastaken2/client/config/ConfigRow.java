@@ -109,8 +109,8 @@ abstract class ConfigRow {
                 int bottom = y + widget.getHeight();
                 boolean current = index == selected;
                 boolean lit = current || widget.isHoveredOrFocused();
-                graphics.fill(x, y, right, bottom, current ? ConfigTheme.SELECTED : lit ? ConfigTheme.ROW_HOVER : ConfigTheme.ROW);
-                if (current) graphics.fill(x, bottom - 1, right, bottom, ConfigTheme.FOCUS);
+                if (current || lit) graphics.fill(x, y, right, bottom, current ? ConfigTheme.SELECTED : ConfigTheme.ROW_HOVER);
+                graphics.fill(x, bottom - 1, right, bottom, current ? ConfigTheme.SOFT : ConfigTheme.LINE);
                 int textWidth = Math.min(font().width(title), widget.getWidth() - PADDING);
                 ConfigTheme.clippedText(graphics, font(), title, x + (widget.getWidth() - textWidth) / 2,
                         y + (widget.getHeight() - 8) / 2, textWidth, lit ? ConfigTheme.TEXT : ConfigTheme.MUTED);
@@ -230,14 +230,14 @@ abstract class ConfigRow {
 
     /**
      * A square button showing {@code icon}, 8x8 as strings of {@code #}, in {@code color}: faint while
-     * inactive and white while hovered.
+     * inactive and white while hovered. Dark in a black outline, which turns white on hover, as vanilla's are.
      */
     static void paintIconButton(GuiGraphicsExtractor graphics, AbstractWidget widget, String[] icon, int color) {
         int x = widget.getX();
         int y = widget.getY();
         boolean lit = widget.active && widget.isHoveredOrFocused();
-        graphics.fill(x, y, x + widget.getWidth(), y + widget.getHeight(), lit ? ConfigTheme.ROW_HOVER : ConfigTheme.ROW);
-        ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), lit ? ConfigTheme.FOCUS : ConfigTheme.LINE);
+        graphics.fill(x, y, x + widget.getWidth(), y + widget.getHeight(), ConfigTheme.SELECTED);
+        ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), lit ? ConfigTheme.FOCUS : ConfigTheme.EDGE);
         int shade = !widget.active ? ConfigTheme.FAINT : lit ? ConfigTheme.TEXT : color;
         ConfigTheme.glyph(graphics, icon, x + (widget.getWidth() - 8) / 2, y + (widget.getHeight() - 8) / 2, shade);
     }

@@ -85,7 +85,7 @@ final class SicknessRows {
             int x = widget.getX();
             int y = widget.getY();
             int height = widget.getHeight();
-            graphics.fill(x, y, x + widget.getWidth(), y + height, ConfigTheme.SELECTED);
+            graphics.fill(x, y, x + widget.getWidth(), y + height, ConfigTheme.BAND);
             if (isChanged(difficulty, grade)) graphics.fill(x, y, x + 2, y + height, ConfigTheme.CHANGED);
             int[] columns = columnsFrom(x + widget.getWidth() + ConfigRow.GAP + ConfigRow.RESET_WIDTH);
             int textY = y + (height - 8) / 2;

@@ -112,8 +112,9 @@ the search box lists matching settings from every page, grouped by page. The sid
 without icons, as vanilla's tabs do, and so do the page's heading and the search results' page headings; below 380 GUI pixels wide it shows the pages' icons only. The HUD position is fixed to vanilla's right-hand status-bar stack; there is
 no offset setting because the preview cannot show screen position.
 
-It keeps to vanilla's look (`ConfigTheme`): white marks the selected page and tab, text is grey or
-white, the sidebar and list sit on one dark translucent panel between vanilla-style separator lines,
+It keeps to vanilla's look (`ConfigTheme`): rows have no background of their own, the selected page
+and tab are darkened in a grey outline as a selected list entry is, white is only the outline of a
+hovered button, text is grey or white, the sidebar and list sit on one dark translucent panel between vanilla-style separator lines,
 and amber for a changed setting is the only colour of the screen's own. The item and mod icons carry
 the rest; no accent colour.
 

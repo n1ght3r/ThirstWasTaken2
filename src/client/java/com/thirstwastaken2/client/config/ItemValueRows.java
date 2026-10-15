@@ -277,7 +277,8 @@ final class ItemValueRows {
             int y = widget.getY();
             int height = widget.getHeight();
             boolean lit = onToggle != null && widget.isHoveredOrFocused();
-            graphics.fill(x, y, x + widget.getWidth(), y + height, lit ? ConfigTheme.SELECTED : ConfigTheme.ROW_HOVER);
+            graphics.fill(x, y, x + widget.getWidth(), y + height, ConfigTheme.BAND);
+            if (lit) graphics.fill(x, y, x + widget.getWidth(), y + height, ConfigTheme.ROW_HOVER);
             boolean changed = false;
             for (String id : ids) changed |= isChanged(id);
             if (changed) graphics.fill(x, y, x + 2, y + height, ConfigTheme.CHANGED);

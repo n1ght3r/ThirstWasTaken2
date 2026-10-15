@@ -130,10 +130,10 @@
 </div>
 
 ## Settings Screen
-Change every setting in game, with a live preview of the thirst bar. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
+Change every setting in game, with a live preview of the thirst bar and the AppleSkin outline. Item Values sets how much thirst any food or drink restores, modded ones included. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://modrinth.com/mod/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 
 <p align="center">
-  <img alt="The ThirstWasTaken2 settings screen, every page and tab: a slider and a switch on the Thirst page, the Water tabs, the Sickness tables for each difficulty, the AppleSkin preview changing outline and its tooltip droplets switched off and on, the item list scrolling to a modded group under its pinned heading, Mod Items and Containers" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">
+  <img alt="The ThirstWasTaken2 settings screen: the Thirst and Water pages, the Sickness tables for each difficulty, the AppleSkin preview changing outline and its tooltip droplets switched off and on, and the Item Values list scrolling to a modded group" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/config/config-showcase.gif" width="100%">
 </p>
 
 ## Mod Compatibility

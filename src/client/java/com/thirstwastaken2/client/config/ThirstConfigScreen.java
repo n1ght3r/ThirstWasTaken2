@@ -126,10 +126,10 @@ public final class ThirstConfigScreen extends ScrollingScreen {
                         int right = x + widget.getWidth();
                         int bottom = y + widget.getHeight();
                         boolean current = query.isEmpty() && selected == category;
-                        // Selected as a vanilla list selects an entry: a white outline.
+                        // Selected as a vanilla list selects an entry: darkened, in a grey outline.
                         if (current) {
                             graphics.fill(x, y, right, bottom, ConfigTheme.SELECTED);
-                            ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), ConfigTheme.FOCUS);
+                            ConfigTheme.border(graphics, x, y, widget.getWidth(), widget.getHeight(), ConfigTheme.SELECTED_EDGE);
                         } else if (widget.isHoveredOrFocused()) {
                             graphics.fill(x, y, right, bottom, ConfigTheme.ROW_HOVER);
                         }
@@ -192,7 +192,7 @@ public final class ThirstConfigScreen extends ScrollingScreen {
             int scrolling = rows.size() - pinned;
             int thumbHeight = Math.max(16, trackHeight * (scrolling - maxScroll) / scrolling);
             int thumbY = trackTop + (trackHeight - thumbHeight) * scroll / maxScroll;
-            graphics.fill(trackX, trackTop, trackX + SCROLLBAR_WIDTH, listBottom, ConfigTheme.ROW);
+            graphics.fill(trackX, trackTop, trackX + SCROLLBAR_WIDTH, listBottom, ConfigTheme.SELECTED);
             graphics.fill(trackX, thumbY, trackX + SCROLLBAR_WIDTH, thumbY + thumbHeight, ConfigTheme.MUTED);
         }
     }

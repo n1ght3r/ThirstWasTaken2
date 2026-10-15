@@ -7,7 +7,7 @@ outline: [2, 3]
 Settings live in `config/thirstwastaken2.json`, written on first launch. They can also be changed in
 game, through Mod Menu on Fabric or the Mods list on NeoForge.
 
-![The settings screen, every page and tab: sliders and switches, the Water tabs, the Sickness tables, the AppleSkin preview, the item list, Mod Items and Containers](/screenshots/config/config-showcase.gif)
+![The settings screen: the Thirst and Water pages, the Sickness tables for each difficulty, the AppleSkin preview changing outline, and the Item Values list opening a modded group](/screenshots/config/config-showcase.gif)
 
 - A changed setting shows in amber; the arrow beside it puts it back.
 - **Reset to Defaults** resets the page, **Done** saves, **Cancel** discards.

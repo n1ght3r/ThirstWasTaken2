@@ -9,12 +9,13 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * The colours and small drawing helpers every part of the config screen shares. They are vanilla's:
- * white for focus and selection, greys for text, and one translucent dark panel under the header and
- * above the footer, so the blurred world or title panorama vanilla draws behind every screen still
- * shows. Amber, for a changed setting, is the only colour of the screen's own; the icons carry the rest.
+ * greys for text, rows bare on one translucent dark panel as an options list's are, a selection
+ * darkened and outlined in grey as a list entry is, and white only for the outline of what the mouse
+ * is on. The blurred world or title panorama vanilla draws behind every screen still shows through.
+ * Amber, for a changed setting, is the only colour of the screen's own; the icons carry the rest.
  */
 final class ConfigTheme {
-    /** White, as vanilla marks a focused or selected widget: the selected page and tab, a hovered button. */
+    /** White, as vanilla outlines a hovered or focused button. */
     static final int FOCUS = 0xFFFFFFFF;
     /** Amber, marking a setting that differs from its default. */
     static final int CHANGED = 0xFFF2B84B;
@@ -29,10 +30,18 @@ final class ConfigTheme {
     /** The two lines of vanilla's header and footer separators: a light one beside a dark one. */
     static final int SEPARATOR_LIGHT = 0x40FFFFFF;
     static final int SEPARATOR_DARK = 0xC0000000;
-    static final int ROW = 0x18FFFFFF;
-    static final int ROW_HOVER = 0x30FFFFFF;
-    static final int SELECTED = 0x38FFFFFF;
-    static final int LINE = 0x30FFFFFF;
+    /** A row's own background: none, as an options list's rows have none. */
+    static final int ROW = 0x00000000;
+    static final int ROW_HOVER = 0x14FFFFFF;
+    /** The selected page and tab, darkened as vanilla darkens a selected list entry. */
+    static final int SELECTED = 0x60000000;
+    /** The grey outline vanilla draws round a selected list entry. */
+    static final int SELECTED_EDGE = 0xFF808080;
+    /** The black outline of a vanilla button. */
+    static final int EDGE = 0xFF000000;
+    /** A heading inside a page's list, such as a mod's group of items: a darker band, not a lighter one. */
+    static final int BAND = 0x40000000;
+    static final int LINE = 0x20FFFFFF;
     static final int NOTE = 0x40F2B84B;
 
     private static final String ELLIPSIS = "...";

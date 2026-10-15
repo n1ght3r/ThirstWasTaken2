@@ -1,8 +1,9 @@
-// A recording of the config screen for the docs and the mod pages: the virtual pointer walks every page
-// in the sidebar and every tab of each page. On the way it drags a slider, flips a toggle, scrolls a
-// sickness table, cycles AppleSkin's outline in its preview and switches its tooltip droplets off and
-// on again, scrolls the item list to its end, opens a mod's group and scrolls on under its pinned
-// heading, and ends on Done after a short pause. Cancel is pressed after the recording stops, so
+// A short recording of the config screen for the docs and the mod pages: an overview, not a tour of
+// every tab. The virtual pointer rests on Thirst, looks in on Water, steps through Sickness's
+// difficulties and scrolls Normal's table, then spends its time on the two pages players ask about:
+// AppleSkin, its preview cycling the outline and its tooltip droplets switched off and on, and Item
+// Values, the list scrolled to its end, a mod's group opened, and the Matching tab. It ends on Done
+// after a short pause. Mod Items and Containers are left out. Cancel is pressed after the recording stops, so
 // nothing it changed is saved. Evidence for a person, not a check; nothing here is asserted but that
 // each click landed.
 //
@@ -41,40 +42,24 @@
 {"id": "record", "command": "client.record", "args": {"action": "start", "name": "config-showcase", "every": 1}}
 {"id": "recordDrawn", "command": "wait", "args": {"ticks": 9}}
 
-// Depletion Speed: drag the slider up and let the value settle.
-{"id": "toSlider", "command": "client.mouse", "args": {"x": 70, "y": 82, "from": "top", "ticks": 8}}
-{"id": "drag", "command": "client.mouse", "args": {"x": 84, "y": 82, "from": "top", "ticks": 12, "drag": true}}
-{"id": "dragDrawn", "command": "wait", "args": {"ticks": 10}}
+// Thirst, as the screen opens, untouched.
+{"id": "thirstShown", "command": "wait", "args": {"ticks": 10}}
 
-// No Sprinting When Thirsty: off.
-{"id": "toToggle", "command": "client.mouse", "args": {"x": 122, "y": 130, "from": "top", "ticks": 7}}
-{"id": "toggle", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "toggleDrawn", "command": "wait", "args": {"ticks": 12}}
-
-// Water, opening on Drinking, then its other three tabs.
+// Water, on its Drinking tab, a glance only.
 {"id": "toWater", "command": "client.mouse", "args": {"x": 40, "y": 73, "from": "corner", "ticks": 8}}
 {"id": "water", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "waterDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toQuenched", "command": "client.mouse", "args": {"x": -32, "y": 81, "from": "top", "ticks": 7}}
-{"id": "quenched", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "quenchedDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toSeaWater", "command": "client.mouse", "args": {"x": 50, "y": 81, "from": "top", "ticks": 5}}
-{"id": "seaWater", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "seaWaterDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toCollected", "command": "client.mouse", "args": {"x": 155, "y": 81, "from": "top", "ticks": 5}}
-{"id": "collected", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "collectedDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "waterDrawn", "command": "wait", "args": {"ticks": 18}}
 
 // Sickness, opening on General, then a tab per difficulty. Normal's table scrolls down to Pure.
 {"id": "toSickness", "command": "client.mouse", "args": {"x": 40, "y": 97, "from": "corner", "ticks": 7}}
 {"id": "sickness", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "sicknessDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "sicknessDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "toPeaceful", "command": "client.mouse", "args": {"x": -24, "y": 81, "from": "top", "ticks": 6}}
 {"id": "peaceful", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "peacefulDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "peacefulDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "toEasy", "command": "client.mouse", "args": {"x": 50, "y": 81, "from": "top", "ticks": 5}}
 {"id": "easy", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "easyDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "easyDrawn", "command": "wait", "args": {"ticks": 10}}
 {"id": "toNormal", "command": "client.mouse", "args": {"x": 118, "y": 81, "from": "top", "ticks": 5}}
 {"id": "normal", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "normalDrawn", "command": "wait", "args": {"ticks": 10}}
@@ -90,121 +75,65 @@
 {"id": "tableScroll5", "command": "client.scroll", "args": {"amount": 1}}
 {"id": "tableScroll5Drawn", "command": "wait", "args": {"ticks": 4}}
 {"id": "tableScroll6", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "tableScroll6Drawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toHard", "command": "client.mouse", "args": {"x": 187, "y": 81, "from": "top", "ticks": 6}}
-{"id": "hard", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "hardDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "tableScroll6Drawn", "command": "wait", "args": {"ticks": 16}}
 
 // AppleSkin: the Quenched Outline through Ice, Gold and AppleSkin's own, the preview redrawing each,
 // then the tooltip droplets off and back on.
 {"id": "toAppleSkin", "command": "client.mouse", "args": {"x": 40, "y": 121, "from": "corner", "ticks": 6}}
 {"id": "appleSkin", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "appleSkinDrawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "appleSkinDrawn", "command": "wait", "args": {"ticks": 14}}
 {"id": "toOutline", "command": "client.mouse", "args": {"x": 122, "y": 149, "from": "top", "ticks": 7}}
 {"id": "outlineIce", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "outlineIceDrawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "outlineIceDrawn", "command": "wait", "args": {"ticks": 16}}
 {"id": "outlineGold", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "outlineGoldDrawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "outlineGoldDrawn", "command": "wait", "args": {"ticks": 16}}
 {"id": "outlineAppleSkin", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "outlineAppleSkinDrawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "outlineAppleSkinDrawn", "command": "wait", "args": {"ticks": 16}}
 {"id": "toDroplets", "command": "client.mouse", "args": {"x": 122, "y": 173, "from": "top", "ticks": 5}}
 {"id": "droplets", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "dropletsDrawn", "command": "wait", "args": {"ticks": 20}}
 {"id": "dropletsOn", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "dropletsOnDrawn", "command": "wait", "args": {"ticks": 20}}
 
-// Item Values, and down its list a notch at a time to the end, past vanilla's items to the closed
-// groups of the other mods, Minecraft's heading staying pinned over its items. Then Farmer's Delight,
-// the first of them, opens, and the list scrolls on until its heading takes the top. The group stays
-// open for the rest of the session only; nothing records which groups are open.
+// Item Values, and down its list three notches at a time to the end, past vanilla's items to the
+// closed groups of the other mods, Minecraft's heading staying pinned over its items. Then Farmer's
+// Delight, the first of them, opens, and the list scrolls on until its heading takes the top. The
+// group stays open for the rest of the session only; nothing records which groups are open.
 {"id": "toItems", "command": "client.mouse", "args": {"x": 40, "y": 145, "from": "corner", "ticks": 8}}
 {"id": "items", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "itemsDrawn", "command": "wait", "args": {"ticks": 9}}
+{"id": "itemsDrawn", "command": "wait", "args": {"ticks": 14}}
 {"id": "toList", "command": "client.mouse", "args": {"x": -40, "y": 150, "from": "top", "ticks": 6}}
-{"id": "scroll1", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll1Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll2", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll2Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll3", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll3Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll4", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll4Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll5", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll5Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll6", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll6Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll7", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll7Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll8", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll8Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll9", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll9Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll10", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll10Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll11", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll11Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll12", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll12Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll13", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll13Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll14", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll14Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "scroll15", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "scroll15Drawn", "command": "wait", "args": {"ticks": 12}}
+{"id": "scroll1", "command": "client.scroll", "args": {"amount": 3}}
+{"id": "scroll1Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "scroll2", "command": "client.scroll", "args": {"amount": 3}}
+{"id": "scroll2Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "scroll3", "command": "client.scroll", "args": {"amount": 3}}
+{"id": "scroll3Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "scroll4", "command": "client.scroll", "args": {"amount": 3}}
+{"id": "scroll4Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "scroll5", "command": "client.scroll", "args": {"amount": 3}}
+{"id": "scroll5Drawn", "command": "wait", "args": {"ticks": 12}}
 // At the end the list is Minecraft's pinned heading, its last two items, Farmer's Delight on y = 174,
 // Kaleidoscope Cookery below it and the note on the mods that are not installed.
 {"id": "toFarmersDelight", "command": "client.mouse", "args": {"x": -40, "y": 174, "from": "top", "ticks": 5}}
 {"id": "openFarmersDelight", "command": "client.click", "expect": {"result.taken": true}}
 {"id": "openFarmersDelightDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "modScroll1", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll1Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll2", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll2Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll3", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll3Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll4", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll4Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll5", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll5Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll6", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll6Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll7", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll7Drawn", "command": "wait", "args": {"ticks": 3}}
-{"id": "modScroll8", "command": "client.scroll", "args": {"amount": 1}}
-{"id": "modScroll8Drawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "modScroll1", "command": "client.scroll", "args": {"amount": 2}}
+{"id": "modScroll1Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "modScroll2", "command": "client.scroll", "args": {"amount": 2}}
+{"id": "modScroll2Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "modScroll3", "command": "client.scroll", "args": {"amount": 2}}
+{"id": "modScroll3Drawn", "command": "wait", "args": {"ticks": 4}}
+{"id": "modScroll4", "command": "client.scroll", "args": {"amount": 2}}
+{"id": "modScroll4Drawn", "command": "wait", "args": {"ticks": 16}}
 
 // Matching, the right half of the strip.
 {"id": "toMatching", "command": "client.mouse", "args": {"x": 128, "y": 81, "from": "top", "ticks": 7}}
 {"id": "matching", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "matchingDrawn", "command": "wait", "args": {"ticks": 12}}
-
-// Mod Items, opening on Items, then Blocks, the right half.
-{"id": "toModItems", "command": "client.mouse", "args": {"x": 40, "y": 169, "from": "corner", "ticks": 8}}
-{"id": "modItems", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "modItemsDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toBlocks", "command": "client.mouse", "args": {"x": 126, "y": 81, "from": "top", "ticks": 7}}
-{"id": "blocks", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "blocksDrawn", "command": "wait", "args": {"ticks": 12}}
-
-// Containers, opening on Capacity, then Stacks, Boiling, Hanging Pots and Copper Distiller.
-{"id": "toContainers", "command": "client.mouse", "args": {"x": 40, "y": 193, "from": "corner", "ticks": 8}}
-{"id": "containers", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "containersDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toStacks", "command": "client.mouse", "args": {"x": -52, "y": 81, "from": "top", "ticks": 6}}
-{"id": "stacks", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "stacksDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toBoiling", "command": "client.mouse", "args": {"x": 3, "y": 81, "from": "top", "ticks": 5}}
-{"id": "boiling", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "boilingDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toHangingPots", "command": "client.mouse", "args": {"x": 75, "y": 81, "from": "top", "ticks": 5}}
-{"id": "hangingPots", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "hangingPotsDrawn", "command": "wait", "args": {"ticks": 12}}
-{"id": "toDistiller", "command": "client.mouse", "args": {"x": 169, "y": 81, "from": "top", "ticks": 5}}
-{"id": "distiller", "command": "client.click", "expect": {"result.taken": true}}
-{"id": "distillerDrawn", "command": "wait", "args": {"ticks": 14}}
+{"id": "matchingDrawn", "command": "wait", "args": {"ticks": 20}}
 
 // The pointer comes to Done, the way a player leaves, and the recording stops a moment later.
-// Cancel is pressed after it, off the recording, so the slider and the toggle are not saved.
+// Cancel is pressed after it, off the recording, so the AppleSkin settings are not saved.
 {"id": "toDone", "command": "client.mouse", "args": {"x": 203, "y": -16, "from": "bottom", "ticks": 8}}
 {"id": "doneDrawn", "command": "wait", "args": {"ticks": 4}}
 {"id": "stopRecording", "command": "client.record", "args": {"action": "stop"}, "expect": {"result.failed": 0}}
