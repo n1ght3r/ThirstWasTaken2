@@ -79,7 +79,8 @@ public final class DrinkingGameTest {
      */
     @GameTest
     public void aCanteenOrFlaskDrinkRestoresLikeAWaterskin(GameTestHelper helper) {
-        for (Item item : new Item[] {ThirstItems.WATERSKIN, ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK}) {
+        for (Item item : new Item[] {ThirstItems.WATERSKIN, ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
+                ThirstItems.DIAMOND_FLASK, ThirstItems.NETHERITE_FLASK}) {
             for (int grade : new int[] {WaterPurity.MAX, 1}) {
                 ServerPlayer player = thirstyPlayer(helper);
                 ItemStack vessel = new ItemStack(item);

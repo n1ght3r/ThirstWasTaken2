@@ -1,7 +1,8 @@
 // The container recipe images in docs/public/screenshots/recipes/ that changed with the purification
 // rework: clay-bowl (three clay balls, three bowls), waterskin (four leather in a ring), copper-canteen
 // (string over three copper), iron-flask
-// (an iron nugget over three iron) and distiller-boiler (copper round an iron ingot). Each grid is filled
+// (an iron nugget over three iron), distiller-boiler (copper round an iron ingot), diamond-flask (six
+// diamonds) and netherite-flask (the smithing table's netherite upgrade). Each grid is filled
 // through client.slot and captured unhovered; tools/agent/shots/recipe_images.py crops the panel and
 // draws the result's tooltip beside it from the "*Tooltip" answers. Shot on 26.2, in any world:
 //     python tools/agent/new_world.py 26.2.x RecipeShots --terrain --from "New World"
@@ -107,4 +108,42 @@
 {"id": "boilerRecipe", "command": "client.capture", "args": {"name": "distiller-boiler-recipe"}}
 {"id": "boilerTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:distiller_boiler"}}
 {"id": "boilerClose", "command": "client.screen", "args": {"open": "none"}}
+// Six diamonds, one on top, two either side of the middle row and a full bottom row.
+{"id": "diamondClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "diamondGive", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:diamond 6"}}
+{"id": "diamondSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "diamondOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "diamondOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "diamondTake", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "diamondPut2", "command": "client.slot", "args": {"slot": 2, "button": 1}}
+{"id": "diamondPut4", "command": "client.slot", "args": {"slot": 4, "button": 1}}
+{"id": "diamondPut6", "command": "client.slot", "args": {"slot": 6, "button": 1}}
+{"id": "diamondPut7", "command": "client.slot", "args": {"slot": 7, "button": 1}}
+{"id": "diamondPut8", "command": "client.slot", "args": {"slot": 8, "button": 1}}
+{"id": "diamondPut9", "command": "client.slot", "args": {"slot": 9, "button": 1}}
+{"id": "diamondGrid", "command": "client.slots", "expect": {"result.slots.0.item": "thirstwastaken2:diamond_flask"}}
+{"id": "diamondRecipe", "command": "client.capture", "args": {"name": "diamond-flask-recipe"}}
+{"id": "diamondTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:diamond_flask"}}
+{"id": "diamondClose", "command": "client.screen", "args": {"open": "none"}}
+
+// The netherite upgrade at a smithing table, which takes the crafting table's place. Its slots are the
+// template 0, the base 1, the addition 2 and the result 3.
+{"id": "netheriteClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "netheriteTable", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:smithing_table"}}
+{"id": "netheriteGive0", "command": "server.command", "args": {"command": "item replace entity @p container.9 with minecraft:netherite_upgrade_smithing_template 1"}}
+{"id": "netheriteGive1", "command": "server.command", "args": {"command": "item replace entity @p container.10 with thirstwastaken2:diamond_flask 1"}}
+{"id": "netheriteGive2", "command": "server.command", "args": {"command": "item replace entity @p container.11 with minecraft:netherite_ingot 1"}}
+{"id": "netheriteSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "netheriteOpen", "command": "client.hold", "args": {"keys": ["use"], "ticks": 5}}
+{"id": "netheriteOpened", "command": "wait", "args": {"ticks": 10}}
+{"id": "netheriteTake0", "command": "client.slot", "args": {"inventory": 9}}
+{"id": "netheritePut0", "command": "client.slot", "args": {"slot": 0}}
+{"id": "netheriteTake1", "command": "client.slot", "args": {"inventory": 10}}
+{"id": "netheritePut1", "command": "client.slot", "args": {"slot": 1}}
+{"id": "netheriteTake2", "command": "client.slot", "args": {"inventory": 11}}
+{"id": "netheritePut2", "command": "client.slot", "args": {"slot": 2}}
+{"id": "netheriteGrid", "command": "client.slots", "expect": {"result.slots.3.item": "thirstwastaken2:netherite_flask"}}
+{"id": "netheriteRecipe", "command": "client.capture", "args": {"name": "netherite-flask-recipe"}}
+{"id": "netheriteTooltip", "command": "client.tooltip", "args": {"item": "thirstwastaken2:netherite_flask"}}
+{"id": "netheriteClose", "command": "client.screen", "args": {"open": "none"}}
 {"id": "info", "command": "client.info"}

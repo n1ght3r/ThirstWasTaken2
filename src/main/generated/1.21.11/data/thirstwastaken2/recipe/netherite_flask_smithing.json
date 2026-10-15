@@ -1,0 +1,15 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:netherite_flask"
+    }
+  ],
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:netherite_ingot",
+  "base": "thirstwastaken2:diamond_flask",
+  "result": {
+    "id": "thirstwastaken2:netherite_flask"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

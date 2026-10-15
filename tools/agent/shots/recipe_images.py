@@ -3,7 +3,9 @@
 For each capture: the crafting panel's top 71 GUI px (down to the bottom of the grid) and its last 5 for
 the bottom edge, at the capture's own scale, with the result's tooltip drawn by
 tools/generate_docs_images.py's tooltip() where vanilla would put it for a pointer on the result slot,
-from the lines the "*Tooltip" answers gave. The background stays transparent.
+from the lines the "*Tooltip" answers gave. The background stays transparent. The smithing table keeps
+its top 76 GUI px instead, down past the armour stand, with the "Inventory" label under its slots painted
+over.
 
     python tools/agent/shots/recipe_images.py run/26.2.x/agent/client [name ...]
 
@@ -26,12 +28,16 @@ SHOTS = {
     "copper-canteen-recipe": "canteenTooltip",
     "iron-flask-recipe": "flaskTooltip",
     "distiller-boiler-recipe": "boilerTooltip",
+    "diamond-flask-recipe": "diamondTooltip",
+    "netherite-flask-recipe": "netheriteTooltip",
 }
+SMITHING = {"netherite-flask-recipe"}
 PANEL_W, PANEL_H = 176, 166
-KEEP_TOP, KEEP_BOTTOM = 71, 5
-# The crafting table's result slot, and where vanilla starts a tooltip's text for a pointer on its centre.
-RESULT_X, RESULT_Y = 124, 35
-TEXT_X, TEXT_Y = RESULT_X + 8 + 12, RESULT_Y + 8 - 12
+KEEP_BOTTOM = 5
+PANEL_GREY = (198, 198, 198, 255)
+# Per screen: the rows kept from the top, the result slot, and a box of the kept rows to paint over.
+CRAFTING = {"keep_top": 71, "result": (124, 35), "blank": None}
+SMITHING_TABLE = {"keep_top": 76, "result": (98, 48), "blank": (7, 68, 70, 76)}
 OUT = ROOT / "docs" / "public" / "screenshots" / "recipes"
 
 
@@ -69,20 +75,27 @@ def main():
         left = (gui_w - PANEL_W) // 2
         top = (gui_h - PANEL_H) // 2
 
+        layout = SMITHING_TABLE if name in SMITHING else CRAFTING
+        keep_top = layout["keep_top"]
+        # Where vanilla starts a tooltip's text for a pointer on the result slot's centre.
+        text_x, text_y = layout["result"][0] + 8 + 12, layout["result"][1] + 8 - 12
         panel = frame.crop((left * scale, top * scale, (left + PANEL_W) * scale, (top + PANEL_H) * scale))
         lines = [(text, rgb(colour)) for text, colour in
                  zip(replies[tooltip_id]["result"]["lines"], replies[tooltip_id]["result"]["colours"])
                  if not text.startswith("§9")]
         width = max(font.width(text) for text, _ in lines)
-        gui_out_w = max(PANEL_W, TEXT_X + width + 5)
-        gui_out_h = KEEP_TOP + KEEP_BOTTOM
+        gui_out_w = max(PANEL_W, text_x + width + 5)
+        gui_out_h = keep_top + KEEP_BOTTOM
         out = Image.new("RGBA", (gui_out_w * scale, gui_out_h * scale), (0, 0, 0, 0))
-        out.alpha_composite(panel.crop((0, 0, PANEL_W * scale, KEEP_TOP * scale)), (0, 0))
+        out.alpha_composite(panel.crop((0, 0, PANEL_W * scale, keep_top * scale)), (0, 0))
         out.alpha_composite(panel.crop((0, (PANEL_H - KEEP_BOTTOM) * scale, PANEL_W * scale, PANEL_H * scale)),
-                            (0, KEEP_TOP * scale))
+                            (0, keep_top * scale))
+        if layout["blank"]:
+            x0, y0, x1, y1 = layout["blank"]
+            out.paste(PANEL_GREY, (x0 * scale, y0 * scale, x1 * scale, y1 * scale))
 
         layer = Image.new("RGBA", (gui_out_w, gui_out_h), (0, 0, 0, 0))
-        docs.tooltip(layer, font, TEXT_X, TEXT_Y, lines)
+        docs.tooltip(layer, font, text_x, text_y, lines)
         out.alpha_composite(layer.resize(out.size, Image.NEAREST))
         out.save(OUT / f"{name}.png", optimize=True)
         print(name, out.size, [text for text, _ in lines])

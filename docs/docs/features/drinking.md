@@ -69,7 +69,7 @@ water. The terracotta bowl, waterskin, Copper Canteen and Iron Flask fill from e
 - Mixed water takes the average grade, rounded down. One salty drink makes all of it salty.
 - Pipes and tanks from other mods can fill and empty it, one whole drink at a time.
 
-## Copper Canteen and Iron Flask
+## Copper Canteen and flasks
 
 Metal versions of the waterskin that can boil their own water. They fill, pour and mix exactly like
 the waterskin, and a bar under the icon shows how full they are.
@@ -78,12 +78,22 @@ the waterskin, and a bar under the icon shows how full they are.
 |---|---|
 | Copper Canteen | 4 drinks |
 | Iron Flask | 6 drinks |
+| Diamond Flask | 10 drinks |
+| Netherite Flask | 15 drinks |
 
 ![String on top and three copper ingots below make a Copper Canteen](/screenshots/recipes/copper-canteen-recipe.png)
 
 ![An iron nugget on top and three iron ingots below make an Iron Flask](/screenshots/recipes/iron-flask-recipe.png)
 
-Hold use on a lit campfire to boil the water inside Clean. Both can also go in a furnace. Times are
+Six diamonds make a Diamond Flask: one on top, two on the sides of the middle row, and a full bottom
+row. Upgrade it at a smithing table with a Netherite Upgrade and a netherite ingot to get a Netherite
+Flask. The water inside stays, and like netherite gear it doesn't burn.
+
+![Six diamonds make a Diamond Flask](/screenshots/recipes/diamond-flask-recipe.png)
+
+![A Netherite Upgrade, a Diamond Flask and a netherite ingot make a Netherite Flask at a smithing table](/screenshots/recipes/netherite-flask-recipe.png)
+
+Hold use on a lit campfire to boil the water inside Clean. All of them can also go in a furnace. Times are
 on the [water quality page](/docs/features/water-purity#boiling-in-a-canteen-or-flask).
 
 ## Drinking by hand

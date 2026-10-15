@@ -63,6 +63,8 @@ public final class ThirstModelProvider extends FabricModelProvider {
         // Rigid vessels keep one sprite whatever they hold; the item bar shows how full they are.
         generators.generateFlatItem(ThirstItems.COPPER_CANTEEN, ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(ThirstItems.IRON_FLASK, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ThirstItems.DIAMOND_FLASK, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ThirstItems.NETHERITE_FLASK, ModelTemplates.FLAT_ITEM);
         HangingPotModels.item(generators);
         DistillerModels.item(generators);
         generators.generateFlatItem(ThirstItems.COPPER_PIPE, ModelTemplates.FLAT_ITEM);
@@ -106,6 +108,8 @@ public final class ThirstModelProvider extends FabricModelProvider {
         flat(generators, ThirstItems.TERRACOTTA_BOWL);
         flat(generators, ThirstItems.COPPER_CANTEEN);
         flat(generators, ThirstItems.IRON_FLASK);
+        flat(generators, ThirstItems.DIAMOND_FLASK);
+        flat(generators, ThirstItems.NETHERITE_FLASK);
         HangingPotModels.item(generators);
         DistillerModels.item(generators);
         flat(generators, ThirstItems.COPPER_PIPE);

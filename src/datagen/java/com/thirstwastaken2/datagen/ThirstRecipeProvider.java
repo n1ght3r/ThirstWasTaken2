@@ -32,6 +32,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -156,14 +157,18 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     /** The furnace's time for a default fill of {@code vessel}; {@code FurnaceMixin} times the actual fill. */
     static int vesselSmeltingTicks(Item vessel) {
         ThirstConfig defaults = new ThirstConfig();
-        return vessel == ThirstItems.COPPER_CANTEEN
-                ? defaults.copperCanteenCapacity * defaults.copperCanteenBoilSeconds * 20
-                : defaults.ironFlaskCapacity * defaults.ironFlaskBoilSeconds * 20;
+        if (vessel == ThirstItems.COPPER_CANTEEN) return defaults.copperCanteenCapacity * defaults.copperCanteenBoilSeconds * 20;
+        if (vessel == ThirstItems.DIAMOND_FLASK) return defaults.diamondFlaskCapacity * defaults.diamondFlaskBoilSeconds * 20;
+        if (vessel == ThirstItems.NETHERITE_FLASK) {
+            return defaults.netheriteFlaskCapacity * defaults.netheriteFlaskBoilSeconds * 20;
+        }
+        return defaults.ironFlaskCapacity * defaults.ironFlaskBoilSeconds * 20;
     }
 
-    /** The two vessels a furnace boils, in recipe order. */
+    /** The vessels a furnace boils, in recipe order. */
     static List<Item> furnaceVessels() {
-        return List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK);
+        return List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK, ThirstItems.DIAMOND_FLASK,
+                ThirstItems.NETHERITE_FLASK);
     }
 
     //? if >=26.3 {
@@ -300,6 +305,24 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
                     .unlockedBy("has_iron_ingot", has(IRON_INGOTS))
                     .save(enabled(ThirstItems.IRON_FLASK), recipe("iron_flask"));
 
+            // The flask's shape closed at the bottom: six diamonds, which is why it holds the most of any
+            // crafted vessel. Clear of the hanging pots, whose U carries sticks and chains on top.
+            shaped(ThirstItems.DIAMOND_FLASK, 1)
+                    .pattern(" D ")
+                    .pattern("D D")
+                    .pattern("DDD")
+                    .define('D', Items.DIAMOND)
+                    .unlockedBy("has_diamond", has(Items.DIAMOND))
+                    .save(enabled(ThirstItems.DIAMOND_FLASK), recipe("diamond_flask"));
+
+            // Upgraded like netherite gear, and like it the smithing table copies the base's components,
+            // so the water in the diamond flask comes along.
+            SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                            Ingredient.of(ThirstItems.DIAMOND_FLASK), Ingredient.of(Items.NETHERITE_INGOT),
+                            RecipeCategory.MISC, ThirstItems.NETHERITE_FLASK)
+                    .unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT))
+                    .save(enabled(ThirstItems.NETHERITE_FLASK), recipe("netherite_flask_smithing"));
+
             // The distiller is assembled from four parts, each one piece of the machine, so building one
             // is a small project rather than one recipe. The pipe starts the chain and unlocks the rest.
             // A single row of copper, clear of the U the pots, canteen and flask are made in.
@@ -405,7 +428,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
         }
 
         /**
-         * A copper canteen or iron flask in a furnace: one recipe per grade below the cap, matching any
+         * A copper canteen or a flask in a furnace: one recipe per grade below the cap, matching any
          * fill, since the ingredient names no servings. The result names none either and gets the input's
          * from {@code CookingRecipeMixin}; {@code FurnaceMixin} makes the time each serving's boil time
          * for every serving. Smelting only. No campfire recipe either: vanilla puts anything with one into
@@ -708,7 +731,7 @@ public final class ThirstRecipeProvider extends FabricRecipeProvider {
     }
     //?}
 
-    /** A copper canteen's or iron flask's furnace recipe for water at {@code purity}, any fill. */
+    /** A copper canteen's or a flask's furnace recipe for water at {@code purity}, any fill. */
     static String vesselPurifyName(Item vessel, int purity) {
         return "purify_water_" + Vanilla.itemId(vessel).getPath() + "_" + purity + "_smelting";
     }

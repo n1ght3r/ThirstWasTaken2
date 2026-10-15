@@ -1,0 +1,34 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:diamond_flask"
+    },
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 0.0,
+  "group": "thirstwastaken2:purify_water_diamond_flask",
+  "ingredient": {
+    "fabric:type": "fabric:components",
+    "base": {
+      "item": "thirstwastaken2:diamond_flask"
+    },
+    "components": {
+      "thirstwastaken2:water_purity": 0,
+      "thirstwastaken2:water_salty": false
+    }
+  },
+  "result": {
+    "components": {
+      "thirstwastaken2:water_purity": 2,
+      "thirstwastaken2:water_salty": false
+    },
+    "id": "thirstwastaken2:diamond_flask"
+  }
+}

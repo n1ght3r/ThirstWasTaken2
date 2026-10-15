@@ -50,9 +50,13 @@ Every setting at its default. The long lists are cut short here; see
   "waterskinCapacity": 4,
   "copperCanteenCapacity": 4,
   "ironFlaskCapacity": 6,
+  "diamondFlaskCapacity": 10,
+  "netheriteFlaskCapacity": 15,
   "terracottaWaterBowlStackSize": 3,
   "copperCanteenBoilSeconds": 2,
   "ironFlaskBoilSeconds": 3,
+  "diamondFlaskBoilSeconds": 2,
+  "netheriteFlaskBoilSeconds": 2,
   "copperHangingPotBoilSeconds": 3,
   "ironHangingPotBoilSeconds": 4,
   "copperHangingPotCapacity": 3,
@@ -90,6 +94,8 @@ Every setting at its default. The long lists are cut short here; see
   "enableWaterskin": true,
   "enableCopperCanteen": true,
   "enableIronFlask": true,
+  "enableDiamondFlask": true,
+  "enableNetheriteFlask": true,
   "enableCopperHangingPot": true,
   "enableIronHangingPot": true,
   "enableCopperDistiller": true,
@@ -276,6 +282,11 @@ Default `true`. The Copper Canteen.
 
 Default `true`. The Iron Flask.
 
+### enableDiamondFlask and enableNetheriteFlask
+
+Default `true`. The Diamond Flask and the Netherite Flask. With the Diamond Flask off, the Netherite
+Flask can't be made either, since it is upgraded from one.
+
 ### enableCopperHangingPot and enableIronHangingPot
 
 Default `true`. One switch for each hanging pot.
@@ -289,9 +300,9 @@ Default `true`. The Copper Distiller and its four parts, together.
 Every count here is from `1` to `64`. Lowering one never takes water away: a container that holds
 more keeps it and can be drunk or drawn from, but takes nothing more until it has room.
 
-### waterskinCapacity, copperCanteenCapacity and ironFlaskCapacity
+### waterskinCapacity, copperCanteenCapacity, ironFlaskCapacity, diamondFlaskCapacity and netheriteFlaskCapacity
 
-Default `4`, `4` and `6`. Drinks each holds when full.
+Default `4`, `4`, `6`, `10` and `15`. Drinks each holds when full.
 
 ### terracottaWaterBowlStackSize
 
@@ -304,16 +315,16 @@ Default `3` and `6`. Drinks each hanging pot holds. A bucket is three.
 
 ### enableBoilingInHand
 
-Default `true`. Hold use with a Copper Canteen or Iron Flask over a lit campfire to boil it.
+Default `true`. Hold use with a Copper Canteen or a flask over a lit campfire to boil it.
 
 ### enableFurnaceBoiling
 
 Default `true`. Furnaces and smokers boil water bottles, water bowls and water buckets, and furnaces
-the Copper Canteen and Iron Flask. Off, they boil no water. Applies after `/reload`.
+the Copper Canteen and the flasks. Off, they boil no water. Applies after `/reload`.
 
-### copperCanteenBoilSeconds and ironFlaskBoilSeconds
+### copperCanteenBoilSeconds, ironFlaskBoilSeconds, diamondFlaskBoilSeconds and netheriteFlaskBoilSeconds
 
-Default `2` and `3`, from `1` to `60`. Seconds per drink over a campfire or in a furnace.
+Default `2`, `3`, `2` and `2`, from `1` to `60`. Seconds per drink over a campfire or in a furnace.
 
 ### copperHangingPotBoilSeconds and ironHangingPotBoilSeconds
 

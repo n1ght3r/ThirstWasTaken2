@@ -153,7 +153,7 @@ Heat makes Dirty and Murky water Clean, and goes no further. Only a
 
 Ways to boil water:
 
-- A [Copper Canteen or Iron Flask](#boiling-in-a-canteen-or-flask) held over a campfire.
+- A [Copper Canteen or a flask](#boiling-in-a-canteen-or-flask) held over a campfire.
 - A [Hanging Pot](#copper-hanging-pot) on a campfire, which needs no attention.
 - A furnace or a smoker, below.
 - The Farmer's Delight [Cooking Pot](/docs/integrations/farmers-delight/#boiling-water-in-the-cooking-pot).
@@ -164,7 +164,7 @@ Clean and Pure water have nothing left to boil, so heat never takes them, and no
 
 ![A dirty water bottle comes out of the furnace clean](/screenshots/water/furnace-clean-water.png)
 
-A water bottle, terracotta water bowl, water bucket, Copper Canteen or Iron Flask of Dirty or Murky
+A water bottle, terracotta water bowl, water bucket, Copper Canteen or flask of Dirty or Murky
 water comes out Clean. No experience is given.
 
 | | Furnace | Smoker |
@@ -173,6 +173,7 @@ water comes out Clean. No experience is given.
 | Bucket | 24 seconds | 12 seconds |
 | Copper Canteen | 2 seconds a drink | No |
 | Iron Flask | 3 seconds a drink | No |
+| Diamond or Netherite Flask | 2 seconds a drink | No |
 
 A canteen or flask takes as long as the drinks inside, so a half-full one is done in half the time.
 A stack of bowls is boiled one at a time. Servers can turn furnace boiling off with
@@ -180,7 +181,7 @@ A stack of bowls is boiled one at a time. Servers can turn furnace boiling off w
 
 ## Boiling in a canteen or flask
 
-Hold use on a lit campfire or soul campfire with a [Copper Canteen or Iron Flask](/docs/features/drinking#copper-canteen-and-iron-flask)
+Hold use on a lit campfire or soul campfire with a [Copper Canteen or a flask](/docs/features/drinking#copper-canteen-and-flasks)
 that holds water. The progress shows above the hotbar, and when it is done all the water inside is
 Clean.
 
@@ -188,6 +189,8 @@ Clean.
 |---|---|---|
 | Copper Canteen | 2 seconds | 8 seconds |
 | Iron Flask | 3 seconds | 18 seconds |
+| Diamond Flask | 2 seconds | 20 seconds |
+| Netherite Flask | 2 seconds | 30 seconds |
 
 - Letting go keeps the progress. Adding water starts it over.
 - Salt water never boils clean.

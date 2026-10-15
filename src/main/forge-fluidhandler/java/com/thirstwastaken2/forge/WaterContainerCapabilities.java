@@ -36,6 +36,7 @@ final class WaterContainerCapabilities {
     private static void attach(AttachCapabilitiesEvent<ItemStack> event) {
         Item item = event.getObject().getItem();
         if (item == ThirstItems.WATERSKIN || item == ThirstItems.COPPER_CANTEEN || item == ThirstItems.IRON_FLASK
+                || item == ThirstItems.DIAMOND_FLASK || item == ThirstItems.NETHERITE_FLASK
                 || item == ThirstItems.TERRACOTTA_BOWL || item == ThirstItems.TERRACOTTA_WATER_BOWL) {
             event.addCapability(ID, new Provider(event.getObject()));
         }

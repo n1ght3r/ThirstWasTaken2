@@ -6,6 +6,9 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Added
 
+- Diamond Flask, made from six diamonds, holds 10 drinks and boils in 2 seconds a drink.
+- Netherite Flask, upgraded from the Diamond Flask at a smithing table, holds 15 drinks and doesn't
+  burn.
 - Kaleidoscope Tavern now works on Fabric 1.21.11 too, with Kaleidoscope Tavern Refabricated 1.2.0.6.
 - Mekanism, on NeoForge 1.21.1 and Forge 1.20.1:
   - The Electric Pump keeps the grade of the water it pumps, so a pump in the sea gives sea water.

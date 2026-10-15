@@ -106,6 +106,23 @@
 </table>
 </div>
 
+## Late Game Gear
+* **Diamond Flask:** Holds 10 servings and boils faster than the Iron Flask.
+* **Netherite Flask:** Holds 15 servings and doesn't burn. Upgrade a Diamond Flask at a smithing table; the water inside stays.
+
+<div align="center">
+<table>
+  <tr>
+    <th align="center">Diamond Flask</th>
+    <th align="center">Netherite Flask</th>
+  </tr>
+  <tr>
+    <td align="center"><img alt="Six diamonds make a Diamond Flask" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/diamond-flask-recipe.png" width="288"></td>
+    <td align="center"><img alt="A Netherite Upgrade, a Diamond Flask and a netherite ingot make a Netherite Flask at a smithing table" src="https://raw.githubusercontent.com/n1ght3r/ThirstWasTaken2/main/docs/public/screenshots/recipes/netherite-flask-recipe.png" width="264"></td>
+  </tr>
+</table>
+</div>
+
 ## Settings Screen
 Change every setting in game, with a live preview of the thirst bar. Open it through <img alt="Mod Menu icon" src="https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/modmenu">Mod Menu</a> on Fabric, or the Config button in the Mods list on NeoForge and Forge.
 

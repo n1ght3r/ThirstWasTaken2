@@ -48,7 +48,8 @@ public final class ThirstConfig {
     public static final int MAX_DRINK_TICKS = 100;
     /** The mod's own water containers, which restore {@link #plainWaterValue} rather than an entry of their own. */
     private static final String[] OWN_WATER_VESSELS = {"thirstwastaken2:terracotta_water_bowl",
-            "thirstwastaken2:waterskin", "thirstwastaken2:copper_canteen", "thirstwastaken2:iron_flask"};
+            "thirstwastaken2:waterskin", "thirstwastaken2:copper_canteen", "thirstwastaken2:iron_flask",
+            "thirstwastaken2:diamond_flask", "thirstwastaken2:netherite_flask"};
     /** The range of a season's drain factor, which is also the config screen's slider range. */
     public static final double MIN_SEASON_DRAIN = 0.25;
     public static final double MAX_SEASON_DRAIN = 4.0;
@@ -120,10 +121,12 @@ public final class ThirstConfig {
     public boolean enableBoilingInHand = true;
     /** Off, no furnace or smoker boils water: their water recipes are not loaded. Needs a reload. */
     public boolean enableFurnaceBoiling = true;
-    /** Servings in a full waterskin, copper canteen and iron flask. */
+    /** Servings in a full waterskin, copper canteen, and iron, diamond and netherite flask. */
     public int waterskinCapacity = 4;
     public int copperCanteenCapacity = 4;
     public int ironFlaskCapacity = 6;
+    public int diamondFlaskCapacity = 10;
+    public int netheriteFlaskCapacity = 15;
     /**
      * Filled terracotta bowls in a stack, each still one serving. Read when the item is registered, so the
      * server and every client have to agree, and a change needs a restart. Water bottles do not stack:
@@ -133,6 +136,8 @@ public final class ThirstConfig {
     /** Seconds each serving takes to boil, held over a campfire or in a furnace, and in a pot. */
     public int copperCanteenBoilSeconds = 2;
     public int ironFlaskBoilSeconds = 3;
+    public int diamondFlaskBoilSeconds = 2;
+    public int netheriteFlaskBoilSeconds = 2;
     public int copperHangingPotBoilSeconds = 3;
     public int ironHangingPotBoilSeconds = 4;
     /** Servings in a full copper and iron hanging pot. */
@@ -189,6 +194,9 @@ public final class ThirstConfig {
     public boolean enableWaterskin = true;
     public boolean enableCopperCanteen = true;
     public boolean enableIronFlask = true;
+    public boolean enableDiamondFlask = true;
+    /** Off with the diamond flask on, the netherite one can no longer be upgraded from it. */
+    public boolean enableNetheriteFlask = true;
     public boolean enableCopperHangingPot = true;
     public boolean enableIronHangingPot = true;
     /** The copper distiller and the four parts it is crafted from, which are good for nothing else. */
@@ -319,6 +327,8 @@ public final class ThirstConfig {
             case "thirstwastaken2:waterskin" -> enableWaterskin;
             case "thirstwastaken2:copper_canteen" -> enableCopperCanteen;
             case "thirstwastaken2:iron_flask" -> enableIronFlask;
+            case "thirstwastaken2:diamond_flask" -> enableDiamondFlask;
+            case "thirstwastaken2:netherite_flask" -> enableNetheriteFlask;
             case "thirstwastaken2:copper_hanging_pot" -> enableCopperHangingPot;
             case "thirstwastaken2:iron_hanging_pot" -> enableIronHangingPot;
             case "thirstwastaken2:copper_distiller", "thirstwastaken2:copper_pipe", "thirstwastaken2:distiller_boiler",
@@ -442,11 +452,15 @@ public final class ThirstConfig {
         waterskinCapacity = clamp(waterskinCapacity, 1, MAX_CONTAINER);
         copperCanteenCapacity = clamp(copperCanteenCapacity, 1, MAX_CONTAINER);
         ironFlaskCapacity = clamp(ironFlaskCapacity, 1, MAX_CONTAINER);
+        diamondFlaskCapacity = clamp(diamondFlaskCapacity, 1, MAX_CONTAINER);
+        netheriteFlaskCapacity = clamp(netheriteFlaskCapacity, 1, MAX_CONTAINER);
         terracottaWaterBowlStackSize = clamp(terracottaWaterBowlStackSize, 1, MAX_CONTAINER);
         copperHangingPotCapacity = clamp(copperHangingPotCapacity, 1, MAX_CONTAINER);
         ironHangingPotCapacity = clamp(ironHangingPotCapacity, 1, MAX_CONTAINER);
         copperCanteenBoilSeconds = clamp(copperCanteenBoilSeconds, 1, MAX_BOIL_SECONDS);
         ironFlaskBoilSeconds = clamp(ironFlaskBoilSeconds, 1, MAX_BOIL_SECONDS);
+        diamondFlaskBoilSeconds = clamp(diamondFlaskBoilSeconds, 1, MAX_BOIL_SECONDS);
+        netheriteFlaskBoilSeconds = clamp(netheriteFlaskBoilSeconds, 1, MAX_BOIL_SECONDS);
         copperHangingPotBoilSeconds = clamp(copperHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
         ironHangingPotBoilSeconds = clamp(ironHangingPotBoilSeconds, 1, MAX_BOIL_SECONDS);
         distillerServingSeconds = clamp(distillerServingSeconds, 1, MAX_BOIL_SECONDS);

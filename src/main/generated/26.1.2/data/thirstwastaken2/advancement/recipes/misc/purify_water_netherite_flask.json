@@ -1,0 +1,43 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:netherite_flask"
+    },
+    {
+      "condition": "thirstwastaken2:config_enabled",
+      "setting": "enableFurnaceBoiling"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_netherite_flask": {
+      "conditions": {
+        "items": [
+          {
+            "items": "thirstwastaken2:netherite_flask"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "thirstwastaken2:purify_water_netherite_flask_0_smelting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_netherite_flask"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "thirstwastaken2:purify_water_netherite_flask_0_smelting",
+      "thirstwastaken2:purify_water_netherite_flask_1_smelting"
+    ]
+  }
+}

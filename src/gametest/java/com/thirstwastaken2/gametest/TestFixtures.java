@@ -259,6 +259,11 @@ final class TestFixtures {
         return craft(helper, RecipeType.CRAFTING, net.minecraft.world.item.crafting.CraftingInput.of(width, height, items));
     }
 
+    static ItemStack smith(GameTestHelper helper, ItemStack template, ItemStack base, ItemStack addition) {
+        return craft(helper, RecipeType.SMITHING,
+                new net.minecraft.world.item.crafting.SmithingRecipeInput(template, base, addition));
+    }
+
     private static <I extends RecipeInput, T extends Recipe<I>> ItemStack craft(GameTestHelper helper, RecipeType<T> type, I input) {
         return helper.getLevel().getServer().getRecipeManager()
                 .getRecipeFor(type, input, helper.getLevel())
@@ -272,6 +277,11 @@ final class TestFixtures {
 
     static ItemStack craftGrid(GameTestHelper helper, int width, int height, java.util.List<ItemStack> items) {
         return craft(helper, RecipeType.CRAFTING, net.minecraft.world.item.crafting.CraftingInput.of(width, height, items));
+    }
+
+    static ItemStack smith(GameTestHelper helper, ItemStack template, ItemStack base, ItemStack addition) {
+        return craft(helper, RecipeType.SMITHING,
+                new net.minecraft.world.item.crafting.SmithingRecipeInput(template, base, addition));
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> ItemStack craft(GameTestHelper helper, RecipeType<T> type, I input) {
@@ -288,6 +298,10 @@ final class TestFixtures {
 
     static ItemStack craftGrid(GameTestHelper helper, int width, int height, java.util.List<ItemStack> items) {
         return craft(helper, RecipeType.CRAFTING, new Grid(width, height, items));
+    }
+
+    static ItemStack smith(GameTestHelper helper, ItemStack template, ItemStack base, ItemStack addition) {
+        return craft(helper, RecipeType.SMITHING, new net.minecraft.world.SimpleContainer(template, base, addition));
     }
 
     private static <C extends net.minecraft.world.Container, T extends Recipe<C>> ItemStack craft(

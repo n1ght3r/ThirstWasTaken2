@@ -40,6 +40,8 @@ public final class CanteenGameTest {
         checkCapacity(helper, ThirstItems.WATERSKIN, 4);
         checkCapacity(helper, ThirstItems.COPPER_CANTEEN, 4);
         checkCapacity(helper, ThirstItems.IRON_FLASK, 6);
+        checkCapacity(helper, ThirstItems.DIAMOND_FLASK, 10);
+        checkCapacity(helper, ThirstItems.NETHERITE_FLASK, 15);
         helper.succeed();
     }
 
@@ -171,8 +173,11 @@ public final class CanteenGameTest {
         TestFixtures.withConfig(config -> {
             config.copperCanteenCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
             config.ironFlaskCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
+            config.diamondFlaskCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
+            config.netheriteFlaskCapacity = com.thirstwastaken2.config.ThirstConfig.MAX_CONTAINER;
         }, () -> {
-            for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK)) {
+            for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK, ThirstItems.DIAMOND_FLASK,
+                    ThirstItems.NETHERITE_FLASK)) {
                 for (int servings : new int[] {1, 4, 6, 64}) {
                     for (WaterQuality grade : List.of(DIRTY, WaterQuality.fresh(1))) {
                         ItemStack result = TestFixtures.cook(helper, RecipeType.SMELTING, filled(vessel, grade, servings));
@@ -267,6 +272,31 @@ public final class CanteenGameTest {
     }
 
     /** Three {@code metal} under {@code top}, two at the sides and one below, the flask's shape. */
+    /**
+     * Six diamonds make the diamond flask, and the smithing table turns it into the netherite one with
+     * its water still in it, as it carries enchantments over on netherite gear.
+     */
+    @GameTest
+    public void diamondFlaskIsCraftedAndUpgradesToNetherite(GameTestHelper helper) {
+        ItemStack diamond = new ItemStack(Items.DIAMOND);
+        ItemStack flask = TestFixtures.craftGrid(helper, 3, 3, new ArrayList<>(List.of(
+                ItemStack.EMPTY, diamond.copy(), ItemStack.EMPTY,
+                diamond.copy(), ItemStack.EMPTY, diamond.copy(),
+                diamond.copy(), diamond.copy(), diamond.copy())));
+        TestFixtures.check(helper, flask.is(ThirstItems.DIAMOND_FLASK), "six diamonds should make a diamond flask, got " + flask);
+
+        WaterskinItem.addWater(flask, DIRTY, 7);
+        ItemStack netherite = TestFixtures.smith(helper, new ItemStack(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                flask, new ItemStack(Items.NETHERITE_INGOT));
+        TestFixtures.check(helper, netherite.is(ThirstItems.NETHERITE_FLASK) && WaterskinItem.servings(netherite) == 7
+                        && DIRTY.equals(WaterPurity.quality(netherite)),
+                "the smithing table should upgrade the flask and keep its 7 servings of " + DIRTY + ", got " + netherite
+                        + " holding " + WaterskinItem.servings(netherite) + " of " + WaterPurity.quality(netherite));
+        TestFixtures.check(helper, WaterContainers.capacity(new ItemStack(ThirstItems.NETHERITE_FLASK)) == 15,
+                "the netherite flask should be a fluid container of fifteen servings");
+        helper.succeed();
+    }
+
     private static List<ItemStack> grid(ItemStack top, ItemStack metal) {
         return new ArrayList<>(List.of(
                 ItemStack.EMPTY, top.copy(), ItemStack.EMPTY,

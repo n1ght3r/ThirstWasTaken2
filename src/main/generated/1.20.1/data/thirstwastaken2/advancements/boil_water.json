@@ -85,6 +85,18 @@
       },
       "trigger": "minecraft:recipe_crafted"
     },
+    "diamond_flask_0_smelting": {
+      "conditions": {
+        "recipe_id": "thirstwastaken2:purify_water_diamond_flask_0_smelting"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "diamond_flask_1_smelting": {
+      "conditions": {
+        "recipe_id": "thirstwastaken2:purify_water_diamond_flask_1_smelting"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
     "has_copper_canteen": {
       "conditions": {
         "items": [
@@ -103,6 +115,18 @@
           {
             "items": [
               "thirstwastaken2:copper_hanging_pot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_diamond_flask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thirstwastaken2:diamond_flask"
             ]
           }
         ]
@@ -133,6 +157,18 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_netherite_flask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "thirstwastaken2:netherite_flask"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "iron_flask_0_smelting": {
       "conditions": {
         "recipe_id": "thirstwastaken2:purify_water_iron_flask_0_smelting"
@@ -142,6 +178,18 @@
     "iron_flask_1_smelting": {
       "conditions": {
         "recipe_id": "thirstwastaken2:purify_water_iron_flask_1_smelting"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "netherite_flask_0_smelting": {
+      "conditions": {
+        "recipe_id": "thirstwastaken2:purify_water_netherite_flask_0_smelting"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    },
+    "netherite_flask_1_smelting": {
+      "conditions": {
+        "recipe_id": "thirstwastaken2:purify_water_netherite_flask_1_smelting"
       },
       "trigger": "minecraft:recipe_crafted"
     }
@@ -179,8 +227,14 @@
       "copper_canteen_1_smelting",
       "iron_flask_0_smelting",
       "iron_flask_1_smelting",
+      "diamond_flask_0_smelting",
+      "diamond_flask_1_smelting",
+      "netherite_flask_0_smelting",
+      "netherite_flask_1_smelting",
       "has_copper_canteen",
       "has_iron_flask",
+      "has_diamond_flask",
+      "has_netherite_flask",
       "has_copper_hanging_pot",
       "has_iron_hanging_pot"
     ]

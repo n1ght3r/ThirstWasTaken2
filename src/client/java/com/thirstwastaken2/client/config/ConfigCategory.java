@@ -141,7 +141,11 @@ enum ConfigCategory {
                     ConfigEntry.toggle("enable_copper_canteen",
                             config -> config.enableCopperCanteen, (config, value) -> config.enableCopperCanteen = value),
                     ConfigEntry.toggle("enable_iron_flask",
-                            config -> config.enableIronFlask, (config, value) -> config.enableIronFlask = value))),
+                            config -> config.enableIronFlask, (config, value) -> config.enableIronFlask = value),
+                    ConfigEntry.toggle("enable_diamond_flask",
+                            config -> config.enableDiamondFlask, (config, value) -> config.enableDiamondFlask = value),
+                    ConfigEntry.toggle("enable_netherite_flask",
+                            config -> config.enableNetheriteFlask, (config, value) -> config.enableNetheriteFlask = value))),
             ConfigSection.of("mod_items.blocks", List.of(
                     ConfigEntry.toggle("enable_copper_hanging_pot",
                             config -> config.enableCopperHangingPot, (config, value) -> config.enableCopperHangingPot = value),
@@ -163,7 +167,11 @@ enum ConfigCategory {
                     capacity("copper_canteen_capacity",
                             config -> config.copperCanteenCapacity, (config, value) -> config.copperCanteenCapacity = value),
                     capacity("iron_flask_capacity",
-                            config -> config.ironFlaskCapacity, (config, value) -> config.ironFlaskCapacity = value))),
+                            config -> config.ironFlaskCapacity, (config, value) -> config.ironFlaskCapacity = value),
+                    capacity("diamond_flask_capacity",
+                            config -> config.diamondFlaskCapacity, (config, value) -> config.diamondFlaskCapacity = value),
+                    capacity("netherite_flask_capacity",
+                            config -> config.netheriteFlaskCapacity, (config, value) -> config.netheriteFlaskCapacity = value))),
             // How many filled bowls share a slot, which is a different thing from how much one
             // holds: each is still a single serving.
             ConfigSection.of("containers.stacks", List.of(
@@ -178,7 +186,12 @@ enum ConfigCategory {
                     ConfigEntry.number("copper_canteen_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
                             config -> config.copperCanteenBoilSeconds, (config, value) -> config.copperCanteenBoilSeconds = value),
                     ConfigEntry.number("iron_flask_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
-                            config -> config.ironFlaskBoilSeconds, (config, value) -> config.ironFlaskBoilSeconds = value))),
+                            config -> config.ironFlaskBoilSeconds, (config, value) -> config.ironFlaskBoilSeconds = value),
+                    ConfigEntry.number("diamond_flask_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
+                            config -> config.diamondFlaskBoilSeconds, (config, value) -> config.diamondFlaskBoilSeconds = value),
+                    ConfigEntry.number("netherite_flask_boil_seconds", 1, ThirstConfig.MAX_BOIL_SECONDS, ConfigEntry::seconds,
+                            config -> config.netheriteFlaskBoilSeconds,
+                            (config, value) -> config.netheriteFlaskBoilSeconds = value))),
             ConfigSection.of("containers.hanging_pots", List.of(
                     capacity("copper_hanging_pot_capacity",
                             config -> config.copperHangingPotCapacity, (config, value) -> config.copperHangingPotCapacity = value),

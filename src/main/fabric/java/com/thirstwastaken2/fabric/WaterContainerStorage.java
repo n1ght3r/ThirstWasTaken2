@@ -50,6 +50,7 @@ public final class WaterContainerStorage implements Storage<FluidVariant>, Stora
     public static void register() {
         FluidStorage.ITEM.registerForItems((stack, context) -> new WaterContainerStorage(context),
                 ThirstItems.WATERSKIN, ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
+                ThirstItems.DIAMOND_FLASK, ThirstItems.NETHERITE_FLASK,
                 ThirstItems.TERRACOTTA_BOWL, ThirstItems.TERRACOTTA_WATER_BOWL);
     }
 

@@ -47,6 +47,12 @@ public final class ModItemsGameTest {
             new Switch("enableIronFlask", (config, on) -> config.enableIronFlask = on, List.of(
                     "recipe/iron_flask", "recipe/purify_water_iron_flask_0_smelting",
                     "advancement/recipes/misc/purify_water_iron_flask")),
+            new Switch("enableDiamondFlask", (config, on) -> config.enableDiamondFlask = on, List.of(
+                    "recipe/diamond_flask", "recipe/purify_water_diamond_flask_0_smelting",
+                    "advancement/recipes/misc/purify_water_diamond_flask")),
+            new Switch("enableNetheriteFlask", (config, on) -> config.enableNetheriteFlask = on, List.of(
+                    "recipe/netherite_flask_smithing", "recipe/purify_water_netherite_flask_1_smelting",
+                    "advancement/recipes/misc/purify_water_netherite_flask")),
             new Switch("enableCopperHangingPot", (config, on) -> config.enableCopperHangingPot = on,
                     List.of("recipe/copper_hanging_pot")),
             new Switch("enableIronHangingPot", (config, on) -> config.enableIronHangingPot = on,

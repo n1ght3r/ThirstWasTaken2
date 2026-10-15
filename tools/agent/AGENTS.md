@@ -13,6 +13,26 @@ directories and every command are in
 python tools/agent/drive.py run/26.3.x/agent/client tools/agent/gameplay/parched.jsonl --verify
 ```
 
+## Waiting for a `-Pagent` run
+
+A `-Pagent` run ends by itself: the game closes once the last request is answered, and a run stuck for
+300 seconds closes too (`DONE stalled`). So **the Gradle task finishing is the signal**. Run it in the
+background, wait for that one process, and read the result afterwards:
+
+```bash
+./gradlew ":26.2.x:runClient" -Pagent=tools/agent/shots/recipes.jsonl -Pquickplay=RecipeShots --offline -q > build/agent-run.log 2>&1; echo "exit=$?"; grep -a "ThirstAgent\] DONE" run/26.2.x/logs/latest.log | tail -1
+```
+
+```bash
+python tools/agent/drive.py run/26.2.x/agent/client tools/agent/shots/recipes.jsonl --verify
+```
+
+`DONE script answered` is a finished run; `DONE stalled` or `DONE refused` names what went wrong.
+Do not start a second loop that polls `out.jsonl` while the game runs. It has no reliable end: the
+previous run's `out.jsonl` already holds the same ids until the queue rotates, and comparing it against
+a log that is still being written never comes true. A loop that waits on a file needs both a condition
+that this run alone can meet and a deadline.
+
 Every path is relative to the repository root. Each script's header says which nodes it runs on, the
 world it needs and how to read the result; read it before running one.
 

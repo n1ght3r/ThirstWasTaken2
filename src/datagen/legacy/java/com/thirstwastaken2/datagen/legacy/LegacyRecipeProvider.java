@@ -26,6 +26,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -164,6 +165,21 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
                 .unlockedBy("has_iron_ingot", has(IRON_INGOTS))
                 .save(enabled(output, ThirstItems.IRON_FLASK), id("iron_flask"));
 
+        // The diamond flask, and its netherite upgrade, which keeps the water, as in ThirstRecipeProvider.
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.DIAMOND_FLASK)
+                .pattern(" D ")
+                .pattern("D D")
+                .pattern("DDD")
+                .define('D', Items.DIAMOND)
+                .unlockedBy("has_diamond", has(Items.DIAMOND))
+                .save(enabled(output, ThirstItems.DIAMOND_FLASK), id("diamond_flask"));
+
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                        Ingredient.of(ThirstItems.DIAMOND_FLASK), Ingredient.of(Items.NETHERITE_INGOT),
+                        RecipeCategory.MISC, ThirstItems.NETHERITE_FLASK)
+                .unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT))
+                .save(enabled(output, ThirstItems.NETHERITE_FLASK), id("netherite_flask_smithing"));
+
         // The distiller and its four parts, as in ThirstRecipeProvider.
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ThirstItems.COPPER_PIPE, 4)
                 .pattern("CCC")
@@ -227,6 +243,8 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         Container.ALL.forEach(container -> purifyRecipes(output, container));
         vesselPurifyRecipes(output, ThirstItems.COPPER_CANTEEN);
         vesselPurifyRecipes(output, ThirstItems.IRON_FLASK);
+        vesselPurifyRecipes(output, ThirstItems.DIAMOND_FLASK);
+        vesselPurifyRecipes(output, ThirstItems.NETHERITE_FLASK);
         Container.ALL.stream().filter(container -> container.potion() || container.bowl())
                 .forEach(container -> cookingPotRecipe(output, container));
     }
@@ -303,7 +321,7 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         }
     }
 
-    /** A copper canteen or iron flask in a furnace, one recipe per grade matching any fill, as on later versions. */
+    /** A copper canteen or a flask in a furnace, one recipe per grade matching any fill, as on later versions. */
     private void vesselPurifyRecipes(Consumer<FinishedRecipe> output, Item vessel) {
         String path = Vanilla.itemId(vessel).getPath();
         List<Identifier> names = new ArrayList<>();
@@ -315,9 +333,12 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         Consumer<FinishedRecipe> vessels = furnace(output, vessel);
 
         ThirstConfig defaults = new ThirstConfig();
-        int ticks = vessel == ThirstItems.COPPER_CANTEEN
-                ? defaults.copperCanteenCapacity * defaults.copperCanteenBoilSeconds * 20
-                : defaults.ironFlaskCapacity * defaults.ironFlaskBoilSeconds * 20;
+        int ticks = defaults.ironFlaskCapacity * defaults.ironFlaskBoilSeconds * 20;
+        if (vessel == ThirstItems.COPPER_CANTEEN) ticks = defaults.copperCanteenCapacity * defaults.copperCanteenBoilSeconds * 20;
+        if (vessel == ThirstItems.DIAMOND_FLASK) ticks = defaults.diamondFlaskCapacity * defaults.diamondFlaskBoilSeconds * 20;
+        if (vessel == ThirstItems.NETHERITE_FLASK) {
+            ticks = defaults.netheriteFlaskCapacity * defaults.netheriteFlaskBoilSeconds * 20;
+        }
         for (int purity = 0; purity < BOILED; purity++) {
             vessels.accept(cooking(id(vesselPurifyName(vessel, purity)), Heat.SMELTING,
                     nbtIngredient(vessel, water(null, purity, false)), result(vessel, water(null, BOILED, false)),
@@ -429,7 +450,7 @@ public final class LegacyRecipeProvider extends FabricRecipeProvider {
         return "purify_water_" + container.name() + "_" + purity + "_" + heat.suffix;
     }
 
-    /** A copper canteen's or iron flask's furnace recipe for water at {@code purity}, any fill. */
+    /** A copper canteen's or a flask's furnace recipe for water at {@code purity}, any fill. */
     static String vesselPurifyName(Item vessel, int purity) {
         return "purify_water_" + Vanilla.itemId(vessel).getPath() + "_" + purity + "_smelting";
     }

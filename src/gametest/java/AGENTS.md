@@ -20,6 +20,19 @@ Locally, run only the classes a change touches with `-Ptests=<class>,<class>` (w
 ./gradlew ":26.3.x:runGametest" -Ptests=WaterSickness,Canteen
 ```
 
+**Read the result from the exit code and the report, not the console.** The console is no record:
+`1.20.1-forge` runs a dedicated server whose log goes to `run/1.20.1-forge/gametest/logs/latest.log`,
+not to Gradle's output, so a grep for `tests passed` finds nothing there, and piping the run into
+`grep` hides its exit code. Every node writes `versions/<node>/build/gametest/report.xml`, one
+`<testcase>` per test and a `<failure>` inside each failed one. Several nodes in a row:
+
+```bash
+for n in 26.3.x 1.20.1-forge; do ./gradlew ":$n:runGametest" -Ptests=Canteen --offline -q > "build/gametest-$n.log" 2>&1; echo "$n exit=$? tests=$(grep -o '<testcase' versions/$n/build/gametest/report.xml | wc -l) failures=$(grep -o '<failure' versions/$n/build/gametest/report.xml | wc -l)"; done
+```
+
+`exit=0` with `failures=0` is a pass. Otherwise the reason is in `build/gametest-<node>.log`, or for a
+test that failed, in the report's `<failure>`.
+
 The test server's heap is capped at 1536 MB, which keeps a run from pushing a 16 GB machine into
 paging; a full run peaks under 1 GB. `-PgametestHeap=2g` raises it. Both are in
 `gradle/shared.gradle.kts`.

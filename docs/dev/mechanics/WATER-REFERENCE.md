@@ -45,6 +45,8 @@ Dirty and Murky cannot.
 | Waterskin | 4 (`waterskinCapacity`) | 24 |
 | Copper Canteen | 4 (`copperCanteenCapacity`) | 24 |
 | Iron Flask | 6 (`ironFlaskCapacity`) | 36 |
+| Diamond Flask | 10 (`diamondFlaskCapacity`) | 60 |
+| Netherite Flask | 15 (`netheriteFlaskCapacity`) | 90 |
 
 Every count goes from 1 to 64. A bucket is three servings wherever it is poured, the same rate a
 cauldron uses, whatever the destination holds.
@@ -155,8 +157,10 @@ never takes them.
 | Smoker, bottle, bowl or bucket | 4 s / 12 s | 1 or 3 | Clean | yes | also Sophisticated's Smoking upgrades |
 | Copper Canteen, furnace | 2 s a serving, 8 s full | 1 to 4 | Clean | yes | one recipe per grade, any fill; `FurnaceMixin` times it per serving |
 | Iron Flask, furnace | 3 s a serving, 18 s full | 1 to 6 | Clean | yes | the same |
+| Diamond / Netherite Flask, furnace | 2 s a serving, 20 s / 30 s full | 1 to 10 / 15 | Clean | yes | the same |
 | Copper Canteen, held on a campfire | 2 s a serving, 8 s full | 4 | Clean | no | hold use the whole time; `copperCanteenBoilSeconds` |
 | Iron Flask, held on a campfire | 3 s a serving, 18 s full | 6 | Clean | no | `ironFlaskBoilSeconds` |
+| Diamond / Netherite Flask, held on a campfire | 2 s a serving, 20 s / 30 s full | 10 / 15 | Clean | no | `diamondFlaskBoilSeconds`, `netheriteFlaskBoilSeconds` |
 | Copper Hanging Pot | 3 s a serving, 9 s full | 3 | Clean | no | over a lit campfire; `copperHangingPotBoilSeconds`, `copperHangingPotCapacity` |
 | Iron Hanging Pot | 4 s a serving, 24 s full | 6 | Clean | no | `ironHangingPotBoilSeconds`, `ironHangingPotCapacity` |
 | Copper Distiller | 8 s a serving, 72 s full | up to 9 | Pure, sea water included | furnace fuel | coal runs ten servings; the cooling tub filled once; a bucket of sea water leaves one salt when another mod has salt; `distillerServingSeconds`, `distillerTankServings` |

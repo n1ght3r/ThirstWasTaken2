@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "thirstwastaken2:item_enabled",
+      "item": "thirstwastaken2:diamond_flask"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond"
+  },
+  "pattern": [
+    " D ",
+    "D D",
+    "DDD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "thirstwastaken2:diamond_flask"
+  }
+}

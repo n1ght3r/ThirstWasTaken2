@@ -54,6 +54,19 @@ public final class ThirstItems {
             properties -> new WaterskinItem(properties, () -> ThirstConfig.get().ironFlaskCapacity,
                     () -> ThirstConfig.get().ironFlaskBoilSeconds * 20, false),
             ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
+    /** The iron flask's bigger brother, crafted from scratch out of six diamonds. */
+    public static final Item DIAMOND_FLASK = Vanilla.registerItem("diamond_flask",
+            properties -> new WaterskinItem(properties, () -> ThirstConfig.get().diamondFlaskCapacity,
+                    () -> ThirstConfig.get().diamondFlaskBoilSeconds * 20, false),
+            ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1)));
+    /**
+     * Upgraded from the diamond flask at a smithing table like netherite gear, which keeps the water in
+     * it, and like that gear it does not burn.
+     */
+    public static final Item NETHERITE_FLASK = Vanilla.registerItem("netherite_flask",
+            properties -> new WaterskinItem(properties, () -> ThirstConfig.get().netheriteFlaskCapacity,
+                    () -> ThirstConfig.get().netheriteFlaskBoilSeconds * 20, false),
+            ItemWaterData.emptyByDefault(new Item.Properties().stacksTo(1).fireResistant()));
     public static final Item COPPER_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.COPPER_HANGING_POT,
             properties -> new HangingPotItem(ThirstBlocks.COPPER_HANGING_POT, properties), new Item.Properties());
     public static final Item IRON_HANGING_POT = Vanilla.registerBlockItem(ThirstBlocks.IRON_HANGING_POT,
@@ -98,7 +111,7 @@ public final class ThirstItems {
                         .displayItems((parameters, entries) -> {
                             ThirstConfig config = ThirstConfig.get();
                             for (Item item : List.of(CLAY_BOWL, TERRACOTTA_BOWL, TERRACOTTA_WATER_BOWL, WATERSKIN,
-                                    COPPER_CANTEEN, IRON_FLASK, COPPER_HANGING_POT, IRON_HANGING_POT, COPPER_DISTILLER,
+                                    COPPER_CANTEEN, IRON_FLASK, DIAMOND_FLASK, NETHERITE_FLASK, COPPER_HANGING_POT, IRON_HANGING_POT, COPPER_DISTILLER,
                                     COPPER_PIPE, DISTILLER_BOILER, COOLING_TUB, BRICK_FIREBOX)) {
                                 if (config.isItemEnabled(Vanilla.itemId(item).toString())) entries.accept(item);
                             }

@@ -11,6 +11,7 @@ final class WaterContainerCapabilities {
     static void register(RegisterCapabilitiesEvent event) {
         event.registerItem(Capabilities.Fluid.ITEM, (stack, access) -> new WaterContainerResourceHandler(access),
                 ThirstItems.WATERSKIN, ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
+                ThirstItems.DIAMOND_FLASK, ThirstItems.NETHERITE_FLASK,
                 ThirstItems.TERRACOTTA_BOWL, ThirstItems.TERRACOTTA_WATER_BOWL);
     }
 }

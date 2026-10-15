@@ -29,6 +29,8 @@ public final class CreativeTabGameTest {
             ThirstItems.WATERSKIN,
             ThirstItems.COPPER_CANTEEN,
             ThirstItems.IRON_FLASK,
+            ThirstItems.DIAMOND_FLASK,
+            ThirstItems.NETHERITE_FLASK,
             ThirstItems.COPPER_HANGING_POT,
             ThirstItems.IRON_HANGING_POT,
             ThirstItems.COPPER_DISTILLER,

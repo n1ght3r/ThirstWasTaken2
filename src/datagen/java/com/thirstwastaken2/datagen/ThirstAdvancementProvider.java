@@ -153,8 +153,8 @@ public final class ThirstAdvancementProvider implements DataProvider {
             }
         }
         // Or carrying something that boils water itself, held over a campfire or hung over one.
-        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
-                ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
+        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK, ThirstItems.DIAMOND_FLASK,
+                ThirstItems.NETHERITE_FLASK, ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
             builder.addCriterion("has_" + com.thirstwastaken2.platform.Vanilla.itemId(boiler).getPath(),
                     net.minecraft.advancements.triggers.InventoryChangeTrigger.TriggerInstance.hasItems(boiler));
         }

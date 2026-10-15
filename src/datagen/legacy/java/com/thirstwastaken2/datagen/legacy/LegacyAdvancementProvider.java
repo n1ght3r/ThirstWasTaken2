@@ -68,7 +68,8 @@ public final class LegacyAdvancementProvider extends FabricAdvancementProvider {
                 }
             }
         }
-        for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK)) {
+        for (Item vessel : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK, ThirstItems.DIAMOND_FLASK,
+                ThirstItems.NETHERITE_FLASK)) {
             for (int purity = 0; purity < LegacyRecipeProvider.BOILED; purity++) {
                 String name = LegacyRecipeProvider.vesselPurifyName(vessel, purity);
                 builder.addCriterion(name.substring("purify_water_".length()),
@@ -76,8 +77,8 @@ public final class LegacyAdvancementProvider extends FabricAdvancementProvider {
             }
         }
         // Or carrying something that boils water itself, held over a campfire or hung over one.
-        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK,
-                ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
+        for (Item boiler : List.of(ThirstItems.COPPER_CANTEEN, ThirstItems.IRON_FLASK, ThirstItems.DIAMOND_FLASK,
+                ThirstItems.NETHERITE_FLASK, ThirstItems.COPPER_HANGING_POT, ThirstItems.IRON_HANGING_POT)) {
             builder.addCriterion("has_" + com.thirstwastaken2.platform.Vanilla.itemId(boiler).getPath(),
                     net.minecraft.advancements.triggers.InventoryChangeTrigger.TriggerInstance.hasItems(boiler));
         }
