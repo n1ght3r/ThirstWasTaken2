@@ -325,7 +325,7 @@ Also works with:
 | 26.3 | Latest | Active |
 | 26.2 | Latest | Active |
 | 26.1.x | Latest | Active |
-| 1.21.11 | Latest | Active |
+| 1.21.11 (Fabric only) | Latest | Active |
 | 1.21.1 | Latest | Active |
 | 1.21 (Fabric only) | Latest | Active |
 | 1.20.1 (Fabric and Forge) | Latest | Active |
@@ -366,7 +366,7 @@ Also works with:
   <tr>
     <td><img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-backpacks">Sophisticated Backpacks</a><br><img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> <a href="https://www.curseforge.com/minecraft/mc-mods/sophisticated-storage">Sophisticated Storage</a></td>
     <td>–</td>
-    <td>1.21.1, 1.21.11, 26.1.x, 26.2</td>
+    <td>1.21.1, 26.1.x, 26.2</td>
     <td>–</td>
   </tr>
   <tr>
@@ -377,7 +377,7 @@ Also works with:
   </tr>
   <tr>
     <td><img alt="Kaleidoscope Tavern icon" src="https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png" width="20" height="20" align="absmiddle"> <a href="https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-tavern">Kaleidoscope Tavern</a></td>
-    <td>every version but 1.21.11 (Refabricated)</td>
+    <td>every version (Refabricated)</td>
     <td>1.21.1</td>
     <td>yes</td>
   </tr>

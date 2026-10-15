@@ -1,6 +1,6 @@
 # ThirstWasTaken2
 
-A thirst mod for **Minecraft 26.3, 26.2, 26.1.x, 1.21.11 and 1.21.1** on **Fabric** and **NeoForge**: a
+A thirst mod for **Minecraft 26.3, 26.2, 26.1.x, 1.21.11 and 1.21.1** on **Fabric** and **NeoForge** (1.21.11 on Fabric only): a
 thirst bar, water purity and drinking. It began as a port of
 [Thirst Was Taken](https://github.com/ghen-git/Thirst-Mod) (Forge, 1.19.2) and has diverged, so
 upstream is a reference, not a spec. Its source is expected at `../Thirst-Mod` when comparing.
@@ -14,8 +14,8 @@ upstream is a reference, not a spec. Its source is expected at `../Thirst-Mod` w
 ## Build and run
 
 One source tree, one jar per node. Nodes are the Gradle subprojects in `settings.gradle.kts`:
-`26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1` on Fabric, and the same five with `-neoforge`
-(`build.neoforge.gradle.kts`). The Fabric `1.21.1` jar also covers 1.21; the NeoForge one does not.
+`26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1` on Fabric, and the same but `1.21.11` with `-neoforge`
+(`build.neoforge.gradle.kts`; `1.21.11-neoforge` was dropped). The Fabric `1.21.1` jar also covers 1.21; the NeoForge one does not.
 1.20.1 is `1.20.1` on Fabric and `1.20.1-forge` on MinecraftForge 47 (`build.forge.gradle.kts`, whose
 shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.md](docs/dev/VERSION-DIFFERENCES.md).
 
@@ -173,10 +173,10 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | `src/main/java`, `src/client/java` | Everywhere. Loader-independent |
 | `src/main/fabric`, `src/client/fabric` | Fabric nodes |
 | `src/main/neoforge`, `src/client/neoforge` | NeoForge nodes (client compiled into main) |
-| `src/main/neoforge-fluidhandler` / `neoforge-transfer` | NeoForge 1.21.1 / 1.21.11+, the fluid container API |
+| `src/main/neoforge-fluidhandler` / `neoforge-transfer` | NeoForge 1.21.1 / 26.1+, the fluid container API |
 | `src/main/forge`, `src/client/forge`, `src/main/forge-fluidhandler` | The Forge node (client compiled into main), and its fluid container API |
 | `src/main/<integration>`, `src/client/<integration>`, `src/dev/<integration>` | Where the integration's deps key is set, on the loaders its row allows. Wired from [the integration table](build-logic/src/main/kotlin/com/thirstwastaken2/buildlogic/Integrations.kt); which nodes, below |
-| `src/main/sophisticated-fluidhandler` / `sophisticated-transfer` | Sophisticated's nodes, 1.21.1 / 1.21.11+: its tank and pump code |
+| `src/main/sophisticated-fluidhandler` / `sophisticated-transfer` | Sophisticated's nodes, 1.21.1 / 26.1+: its tank and pump code |
 | `src/main/resources` | Hand-written assets and lang, all nodes |
 | `src/main/generated/<mc version>` | Datagen output, never hand-edited |
 | `src/datagen`, `src/gametest`, `src/dev` | Separate mods, never packaged |
@@ -196,7 +196,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Sophisticated Backpacks and Storage | `deps.sophisticated_core`: every NeoForge node but `26.3.x-neoforge` | [src/main/sophisticated/AGENTS.md](src/main/sophisticated/AGENTS.md) |
 | Supplementaries and Moonlight Lib | `deps.supplementaries`: both 1.21.1 nodes | [src/main/supplementaries/AGENTS.md](src/main/supplementaries/AGENTS.md) |
 | Kaleidoscope Cookery | `deps.kaleidoscope_cookery`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscope/AGENTS.md](src/main/kaleidoscope/AGENTS.md) |
-| Kaleidoscope Tavern | `deps.kaleidoscope_tavern`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node but `1.21.11` (Refabricated) | [src/main/kaleidoscopetavern/AGENTS.md](src/main/kaleidoscopetavern/AGENTS.md) |
+| Kaleidoscope Tavern | `deps.kaleidoscope_tavern`: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node (Refabricated) | [src/main/kaleidoscopetavern/AGENTS.md](src/main/kaleidoscopetavern/AGENTS.md) |
 | Brewin' and Chewin' | `deps.brewin_and_chewin`: both 1.21.1 nodes | [src/main/brewinandchewin/AGENTS.md](src/main/brewinandchewin/AGENTS.md) |
 | Cold Sweat | `deps.cold_sweat`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/coldsweat/AGENTS.md](src/main/coldsweat/AGENTS.md), [src/main/coldsweatforge/AGENTS.md](src/main/coldsweatforge/AGENTS.md) |
 | Fruits Delight | `deps.fruits_delight`: `1.21.1-neoforge`, `1.20.1-forge` | [src/main/fruitsdelight/AGENTS.md](src/main/fruitsdelight/AGENTS.md) |
@@ -253,7 +253,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Create Pipes n Physics: the plan, and what was found in game (`1.21.1-neoforge`) | [docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md](docs/dev/integration/storage/PIPES-N-PHYSICS-INTEGRATION.md) |
 | Supplementaries work still to do | [docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md](docs/dev/integration/storage/SUPPLEMENTARIES-INTEGRATION.md) |
 | Kaleidoscope Cookery work still to do | [docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md) |
-| Kaleidoscope Tavern: the plan, its decisions and what was found in game (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node but `1.21.11`) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |
+| Kaleidoscope Tavern: the plan, its decisions and what was found in game (`1.21.1-neoforge`, `1.20.1-forge`, every Fabric node) | [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md) |
 | Brewin' and Chewin' work still to do | [docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md](docs/dev/integration/cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) |
 | Cold Sweat: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md](docs/dev/integration/climate/COLD-SWEAT-INTEGRATION.md) |
 | Fruits Delight: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md](docs/dev/integration/cooking/FRUITS-DELIGHT-INTEGRATION.md) |

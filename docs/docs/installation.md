@@ -9,7 +9,7 @@ Download the mod from [Modrinth](https://modrinth.com/mod/thirst-was-taken-2). I
 
 Every Minecraft version and loader gets its own file. The suffix on the file name is the Minecraft
 version, NeoForge files end in `-neoforge` and Forge files in `-forge`, for example
-`ThirstWasTaken2-1.0.9+1.21.11.jar` and `ThirstWasTaken2-1.0.9+1.21.11-neoforge.jar`.
+`ThirstWasTaken2-1.0.9+1.21.1.jar` and `ThirstWasTaken2-1.0.9+1.21.1-neoforge.jar`.
 
 ### Fabric
 
@@ -31,7 +31,6 @@ Fabric API is required and must match the Minecraft version.
 | 26.3 | `+26.3-neoforge` | 26.3.0.77 or newer | 25 |
 | 26.2 | `+26.2-neoforge` | 26.2.0.90 or newer | 25 |
 | 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.117 or newer | 25 |
-| 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
 | 1.21.1 | `+1.21.1-neoforge` | 21.1.259 or newer | 21 |
 
 NeoForge needs nothing else. The 1.21.1 file does not run on 1.21. NeoForge has only beta builds for
@@ -90,12 +89,12 @@ The settings screen opens from the Config button in NeoForge's Mods list, with n
 
 | Mod | Versions built with | What it adds |
 |---|---|---|
-| ![](https://cdn.modrinth.com/data/EsAfCjCV/icon.png){.mod-icon} [AppleSkin](https://modrinth.com/mod/appleskin) | 3.0.10+mc26.3, 3.0.10+mc26.2, 3.0.9+mc26.1, 3.0.8+mc1.21.11, 3.0.9+mc1.21 | The same as on Fabric. |
-| ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.2.155, 26.1.154, 21.11.153, 15.0.140 | AppleSkin's own settings screen. Not on 26.3 yet. |
-| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.5, 26.2.10, 26.1.12, 21.1.7, 15.10.6 | The same as on Fabric. Client only. |
+| ![](https://cdn.modrinth.com/data/EsAfCjCV/icon.png){.mod-icon} [AppleSkin](https://modrinth.com/mod/appleskin) | 3.0.10+mc26.3, 3.0.10+mc26.2, 3.0.9+mc26.1, 3.0.9+mc1.21 | The same as on Fabric. |
+| ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.2.155, 26.1.154, 15.0.140 | AppleSkin's own settings screen. Not on 26.3 yet. |
+| ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.5, 26.2.10, 26.1.12, 15.10.6 | The same as on Fabric. Client only. |
 | ![](https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp){.mod-icon} [Create](https://modrinth.com/mod/create) | 6.0.10 | The [Sand Filter](/docs/integrations/create). 1.21.1 only. |
 | ![](https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp){.mod-icon} [Create Pipes n Physics](https://modrinth.com/mod/create-pipes-n-physics) | 3.2.1 | Water keeps its grade through [its pipes and pumps](/docs/integrations/create#create-pipes-n-physics), and the Sand Filter works with it. 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) | Core 26.2-1.5.10.2401, 26.1.2-1.5.13.2403, 1.21.11-1.5.2.2348, 1.21.1-1.5.12.2400. Not on 26.3 yet. | The [Drinking Upgrade](/docs/integrations/sophisticated-backpacks), and water that keeps its grade in the Tank and Pump Upgrades. Sophisticated Storage takes the Drinking Upgrade too. |
+| ![](https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp){.mod-icon} [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks) | Core 26.2-1.5.10.2401, 26.1.2-1.5.13.2403, 1.21.1-1.5.12.2400. Not on 26.3 yet. | The [Drinking Upgrade](/docs/integrations/sophisticated-backpacks), and water that keeps its grade in the Tank and Pump Upgrades. Sophisticated Storage takes the Drinking Upgrade too. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-4.0.1 | The same as on Fabric. 1.21.1 only. |
 | ![](https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png){.mod-icon} [Kaleidoscope Cookery](https://modrinth.com/mod/kaleidoscope-cookery) | 1.6.0-neoforge+mc1.21.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery/), and water that keeps its grade in the Stockpot and the Teapot. 1.21.1 only. |
 | ![](https://media.forgecdn.net/avatars/thumbnails/2040/206/64/64/639247202160912813.png){.mod-icon} [Kaleidoscope Flora](https://www.curseforge.com/minecraft/mc-mods/kaleidoscope-flora) | 0.3.4 | Thirst from its [flower teas](/docs/integrations/kaleidoscope-cookery/kaleidoscope-flora). Needs Kaleidoscope Cookery. On CurseForge only. 1.21.1 only. |

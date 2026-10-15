@@ -35,7 +35,7 @@ every Fabric node, nothing on NeoForge past 1.21.1.
 | `26.1.x` | Refabricated | `1.2.0.12-fabric+mc26.1.2` | `wQGdlw9j` |
 | `26.2.x` | Refabricated | `1.2.0.12-fabric+mc26.2` | `fPmdexqP` |
 | `26.3.x` | Refabricated | `1.2.0.12-fabric+mc26.3` | `vthCQQd1` |
-| `1.21.11-neoforge`, `26.x-neoforge` | none | — | — |
+| `26.x-neoforge` | none | — | — |
 
 The official `26.1.2` branch builds a NeoForge jar, but nothing is published from it, and it lacks
 `WaterloggedBehavior` and `VanillaBottlePlaceEvent`, so it is an older line, not a newer one. When it
@@ -430,4 +430,4 @@ Refabricated has no Jade plugin there.
 - **The tap's other sources** (beehive, dragon head, lava cauldron, watermelon, barrel): no water.
 - **Kaleidoscope Tavern Vanilla Enhanced**, **Kaleidoscope World Liquor** and other addons: separate
   mods, each its own decision when someone asks.
-- **NeoForge 1.21.11 and 26.x**, until the official mod publishes one.
+- **NeoForge 26.x**, until the official mod publishes one.

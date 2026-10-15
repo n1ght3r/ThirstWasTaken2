@@ -198,8 +198,8 @@ turned into the `items` holder set. From 1.21.11 on it is `neoforge:ingredient_t
 
 ### The NeoForge nodes' scope
 
-`26.3.x-neoforge`, `26.2.x-neoforge`, `26.1.x-neoforge`, `1.21.11-neoforge` and `1.21.1-neoforge` are
-the NeoForge nodes. What they leave out, and why:
+`26.3.x-neoforge`, `26.2.x-neoforge`, `26.1.x-neoforge` and `1.21.1-neoforge` are the NeoForge nodes;
+`1.21.11-neoforge` was dropped. What they leave out, and why:
 
 - **Create Fly.** A Fabric port; `src/main/createfly` never compiles here, because the node does not
   set `deps.create_fly`.

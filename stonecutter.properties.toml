@@ -349,26 +349,6 @@ deps.serene_seasons = "6GpaVF7N"
 # 21.11.0.4, the Fabric upload.
 deps.glitchcore = "CO7NeLTt"
 
-[neoforge."1.21.11"]
-mod.mc_compat = "[1.21.11,1.21.12)"
-
-deps.neoforge = "21.11.45"
-# 3.0.8+mc1.21.11, the NeoForge upload.
-deps.appleskin = "MH9ov9DW"
-deps.cloth_config = "21.11.153+neoforge"
-deps.jade = "21.1.7+neoforge"
-# 1.21.11-1.5.2.2348, the NeoForge upload. The transfer-API generation; see src/main/sophisticated/AGENTS.md.
-deps.sophisticated_core = "IkmqeDh0"
-# 1.21.11-3.26.3.2168, only on the runClient classpath.
-deps.sophisticated_backpacks = "36YO13Ox"
-# 1.21.11-1.5.102.2142, only on the runClient classpath.
-deps.sophisticated_storage = "Y6cTQFva"
-# Serene Seasons and GlitchCore, as in the 1.21.1 tables.
-# 21.11.0.4, the NeoForge upload.
-deps.serene_seasons = "eDxStG5h"
-# 21.11.0.4, the NeoForge upload.
-deps.glitchcore = "6dbbrOrO"
-
 ["26.1.x"]
 mod.mc_releases = ["26.1", "26.1.1", "26.1.2"]
 

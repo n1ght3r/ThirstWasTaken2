@@ -21,6 +21,11 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - With Hearth and Harvest 1.4.0, only a bottle of sea water boils down to salt in a Cooking Pot again.
 
+### Removed
+
+- NeoForge 1.21.11 is no longer supported. Minecraft 1.21.11 is still supported on Fabric, and NeoForge
+  on 1.21.1 and 26.x.
+
 ## [1.8.0] - 2026-10-09
 
 ### Added
