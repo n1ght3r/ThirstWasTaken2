@@ -3,6 +3,9 @@ package com.thirstwastaken2.kaleidoscopetavern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,10 +27,17 @@ public final class KaleidoscopeTavernPresence {
     private static final String REFABRICATED_FLUIDS =
             "com/github/ysbbbbbb/kaleidoscopetavern/util/fluids/FluidUtils.class";
 
+    /**
+     * A method Refabricated's {@code FluidUtils} gained when it stopped handing every container back as a
+     * bucket (upstream #29: 1.2.0.12, and 1.2.0.6 on 1.21.11). Private and the mod's own, so never remapped.
+     */
+    private static final byte[] CONTAINER_FIX = "mutableContext".getBytes(StandardCharsets.US_ASCII);
+
     private static final Logger LOGGER = LoggerFactory.getLogger("thirstwastaken2");
 
     private static volatile Boolean installed;
     private static volatile Boolean refabricated;
+    private static volatile Boolean swapsContainers;
     private static final Map<String, Boolean> TARGETS = new ConcurrentHashMap<>();
 
     private KaleidoscopeTavernPresence() { }
@@ -42,15 +52,26 @@ public final class KaleidoscopeTavernPresence {
         return known;
     }
 
-    /**
-     * Whether the installed build is Refabricated, whose barrel hands every container back as a bucket;
-     * see {@link TavernWater#refuses}.
-     */
+    /** Whether the installed build is Refabricated, the Fabric port with its own fluid helper. */
     public static boolean isRefabricated() {
         Boolean known = refabricated;
         if (known == null) {
             known = has(REFABRICATED_FLUIDS);
             refabricated = known;
+        }
+        return known;
+    }
+
+    /**
+     * Whether the installed build is a Refabricated one from before upstream #29, whose barrel hands every
+     * container back as a bucket; see {@link TavernWater#refuses}. Read off the class file's bytes, so the
+     * class is not loaded.
+     */
+    public static boolean swapsContainers() {
+        Boolean known = swapsContainers;
+        if (known == null) {
+            known = isRefabricated() && !contains(REFABRICATED_FLUIDS, CONTAINER_FIX);
+            swapsContainers = known;
         }
         return known;
     }
@@ -73,5 +94,22 @@ public final class KaleidoscopeTavernPresence {
 
     private static boolean has(String resource) {
         return KaleidoscopeTavernPresence.class.getClassLoader().getResource(resource) != null;
+    }
+
+    private static boolean contains(String resource, byte[] needle) {
+        try (InputStream in = KaleidoscopeTavernPresence.class.getClassLoader().getResourceAsStream(resource)) {
+            if (in == null) return false;
+            byte[] bytes = in.readAllBytes();
+            outer:
+            for (int i = 0; i <= bytes.length - needle.length; i++) {
+                for (int j = 0; j < needle.length; j++) {
+                    if (bytes[i + j] != needle[j]) continue outer;
+                }
+                return true;
+            }
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

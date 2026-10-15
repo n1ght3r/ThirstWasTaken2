@@ -100,8 +100,12 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
                         advancements.json(ThirstWasTaken2.id("recipes/misc/" + name))));
             }
             if (HEARTH_AND_HARVEST_BUILDS) {
+                // Its id up to 1.3.4, and from 1.4.0. Under whichever id the installed build does not
+                // use, the file is a second sea-water recipe, the same as the first.
                 writes.add(DataProvider.saveStable(cache, hearthAndHarvestSalt(ops),
                         recipes.json(Identifier.withDefaultNamespace("salt_from_bottle"))));
+                writes.add(DataProvider.saveStable(cache, hearthAndHarvestSalt(ops),
+                        recipes.json(Identifier.fromNamespaceAndPath(HEARTH_AND_HARVEST, "cooking/salt_from_bottle"))));
             }
             return CompletableFuture.allOf(writes.toArray(CompletableFuture[]::new));
         });
@@ -132,7 +136,7 @@ public final class FarmersDelightRecipeProvider implements DataProvider {
     }
 
     /**
-     * Hearth and Harvest's salt from a bottle in the Cooking Pot, replaced at its own id so that only sea
+     * Hearth and Harvest's salt from a bottle in the Cooking Pot, replaced at its own ids so that only sea
      * water boils down to salt. Its own matched any water bottle by its potion alone, so a fresh bottle
      * matched both it and the purifying recipe above, and recipe order decided which one cooked. This mod
      * loads after Hearth and Harvest (its row in the integration table says so), so this file wins. Its

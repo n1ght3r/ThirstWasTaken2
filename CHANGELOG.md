@@ -2,6 +2,25 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Kaleidoscope Tavern now works on Fabric 1.21.11 too, with Kaleidoscope Tavern Refabricated 1.2.0.6.
+- Hearth and Harvest 1.4.0, on NeoForge 1.21.1:
+  - Beer and the Goat Milk Bucket restore thirst.
+  - The Keg keeps the grade of water poured in and drawn back out.
+  - A Sprinkler filling itself gets the grade of the water beside or below it, and Clean water from rain.
+
+### Changed
+
+- With Kaleidoscope Tavern Refabricated 1.2.0.12 or newer (1.2.0.6 on 1.21.11), the Barrel takes
+  Waterskins, Canteens, Flasks and terracotta bowls on Fabric too, and hands them back as they were.
+
+### Fixed
+
+- With Hearth and Harvest 1.4.0, only a bottle of sea water boils down to salt in a Cooking Pot again.
+
 ## [1.8.0] - 2026-10-09
 
 ### Added

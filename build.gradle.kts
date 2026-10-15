@@ -615,6 +615,9 @@ dependencies {
     if (farmAndCharm != null) {
         // Mixed into, so it has to be a remapped mod rather than a plain library, as Brewin' and Chewin' is.
         "modCompileOnly"("maven.modrinth:lets-do-farm-charm:$farmAndCharm") { isTransitive = false }
+        // From 1.1.28 its blocks extend Foundation's, and its kitchen sink is Foundation's, a library
+        // nested in its jar; mixed into as well, so remapped.
+        "modCompileOnly"(files(nestedMods("lets-do-farm-charm", farmAndCharm).filter { it.name.startsWith("foundation") }))
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
         // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight

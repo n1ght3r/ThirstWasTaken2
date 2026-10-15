@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.satisfy.farm_and_charm.core.block.TimberWellBlock;
+import net.satisfy.farm_and_charm.platform.PlatformHelper;
 
 /**
  * The grades Farm & Charm's water blocks hand out. None of them can keep one: the well and the trough
@@ -31,7 +32,7 @@ public final class StandingWater {
 
     private StandingWater() { }
 
-    /** Whether {@code stack} is a water bucket holding sea water, which the trough and the sink refuse. */
+    /** Whether {@code stack} is a water bucket holding sea water, which the trough refuses. */
     public static boolean isSaltyBucket(ItemStack stack) {
         return stack.is(Items.WATER_BUCKET) && WaterPurity.isSalty(stack);
     }
@@ -74,7 +75,8 @@ public final class StandingWater {
         int maxX = Math.max(foot.getX(), head.getX()) + 1;
         int minZ = Math.min(foot.getZ(), head.getZ()) - 1;
         int maxZ = Math.max(foot.getZ(), head.getZ()) + 1;
-        int depth = TimberWellBlock.GROUNDWATER_DEPTH;
+        // A config value from 1.1.28, a constant before.
+        int depth = PlatformHelper.getWellGroundwaterDepth();
         for (BlockPos check : BlockPos.betweenClosed(minX, foot.getY() - depth, minZ, maxX, foot.getY() - 1, maxZ)) {
             FluidState fluid = level.getFluidState(check);
             if (fluid.is(FluidTags.WATER) && fluid.isSource()) return check.immutable();

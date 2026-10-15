@@ -29,12 +29,12 @@ every Fabric node, nothing on NeoForge past 1.21.1.
 |---|---|---|---|
 | `1.21.1-neoforge` | official | `1.2.0-neoforge+mc1.21.1` (2026-07-01) | `W9ILsQt7` |
 | `1.20.1-forge` | official | `1.2.0-forge+mc1.20.1` (2026-07-01) | `mUnU2u9e` |
-| `1.20.1` | Refabricated | `1.2.0.10-fabric+mc1.20.1` | `xRazdSRF` |
-| `1.21.1` | Refabricated | `1.2.0.10-fabric+mc1.21.1` | `3F22ge98` |
-| `1.21.11` | none for now: Refabricated `1.2.0.5-fabric+mc1.21.11` crashes on launch, see below | — |
-| `26.1.x` | Refabricated | `1.2.0.10-fabric+mc26.1.2` | `gsiaxkwo` |
-| `26.2.x` | Refabricated | `1.2.0.10-fabric+mc26.2` | `alGf2ccW` |
-| `26.3.x` | Refabricated | `1.2.0.11-fabric+mc26.3` | `FOhx6x47` |
+| `1.20.1` | Refabricated | `1.2.0.12-fabric+mc1.20.1` | `6vWzRtqD` |
+| `1.21.1` | Refabricated | `1.2.0.12-fabric+mc1.21.1` | `d1wNgSb0` |
+| `1.21.11` | Refabricated, hotfixes only | `1.2.0.6-fabric+mc1.21.11` | `rcsRCqe1` |
+| `26.1.x` | Refabricated | `1.2.0.12-fabric+mc26.1.2` | `wQGdlw9j` |
+| `26.2.x` | Refabricated | `1.2.0.12-fabric+mc26.2` | `fPmdexqP` |
+| `26.3.x` | Refabricated | `1.2.0.12-fabric+mc26.3` | `vthCQQd1` |
 | `1.21.11-neoforge`, `26.x-neoforge` | none | — | — |
 
 The official `26.1.2` branch builds a NeoForge jar, but nothing is published from it, and it lacks
@@ -99,7 +99,7 @@ the official mod by an item.
 
 | Step | State |
 |---|---|
-| 1. Build dependency and gate | done, seven nodes build; `1.21.11` left out until Refabricated fixes its crash |
+| 1. Build dependency and gate | done, eight nodes build; `1.21.11` since Refabricated 1.2.0.6 fixed its crash |
 | 2. Thirst values | done; spirits at 0, 0 |
 | 3. Investigation: what happens to a grade | done, from the sources and in game; see below |
 | 4. The barrel keeps the grade | done |
@@ -121,8 +121,8 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 - **Refabricated does eat our containers** (step 3.2), and worse than the plan feared: `emptyItem` hands
   back `onConsumed(result)`, an empty bucket for any fluid container that is not a bucket, and `fillItem`
   hands back `resource.getFluid().getBucket()`, a full bucket, whatever was held out, so an empty canteen
-  drew a whole bucket for one serving. The barrel refuses this mod's containers on Fabric. Reported
-  upstream as #29.
+  drew a whole bucket for one serving. The barrel refused this mod's containers on Fabric until upstream
+  fixed it (#29, 1.2.0.12); it still does on an older Refabricated build.
 - **The barrel's tank names a loader on both builds** (NeoForge or Forge `FluidTank`, Fabric
   `SingleVariantStorage`). Both build a `BarrelRecipeContainer` from it, whose `getFluid()` is a plain
   `Fluid`, so the mixin reads the tank that way and names neither.
@@ -134,8 +134,8 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 - **Refabricated's `1.21.11` build (1.2.0.5) crashes on launch** with current Fabric API: its
   `PlayerMixin` registers an entity data serializer the old way, which Fabric API refuses. CI's
   `runDatagen` on `1.21.11` crashed on it. **Decided 2026-10-09: `1.21.11` is left out** (no
-  `deps.kaleidoscope_tavern` there) until a fixed build is out; code that cannot run is not built. Both
-  this and the container bug are reported upstream, see "Reported upstream" below.
+  `deps.kaleidoscope_tavern` there) until a fixed build is out; code that cannot run is not built.
+  1.2.0.6 fixed it on 2026-10-10, and the node sets the key again. See "Reported upstream" below.
 - **The tap can be opened by redstone** (`neighborChanged`), which is how the agent script drives it.
 - **Kaleidoscope Chinese Food's fill** (step 5b) needs no class of Tavern's: the source and the
   destination are block states, and the tap's facing gives the source position. So it lives in
@@ -151,6 +151,9 @@ How it was built is in [src/main/kaleidoscopetavern/AGENTS.md](../../../../src/m
 capture reads Dirty from a side block of the barrel, and Salty on the cauldron the tap filled from the
 sea. `smoke/boot.jsonl` with `-PwithoutOptional=kaleidoscope_tavern` came up on `1.21.1-neoforge`. Every
 check passed on `26.1.x` and `26.2.x` too, on 2026-10-09.
+
+On 2026-10-15, with Refabricated 1.2.0.12 and `canteenRefused` turned into `canteenPoured`: every check
+passed on `1.21.1`. A Dirty canteen with two servings goes into the barrel and stays a canteen.
 
 Step 5b: `tools/agent/integrations/kaleidoscope-chinese-food-tap.jsonl` on `1.21.1-neoforge` and
 `1.20.1-forge` with Kaleidoscope Chinese Food 1.1.14, 2026-10-09: every check passed on both. A tap on a Dirty cauldron fills the
@@ -175,6 +178,13 @@ To [NightEpiphany/KaleidoscopeTavern-Refabricated](https://github.com/NightEpiph
 Filed 2026-10-09 as [#28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28) (the
 1.21.11 crash) and [#29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29) (the
 containers). The repository has no issue template; titles follow its `[Bug]` convention.
+
+**Both fixed and closed on 2026-10-10.** 1.2.0.6-fabric+mc1.21.11 fixes the crash; 1.2.0.12 on every other
+branch, and 1.2.0.6 on 1.21.11, fix the containers: `emptyItem` and `fillItem` now work on a mutable
+item context (`FluidUtils.mutableContext`) and hand back what the transfer left, and `onConsumed` is
+deprecated. `1.21.11` sets `deps.kaleidoscope_tavern` again, and `TavernWater.refusesContainer` refuses
+only on a build without the fix, read off the `mutableContext` name in the class file
+(`KaleidoscopeTavernPresence.swapsContainers`), since players may still run an older one.
 
 ## 1. Build dependency and gate
 
@@ -408,8 +418,8 @@ Refabricated has no Jade plugin there.
   this file ships on Fabric.
 - **The multiblock.** The barrel is eight blocks with one block entity; the mixin must stamp through the
   one `BarrelBlock.getBarrelEntity` returns, never through the block clicked.
-- **`1.21.11` trails** the other Fabric builds (`1.2.0.5` against `1.2.0.10`). Check each target there
-  separately before assuming it matches.
+- **`1.21.11` trails** the other Fabric builds (`1.2.0.6` against `1.2.0.12`); its branch takes hotfixes
+  only. Check each target there separately before assuming it matches.
 - **Step 6 (a)** is a new kind of store in this mod. If it lands, its cleanup paths get a gametest each.
 
 ## Not doing

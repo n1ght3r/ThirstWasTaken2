@@ -10,8 +10,8 @@ mod.group = "com.thirstwastaken2"
 mod.version = "1.8.0"
 
 deps.fabric_loader = "0.19.5"
-# Pinned to a release rather than `1.17-SNAPSHOT`, so the same commit builds the same jars later.
-loomx.loom_version = "1.17.21"
+# Pinned to a release rather than `1.18-SNAPSHOT`, so the same commit builds the same jars later.
+loomx.loom_version = "1.18.4"
 
 [fabric."1.20.1"]
 # The node older than data components, payload types and Fabric's attachment sync; see
@@ -339,10 +339,10 @@ deps.kaleidoscope_cookery = "T5QYqq9P"
 # Forge Config API Port, which Kaleidoscope Cookery requires here, only on the runClient classpath.
 # 21.11.1, the Fabric upload.
 deps.forge_config_api_port = "uXrWPsCu"
-# No `deps.kaleidoscope_tavern`, for now: Kaleidoscope Tavern Refabricated's 1.21.11 build (1.2.0.5,
-# Modrinth id Zq3a4bZQ) crashes on launch, its PlayerMixin registering an entity data serializer from
-# Player's static initializer, which Fabric API refuses. Set it again once a fixed build is out. See
-# docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md.
+# Kaleidoscope Tavern Refabricated; see [fabric."1.21.1"]. Its 1.21.11 branch gets only hotfixes, so it
+# trails the others; 1.2.0.5 crashed on launch (upstream #28), fixed in 1.2.0.6.
+# 1.2.0.6-fabric+mc1.21.11, the Fabric upload.
+deps.kaleidoscope_tavern = "rcsRCqe1"
 # Serene Seasons and GlitchCore, as in the 1.21.1 tables.
 # 21.11.0.4, the Fabric upload.
 deps.serene_seasons = "6GpaVF7N"

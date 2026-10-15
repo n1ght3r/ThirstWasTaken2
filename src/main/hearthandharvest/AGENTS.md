@@ -8,7 +8,7 @@ sea as fresh water; and the Cask aged sea water into mead. This directory fixes 
 and its decisions are in
 [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](../../../docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md).
 
-**Built on `1.21.1-neoforge` only**, the mod's build 1.3.4. Its 1.20.1 build is the early mod and has
+**Built on `1.21.1-neoforge` only**, against the mod's build 1.4.0 (written for 1.3.4, which still works). Its 1.20.1 build is the early mod and has
 its own directory, [`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md). What it does:
 
 - **a tank keeps the grade** poured into it: Dirty in, Dirty out; sea water in, sea water out. Two
@@ -18,7 +18,9 @@ its own directory, [`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md)
   whether it filled itself or was poured into, and refuses sea water. It stays an endless tap;
 - **a Jug scooping a source samples it** where it lies, like any water collected from the world;
 - **a wet sponge stomped gives Murky water**, and **rain in a Trough is rainwater** (Clean by default);
-- **the Cask ages nothing from sea water**; fresh water of any grade still ages.
+- **the Cask ages nothing from sea water**; fresh water of any grade still ages;
+- from 1.4.0, **the Sprinkler's own refill** is rainwater from rain and sampled from a source beside or
+  below it, and **the Keg's container slot** pours and draws with the grade, as the other tanks do.
 
 The salt recipe is not here: `minecraft:salt_from_bottle`, Hearth and Harvest's Cooking Pot recipe, is
 replaced by a data file core's datagen writes for 1.21.1 (`FarmersDelightRecipeProvider`), which boils
@@ -40,6 +42,8 @@ hearthandharvest/java/com/thirstwastaken2/hearthandharvest/
   mixin/TroughBlockEntityMixin    TroughBlockEntity.serverTick: rain stamped with rainwaterPurity
   mixin/StompingBasinRecipeMixin  StompingBasinRecipe.getResultFluid: water (the sponge) is Murky
   mixin/CaskBlockEntityMixin      CaskBlockEntity.getMatchingRecipe: no recipe while a salty container is in
+  mixin/SprinklerBlockEntityMixin SprinklerBlockEntity.refill (1.4.0): rain stamped as rainwater, a source sampled
+  mixin/KegBlockEntityMixin       KegBlockEntity.transfer (1.4.0): FluidUtil pour and draw with the grade
 hearthandharvest/resources/
   thirstwastaken2.hearthandharvest.mixins.json
 ```
@@ -70,7 +74,10 @@ hearthandharvest/resources/
 - **The Cask** finds its recipe through the private `getMatchingRecipe`; answering empty there while a
   salty container is in an input slot stops ageing and leaves the bottle where it is.
 - **Compiled against the mod.** The mixins name its classes, so `build.neoforge.gradle.kts` has it as
-  `compileOnly`. Every injection point was checked against the 1.3.4 jar's bytecode.
+  `compileOnly`. Every injection point was checked against the 1.3.4 and 1.4.0 jars' bytecode; the
+  plugin skips the two 1.4.0 mixins on 1.3.4, whose targets are missing.
+- **The salt recipe moved.** 1.4.0 renamed `minecraft:salt_from_bottle` to
+  `hearthandharvest:cooking/salt_from_bottle`, so datagen writes the sea-water recipe under both ids.
 
 ## Not covered
 

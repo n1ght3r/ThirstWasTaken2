@@ -6,10 +6,9 @@ grade in the Barrel, through the Tap and in a Water Bottle put down as a block.
 ::: warning Supported versions
 NeoForge, Minecraft 1.21.1, and Forge, Minecraft 1.20.1, with
 ![](https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png){.mod-icon} [Kaleidoscope Tavern](https://modrinth.com/mod/kaleidoscopetavern) 1.2.0, and Fabric, every
-supported Minecraft version but 1.21.11, with
+supported Minecraft version, with
 ![](https://cdn.modrinth.com/data/UMblNdlF/bfeeabb4b3f926a0afbc953490c32892a0999122.png){.mod-icon} [Kaleidoscope Tavern Refabricated](https://modrinth.com/mod/kaleidoscope-tavern-refabricated).
-Kaleidoscope Tavern has no NeoForge version for newer Minecraft versions yet. Its Fabric version for
-1.21.11 crashes the game on launch, so 1.21.11 is left out until it is fixed.
+Kaleidoscope Tavern has no NeoForge version for newer Minecraft versions yet.
 :::
 
 ## Drinks
@@ -33,9 +32,9 @@ into them. Every value can be changed in the [config](/docs/configuration#drinks
 - A bucket of water poured into the Barrel and taken back out keeps its grade. Two grades poured
   together keep the worse one, as in a cauldron.
 - The Barrel won't take sea water. It would otherwise ferment it into rum as safe as any other.
-- On Fabric, the Barrel won't take Waterskins, Canteens, Flasks or terracotta bowls, which the Fabric
-  version of Kaleidoscope Tavern would hand back as a bucket. Buckets still work. On NeoForge and
-  Forge they go in and come out like a bucket.
+- Waterskins, Canteens, Flasks and terracotta bowls go in and come out like a bucket. On Fabric this
+  needs Kaleidoscope Tavern Refabricated 1.2.0.12, or 1.2.0.6 on Minecraft 1.21.11. Older versions
+  hand them back as a bucket, so the Barrel won't take them there.
 
 ## The Tap
 
