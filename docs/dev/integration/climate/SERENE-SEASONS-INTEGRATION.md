@@ -29,7 +29,6 @@ every table pins one. Fabric also requires Fabric API, which we already have.
 | `1.21.1` | `10.1.0.9` | `q34wStJM` | GlitchCore `2.1.0.2` (`sux8kYHe`) |
 | `1.21.1-neoforge` | `10.1.0.9` | `pHEgQQUE` | GlitchCore `2.1.0.2` (`S2TfWrZR`) |
 | `1.21.11` | `21.11.0.4` | `6GpaVF7N` | GlitchCore `21.11.0.4` (`CO7NeLTt`) |
-| `1.21.11-neoforge` | `21.11.0.4` | `eDxStG5h` | GlitchCore `21.11.0.4` (`6dbbrOrO`) |
 | `26.1.x` | `26.1.2.0.7` | `kxB8vG5W` | GlitchCore `26.1.2.0.2` (`WNtSATXw`) |
 | `26.1.x-neoforge` | `26.1.2.0.7` | `atclxQCD` | GlitchCore `26.1.2.0.2` (`mYUbCfgT`) |
 | `26.2.x` | `26.1.2.0.6` | `q5mzi8wy` | GlitchCore `26.2.0.0.0` (`SDUCBYRU`) |

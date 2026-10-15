@@ -34,7 +34,7 @@ Every mechanic is explained on the [documentation site](https://n1ght3r.github.i
 | 26.3 | 25 | 0.19.5 | 0.162.0+26.3 | 26.3.0.77 |
 | 26.2 | 25 | 0.19.5 | 0.161.0+26.2 | 26.2.0.90 |
 | 26.1 – 26.1.2 | 25 | 0.19.5 | 0.155.3+26.1.2 | 26.1.2.117 |
-| 1.21.11 | 21 | 0.19.5 | 0.141.6+1.21.11 | 21.11.45 |
+| 1.21.11 | 21 | 0.19.5 | 0.141.6+1.21.11 | – |
 | 1.21.1 | 21 | 0.19.5 | 0.116.17+1.21.1 | 21.1.259 |
 | 1.21 | 21 | 0.19.5 | 0.116.17+1.21.1 | – |
 | 1.20.1 | 17 | 0.19.5 | 0.92.12+1.20.1 | Forge 47.4.28 |
@@ -50,7 +50,7 @@ All integrations are soft dependencies: nothing is required, and nothing is load
 | <img alt="Farmer's Delight icon" src="https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FR2OftAxM%2F8e7aa38ab94d94bb0a2894a218b69beb49002b34.png&amp;trim=1&amp;w=96&amp;h=96&amp;fit=contain&amp;cbg=00000000&amp;output=png" width="24" height="24" align="absmiddle"> [Farmer's Delight](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/farmers-delight/) | every version (Refabricated) | 1.21.1 | yes |
 | <img alt="Create icon" src="https://cdn.modrinth.com/data/LNytGWDc/61d716699bcf1ec42ed4926a9e1c7311be6087e2_96.webp" width="20" height="20" align="absmiddle"> [Create](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create) | 26.1.x, 26.2 (Create Fly) | 1.21.1 | yes |
 | <img alt="Create Pipes n Physics icon" src="https://cdn.modrinth.com/data/CuAT8bVS/6c7f64edd8244c250a35a1b2cc241fd2d01f0a7d_96.webp" width="20" height="20" align="absmiddle"> [Create Pipes n Physics](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/create#create-pipes-n-physics) | – | 1.21.1 | – |
-| <img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks)<br><img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> [Sophisticated Storage](https://modrinth.com/mod/sophisticated-storage) | – | 1.21.1, 1.21.11, 26.1.x, 26.2 | – |
+| <img alt="Sophisticated Backpacks icon" src="https://cdn.modrinth.com/data/TyCTlI4b/e31c7e2f8769d317339e25b2a8d1b40fbf312729_96.webp" width="20" height="20" align="absmiddle"> [Sophisticated Backpacks](https://modrinth.com/mod/sophisticated-backpacks)<br><img alt="Sophisticated Storage icon" src="https://media.forgecdn.net/avatars/thumbnails/543/206/64/64/637872959580005837.png" width="20" height="20" align="absmiddle"> [Sophisticated Storage](https://modrinth.com/mod/sophisticated-storage) | – | 1.21.1, 26.1.x, 26.2 | – |
 | <img alt="Kaleidoscope Cookery icon" src="https://media.forgecdn.net/avatars/thumbnails/1361/462/64/64/638884307253099520.png" width="20" height="20" align="absmiddle"> [Kaleidoscope Cookery](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-cookery/) | every version (Refabricated) | 1.21.1 | yes |
 | <img alt="Kaleidoscope Tavern icon" src="https://cdn.modrinth.com/data/r9RZvhiJ/b96860512d16e72dcaa30b15cb0b9b25c18a38e8.png" width="20" height="20" align="absmiddle"> [Kaleidoscope Tavern](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/kaleidoscope-tavern) | every version but 1.21.11 (Refabricated) | 1.21.1 | yes |
 | <img alt="Croptopia icon" src="https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png" width="20" height="20" align="absmiddle"> [Croptopia](https://n1ght3r.github.io/ThirstWasTaken2/docs/integrations/croptopia) | 1.20.1, 1.21.1, 26.1.x, 26.2 | 1.21.1, 26.1.x, 26.2 | yes |
@@ -111,7 +111,7 @@ cd ThirstWasTaken2
 ./gradlew buildAndCollect
 ```
 
-Jars land in `build/libs/`, one per version and loader. Nodes are `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1`, `1.20.1`, the first five again with `-neoforge`, and `1.20.1-forge`:
+Jars land in `build/libs/`, one per version and loader. Nodes are `26.3.x`, `26.2.x`, `26.1.x`, `1.21.11`, `1.21.1`, `1.20.1`, the first five but `1.21.11` again with `-neoforge`, and `1.20.1-forge`:
 
 | Task | Command |
 | :--- | :--- |

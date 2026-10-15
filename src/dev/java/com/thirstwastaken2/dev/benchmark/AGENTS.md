@@ -145,7 +145,7 @@ means. Each operation checks once that it actually did something and fails the r
 protection refusing a fill cannot pass as an impressively fast result.
 
 A drink carries vanilla's advancement criteria with it, and that is most of what the drink operations
-allocate rather than anything the mod does: on 1.21.11-neoforge, 63% of everything the benchmark
+allocate rather than anything the mod does: on 1.21.11-neoforge (since dropped), 63% of everything the benchmark
 allocates on the server thread is advancement machinery, and `DrinkItem.drinkEffects` alone is a third
 of the drink operations' allocation. It is fair -- a real player fires those criteria too -- but it
 means a drink operation's figures move when vanilla changes, not only when the mod does. One node is

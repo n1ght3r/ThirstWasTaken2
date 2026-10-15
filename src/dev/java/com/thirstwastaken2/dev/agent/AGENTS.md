@@ -78,11 +78,11 @@ The request files beside it are sorted into folders; [tools/agent/AGENTS.md](../
 says which holds what:
 
 ```bash
-python tools/agent/drive.py run/1.21.11-neoforge/agent/server tools/agent/smoke/server-probe.jsonl
+python tools/agent/drive.py run/1.21.1-neoforge/agent/server tools/agent/smoke/server-probe.jsonl
 ```
 
 ```bash
-echo '{"command": "client.state"}' | python tools/agent/drive.py run/manual-1.21.11-neoforge-A/agent/A -
+echo '{"command": "client.state"}' | python tools/agent/drive.py run/manual-1.21.1-neoforge-A/agent/A -
 ```
 
 It waits for each answer, prints them in the order asked, and exits 1 if any was refused. Pass
@@ -93,7 +93,7 @@ starting with `//` is a comment.
 Unattended, without an agent at all:
 
 ```bash
-./gradlew ":1.21.11-neoforge:runServer" -Pagent=tools/agent/smoke/server-probe.jsonl
+./gradlew ":1.21.1-neoforge:runServer" -Pagent=tools/agent/smoke/server-probe.jsonl
 ```
 
 `-Pagent=<file>` answers that file once the game is up and then stops the game. The path is relative
@@ -102,7 +102,7 @@ game reads the `expect` and `checks` lines beside the requests, so a run like th
 afterwards against what it recorded:
 
 ```bash
-python tools/agent/drive.py run/1.21.11-neoforge/agent/server tools/agent/smoke/server-probe.jsonl --verify
+python tools/agent/drive.py run/1.21.1-neoforge/agent/server tools/agent/smoke/server-probe.jsonl --verify
 ```
 
 A run that crashed before it opened the queue leaves the previous run's files in place, and `--verify`
@@ -300,7 +300,7 @@ each one. Start `runServer` and `runManualA`, put the player somewhere flat with
 and:
 
 ```bash
-python tools/agent/drive.py run/manual-1.21.11-neoforge-A/agent/A tools/agent/gameplay/client-sync.jsonl
+python tools/agent/drive.py run/manual-1.21.1-neoforge-A/agent/A tools/agent/gameplay/client-sync.jsonl
 ```
 
 The fifth item, that each player sees only their own bar, needs three queues and so is not one file.
@@ -308,7 +308,7 @@ Start `runServer`, `runManualA` and `runManualB`, stand the two testers together
 different values from the server's queue and read both clients' `client.hud` back:
 
 ```bash
-python tools/agent/drive.py run/1.21.11-neoforge/agent/server - <<'EOF'
+python tools/agent/drive.py run/1.21.1-neoforge/agent/server - <<'EOF'
 {"command": "server.command", "args": {"command": "tp TesterB 21 103 20"}}
 {"command": "server.thirst.set", "args": {"player": "TesterA", "thirst": 6, "quenched": 0}}
 {"command": "server.thirst.set", "args": {"player": "TesterB", "thirst": 14, "quenched": 2}}

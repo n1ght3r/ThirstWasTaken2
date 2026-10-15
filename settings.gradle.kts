@@ -41,8 +41,8 @@ stonecutter {
         version("1.20.1-forge", "1.20.1").buildscript = "build.forge.gradle.kts"
         versions("1.21.1", "1.21.11")
         // NeoForge on 1.21.1 only: 1.21 is a separate NeoForge generation (21.0), unlike on Fabric.
+        // 1.21.11 is Fabric only: its NeoForge node was dropped, as few NeoForge packs run it.
         version("1.21.1-neoforge", "1.21.1").buildscript = "build.neoforge.gradle.kts"
-        version("1.21.11-neoforge", "1.21.11").buildscript = "build.neoforge.gradle.kts"
         version("26.1.x", "26.1.2")
         version("26.1.x-neoforge", "26.1.2").buildscript = "build.neoforge.gradle.kts"
         version("26.2.x", "26.2")
