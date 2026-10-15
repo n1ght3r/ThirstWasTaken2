@@ -332,6 +332,7 @@ Also works with:
 | 26.2 | Latest | Active |
 | 26.1.x | Latest | Active |
 | 1.21.11 (Fabric only) | Latest | Active |
+| 1.21.11 (NeoForge) | 1.8.0 | No longer supported |
 | 1.21.1 | Latest | Active |
 | 1.21 (Fabric only) | Latest | Active |
 | 1.20.1 (Fabric and Forge) | Latest | Active |

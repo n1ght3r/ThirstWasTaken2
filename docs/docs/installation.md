@@ -31,7 +31,10 @@ Fabric API is required and must match the Minecraft version.
 | 26.3 | `+26.3-neoforge` | 26.3.0.77 or newer | 25 |
 | 26.2 | `+26.2-neoforge` | 26.2.0.90 or newer | 25 |
 | 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.117 or newer | 25 |
+| 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
 | 1.21.1 | `+1.21.1-neoforge` | 21.1.259 or newer | 21 |
+
+NeoForge 1.21.11 is no longer supported. Its last file is 1.8.0.
 
 NeoForge needs nothing else. The 1.21.1 file does not run on 1.21. NeoForge has only beta builds for
 26.3 so far, so that file asks for one.

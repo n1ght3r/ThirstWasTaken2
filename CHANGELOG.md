@@ -27,8 +27,7 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Removed
 
-- NeoForge 1.21.11 is no longer supported. Minecraft 1.21.11 is still supported on Fabric, and NeoForge
-  on 1.21.1 and 26.x.
+- NeoForge 1.21.11 is no longer supported. Minecraft 1.21.11 is still supported on Fabric.
 
 ## [1.8.0] - 2026-10-09
 
