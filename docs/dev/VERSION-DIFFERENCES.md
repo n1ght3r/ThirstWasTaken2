@@ -8,16 +8,16 @@ Supported nodes and their jars:
 
 | Node | Jar suffix | Runs on | Java | Loader API |
 |---|---|---|---|---|
-| `26.3.x` | `+26.3` | 26.3 | 25 | Fabric API 0.162.0+26.3 |
+| `26.3.x` | `+26.3` | 26.3 | 25 | Fabric API 0.163.0+26.3 |
 | `26.2.x` | `+26.2` | 26.2 | 25 | Fabric API 0.161.0+26.2 |
 | `26.1.x` | `+26.1.2` | 26.1, 26.1.1, 26.1.2 | 25 | Fabric API 0.155.3+26.1.2 |
 | `1.21.11` | `+1.21.11` | 1.21.11 | 21 | Fabric API 0.141.6+1.21.11 |
 | `1.21.1` | `+1.21.1` | 1.21, 1.21.1 | 21 | Fabric API 0.116.17+1.21.1 |
 | `1.20.1` | `+1.20.1` | 1.20.1 | 17 | Fabric API 0.92.12+1.20.1 |
-| `26.3.x-neoforge` | `+26.3-neoforge` | 26.3 | 25 | NeoForge 26.3.0.77 |
-| `26.2.x-neoforge` | `+26.2-neoforge` | 26.2 | 25 | NeoForge 26.2.0.90 |
-| `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.117 |
-| `1.21.1-neoforge` | `+1.21.1-neoforge` | 1.21.1 | 21 | NeoForge 21.1.259 |
+| `26.3.x-neoforge` | `+26.3-neoforge` | 26.3 | 25 | NeoForge 26.3.0.83 |
+| `26.2.x-neoforge` | `+26.2-neoforge` | 26.2 | 25 | NeoForge 26.2.0.93 |
+| `26.1.x-neoforge` | `+26.1.2-neoforge` | 26.1, 26.1.1, 26.1.2 | 25 | NeoForge 26.1.2.121 |
+| `1.21.1-neoforge` | `+1.21.1-neoforge` | 1.21.1 | 21 | NeoForge 21.1.262 |
 | `1.20.1-forge` | `+1.20.1-forge` | 1.20.1 | 17 | Forge 47.4.28 |
 
 The NeoForge jars are built and tested on every node. A NeoForge node builds the same Minecraft

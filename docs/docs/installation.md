@@ -15,7 +15,7 @@ version, NeoForge files end in `-neoforge` and Forge files in `-forge`, for exam
 
 | Minecraft | File suffix | Fabric Loader | Fabric API | Java |
 |---|---|---|---|---|
-| 26.3 | `+26.3` | 0.19.5 or newer | 0.162.0+26.3 or newer | 25 |
+| 26.3 | `+26.3` | 0.19.5 or newer | 0.163.0+26.3 or newer | 25 |
 | 26.2 | `+26.2` | 0.19.5 or newer | 0.161.0+26.2 or newer | 25 |
 | 26.1, 26.1.1, 26.1.2 | `+26.1.2` | 0.19.5 or newer | 0.155.3+26.1.2 or newer | 25 |
 | 1.21.11 | `+1.21.11` | 0.19.5 or newer | 0.141.6+1.21.11 or newer | 21 |
@@ -28,11 +28,11 @@ Fabric API is required and must match the Minecraft version.
 
 | Minecraft | File suffix | NeoForge | Java |
 |---|---|---|---|
-| 26.3 | `+26.3-neoforge` | 26.3.0.77 or newer | 25 |
-| 26.2 | `+26.2-neoforge` | 26.2.0.90 or newer | 25 |
-| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.117 or newer | 25 |
+| 26.3 | `+26.3-neoforge` | 26.3.0.83 or newer | 25 |
+| 26.2 | `+26.2-neoforge` | 26.2.0.93 or newer | 25 |
+| 26.1, 26.1.1, 26.1.2 | `+26.1.2-neoforge` | 26.1.2.121 or newer | 25 |
 | 1.21.11 | `+1.21.11-neoforge` | 21.11.45 or newer | 21 |
-| 1.21.1 | `+1.21.1-neoforge` | 21.1.259 or newer | 21 |
+| 1.21.1 | `+1.21.1-neoforge` | 21.1.262 or newer | 21 |
 
 NeoForge 1.21.11 is no longer supported. Its last file is 1.8.0.
 
@@ -64,14 +64,14 @@ All optional except Fabric API. Versions are listed in the order 26.3, 26.2, 26.
 
 | Mod | Versions built with | What it adds |
 |---|---|---|
-| ![](https://cdn.modrinth.com/data/P7dR8mSH/icon.png){.mod-icon} [Fabric API](https://modrinth.com/mod/fabric-api) | 0.162.0+26.3, 0.161.0+26.2, 0.155.3+26.1.2, 0.141.6+1.21.11, 0.116.17+1.21.1, 0.92.12+1.20.1 | Required. |
+| ![](https://cdn.modrinth.com/data/P7dR8mSH/icon.png){.mod-icon} [Fabric API](https://modrinth.com/mod/fabric-api) | 0.163.0+26.3, 0.161.0+26.2, 0.155.3+26.1.2, 0.141.6+1.21.11, 0.116.17+1.21.1, 0.92.12+1.20.1 | Required. |
 | ![](https://cdn.modrinth.com/data/mOgUt4GM/5a20ed1450a0e1e79a1fe04e61bb4e5878bf1d20.png){.mod-icon} [Mod Menu](https://modrinth.com/mod/modmenu) | 21.0.0, 20.0.3, 18.0.2, 17.0.1, 11.0.5, 7.2.2 | A Config button for the [settings screen](/docs/configuration). |
 | ![](https://cdn.modrinth.com/data/EsAfCjCV/icon.png){.mod-icon} [AppleSkin](https://modrinth.com/mod/appleskin) | 3.0.10+mc26.3, 3.0.10+mc26.2, 3.0.10+mc26.1.2, 3.0.8+mc1.21.11, 3.0.6+mc1.21, 2.5.2+mc1.20.1 | The quenched outline on the thirst bar, droplet rows in tooltips, and the exhaustion strip. |
 | ![](https://cdn.modrinth.com/data/9s6osm5g/ed8a2316cbb6f4fc5f510e8e13a59a85cbbbff4d_96.webp){.mod-icon} [Cloth Config](https://modrinth.com/mod/cloth-config) | 26.3.159, 26.2.155, 26.1.154, 21.11.153, 15.0.140, 11.1.136+fabric | AppleSkin's own settings screen. |
 | ![](https://cdn.modrinth.com/data/dKvj0eNn/a1e1ad6f018c3a47cb300edbf0ebebce894bfd45_96.webp){.mod-icon} [Create Fly](https://modrinth.com/mod/create-fly) | 26.2-rc-2-6.0.9-1, 26.1.2-6.0.9-4 | The [Sand Filter](/docs/integrations/create). 26.2 and 26.1.2 only. |
 | ![](https://cdn.modrinth.com/data/nvQzSEkH/b04217bc2b7dc524c4d12f81ff42cc1cefb9b0fc_96.webp){.mod-icon} [Jade 🔍](https://modrinth.com/mod/jade) | 26.3.5, 26.2.11, 26.1.11, 21.1.6, 15.10.6, 11.13.3+fabric | The [grade of the water](/docs/features/water-purity#checking-water-with-jade) under the crosshair. Client only. |
 | ![](https://cdn.modrinth.com/data/fFEIiSDQ/e9f5f66fa3b67e54acb91258a1428d68311c58bc_96.webp){.mod-icon} [Supplementaries](https://modrinth.com/mod/supplementaries) | 1.21.1-4.0.1 | [Water that keeps its grade](/docs/integrations/supplementaries) in Jars, Goblets and Faucets, and a Jar or Goblet of water that can be drunk. 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0.4-fabric+mc26.3, 1.6.0.4-fabric+mc26.2, 1.6.0.4-fabric+mc26.1.2, 1.3.0.10-fabric+mc1.21.11, 1.6.0.4-fabric+mc1.21.1, 1.6.0.4-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery/), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
+| ![](https://cdn.modrinth.com/data/Ct11Kuii/819ba69579e76715103825ce28b345781b415393.png){.mod-icon} [Kaleidoscope Cookery<br>Refabricated](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) | 1.6.0.5-fabric+mc26.3, 1.6.0.5-fabric+mc26.2, 1.6.0.5-fabric+mc26.1.2, 1.3.0.10-fabric+mc1.21.11, 1.6.0.5-fabric+mc1.21.1, 1.6.0.5-fabric+mc1.20.1 | Thirst from its [teas and soups](/docs/integrations/kaleidoscope-cookery/), and water that keeps its grade in the Stockpot and the Teapot. The official Fabric build stopped at 1.0.1 and only gets the thirst values. |
 | ![](https://cdn.modrinth.com/data/UMblNdlF/bfeeabb4b3f926a0afbc953490c32892a0999122.png){.mod-icon} [Kaleidoscope Tavern<br>Refabricated](https://modrinth.com/mod/kaleidoscope-tavern-refabricated) | 1.2.0.12-fabric+mc26.3, 1.2.0.12-fabric+mc26.2, 1.2.0.12-fabric+mc26.1.2, 1.2.0.6-fabric+mc1.21.11, 1.2.0.12-fabric+mc1.21.1, 1.2.0.12-fabric+mc1.20.1 | Thirst from its [wines, cocktails and juices](/docs/integrations/kaleidoscope-tavern), and water that keeps its grade in the Barrel, through the Tap and in a placed Water Bottle. |
 | ![](https://cdn.modrinth.com/data/e0bNACJD/f8b292ea53e0a0ea908570defddc48673d16d7d6.png){.mod-icon} [Serene Seasons](https://modrinth.com/mod/serene-seasons) | 26.1.2.0.7, 26.1.2.0.6, 21.11.0.4, 10.1.0.9, 9.1.0.3 | Thirst that [follows the season](/docs/integrations/serene-seasons). Needs GlitchCore. |
 | ![](https://cdn.modrinth.com/data/HJetCzWo/7c6c372629b3efa41409621631d60df12963f005_96.webp){.mod-icon} [Let's Do: Farm & Charm](https://modrinth.com/mod/lets-do-farm-charm) | 1.1.28 | Thirst from its [teas and soups](/docs/integrations/farm-and-charm/), graded water from the Timber Well, and no clean water from the Water Trough. Needs Architectury API. 1.21.1 only. |
@@ -121,7 +121,7 @@ The settings screen opens from the Config button in NeoForge's Mods list, with n
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F8EEEXOzj%2Fe5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Hearth and Harvest](https://modrinth.com/mod/hearth-and-harvest) | 1.4.0 | Thirst from its [juices, wines and stews](/docs/integrations/farmers-delight/hearth-and-harvest), tanks that keep the grade of their water, and salt only from sea water. 1.21.1 only. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FyRrY3XII%2Fcec2396cf9f6f74a5b0cff196301a4b8b8124e1e.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Extra Delight](https://modrinth.com/mod/extradelight) | 2.6.6 | Thirst from its [drinks, soups and popsicles](/docs/integrations/farmers-delight/extra-delight), tanks that keep the grade of their water, a Tap that gives Murky water, and salt only from sea water. 1.21.1 only. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FqMxbM4BQ%2F0d6f967d3ad184dd296c62a9891e2b2b7d45f61d.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Miner's Delight](https://modrinth.com/mod/miners-delight) | 1.4.5 | Thirst from its [soups and milk cup](/docs/integrations/farmers-delight/miners-delight), and copper cups that keep the grade of their water. 1.21.1 only. |
-| ![](https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp){.mod-icon} [No Man's Land](https://modrinth.com/mod/no-mans-land) | 1.6.0 | Dirty water in [its swamps](/docs/integrations/no-mans-land), salty water at its Mud Beach, thirst from its drinks, and sips from its milk cauldron. 1.21.1 only. |
+| ![](https://cdn.modrinth.com/data/kjZCvAn6/958489a1729e9e17a6a5a0728ef249236c07f7b3_96.webp){.mod-icon} [No Man's Land](https://modrinth.com/mod/no-mans-land) | 1.6.1 | Dirty water in [its swamps](/docs/integrations/no-mans-land), salty water at its Mud Beach, thirst from its drinks, and sips from its milk cauldron. 1.21.1 only. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2FDGiq4ZSW%2F949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Ocean's Delight](https://modrinth.com/mod/oceans-delight) | 1.0.4 | The same as on Fabric. 1.21.1 only. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Fe9V6wFcR%2F4cbbace573b20628290929948a77c74d95ed7a70.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Expanded Delight](https://modrinth.com/mod/expanded-delight) | 0.1.4 | Thirst from its [juices, soups and salads](/docs/integrations/farmers-delight/expanded-delight), and a Cooking Pot that cooks nothing from sea water. 1.21.1 only. |
 | ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2Ffoa4fGIH%2Feecc99e281522f2291081c48176f0faa84c107bc.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Rustic Delight](https://modrinth.com/mod/rustic-delight) | 1.7.1 | The same as on Fabric. 1.21.1 only. |
