@@ -20,7 +20,7 @@ Written on 2026-10-03 from:
 
 | Node | Build | Modrinth id | Requires on `runClient` |
 |---|---|---|---|
-| `1.21.1-neoforge` | `1.3.4` (2026-09-08) | `7nTyt27O` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
+| `1.21.1-neoforge` | `1.4.0` (2026-10-13; written against 1.3.4, `7nTyt27O`) | `QhKYKLA5` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
 | `1.20.1-forge` | `1.0.12c` (2026-09-14) | `Lc4WN5U1` | Farmer's Delight `[1.3.0,)`, as above |
 | every other node | none | — | — |
 
@@ -348,12 +348,21 @@ Forge's bucket wrapper pours and draws plain water, so a Dirty bucket came back 
 `src/main/hearthandharvestforge` wraps the held container's handler so that the grade crosses it both
 ways, as on the 1.21.1 tanks. Checked by the 1.20.1 script.
 
-## What 1.4.0 changes
+## What 1.4.0 changes (done, 2026-10-15)
 
-The branch head (unreleased, `mod_version=1.4.0`) adds a `KegBlockEntity` with data-driven aging, a goat
-milk fluid and a goat milk bucket, and reworks the cask; `HHFluidHandling` itself is unchanged. When it
-is released: re-run step 3, check the keg (whether any keg recipe takes water, and whether it uses
-`useOnTank`), add `goat_milk_bucket` at 6, 8 if it is drinkable, and move the pin.
+Checked against the released jar. Every target the existing mixins inject into is unchanged. New:
+
+- **The Sprinkler refills itself** (`SprinklerBlockEntity.refill`) from rain and from a water source
+  beside or below it, as plain water a bottle then drew Clean. `SprinklerBlockEntityMixin` stamps rain as
+  rainwater, as the Trough's, and samples the source where it lies, as the Jug does.
+- **The Keg** pours and draws through its container slot with NeoForge's `FluidUtil`, not `useOnTank`,
+  so a Dirty bucket came back Clean. `KegBlockEntityMixin` wraps both calls as `FluidHandlingMixin` does.
+  Its recipes match water by `SizedFluidIngredient`, fluid alone, so graded water still makes brine; sea
+  water does too, which is not drunk.
+- **The salt recipe moved** to `hearthandharvest:cooking/salt_from_bottle`; datagen writes ours under both
+  ids, so either build of the mod gets it.
+- **Drinks**: `goat_milk_bucket` (drinkable, a milk bucket's 4, 0) and `beer` (5, 2, as mead). Brine is
+  an ingredient, not a drink.
 
 ## Not planned
 

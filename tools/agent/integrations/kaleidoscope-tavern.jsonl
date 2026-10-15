@@ -13,8 +13,8 @@
 // run/<node>/agent/client/screenshots/ show Jade's line beside a barrel of Dirty water, looked at from a
 // side block with no block entity of its own, and on the salty cauldron a tap filled.
 //
-// canteenRefused passes only on Fabric, where Refabricated's barrel would hand a canteen back as a
-// bucket and so refuses it; on NeoForge the canteen goes in, and that line is the only one that may fail.
+// canteenPoured needs a Refabricated build with upstream #29 fixed (1.2.0.12, 1.2.0.6 on 1.21.11) on
+// Fabric: an older one would hand a canteen back as a bucket, so the barrel refuses it there.
 //
 // The barrel is three blocks a side, placed by the player like any block, with its one block entity at
 // the bottom centre (0 200 0) and its lid at the top centre (0 202 0), which takes containers while it
@@ -110,13 +110,12 @@
 {"id": "drawnJ", "command": "wait", "args": {"ticks": 10}}
 {"id": "dirtyJ", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:water_bucket[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 
-// A canteen stays a canteen. On Fabric the barrel refuses it, and canteenRefused checks that it still
-// holds its two servings; on NeoForge it is poured in, and that line fails there, as it must.
+// A canteen stays a canteen, and is poured in: it no longer holds its two servings.
 {"id": "canteenD", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2,thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
 {"id": "pourCanteenD", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
 {"id": "pouredCanteenD", "command": "wait", "args": {"ticks": 10}}
 {"id": "stillCanteen", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
-{"id": "canteenRefused", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "canteenPoured", "command": "server.command", "args": {"command": "execute unless items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 
 // A tap on a Dirty water cauldron fills the empty cauldron below with Dirty water. The source is not
 // drained, by the mod's design.

@@ -25,13 +25,13 @@ NeoForge release.
 | Node | Mod | Version | Modrinth id | Teapot | Dripstone into teapot |
 |---|---|---|---|---|---|
 | `1.21.1-neoforge` | official | `1.6.0-neoforge+mc1.21.1` (published 2026-09-22, same targets as 1.5.0) | `g8w0b2ly` | yes | yes |
-| `1.21.1` | Refabricated | `1.6.0.3-fabric+mc1.21.1` | `pZfoi25M` | yes | yes |
+| `1.21.1` | Refabricated | `1.6.0.4-fabric+mc1.21.1` | `tCh8khrr` | yes | yes |
 | `1.20.1-forge` | official | `1.6.0-forge+mc1.20.1` | `Ghp0qCKY` | yes | yes |
-| `1.20.1` | Refabricated | `1.6.0.3-fabric+mc1.20.1` | `iCin2rRE` | yes | yes |
+| `1.20.1` | Refabricated | `1.6.0.4-fabric+mc1.20.1` | `BJUXpGSO` | yes | yes |
 | `1.21.11` | Refabricated | `1.3.0.10-fabric+mc1.21.11`, hotfixes only from 1.3.0.10 on ("no longer update future contents") | `T5QYqq9P` | yes | no |
-| `26.1.x` | Refabricated | `1.6.0.3-fabric+mc26.1.2` | `zNVmvzF4` | yes | no |
-| `26.2.x` | Refabricated | `1.6.0.3-fabric+mc26.2` | `ciM7zQQb` | yes | no |
-| `26.3.x` | Refabricated | `1.6.0.3-fabric+mc26.3` | `Yf5VytNq` | yes | no |
+| `26.1.x` | Refabricated | `1.6.0.4-fabric+mc26.1.2` | `Aw4aw1fI` | yes | no |
+| `26.2.x` | Refabricated | `1.6.0.4-fabric+mc26.2` | `rPnolw6S` | yes | no |
+| `26.3.x` | Refabricated | `1.6.0.4-fabric+mc26.3` | `ycfoqepF` | yes | no |
 | `1.21.11-neoforge`, `26.x-neoforge` | none | — | — | — | — |
 
 The official mod has no NeoForge build past 1.21.1, so the NeoForge nodes past 1.21.1 get nothing.
@@ -132,8 +132,8 @@ of different Minecraft versions share one version number). Nothing in the other 
 # [fabric."26.3.x"]
 # Kaleidoscope Cookery Refabricated, the unofficial Fabric port with the official team's permission:
 # the official Fabric build stopped at 1.0.1. See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
-# 1.6.0.3-fabric+mc26.3, the Fabric upload.
-deps.kaleidoscope_cookery = "Yf5VytNq"
+# 1.6.0.4-fabric+mc26.3, the Fabric upload.
+deps.kaleidoscope_cookery = "ycfoqepF"
 ```
 
 Add to `MODRINTH_DEPS` in `../../../../.github/scripts/update_mc_deps.py`, with `by_id=True`, **under two project

@@ -891,13 +891,14 @@ public final class ThirstConfig {
      * Thirst compat names the upstream mod and never runs with this one, and its values are two to four
      * times ours for alcohol, so these follow Farmer's Delight's juices and milk and Brewin' and Chewin's
      * beer, wine and rum instead. Aged drinks are safe whatever fresh water went into the cask; sea water
-     * ages nothing (see {@code src/main/hearthandharvest}).
+     * ages nothing (see {@code src/main/hearthandharvest}). The goat milk bucket and the beer are 1.4.0's;
+     * its brine is a pickling ingredient, not a drink.
      */
     private static void hearthAndHarvestDrinks(Map<String, int[]> drinks) {
         putMissing(drinks, 6, 4, "hearthandharvest:blueberry_juice", "hearthandharvest:cherry_juice", "hearthandharvest:raspberry_juice", "hearthandharvest:red_grape_juice", "hearthandharvest:green_grape_juice", "hearthandharvest:sweet_berry_juice", "hearthandharvest:glow_berry_juice");
-        putMissing(drinks, 4, 0, "hearthandharvest:goat_milk_bottle");
+        putMissing(drinks, 4, 0, "hearthandharvest:goat_milk_bottle", "hearthandharvest:goat_milk_bucket");
         putMissing(drinks, 6, 4, "hearthandharvest:chocolate_milk_bottle");
-        putMissing(drinks, 5, 2, "hearthandharvest:mead", "hearthandharvest:hard_cider");
+        putMissing(drinks, 5, 2, "hearthandharvest:mead", "hearthandharvest:hard_cider", "hearthandharvest:beer");
         putMissing(drinks, 6, 4, "hearthandharvest:root_beer");
         putMissing(drinks, 3, 1, "hearthandharvest:blueberry_wine", "hearthandharvest:cherry_wine", "hearthandharvest:raspberry_wine", "hearthandharvest:red_grape_wine", "hearthandharvest:green_grape_wine", "hearthandharvest:sweet_berry_wine", "hearthandharvest:glow_berry_wine", "hearthandharvest:melon_wine");
         putMissing(drinks, 2, 1, "hearthandharvest:moonshine");

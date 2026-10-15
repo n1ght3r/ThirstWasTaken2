@@ -7,16 +7,16 @@ Every one of them kept a fluid or a block and nothing else, so the grade a conta
 the way through. This directory is where that gets fixed. The plan, the order of work and what was found
 are in [docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md](../../../docs/dev/integration/cooking/KALEIDOSCOPE-TAVERN-INTEGRATION.md).
 
-**Built on the seven nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node
-but `1.21.11`, whose Refabricated build cannot start (below). What it does there:
+**Built on the eight nodes that set the key**: `1.21.1-neoforge`, `1.20.1-forge` and every Fabric node.
+What it does there:
 
 - **the barrel keeps the grade** of the water poured in, the worse of two grades poured together, and
   hands it back on the container drawn out;
 - **the barrel refuses sea water**, which it would otherwise ferment into rum as safe as any other, and
   uses the click up so the bucket is not emptied over its lid;
-- **on Fabric the barrel refuses this mod's own containers** (waterskin, canteen, flask, terracotta
-  bowls): Refabricated hands back any container that is not a bucket as an empty bucket, and fills a whole
-  water bucket for a serving drawn;
+- **on an old Refabricated build the barrel refuses this mod's own containers** (waterskin, canteen,
+  flask, terracotta bowls): before upstream #29 it handed back any container that is not a bucket as an
+  empty bucket, and filled a whole water bucket for a serving drawn. Fixed builds take them (below);
 - **a tap copies the grade** of the water cauldron it draws from into the cauldron or the placed bottle
   below, and **samples the world's water** behind a waterlogged block, sea water included;
 - **a placed water bottle keeps its grade beside it** and drops a bottle of that grade, however it drops;
@@ -36,25 +36,22 @@ is Cookery's and it needs no class of Tavern's.
 | Node | Mod | Modrinth project |
 |---|---|---|
 | `1.21.1-neoforge`, `1.20.1-forge` | the official mod | `kaleidoscopetavern` |
-| `1.20.1`, `1.21.1`, `26.1.x`, `26.2.x`, `26.3.x` | Refabricated, the Fabric port | `kaleidoscope-tavern-refabricated` |
-| `1.21.11` | none for now, see below | |
+| every Fabric node | Refabricated, the Fabric port | `kaleidoscope-tavern-refabricated` |
 
 The official mod has published no NeoForge build past 1.21.1 (its `26.1.2` branch builds one that was
 never uploaded), so the other NeoForge nodes do not set the key. Refabricated has the same mod id and the
 same package, and everything touched names no loader, so **all three loaders compile this directory**,
 and `checkLoaderSeam` keeps it that way. Each key is pinned by Modrinth version id.
 
-On `1.20.1` and `1.21.1` Refabricated requires Forge Config API Port,
+On `1.20.1`, `1.21.1` and `1.21.11` Refabricated requires Forge Config API Port,
 `deps.forge_config_api_port`, on the `runClient` classpath only, as Kaleidoscope Cookery does; on
 `1.20.1` also Reach Entity Attributes, nested in its jar beside Fabric API modules the run already has,
 so `build.gradle.kts` unpacks only that one. From 26.1 on it needs neither.
 
-**`1.21.11` is left out for now.** Refabricated's only 1.21.11 build, 1.2.0.5, crashes on launch with
-or without this mod: its `PlayerMixin` registers an entity data serializer from `Player`'s static
-initializer, which current Fabric API refuses (CI's `runDatagen` crashed on it). Code that cannot run
-there is not built there either: the node sets no key. Reported upstream as
-[#28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28); set the key again once a fixed
-build is out, and run the agent script there before calling it supported.
+**`1.21.11` trails the other branches.** Its Refabricated branch gets hotfixes only (1.2.0.6 against
+1.2.0.12). Its 1.2.0.5 crashed on launch with or without this mod, its `PlayerMixin` registering an entity
+data serializer that current Fabric API refuses, so the node set no key until 1.2.0.6 fixed it (upstream
+[#28](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/28)).
 
 ```
 kaleidoscopetavern/java/com/thirstwastaken2/kaleidoscopetavern/
@@ -113,10 +110,12 @@ water). It holds four buckets.
 - **Refabricated's barrel turns containers into buckets.** `FluidUtils.emptyItem` hands back
   `onConsumed(result)`, an empty bucket for any fluid container that is not a bucket, and `fillItem` hands
   back `resource.getFluid().getBucket()`, a full bucket, whatever was held out. So a canteen poured in came
-  back a bucket, and an empty one held out came back a whole bucket of water for one serving. The barrel
-  refuses this mod's containers there (`WaterContainers.handles`), with an action bar message; the
-  official mod fills and empties them through their own fluid handler and keeps them. Reported upstream as
-  [#29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29); drop the refusal once it is fixed.
+  back a bucket, and an empty one held out came back a whole bucket of water for one serving. Upstream
+  [#29](https://github.com/NightEpiphany/KaleidoscopeTavern-Refabricated/issues/29), fixed in 1.2.0.12 (1.2.0.6 on
+  1.21.11): both now hand back what the transfer left in a mutable item context. The barrel refuses this
+  mod's containers (`WaterContainers.handles`, with an action bar message) only on a build without the fix,
+  which `KaleidoscopeTavernPresence.swapsContainers` tells by the `mutableContext` name in `FluidUtils`'
+  class file. The official mod fills and empties them through their own fluid handler and always kept them.
 
 **The tap.** It never drains its source, by the mod's design; the integration only makes it copy the
 right water. Both behaviours rebuild the cauldron below from `WATER_CAULDRON.defaultBlockState()`, whose

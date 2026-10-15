@@ -69,10 +69,11 @@ public final class TavernWater {
      * <ul>
      *     <li><b>sea water</b>, on every build. The barrel would ferment it into rum as safe as any other,
      *     where every other brewing block this mod knows refuses it or brews nothing from it;</li>
-     *     <li><b>this mod's own containers on Refabricated</b>, whose barrel hands back an empty bucket for
-     *     any container that is not one ({@code FluidUtils.onConsumed}) and fills a full water bucket into
-     *     the hand for a serving drawn ({@code fillItem}), so a canteen poured in came back a bucket and an
-     *     empty one held out came back a bucket of water. Buckets and bottles still go in.</li>
+     *     <li><b>this mod's own containers on a Refabricated build from before upstream #29</b>, whose
+     *     barrel hands back an empty bucket for any container that is not one ({@code FluidUtils.onConsumed})
+     *     and fills a full water bucket into the hand for a serving drawn ({@code fillItem}), so a canteen
+     *     poured in came back a bucket and an empty one held out came back a bucket of water. Buckets and
+     *     bottles still go in. Fixed builds hand back the container itself and take it.</li>
      * </ul>
      */
     public static boolean refuses(LivingEntity user, ItemStack stack) {
@@ -88,7 +89,7 @@ public final class TavernWater {
 
     /** Whether the barrel would turn {@code stack}, one of this mod's own containers, into a bucket; see {@link #refuses}. */
     public static boolean refusesContainer(ItemStack stack) {
-        return KaleidoscopeTavernPresence.isRefabricated() && WaterContainers.handles(stack);
+        return KaleidoscopeTavernPresence.swapsContainers() && WaterContainers.handles(stack);
     }
 
     /**

@@ -3,7 +3,7 @@
 [Let's Do: Farm & Charm](https://modrinth.com/mod/lets-do-farm-charm) (mod id `farm_and_charm`, package
 `net.satisfy.farm_and_charm`) has three blocks that hold water and three that cook with it. Its addon
 [Let's Do: Candlelight](https://modrinth.com/mod/lets-do-candlelight-farmcharm-compat) (mod id
-`candlelight`) has no water code of its own: its eleven kitchen sinks are Farm & Charm's `SinkBlock`, its
+`candlelight`) has no water code of its own: its eleven kitchen sinks are Farm & Charm's `SinkBlock` (Foundation's from 1.1.28, the library nested in Farm & Charm's jar, which both loader scripts unpack onto the compile classpath), its
 stoves extend Farm & Charm's, and its Large Cooking Pot runs Farm & Charm's recipes. So this one
 directory serves both, gated on Farm & Charm, and Candlelight has no row in the integration table. The
 plans and their decisions are
@@ -11,7 +11,7 @@ plans and their decisions are
 and [CANDLELIGHT-INTEGRATION.md](../../../docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md).
 
 **Built on `1.21.1` and `1.21.1-neoforge`**, both mods' only builds for a version this mod supports
-(Farm & Charm 1.1.26, Candlelight 2.1.13). Their 1.20.1 line is no longer updated and is not built
+(Farm & Charm 1.1.28, Candlelight 2.1.15). Their 1.20.1 line is no longer updated and is not built
 against. What it does:
 
 - **Timber Well**: a bucket drawn from it carries the grade of the groundwater the well pumps, sampled
@@ -35,7 +35,7 @@ farmandcharm/java/com/thirstwastaken2/farmandcharm/
   StandingWater             the grades: Murky for standing water, the well's groundwater sample, the salty bucket test
   mixin/TimberWellMixin     TimberWellBlock.useItemOn: stamps the filled bucket before ItemUtils.createFilledResult
   mixin/WaterTroughMixin    WaterTroughBlock.useItemOn: refuses a salty bucket; Murky through setItemInHand
-  mixin/SinkMixin           SinkBlock.useItemOn: refuses a salty bucket; Murky through Player.addItem
+  mixin/SinkMixin           Foundation's SinkBlock.useItemOn: refuses a salty bucket or bottle; Murky through Inventory.add or Player.drop
   mixin/SeaWaterIngredientMixin  every Ingredient.test in the four matchers: false for a salty stack
 farmandcharm/resources/
   thirstwastaken2.farmandcharm.mixins.json

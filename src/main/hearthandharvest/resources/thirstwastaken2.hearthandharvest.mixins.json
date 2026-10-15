@@ -7,7 +7,9 @@
     "CaskBlockEntityMixin",
     "FluidHandlingMixin",
     "JugBlockItemMixin",
+    "KegBlockEntityMixin",
     "SinkBlockMixin",
+    "SprinklerBlockEntityMixin",
     "SprinklerBlockMixin",
     "StompingBasinRecipeMixin",
     "TroughBlockEntityMixin"

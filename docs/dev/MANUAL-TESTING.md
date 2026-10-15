@@ -206,8 +206,7 @@ In a world with the mod, on one node per loader:
 - [ ] A Dirty bucket poured into a Barrel comes back out Dirty in a fresh bucket; Pure then Dirty
       comes back Dirty.
 - [ ] A sea-water bucket is refused by the Barrel, stays full in the hand and spills nothing.
-- [ ] On Fabric a canteen is refused by the Barrel and keeps its water; on NeoForge and Forge it goes
-      in and stays a canteen.
+- [ ] A canteen goes into the Barrel and stays a canteen, on every loader.
 - [ ] A Tap on a Dirty cauldron fills a Dirty cauldron; on a waterlogged slab in the ocean, a salty one.
 - [ ] A Tap over a placed Empty Bottle makes a Water Bottle that drops Dirty when broken.
 - [ ] A sea-water bottle shift-placed and picked up again by hand is still salty.

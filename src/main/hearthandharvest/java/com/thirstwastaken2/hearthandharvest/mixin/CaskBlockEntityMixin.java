@@ -22,7 +22,8 @@ import java.util.Optional;
 abstract class CaskBlockEntityMixin {
     @Inject(method = "getMatchingRecipe", at = @At("HEAD"), cancellable = true)
     private void thirst$noSeaWater(RecipeWrapper inventory, CallbackInfoReturnable<Optional<RecipeHolder<CaskRecipe>>> cir) {
-        for (int slot = 0; slot < CaskBlockEntity.MEAL_DISPLAY_SLOT; slot++) {
+        // The four input slots, 1.3.4's MEAL_DISPLAY_SLOT; a constant, so inlined and fine on either build.
+        for (int slot = 0; slot < CaskBlockEntity.INPUT_SLOTS; slot++) {
             if (WaterPurity.isSalty(inventory.getItem(slot))) {
                 cir.setReturnValue(Optional.empty());
                 return;

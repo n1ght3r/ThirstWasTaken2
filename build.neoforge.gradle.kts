@@ -271,6 +271,8 @@ dependencies {
     // sink, jug, sprinkler and cask classes, so they compile against it.
     findProperty("deps.hearth_and_harvest")?.let {
         compileOnly("maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
+        // From 1.4.0 its cask extends Farmer's Delight's SyncedBlockEntity, which javac has to see.
+        compileOnly("maven.modrinth:farmers-delight:${property("deps.farmersdelight")}") { isTransitive = false }
         runClientMod(listOf("hearth-and-harvest", "hearthandharvest", "farmers-delight", "farmersdelight"),
             "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
     }
@@ -393,6 +395,14 @@ dependencies {
 
     if (farmAndCharmVersion != null) {
         compileOnly("maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion") { isTransitive = false }
+        // From 1.1.28 its blocks extend Foundation's, and its kitchen sink is Foundation's, a library
+        // nested in its jar.
+        compileOnly(files(provider {
+            val jar = configurations.detachedConfiguration(
+                dependencies.create("maven.modrinth:lets-do-farm-charm:$farmAndCharmVersion")
+            ).apply { isTransitive = false }.singleFile
+            zipTree(jar).matching { include("META-INF/jars/foundation-*.jar") }.files
+        }))
         // Test the well, the trough, the Cooking Pot and Candlelight's kitchen sinks in runClient. The
         // gametests and runServer run without them, which is what proves the mod is unchanged when they are
         // absent. Both require Architectury API, added below. Leaving Farm & Charm out leaves Candlelight
