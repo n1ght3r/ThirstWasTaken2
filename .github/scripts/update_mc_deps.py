@@ -42,6 +42,9 @@ Rules:
   manual test logs) are records like CHANGELOG.md and stay out of those lists.
 - The pull request lists the other tracked files that still name an old version, for a person to
   judge, except those in `RECORDS`, whose every mention is a record and is meant to stay.
+- The pull request prints the changelog of every Modrinth upload a bump moves past, skipped ones too,
+  each text once per mod, and marks those naming water, drinks or the blocks an integration hooks, so
+  a person can tell whether an integration needs to follow. NeoForge, Forge and Fabric Loader have none.
 - `--check` goes the other way: it reports a version the properties file pins that those pages do
   not name, which is what a bump made by hand leaves behind. It reads the properties file and those
   pages and nothing else, so it needs no network and gates a pull request in well under a second. What lets it work
@@ -253,6 +256,10 @@ class Change:
     """The doc mirrors to rewrite; empty when no page names this version."""
     by_id: bool = False
     """`old` and `new` are Modrinth version ids, which a mirror may print beside the number."""
+    project: str | None = None
+    """Modrinth project slug, for a Modrinth dependency."""
+    changelogs: tuple[tuple[str, str], ...] = ()
+    """(version number, changelog) of every upload after the pinned one up to the new one, oldest first."""
 
 
 def get_json(url: str):
@@ -366,7 +373,7 @@ def modrinth_candidates(project: str, minecraft: str, loader: str) -> list[dict]
     query = urllib.parse.urlencode({
         "loaders": json.dumps([loader]),
         "game_versions": json.dumps([minecraft]),
-        "include_changelog": "false",
+        "include_changelog": "true",
     })
     versions = get_json(f"{MODRINTH}/project/{project}/version?{query}")
     return sorted(versions, key=lambda v: v["date_published"], reverse=True)
@@ -386,7 +393,8 @@ def check_modrinth(props: Properties, node: str, minecraft: str, dep: ModrinthDe
         return
 
     channels = {"release", current["version_type"]}
-    newest = next((v for v in modrinth_candidates(project, minecraft, loader_of(node)) if v["version_type"] in channels), None)
+    candidates = [v for v in modrinth_candidates(project, minecraft, loader_of(node)) if v["version_type"] in channels]
+    newest = candidates[0] if candidates else None
     if newest is None or newest["date_published"] <= current["date_published"]:
         return
     value = newest["id"] if dep.by_id else newest["version_number"]
@@ -407,6 +415,10 @@ def check_modrinth(props: Properties, node: str, minecraft: str, dep: ModrinthDe
         url=f"https://modrinth.com/mod/{project}/version/{newest['id']}",
         mirrors=dep.mirrors_for(node),
         by_id=dep.by_id,
+        project=project,
+        # Every upload skipped over too, since a change that matters to thirst may be in any of them.
+        changelogs=tuple((v["version_number"], (v.get("changelog") or "").strip())
+                         for v in reversed(candidates) if v["date_published"] > current["date_published"]),
     ))
 
 
@@ -667,6 +679,54 @@ def files_mentioning(value: str) -> list[str]:
     return [line for line in result.stdout.splitlines() if line]
 
 
+# Words in a dependency's changelog that may touch what this mod hooks: its drinks, fluids and the
+# blocks that hold water. Only a hint for the reader of the pull request; every changelog is printed.
+THIRST_HINTS = re.compile(
+    r"\b(water\w*|drink\w*|thirst\w*|fluid\w*|cauldron\w*|bottle\w*|cups?|buckets?|teas?|teapots?|kettles?|"
+    r"juices?|soups?|milk|wines?|beers?|brew\w*|stockpots?|barrels?|kegs?|tanks?|pumps?|recipes?|"
+    r"renamed|removed)\b",
+    re.IGNORECASE)
+# GitHub caps a pull request body at 65536 characters; the table and notes need the rest.
+CHANGELOG_ENTRY_LIMIT = 4000
+CHANGELOG_SECTION_LIMIT = 40000
+
+
+def changelog_section(changes: list[Change]) -> list[str]:
+    """The changelogs of every Modrinth upload a bump moves past, per mod. Uploads of one mod for
+    several Minecraft versions usually share their text, so each text is printed once with the version
+    numbers it came with. An entry naming a word in `THIRST_HINTS` is marked, for a person to judge
+    whether the integration needs a change."""
+    by_project: dict[str, dict[str, list[str]]] = {}
+    for change in changes:
+        for number, text in change.changelogs:
+            versions = by_project.setdefault(change.project, {}).setdefault(text, [])
+            if number not in versions:
+                versions.append(number)
+    if not by_project:
+        return []
+
+    out = ["### Changelogs", "",
+           "Every upload each bump moves past. **Mentions** marks one that names water, drinks or the blocks "
+           "and recipes the integrations hook; check whether its integration needs a change.", ""]
+    size = 0
+    for project, texts in sorted(by_project.items()):
+        for text, versions in texts.items():
+            hints = sorted({match.lower() for match in THIRST_HINTS.findall(text)})
+            label = ", ".join(f"<code>{v}</code>" for v in versions)
+            mark = f" — **Mentions**: {', '.join(hints)}" if hints else ""
+            body = text or "(no changelog)"
+            if len(body) > CHANGELOG_ENTRY_LIMIT:
+                body = body[:CHANGELOG_ENTRY_LIMIT] + "\n[cut]"
+            if size + len(body) > CHANGELOG_SECTION_LIMIT:
+                out += [f"- `{project}` {label}{mark}: cut, the pull request body is full. Read it on Modrinth.", ""]
+                continue
+            size += len(body)
+            # A fence, so a changelog's `#123` and `@name` do not link into this repository.
+            out += ["<details>", f"<summary><code>{project}</code> {label}{mark}</summary>", "",
+                    "~~~~text", body, "~~~~", "", "</details>", ""]
+    return out
+
+
 def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path, list[str]]) -> str:
     out = ["Updates the Minecraft-bound dependencies in `stonecutter.properties.toml`. Each candidate is an upload "
            "on Modrinth for its node's loader that lists the Minecraft version the node compiles against.", ""]
@@ -699,6 +759,7 @@ def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path,
     notes += warnings
     if notes:
         out += ["### Notes", ""] + [note if note.startswith("  ") else f"- {note}" for note in notes] + [""]
+    out += changelog_section(changes)
     return "\n".join(out)
 
 
