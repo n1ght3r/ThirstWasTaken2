@@ -396,6 +396,25 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.croptopia.mixins.json",
         neoForgeDependencies = listOf("croptopia"),
     ),
+    // NeoForge only: Mekanism's newest build is NeoForge 1.21.1, and its tanks and pipes move water as
+    // NeoForge fluid stacks. Its Electric Pump stamps what it pumps, and its rotary recipes distil.
+    // See src/main/mekanism/AGENTS.md.
+    Integration(
+        dir = "mekanism",
+        depsKey = "deps.mekanism",
+        loaders = setOf(Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.mekanism.mixins.json",
+        neoForgeDependencies = listOf("mekanism"),
+    ),
+    // The same two mixins on Forge 47, for Mekanism's 1.20.1 build: the same deps key, its own directory,
+    // since both name the loader's fluid stack. See src/main/mekanismforge/AGENTS.md.
+    Integration(
+        dir = "mekanismforge",
+        depsKey = "deps.mekanism",
+        loaders = setOf(Loader.FORGE),
+        mixinConfig = "thirstwastaken2.mekanismforge.mixins.json",
+        neoForgeDependencies = listOf("mekanism"),
+    ),
 )
 
 /**

@@ -96,6 +96,9 @@ deps.create = "8amzvn9x"
 deps.croptopia = "8066550"
 # EpheroLib-1.20.1-FORGE-1.2.0.
 deps.epherolib = "4889101"
+# Mekanism; see [neoforge."1.21.1"]. Its 1.20.1 build is the one upload for Forge and NeoForge.
+# 10.4.16.80, the Forge upload. See src/main/mekanismforge/AGENTS.md.
+deps.mekanism = "uxe1WQp4"
 
 # No shared ["1.21.1"] table: the two loaders claim different releases there.
 [fabric."1.21.1"]
@@ -318,6 +321,10 @@ deps.serene_seasons = "pHEgQQUE"
 deps.nomansland = "ShvHvNwJ"
 # 2.1.0.2, the NeoForge upload.
 deps.glitchcore = "S2TfWrZR"
+# Mekanism, whose Electric Pump keeps the grade of the water it pumps and whose Rotary Condensentrator
+# distils water vapour into Pure water. NeoForge 1.21.1 is its newest build. See src/main/mekanism/AGENTS.md.
+# 10.7.19.85, the NeoForge upload.
+deps.mekanism = "5KzzycBT"
 
 ["1.21.11"]
 mod.mc_releases = ["1.21.11"]

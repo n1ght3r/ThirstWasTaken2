@@ -1,0 +1,45 @@
+// mekanism-water.jsonl for Forge 1.20.1 (src/main/mekanismforge, Mekanism 10.4.16), where water on a
+// fluid stack is an NBT tag: Mekanism saves a tank as {Tank, stored:{FluidName, Amount, Tag}}, with the
+// quality in Tag.thirstwastaken2. The same checks: a pump on sea water pumps salty water, which a
+// pipe carries into a tank unchanged, a pump on a plains pool fills its tank with graded fresh
+// water, and a Rotary Condensentrator condenses water vapour into Pure water.
+//
+// Mekanism's runClientMod line in build.forge.gradle.kts must be uncommented. Read with server.command,
+// which reads block entities on 1.20.1: every "...Check" line and "freshNotSalty" in
+// run/1.20.1-forge/agent/client/out.jsonl has to say "Test passed".
+//
+//     python tools/agent/new_world.py 1.20.1-forge MekanismAgent
+//     ./gradlew ":1.20.1-forge:runClient" -Pagent=tools/agent/integrations/mekanism-water-1.20.1.jsonl -Pquickplay=MekanismAgent
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+// The ground first, then the player on top of it: filling stone around a standing player suffocates them.
+{"id": "air", "command": "server.command", "args": {"command": "fill -6 199 -6 6 206 18 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -6 199 -6 6 201 18 minecraft:stone"}}
+{"id": "up", "command": "server.command", "args": {"command": "tp @p 0.5 202 -4.5 0 30"}}
+{"id": "sea", "command": "server.command", "args": {"command": "fillbiome -6 190 -6 6 210 6 minecraft:ocean"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -6 190 8 6 210 18 minecraft:plains"}}
+
+{"id": "seaPool", "command": "server.command", "args": {"command": "fill -1 201 -1 1 201 1 minecraft:water"}}
+{"id": "seaPump", "command": "server.command", "args": {"command": "setblock 0 202 0 mekanism:electric_pump"}}
+{"id": "pipe", "command": "server.command", "args": {"command": "setblock 0 203 0 mekanism:basic_mechanical_pipe"}}
+{"id": "tank", "command": "server.command", "args": {"command": "setblock 0 204 0 mekanism:basic_fluid_tank"}}
+{"id": "freshPool", "command": "server.command", "args": {"command": "fill -1 201 12 1 201 14 minecraft:water"}}
+{"id": "freshPump", "command": "server.command", "args": {"command": "setblock 0 202 13 mekanism:electric_pump"}}
+{"id": "rotary", "command": "server.command", "args": {"command": "setblock 4 202 0 mekanism:rotary_condensentrator"}}
+{"id": "placed", "command": "wait", "args": {"ticks": 20}}
+
+{"id": "seaPower", "command": "server.command", "args": {"command": "data merge block 0 202 0 {EnergyContainers:[{Container:0b,stored:\"40000\"}]}"}}
+{"id": "freshPower", "command": "server.command", "args": {"command": "data merge block 0 202 13 {EnergyContainers:[{Container:0b,stored:\"40000\"}]}"}}
+{"id": "rotaryFill", "command": "server.command", "args": {"command": "data merge block 4 202 0 {EnergyContainers:[{Container:0b,stored:\"40000\"}],GasTanks:[{Tank:0b,stored:{gasName:\"mekanism:water_vapor\",amount:5000L}}]}"}}
+{"id": "working", "command": "wait", "args": {"ticks": 240}}
+
+{"id": "pipeRead", "command": "server.command", "args": {"command": "data get block 0 204 0 FluidTanks"}}
+{"id": "pipeCheck", "command": "server.command", "args": {"command": "execute if data block 0 204 0 FluidTanks[0].stored.Tag.thirstwastaken2{salty:1b}"}}
+{"id": "freshRead", "command": "server.command", "args": {"command": "data get block 0 202 13 FluidTanks"}}
+{"id": "freshCheck", "command": "server.command", "args": {"command": "execute if data block 0 202 13 FluidTanks[0].stored.Tag.thirstwastaken2.purity"}}
+{"id": "freshNotSalty", "command": "server.command", "args": {"command": "execute unless data block 0 202 13 FluidTanks[0].stored.Tag.thirstwastaken2.salty"}}
+{"id": "rotaryRead", "command": "server.command", "args": {"command": "data get block 4 202 0 FluidTanks"}}
+{"id": "rotaryCheck", "command": "server.command", "args": {"command": "execute if data block 4 202 0 FluidTanks[0].stored.Tag.thirstwastaken2{purity:3}"}}
+{"id": "done", "command": "wait", "args": {"ticks": 5}}

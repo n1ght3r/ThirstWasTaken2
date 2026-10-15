@@ -1,0 +1,51 @@
+// Water quality through Mekanism on NeoForge 1.21.1 (src/main/mekanism, Mekanism 10.7.19):
+// - an Electric Pump over a sea-water pool pumps water_salty water, which a Basic Mechanical Pipe
+//   carries into a Basic Fluid Tank unchanged: "pipeCheck" passes. The pump's own tank is read empty,
+//   since the pipe empties it;
+// - an Electric Pump over a still pool in plains fills its tank with graded fresh water, not salty:
+//   "freshCheck" and "freshNotSalty" pass ("freshRead" showed water_purity 1, Murky, on 2026-10-15);
+// - a Rotary Condensentrator condenses water vapour into Pure water: "rotaryCheck" passes.
+//
+// Mekanism's runClientMod line in build.neoforge.gradle.kts must be uncommented. A block entity is not
+// readable from server.command, which runs off the server thread, so the tanks are read with
+// client.command and the answers are the "[CHAT]" lines in the client's log: every "...Check" line and
+// "freshNotSalty" has to say "Test passed". Energy and vapour are given by NBT.
+//
+//     python tools/agent/new_world.py 1.21.1-neoforge MekanismAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/mekanism-water.jsonl -Pquickplay=MekanismAgent
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+// The ground first, then the player on top of it: filling stone around a standing player suffocates them.
+{"id": "air", "command": "server.command", "args": {"command": "fill -6 199 -6 6 206 18 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -6 199 -6 6 201 18 minecraft:stone"}}
+{"id": "up", "command": "server.command", "args": {"command": "tp @p 0.5 202 -4.5 0 30"}}
+{"id": "sea", "command": "server.command", "args": {"command": "fillbiome -6 190 -6 6 210 6 minecraft:ocean"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -6 190 8 6 210 18 minecraft:plains"}}
+
+// A sea-water pool with a pump on it, a pipe on the pump and a tank on the pipe.
+{"id": "seaPool", "command": "server.command", "args": {"command": "fill -1 201 -1 1 201 1 minecraft:water"}}
+{"id": "seaPump", "command": "server.command", "args": {"command": "setblock 0 202 0 mekanism:electric_pump"}}
+{"id": "pipe", "command": "server.command", "args": {"command": "setblock 0 203 0 mekanism:basic_mechanical_pipe"}}
+{"id": "tank", "command": "server.command", "args": {"command": "setblock 0 204 0 mekanism:basic_fluid_tank"}}
+// A fresh pool with a pump on it.
+{"id": "freshPool", "command": "server.command", "args": {"command": "fill -1 201 12 1 201 14 minecraft:water"}}
+{"id": "freshPump", "command": "server.command", "args": {"command": "setblock 0 202 13 mekanism:electric_pump"}}
+// A Rotary Condensentrator, which starts in condensing mode (mode 0b, vapour to water).
+{"id": "rotary", "command": "server.command", "args": {"command": "setblock 4 202 0 mekanism:rotary_condensentrator"}}
+{"id": "placed", "command": "wait", "args": {"ticks": 20}}
+
+{"id": "seaPower", "command": "client.command", "args": {"command": "data merge block 0 202 0 {energy_containers:[{container:0b,stored:40000L}]}"}}
+{"id": "freshPower", "command": "client.command", "args": {"command": "data merge block 0 202 13 {energy_containers:[{container:0b,stored:40000L}]}"}}
+{"id": "rotaryFill", "command": "client.command", "args": {"command": "data merge block 4 202 0 {energy_containers:[{container:0b,stored:40000L}],chemical_tanks:[{tank:0b,stored:{id:\"mekanism:water_vapor\",amount:5000L}}]}"}}
+{"id": "working", "command": "wait", "args": {"ticks": 240}}
+
+{"id": "pipeRead", "command": "client.command", "args": {"command": "data get block 0 204 0 fluid_tanks"}}
+{"id": "pipeCheck", "command": "client.command", "args": {"command": "execute if data block 0 204 0 fluid_tanks[0].stored.components{\"thirstwastaken2:water_salty\":1b}"}}
+{"id": "freshRead", "command": "client.command", "args": {"command": "data get block 0 202 13 fluid_tanks"}}
+{"id": "freshCheck", "command": "client.command", "args": {"command": "execute if data block 0 202 13 fluid_tanks[0].stored.components.\"thirstwastaken2:water_purity\""}}
+{"id": "freshNotSalty", "command": "client.command", "args": {"command": "execute unless data block 0 202 13 fluid_tanks[0].stored.components.\"thirstwastaken2:water_salty\""}}
+{"id": "rotaryRead", "command": "client.command", "args": {"command": "data get block 4 202 0 fluid_tanks"}}
+{"id": "rotaryCheck", "command": "client.command", "args": {"command": "execute if data block 4 202 0 fluid_tanks[0].stored.components{\"thirstwastaken2:water_purity\":3}"}}
+{"id": "chat", "command": "wait", "args": {"ticks": 5}}

@@ -7,6 +7,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 ### Added
 
 - Kaleidoscope Tavern now works on Fabric 1.21.11 too, with Kaleidoscope Tavern Refabricated 1.2.0.6.
+- Mekanism, on NeoForge 1.21.1 and Forge 1.20.1:
+  - The Electric Pump keeps the grade of the water it pumps, so a pump in the sea gives sea water.
+  - Water condensed from water vapour in the Rotary Condensentrator is Pure, even from sea water.
+  - Water keeps its grade through Mekanism's pipes and tanks.
 - Hearth and Harvest 1.4.0, on NeoForge 1.21.1:
   - Beer and the Goat Milk Bucket restore thirst.
   - The Keg keeps the grade of water poured in and drawn back out.

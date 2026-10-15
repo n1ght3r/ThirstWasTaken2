@@ -296,6 +296,16 @@ dependencies {
         optionalRunMods.include(listOf("no-mans-land", "nomansland"))
     }
 
+    // Mekanism, on the node that sets it. src/main/mekanism's mixins name its Electric Pump and rotary
+    // recipe, so they compile against it. Off in runClient by default: it is large and adds ores to every
+    // new world. Uncomment the line below only to work on it.
+    findProperty("deps.mekanism")?.let {
+        compileOnly("maven.modrinth:mekanism:$it") { isTransitive = false }
+        // runClientMod(listOf("mekanism"), "maven.modrinth:mekanism:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=mekanism` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("mekanism"))
+    }
+
     if (createVersion != null && createLibraries != null) {
         compileOnly("maven.modrinth:create:$createVersion") { isTransitive = false }
         compileOnly(files(createLibraries.map { it.destinationDir.listFiles().orEmpty().toList() })

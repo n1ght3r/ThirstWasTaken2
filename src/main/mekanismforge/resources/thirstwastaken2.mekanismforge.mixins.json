@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.thirstwastaken2.mekanismforge.mixin",
+  "plugin": "com.thirstwastaken2.mekanismforge.MekanismForgeMixinPlugin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "ElectricPumpMixin",
+    "RotaryRecipeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

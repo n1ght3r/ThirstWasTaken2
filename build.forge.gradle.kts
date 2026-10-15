@@ -269,6 +269,14 @@ dependencies {
         // Keeps `-PwithoutOptional=cold-sweat` in the agent scripts a known name while the line above is off.
         optionalRunMods.include(listOf("cold-sweat", "cold_sweat"))
     }
+    findProperty("deps.mekanism")?.let { mekanism ->
+        // Mixed into, and in SRG names, so remapped. See src/main/mekanismforge/AGENTS.md. Off in runClient
+        // by default, for the reason build.neoforge.gradle.kts gives; uncomment the line below to work on it.
+        modCompileOnly("maven.modrinth:mekanism:$mekanism") { isTransitive = false }
+        // runClientMod(listOf("mekanism"), "maven.modrinth:mekanism:$mekanism") { isTransitive = false }
+        // Keeps `-PwithoutOptional=mekanism` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("mekanism"))
+    }
     // Croptopia: nothing compiles against it, as on Fabric; see build.gradle.kts. In SRG names, so remapped.
     // Off in runClient by default; uncomment the two lines below only to work on it.
     findProperty("deps.croptopia")?.let {
