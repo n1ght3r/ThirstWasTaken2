@@ -41,8 +41,10 @@ which strips `<details>` and ignores `align` and `vertical-align` on an image, t
 since text beside a banner there sits at its top edge. Each holds its main mod and its addons in the same two kinds of table. In the
 Farmer's Delight family, the rows with a screenshot (Farmer's Delight, Brewin' and Chewin') open with
 the mod's linked banner in place of its icon and name. The table of which integration works on which
-loader and version is not collapsed: it sits under `### Mod Compatibility by Loader`, below the
-Version Support table. Notes on one version of one addon go on that addon's page on the site, not
+loader and version is not collapsed: it sits under `### All Compatibility by Loader`, below the
+Version Support table. Unlike the rest of the store pages it lists **every** integration, those with
+no row of their own included: a new one always gets added there, in the row of mods that share its
+loaders and versions, or a new row. Notes on one version of one addon go on that addon's page on the site, not
 here. CurseForge renders
 no Markdown inside an HTML block, so text inside a spoiler there is HTML (`<p>`, `<ul><li>`, `<a>`):
 a `- ` list comes out as one run-on paragraph. A banner is linked
