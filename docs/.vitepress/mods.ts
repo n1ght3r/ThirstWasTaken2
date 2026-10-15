@@ -80,6 +80,11 @@ export const INTEGRATIONS: Mod[] = [
     name: 'Mekanism',
     icon: 'https://cdn.modrinth.com/data/Ce6I4WUE/ea185eb1300a64867f89101d4798e71a54ef6bed_96.webp',
     link: '/docs/integrations/mekanism'
+  },
+  {
+    name: 'Immersive Engineering',
+    icon: 'https://cdn.modrinth.com/data/tIm2nV03/icon.png',
+    link: '/docs/integrations/immersive-engineering'
   }
 ]
 

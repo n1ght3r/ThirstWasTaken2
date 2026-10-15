@@ -14,6 +14,10 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - The Electric Pump keeps the grade of the water it pumps, so a pump in the sea gives sea water.
   - Water condensed from water vapour in the Rotary Condensentrator is Pure, even from sea water.
   - Water keeps its grade through Mekanism's pipes and tanks.
+- Immersive Engineering, on NeoForge 1.21.1 and Forge 1.20.1:
+  - The Fluid Pump keeps the grade of the water it pumps, so a pump in the sea gives sea water.
+  - Bottles filled in the Bottling Machine get the grade of the water in it.
+  - Water keeps its grade through pipes, barrels, tanks and the Jerrycan, and two grades never mix.
 - Hearth and Harvest 1.4.0, on NeoForge 1.21.1:
   - Beer and the Goat Milk Bucket restore thirst.
   - The Keg keeps the grade of water poured in and drawn back out.

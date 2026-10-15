@@ -231,6 +231,8 @@ MODRINTH_DEPS = [
     ModrinthDep("nomansland", "no-mans-land", by_id=True),
     # Mekanism, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others.
     ModrinthDep("mekanism", "mekanism", by_id=True),
+    # Immersive Engineering, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others.
+    ModrinthDep("immersive_engineering", "immersiveengineering", by_id=True),
     # Not here: `croptopia` and `epherolib`, which are on CurseForge alone and pinned by CurseForge file
     # id, resolved through CurseMaven. Nothing here can read CurseForge, so they are bumped by hand.
 ]

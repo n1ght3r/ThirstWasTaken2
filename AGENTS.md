@@ -76,7 +76,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Kaleidoscope Tavern, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Miner's Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land, Mekanism and Croptopia mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Kaleidoscope Tavern, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Miner's Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land, Mekanism, Immersive Engineering and Croptopia mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -211,6 +211,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Hearth and Harvest | `deps.hearth_and_harvest`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/hearthandharvest/AGENTS.md](src/main/hearthandharvest/AGENTS.md), [src/main/hearthandharvestforge/AGENTS.md](src/main/hearthandharvestforge/AGENTS.md) |
 | No Man's Land | `deps.nomansland`: `1.21.1-neoforge`. Its swamps are in `stagnant_water` and its Mud Beach in `sea_water`, biome tags on every node | [src/main/nomansland/AGENTS.md](src/main/nomansland/AGENTS.md) |
 | Mekanism | `deps.mekanism`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/mekanism/AGENTS.md](src/main/mekanism/AGENTS.md), [src/main/mekanismforge/AGENTS.md](src/main/mekanismforge/AGENTS.md) |
+| Immersive Engineering | `deps.immersive_engineering`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/immersiveengineering/AGENTS.md](src/main/immersiveengineering/AGENTS.md), [src/main/immersiveengineeringforge/AGENTS.md](src/main/immersiveengineeringforge/AGENTS.md) |
 | Croptopia | `deps.croptopia`: 26.2, 26.1.x and 1.21.1 on both loaders, `1.20.1` and `1.20.1-forge` (no 26.3 or 1.21.11 build). On CurseForge only, resolved through CurseMaven by file id and bumped by hand. Its drinks are `ThirstConfig` ids | [src/main/croptopia/AGENTS.md](src/main/croptopia/AGENTS.md) |
 
 ### Adding an integration
@@ -270,6 +271,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Spelunkery: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/world/SPELUNKERY-INTEGRATION.md](docs/dev/integration/world/SPELUNKERY-INTEGRATION.md) |
 | No Man's Land: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md](docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md) |
 | Mekanism: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/storage/MEKANISM-INTEGRATION.md](docs/dev/integration/storage/MEKANISM-INTEGRATION.md) |
+| Immersive Engineering: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/storage/IMMERSIVE-ENGINEERING-INTEGRATION.md](docs/dev/integration/storage/IMMERSIVE-ENGINEERING-INTEGRATION.md) |
 | Croptopia: the plan, its decisions and what was found in game (every node it builds for) | [docs/dev/integration/cooking/CROPTOPIA-INTEGRATION.md](docs/dev/integration/cooking/CROPTOPIA-INTEGRATION.md) |
 | Bad-water sickness rework: the design | [docs/dev/mechanics/WATER-SICKNESS.md](docs/dev/mechanics/WATER-SICKNESS.md) |
 | Bad-water sickness rework: where the code goes, step by step | [docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md](docs/dev/mechanics/WATER-SICKNESS-IMPLEMENTATION.md) |

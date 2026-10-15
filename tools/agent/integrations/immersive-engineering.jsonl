@@ -1,0 +1,99 @@
+// Water quality through Immersive Engineering on NeoForge 1.21.1 (src/main/immersiveengineering, IE 12.4.2):
+// - a Fluid Pump on a 3x3 sea-water pool, which it draws from without taking a block, fills its tank
+//   with water_salty water: "infiniteCheck";
+// - with water source conversion off, a Fluid Pump takes a single sea-water source as water_salty
+//   water, "seaCheck", and one in plains as graded fresh water, "freshCheck" and "freshNotSalty"
+//   ("freshRead" showed water_purity 1, Murky, on 2026-10-15);
+// - a Jerrycan of Pure water used on a Metal Barrel of Murky water takes none of it, "canCheck" (still
+//   1000 mB), and one used on a barrel of Pure water does top up, "controlCheck";
+// - a Bottling Machine, formed with a hammer and given sea water by NBT, fills a glass bottle into a
+//   water_salty water bottle: "bottleCheck".
+//
+// IE's runClientMod line in build.neoforge.gradle.kts must be uncommented. A block entity is not
+// readable from server.command, which runs off the server thread, so blocks are read with
+// client.command and the answers are the "[CHAT]" lines in the client's log: every "...Check" line and
+// "freshNotSalty" has to say "Test passed". Energy and fluids are given by NBT. A Metal Barrel set by
+// NBT needs its sideConfig, or IE throws when it saves.
+//
+//     python tools/agent/new_world.py 1.21.1-neoforge IEAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/immersive-engineering.jsonl -Pquickplay=IEAgent
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "joined", "command": "client.state"}
+{"id": "float", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 600 4 true"}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+// The ground first, then the player on top of it: filling stone around a standing player suffocates them.
+{"id": "air", "command": "server.command", "args": {"command": "fill -6 199 -6 12 208 30 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -6 199 -6 12 201 30 minecraft:stone"}}
+{"id": "up", "command": "server.command", "args": {"command": "tp @p 0.5 202 -4.5 0 30"}}
+{"id": "sea", "command": "server.command", "args": {"command": "fillbiome -6 190 -6 12 210 6 minecraft:ocean"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -6 190 8 12 210 30 minecraft:plains"}}
+
+// Pumps take from below by default and run without redstone once inverted.
+{"id": "infinitePool", "command": "server.command", "args": {"command": "fill -1 201 -1 1 201 1 minecraft:water"}}
+{"id": "infinitePump", "command": "server.command", "args": {"command": "setblock 0 202 0 immersiveengineering:fluid_pump{sideConfig:[I;1,0,0,0,0,0],energy:8000,redstoneInverted:1b}"}}
+// A Metal Barrel of Murky water, and a Jerrycan of Pure water in hand.
+{"id": "barrel", "command": "server.command", "args": {"command": "setblock 8 202 13 immersiveengineering:metal_barrel{sideConfig:[I;0,0],tank:{Fluid:{id:\"minecraft:water\",amount:4000,components:{\"thirstwastaken2:water_purity\":1}}}}"}}
+{"id": "bottling", "command": "server.command", "args": {"command": "place template immersiveengineering:multiblocks/bottling_machine 0 202 20"}}
+{"id": "placed", "command": "wait", "args": {"ticks": 200}}
+
+{"id": "clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "can", "command": "server.command", "args": {"command": "give @p immersiveengineering:jerrycan[immersiveengineering:fluid={id:\"minecraft:water\",amount:1000,components:{\"thirstwastaken2:water_purity\":3}}]"}}
+{"id": "atBarrel", "command": "server.command", "args": {"command": "tp @p 8.5 202 15.5 180 29"}}
+{"id": "settle1", "command": "wait", "args": {"ticks": 20}}
+{"id": "useDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "using", "command": "wait", "args": {"ticks": 6}}
+{"id": "useUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "used", "command": "wait", "args": {"ticks": 10}}
+{"id": "canRead", "command": "client.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "canCheck", "command": "client.command", "args": {"command": "execute if data entity @p SelectedItem.components.\"immersiveengineering:fluid\"{amount:1000}"}}
+{"id": "pureBarrel", "command": "server.command", "args": {"command": "setblock 10 202 13 immersiveengineering:metal_barrel{sideConfig:[I;0,0],tank:{Fluid:{id:\"minecraft:water\",amount:4000,components:{\"thirstwastaken2:water_purity\":3}}}}"}}
+{"id": "atPureBarrel", "command": "server.command", "args": {"command": "tp @p 10.5 202 15.5 180 29"}}
+{"id": "settle3", "command": "wait", "args": {"ticks": 20}}
+{"id": "pureDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pureUsing", "command": "wait", "args": {"ticks": 3}}
+{"id": "pureUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "pureUsed", "command": "wait", "args": {"ticks": 10}}
+// The control: a barrel of the same grade does top the can up.
+{"id": "controlRead", "command": "client.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "controlCheck", "command": "client.command", "args": {"command": "execute unless data entity @p SelectedItem.components.\"immersiveengineering:fluid\"{amount:1000}"}}
+{"id": "barrelRead", "command": "client.command", "args": {"command": "data get block 8 202 13 tank"}}
+
+// The Bottling Machine is formed with a hammer on its trigger, the conveyor in the middle of its back
+// row. A conveyor is low, so the hammer is aimed down at its top.
+{"id": "clear2", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "hammer", "command": "server.command", "args": {"command": "give @p immersiveengineering:hammer"}}
+{"id": "atTrigger", "command": "server.command", "args": {"command": "tp @p 1.5 202 22.9 180 20"}}
+{"id": "settle2", "command": "wait", "args": {"ticks": 20}}
+{"id": "hammerDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "hammering", "command": "wait", "args": {"ticks": 4}}
+{"id": "hammerUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "formed", "command": "wait", "args": {"ticks": 20}}
+{"id": "bottlingMaster", "command": "client.command", "args": {"command": "data get block 1 203 20"}}
+{"id": "bottlingTrigger", "command": "client.command", "args": {"command": "data get block 1 203 21"}}
+// Sea water and power by NBT on the master, then a glass bottle dropped onto the start of the conveyor.
+// The player steps away so as not to pick the bottle up when it drops off the end.
+{"id": "bottlingFill", "command": "client.command", "args": {"command": "data merge block 1 203 20 {tank:{Fluid:{id:\"minecraft:water\",amount:4000,components:{\"thirstwastaken2:water_salty\":1b}}},energy:{energy:16000}}"}}
+{"id": "away", "command": "server.command", "args": {"command": "tp @p 0.5 202 -4.5 0 30"}}
+{"id": "bottle", "command": "server.command", "args": {"command": "summon item 0.5 203.2 21.5 {Item:{id:\"minecraft:glass_bottle\",count:1}}"}}
+{"id": "bottlingRun", "command": "wait", "args": {"ticks": 300}}
+{"id": "bottleRead", "command": "client.command", "args": {"command": "execute positioned 1 203 21 run data get entity @e[type=item,distance=..6,limit=1,sort=nearest] Item"}}
+{"id": "bottleCheck", "command": "client.command", "args": {"command": "execute positioned 1 203 21 if entity @e[type=item,distance=..6,nbt={Item:{id:\"minecraft:potion\",components:{\"thirstwastaken2:water_salty\":1b}}}]"}}
+
+// With water source conversion on, NeoForge counts every water block as one that refills, and the pump
+// only draws from pools without taking a block. Off, it takes the block: the other path.
+{"id": "noConversion", "command": "server.command", "args": {"command": "gamerule waterSourceConversion false"}}
+{"id": "seaSource", "command": "server.command", "args": {"command": "setblock 6 201 0 minecraft:water"}}
+{"id": "seaPump", "command": "server.command", "args": {"command": "setblock 6 202 0 immersiveengineering:fluid_pump{sideConfig:[I;1,0,0,0,0,0],energy:8000,redstoneInverted:1b}"}}
+{"id": "freshSource", "command": "server.command", "args": {"command": "setblock 0 201 13 minecraft:water"}}
+{"id": "freshPump", "command": "server.command", "args": {"command": "setblock 0 202 13 immersiveengineering:fluid_pump{sideConfig:[I;1,0,0,0,0,0],energy:8000,redstoneInverted:1b}"}}
+{"id": "pumping", "command": "wait", "args": {"ticks": 200}}
+
+{"id": "infiniteRead", "command": "client.command", "args": {"command": "data get block 0 202 0 tank"}}
+{"id": "infiniteCheck", "command": "client.command", "args": {"command": "execute if data block 0 202 0 tank.Fluid.components{\"thirstwastaken2:water_salty\":1b}"}}
+{"id": "seaRead", "command": "client.command", "args": {"command": "data get block 6 202 0 tank"}}
+{"id": "seaCheck", "command": "client.command", "args": {"command": "execute if data block 6 202 0 tank.Fluid.components{\"thirstwastaken2:water_salty\":1b}"}}
+{"id": "freshRead", "command": "client.command", "args": {"command": "data get block 0 202 13 tank"}}
+{"id": "freshCheck", "command": "client.command", "args": {"command": "execute if data block 0 202 13 tank.Fluid.components.\"thirstwastaken2:water_purity\""}}
+{"id": "freshNotSalty", "command": "client.command", "args": {"command": "execute unless data block 0 202 13 tank.Fluid.components.\"thirstwastaken2:water_salty\""}}
+{"id": "chat", "command": "wait", "args": {"ticks": 5}}

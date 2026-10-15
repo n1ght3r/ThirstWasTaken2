@@ -30,6 +30,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Sophisticated Backpacks and Storage | [storage/SOPHISTICATED](storage/SOPHISTICATED-INTEGRATION.md) | `src/main/sophisticated` | NeoForge but 26.3 | see plan |
 | Create Pipes n Physics | [storage/PIPES-N-PHYSICS](storage/PIPES-N-PHYSICS-INTEGRATION.md) | `src/main/create` | `1.21.1-neoforge` | built; upstream #89, #90 open |
 | Mekanism | [storage/MEKANISM](storage/MEKANISM-INTEGRATION.md) | `src/main/mekanism`, `mekanismforge` | `1.21.1-neoforge`, `1.20.1-forge` | built |
+| Immersive Engineering | [storage/IMMERSIVE-ENGINEERING](storage/IMMERSIVE-ENGINEERING-INTEGRATION.md) | `src/main/immersiveengineering`, `immersiveengineeringforge` | `1.21.1-neoforge`, `1.20.1-forge` | built |
 | Supplementaries | [storage/SUPPLEMENTARIES](storage/SUPPLEMENTARIES-INTEGRATION.md) | `src/main/supplementaries` | both 1.21.1 | see plan |
 | Cold Sweat | [climate/COLD-SWEAT](climate/COLD-SWEAT-INTEGRATION.md) | `src/main/coldsweat`, `coldsweatforge` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
 | Serene Seasons | [climate/SERENE-SEASONS](climate/SERENE-SEASONS-INTEGRATION.md) | `src/main/sereneseasons` | every node | see plan |

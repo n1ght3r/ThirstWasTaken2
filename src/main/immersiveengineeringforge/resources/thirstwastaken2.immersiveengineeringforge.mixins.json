@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.thirstwastaken2.immersiveengineeringforge.mixin",
+  "plugin": "com.thirstwastaken2.immersiveengineeringforge.ImmersiveEngineeringForgeMixinPlugin",
+  "compatibilityLevel": "${java}",
+  "mixins": [
+    "BottlingProcessMixin",
+    "FluidPumpMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

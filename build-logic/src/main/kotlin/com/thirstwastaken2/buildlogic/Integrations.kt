@@ -415,6 +415,25 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.mekanismforge.mixins.json",
         neoForgeDependencies = listOf("mekanism"),
     ),
+    // NeoForge only: Immersive Engineering's newest build is NeoForge 1.21.1. Its Fluid Pump stamps what it
+    // pumps, its Bottling Machine stamps the bottles it fills, and its fluid items keep grades apart.
+    // See src/main/immersiveengineering/AGENTS.md.
+    Integration(
+        dir = "immersiveengineering",
+        depsKey = "deps.immersive_engineering",
+        loaders = setOf(Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.immersiveengineering.mixins.json",
+        neoForgeDependencies = listOf("immersiveengineering"),
+    ),
+    // The pump and Bottling Machine mixins on Forge 47, for its 1.20.1 build: the same deps key, its own
+    // directory, since both name the loader's fluid stack. See src/main/immersiveengineeringforge/AGENTS.md.
+    Integration(
+        dir = "immersiveengineeringforge",
+        depsKey = "deps.immersive_engineering",
+        loaders = setOf(Loader.FORGE),
+        mixinConfig = "thirstwastaken2.immersiveengineeringforge.mixins.json",
+        neoForgeDependencies = listOf("immersiveengineering"),
+    ),
 )
 
 /**

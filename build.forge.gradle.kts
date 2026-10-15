@@ -277,6 +277,14 @@ dependencies {
         // Keeps `-PwithoutOptional=mekanism` in the agent scripts a known name while the line above is off.
         optionalRunMods.include(listOf("mekanism"))
     }
+    findProperty("deps.immersive_engineering")?.let { ie ->
+        // Mixed into, and in SRG names, so remapped. See src/main/immersiveengineeringforge/AGENTS.md. Off in
+        // runClient by default, for the reason build.neoforge.gradle.kts gives; uncomment the line below to work on it.
+        modCompileOnly("maven.modrinth:immersiveengineering:$ie") { isTransitive = false }
+        // runClientMod(listOf("immersiveengineering"), "maven.modrinth:immersiveengineering:$ie") { isTransitive = false }
+        // Keeps `-PwithoutOptional=immersiveengineering` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("immersiveengineering"))
+    }
     // Croptopia: nothing compiles against it, as on Fabric; see build.gradle.kts. In SRG names, so remapped.
     // Off in runClient by default; uncomment the two lines below only to work on it.
     findProperty("deps.croptopia")?.let {

@@ -306,6 +306,16 @@ dependencies {
         optionalRunMods.include(listOf("mekanism"))
     }
 
+    // Immersive Engineering, on the node that sets it. src/main/immersiveengineering's mixins name its Fluid
+    // Pump, Bottling Machine and item fluid handler, so they compile against it. Off in runClient by
+    // default: it adds ores and villages to every new world. Uncomment the line below only to work on it.
+    findProperty("deps.immersive_engineering")?.let {
+        compileOnly("maven.modrinth:immersiveengineering:$it") { isTransitive = false }
+        // runClientMod(listOf("immersiveengineering"), "maven.modrinth:immersiveengineering:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=immersiveengineering` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("immersiveengineering"))
+    }
+
     if (createVersion != null && createLibraries != null) {
         compileOnly("maven.modrinth:create:$createVersion") { isTransitive = false }
         compileOnly(files(createLibraries.map { it.destinationDir.listFiles().orEmpty().toList() })

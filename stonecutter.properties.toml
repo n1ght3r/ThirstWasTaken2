@@ -99,6 +99,9 @@ deps.epherolib = "4889101"
 # Mekanism; see [neoforge."1.21.1"]. Its 1.20.1 build is the one upload for Forge and NeoForge.
 # 10.4.16.80, the Forge upload. See src/main/mekanismforge/AGENTS.md.
 deps.mekanism = "uxe1WQp4"
+# Immersive Engineering; see [neoforge."1.21.1"]. See src/main/immersiveengineeringforge/AGENTS.md.
+# 10.2.0-183, the Forge upload.
+deps.immersive_engineering = "WUzj4tgJ"
 
 # No shared ["1.21.1"] table: the two loaders claim different releases there.
 [fabric."1.21.1"]
@@ -325,6 +328,11 @@ deps.glitchcore = "S2TfWrZR"
 # distils water vapour into Pure water. NeoForge 1.21.1 is its newest build. See src/main/mekanism/AGENTS.md.
 # 10.7.19.85, the NeoForge upload.
 deps.mekanism = "5KzzycBT"
+# Immersive Engineering, whose Fluid Pump keeps the grade of the water it pumps and whose Bottling
+# Machine fills bottles with the grade in its tank. NeoForge 1.21.1 is its newest build.
+# See src/main/immersiveengineering/AGENTS.md.
+# 12.4.2-194, the NeoForge upload.
+deps.immersive_engineering = "uNRARSH2"
 
 ["1.21.11"]
 mod.mc_releases = ["1.21.11"]
