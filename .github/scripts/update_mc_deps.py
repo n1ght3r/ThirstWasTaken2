@@ -18,18 +18,21 @@ Rules:
   Forge); a node with no loader in its name takes Fabric ones. `tools/node_names.py` reads the name.
   Each node's values are read and rewritten in its loader table, `[fabric."26.2.x"]`,
   `[neoforge."26.2.x"]` or `[forge."1.20.1"]`, or else in the shared `["26.2.x"]` table.
-- NeoForge itself comes from maven.neoforged.net: the newest build for the same Minecraft version as the
-  pinned one, releases only unless the pinned build is a beta. Like Fabric Loader, it raises the
-  minimum players need, since neoforge.mods.toml writes it as the lower bound.
+- The loaders are never bumped. `deps.fabric_loader`, `deps.neoforge` and `deps.forge` are what the
+  build compiles and tests against, and the first two are also the lower bound the manifests write, so
+  a bump would make every player update their loader along with the mod. Large packs update loaders
+  last, and players asked. What this script moves is `deps.*_latest` beside each, which nothing else
+  reads, and the pull request prints the loader's changelog from the minimum up to it. A person raises
+  a minimum by copying its `_latest` over it, when an integration or a fix needs a newer loader.
+- NeoForge comes from maven.neoforged.net: the newest build for the same Minecraft version as the
+  tracked one, releases only unless that build is a beta.
 - Forge comes from maven.minecraftforge.net's promotions: the build it promotes as latest for the node's
-  Minecraft version. It does not raise what players need: mods.toml asks for Forge 47 or later, as
-  Forge's own template does, since 1.20.1 packs stay on older 47 builds.
+  Minecraft version. mods.toml asks for Forge 47 or later in any case, as Forge's own template does.
 - MixinExtras, which only the Forge nodes nest in their jar, comes from Maven Central, releases only.
 - Only release uploads are taken, unless the pinned version is itself a beta or alpha: a node on a
   pre-release dependency stays on that channel until a release catches up.
 - A candidate has to be published after the pinned version. Nothing is ever downgraded.
-- Fabric Loader is one global value and comes from Fabric's meta API, stable builds only. Raising it
-  raises the minimum loader players need, since fabric.mod.json writes it as `>=`.
+- Fabric Loader is one global value and comes from Fabric's meta API, stable builds only.
 - Loom is left alone: a Loom bump tends to need a Gradle bump alongside it.
 - README.md, docs/docs/installation.md and docs/dev/VERSION-DIFFERENCES.md print the same versions for
   people to read, so a bump rewrites them too, and only there: CHANGELOG.md says what a past release was
@@ -44,7 +47,9 @@ Rules:
   judge, except those in `RECORDS`, whose every mention is a record and is meant to stay.
 - The pull request prints the changelog of every Modrinth upload a bump moves past, skipped ones too,
   each text once per mod, and marks those naming water, drinks or the blocks an integration hooks, so
-  a person can tell whether an integration needs to follow. NeoForge, Forge and Fabric Loader have none.
+  a person can tell whether an integration needs to follow. The loaders' changelogs come from their own
+  places: NeoForge's and Forge's from the changelog file Maven keeps beside each build, which lists
+  every build of its line, and Fabric Loader's from its GitHub releases.
 - `--check` goes the other way: it reports a version the properties file pins that those pages do
   not name, which is what a bump made by hand leaves behind. It reads the properties file and those
   pages and nothing else, so it needs no network and gates a pull request in well under a second. What lets it work
@@ -68,6 +73,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -112,6 +118,11 @@ NEOFORGE_METADATA = "https://maven.neoforged.net/releases/net/neoforged/neoforge
 NEOFORGE_API = "https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge"
 NEOFORGE_ATTEMPTS = 3
 FORGE_PROMOTIONS = "https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json"
+# Beside every NeoForge and Forge build, a text file with the changelog of every build in its line,
+# newest first, one ` - <version> <text>` entry each.
+NEOFORGE_CHANGELOG = "https://maven.neoforged.net/releases/net/neoforged/neoforge/{v}/neoforge-{v}-changelog.txt"
+FORGE_CHANGELOG = "https://maven.minecraftforge.net/net/minecraftforge/forge/{v}/forge-{v}-changelog.txt"
+FABRIC_LOADER_RELEASES = "https://api.github.com/repos/FabricMC/fabric-loader/releases?per_page=100"
 MIXINEXTRAS_METADATA = "https://repo1.maven.org/maven2/io/github/llamalad7/mixinextras-forge/maven-metadata.xml"
 # Modrinth asks every client for a User-Agent that identifies the project.
 USER_AGENT = "n1ght3r/ThirstWasTaken2 dependency updater (github.com/n1ght3r/ThirstWasTaken2)"
@@ -426,20 +437,32 @@ def numeric(version: str) -> tuple[int, ...]:
     return tuple(int(part) for part in re.findall(r"\d+", version))
 
 
-def check_loader(props: Properties, changes: list[Change]) -> None:
-    found = props.find(None, "deps.fabric_loader")
+def tracked_loader(props: Properties, node: str | None, key: str, warnings: list[str]) -> tuple[int, str] | None:
+    """Line index and value of `deps.<key>_latest`, the newest loader build seen, for a node that pins
+    `deps.<key>`. The pin itself is the minimum and is never moved here; see the module docstring."""
+    if props.find(node, f"deps.{key}") is None:
+        return None
+    found = props.find(node, f"deps.{key}_latest")
+    if found is None:
+        warnings.append(f"`{node or 'all'}` pins `deps.{key}` but has no `deps.{key}_latest` to track the newest "
+                        f"build in; add one, equal to the pin.")
+    return found
+
+
+def check_loader(props: Properties, changes: list[Change], warnings: list[str]) -> None:
+    found = tracked_loader(props, None, "fabric_loader", warnings)
     if found is None:
         return
-    index, pinned = found
+    index, tracked = found
     stable = [v["version"] for v in get_json(FABRIC_META) if v.get("stable")]
     if not stable:
         return
     newest = max(stable, key=numeric)
-    if numeric(newest) <= numeric(pinned):
+    if numeric(newest) <= numeric(tracked):
         return
-    props.set(index, "deps.fabric_loader", newest)
-    changes.append(Change(None, "fabric_loader", pinned, newest, pinned, newest,
-                          "https://github.com/FabricMC/fabric-loader/releases", LOADER_MIRRORS))
+    props.set(index, "deps.fabric_loader_latest", newest)
+    changes.append(Change(None, "fabric_loader_latest", tracked, newest, tracked, newest,
+                          "https://github.com/FabricMC/fabric-loader/releases"))
 
 
 class Unreachable(Exception):
@@ -489,30 +512,30 @@ def neoforge_versions() -> list[str]:
     return _neoforge_versions
 
 
-def check_neoforge(props: Properties, node: str, changes: list[Change]) -> None:
+def check_neoforge(props: Properties, node: str, changes: list[Change], warnings: list[str]) -> None:
     """NeoForge's version starts with the Minecraft version it is built for and ends with the build
     number, `26.2.0.88` for 26.2 and `21.1.251` for 1.21.1, so only builds sharing everything but the
-    pinned version's last part are candidates. Betas are skipped unless the pinned build is one."""
-    found = props.find(node, "deps.neoforge")
+    tracked version's last part are candidates. Betas are skipped unless the tracked build is one."""
+    found = tracked_loader(props, node, "neoforge", warnings)
     if found is None:
         return
-    index, pinned = found
-    prefix = ".".join(pinned.split("-")[0].split(".")[:-1]) + "."
-    allow_beta = "-" in pinned
+    index, tracked = found
+    prefix = ".".join(tracked.split("-")[0].split(".")[:-1]) + "."
+    allow_beta = "-" in tracked
     candidates = [v for v in neoforge_versions() if v.startswith(prefix) and (allow_beta or "-" not in v)]
     if not candidates:
         return
     newest = max(candidates, key=numeric)
-    if numeric(newest) <= numeric(pinned):
+    if numeric(newest) <= numeric(tracked):
         return
-    props.set(index, "deps.neoforge", newest)
-    changes.append(Change(node, "neoforge", pinned, newest, pinned, newest,
-                          "https://projects.neoforged.net/neoforged/neoforge", DOC_MIRRORS))
+    props.set(index, "deps.neoforge_latest", newest)
+    changes.append(Change(node, "neoforge_latest", tracked, newest, tracked, newest,
+                          "https://projects.neoforged.net/neoforged/neoforge"))
 
 
-def check_forge(props: Properties, node: str, minecraft: str, changes: list[Change]) -> None:
+def check_forge(props: Properties, node: str, minecraft: str, changes: list[Change], warnings: list[str]) -> None:
     """Forge promotes one build per Minecraft version as latest, `47.4.23` for 1.20.1; that is the one."""
-    found = props.find(node, "deps.forge")
+    found = tracked_loader(props, node, "forge", warnings)
     if found is None:
         return
     index, pinned = found
@@ -522,9 +545,9 @@ def check_forge(props: Properties, node: str, minecraft: str, changes: list[Chan
         raise Unreachable(f"{FORGE_PROMOTIONS}: {error}") from error
     if promoted is None or numeric(promoted) <= numeric(pinned):
         return
-    props.set(index, "deps.forge", promoted)
-    changes.append(Change(node, "forge", pinned, promoted, pinned, promoted,
-                          "https://files.minecraftforge.net/net/minecraftforge/forge/", DOC_MIRRORS))
+    props.set(index, "deps.forge_latest", promoted)
+    changes.append(Change(node, "forge_latest", pinned, promoted, pinned, promoted,
+                          "https://files.minecraftforge.net/net/minecraftforge/forge/"))
 
 
 def check_mixinextras(props: Properties, node: str, changes: list[Change]) -> None:
@@ -727,7 +750,96 @@ def changelog_section(changes: list[Change]) -> list[str]:
     return out
 
 
-def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path, list[str]]) -> str:
+LOADER_KEYS = {"fabric_loader_latest", "neoforge_latest", "forge_latest"}
+LOADER_CHANGELOG_LIMIT = 10000
+# ` - 47.4.28 text` in Forge's file, `` - `21.1.264` text`` in NeoForge's. Indented lines below an entry
+# continue it; an unindented line, such as Forge's `47.4` and `====` headers, ends it.
+CHANGELOG_ENTRY = re.compile(r"^ - `?(\d[^`\s]*)`?\s?(.*)$")
+
+
+def get_text(url: str) -> str:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return response.read().decode("utf-8")
+
+
+def maven_changelog(url: str, minimum: str, latest: str) -> list[tuple[str, str]]:
+    """(version, text) of every entry in a NeoForge or Forge changelog file after `minimum` up to
+    `latest`, newest first as the file lists them."""
+    entries: list[tuple[str, list[str]]] = []
+    for line in get_text(url).splitlines():
+        match = CHANGELOG_ENTRY.match(line)
+        if match:
+            entries.append((match.group(1), [match.group(2)]))
+        elif not line[:1].isspace():
+            entries.append(("", []))
+        elif entries and line.strip() and not line.strip().lower().startswith("co-authored-by:"):
+            entries[-1][1].append(line.strip())
+    return [(version, "\n".join(lines)) for version, lines in entries
+            if version and numeric(minimum) < numeric(version) <= numeric(latest)]
+
+
+def fabric_loader_changelog(minimum: str, latest: str) -> list[tuple[str, str]]:
+    request = urllib.request.Request(FABRIC_LOADER_RELEASES, headers={"User-Agent": USER_AGENT})
+    # Optional: the workflow passes its token, which lifts GitHub's limit on unauthenticated calls.
+    if os.environ.get("GITHUB_TOKEN"):
+        request.add_header("Authorization", f"Bearer {os.environ['GITHUB_TOKEN']}")
+    with urllib.request.urlopen(request, timeout=30) as response:
+        releases = json.load(response)
+    found = [(r["tag_name"], (r.get("body") or "").strip()) for r in releases
+             if numeric(minimum) < numeric(r["tag_name"]) <= numeric(latest)]
+    return sorted(found, key=lambda entry: numeric(entry[0]), reverse=True)
+
+
+def loader_changelogs(props: Properties, warnings: list[str]) -> list[str]:
+    """What changed in each loader between the minimum the mod builds against and the newest build
+    tracked, newest first, so a person can tell whether raising a minimum is worth it. Read from the
+    properties file rather than from this run's changes, so a range an earlier pull request opened is
+    printed again until its minimum catches up."""
+    ranges: list[tuple[str, str, str, str, Callable[[], list[tuple[str, str]]]]] = []
+    low, high = props.find(None, "deps.fabric_loader"), props.find(None, "deps.fabric_loader_latest")
+    if low and high:
+        ranges.append(("Fabric Loader", low[1], high[1], "https://github.com/FabricMC/fabric-loader/releases",
+                       lambda low=low[1], high=high[1]: fabric_loader_changelog(low, high)))
+    for node, minecraft in node_minecraft_versions().items():
+        if not props.has_node(node):
+            continue
+        for key, name, template, build in (("neoforge", "NeoForge", NEOFORGE_CHANGELOG, "{v}"),
+                                           ("forge", "Forge", FORGE_CHANGELOG, f"{minecraft}-{{v}}")):
+            low, high = props.find(node, f"deps.{key}"), props.find(node, f"deps.{key}_latest")
+            if not (low and high):
+                continue
+            url = template.format(v=build.format(v=high[1]))
+            ranges.append((f"{name} on `{node}`", low[1], high[1], url,
+                           lambda url=url, low=low[1], high=high[1]: maven_changelog(url, low, high)))
+
+    out: list[str] = []
+    size = 0
+    for name, low, high, url, fetch in ranges:
+        if numeric(high) <= numeric(low):
+            continue
+        try:
+            entries = fetch()
+        except (urllib.error.URLError, TimeoutError, ValueError, KeyError) as error:
+            warnings.append(f"The {name} changelog was not read ({error}); it is at {url}.")
+            entries = []
+        body = "\n".join(f"{version}: {text}" if text else version for version, text in entries) or "(no changelog)"
+        if size + len(body) > LOADER_CHANGELOG_LIMIT:
+            out += [f"- {name} `{low}` -> `{high}`: cut, the pull request body is full. Read it at {url}.", ""]
+            continue
+        size += len(body)
+        out += ["<details>", f"<summary>{name}: <code>{low}</code> -> <code>{high}</code></summary>", "",
+                "~~~~text", body, "~~~~", "", "</details>", ""]
+    if not out:
+        return []
+    return ["### Loader changelogs", "",
+            "Every build after the minimum the mod builds against, up to the newest. Players are asked only for "
+            "the minimum. Raise it, by copying the `_latest` value over it, when an integration needs a newer "
+            "loader or a fix here does; its section then goes away.", ""] + out
+
+
+def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path, list[str]],
+            loader_logs: list[str]) -> str:
     out = ["Updates the Minecraft-bound dependencies in `stonecutter.properties.toml`. Each candidate is an upload "
            "on Modrinth for its node's loader that lists the Minecraft version the node compiles against.", ""]
     if changes:
@@ -738,18 +850,18 @@ def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path,
         out.append("")
 
     notes = []
-    if any(change.key == "fabric_loader" for change in changes):
-        notes.append("Fabric Loader is written into `fabric.mod.json` as `>=`, so this raises the minimum loader "
-                     "players need.")
-    if any(change.key == "neoforge" for change in changes):
-        notes.append("NeoForge is written into `neoforge.mods.toml` as the lower bound, so this raises the minimum "
-                     "NeoForge players need.")
+    if any(change.key in LOADER_KEYS for change in changes):
+        notes.append("A `_latest` loader value only tracks the newest build. The build and the manifests stay on "
+                     "`deps.fabric_loader`, `deps.neoforge` and `deps.forge`, so nothing players need changes.")
     if updated_docs:
         notes.append("The versions these pages print were rewritten to match:")
         notes += [f"  - `{path.as_posix()}`: {', '.join(f'`{swap}`' for swap in swaps)}"
                   for path, swaps in sorted(updated_docs.items())]
     stale = {}
     for change in changes:
+        # A `_latest` starts equal to the minimum the docs print, so its old value is stale nowhere.
+        if change.key in LOADER_KEYS:
+            continue
         for path in files_mentioning(change.old_label):
             stale.setdefault(path, set()).add(change.old_label)
     if stale:
@@ -759,6 +871,7 @@ def summary(changes: list[Change], warnings: list[str], updated_docs: dict[Path,
     notes += warnings
     if notes:
         out += ["### Notes", ""] + [note if note.startswith("  ") else f"- {note}" for note in notes] + [""]
+    out += loader_logs
     out += changelog_section(changes)
     return "\n".join(out)
 
@@ -784,7 +897,7 @@ def main() -> int:
     changes: list[Change] = []
     warnings: list[str] = []
 
-    check_loader(props, changes)
+    check_loader(props, changes, warnings)
     for node, minecraft in node_minecraft_versions().items():
         if not props.has_node(node):
             warnings.append(f"`{node}` is in settings.gradle.kts but has no loader table in {PROPERTIES.name}; skipped.")
@@ -793,16 +906,16 @@ def main() -> int:
             check_modrinth(props, node, minecraft, dep, changes, warnings)
         if loader_of(node) == "neoforge":
             try:
-                check_neoforge(props, node, changes)
+                check_neoforge(props, node, changes, warnings)
             except Unreachable as error:
                 # A NeoForge outage should not hold back the Modrinth bumps found above; the next
                 # daily run checks NeoForge again.
-                warnings.append(f"`{node}` `deps.neoforge` was not checked, maven.neoforged.net did not answer ({error}).")
+                warnings.append(f"`{node}` `deps.neoforge_latest` was not checked, maven.neoforged.net did not answer ({error}).")
         if loader_of(node) == "forge":
             try:
-                check_forge(props, node, minecraft, changes)
+                check_forge(props, node, minecraft, changes, warnings)
             except Unreachable as error:
-                warnings.append(f"`{node}` `deps.forge` was not checked, files.minecraftforge.net did not answer ({error}).")
+                warnings.append(f"`{node}` `deps.forge_latest` was not checked, files.minecraftforge.net did not answer ({error}).")
             try:
                 check_mixinextras(props, node, changes)
             except Unreachable as error:
@@ -829,7 +942,9 @@ def main() -> int:
 
     if args.summary:
         args.summary.parent.mkdir(parents=True, exist_ok=True)
-        args.summary.write_text(summary(changes, warnings, updated_docs), encoding="utf-8")
+        # After the bumps above, so each loader's changelog reaches the `_latest` this run found.
+        loader_logs = loader_changelogs(props, warnings)
+        args.summary.write_text(summary(changes, warnings, updated_docs, loader_logs), encoding="utf-8")
     return 0
 
 

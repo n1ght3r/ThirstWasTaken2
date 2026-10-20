@@ -10,6 +10,10 @@ mod.group = "com.thirstwastaken2"
 mod.version = "1.9.0"
 
 deps.fabric_loader = "0.19.5"
+# The newest stable Fabric Loader. Only .github/scripts/update_mc_deps.py reads it: the build and
+# fabric.mod.json's `>=` stay on deps.fabric_loader, the minimum players need, which is raised by hand
+# when an integration or a fix needs a newer loader. The same pair for NeoForge and Forge below.
+deps.fabric_loader_latest = "0.19.5"
 # Pinned to a release rather than `1.18-SNAPSHOT`, so the same commit builds the same jars later.
 loomx.loom_version = "1.18.4"
 
@@ -53,6 +57,8 @@ mod.mc_compat = "[1.20.1,1.20.2)"
 mod.mc_releases = ["1.20.1"]
 
 deps.forge = "47.4.28"
+# The newest promoted build, for the deps pull request only; see deps.fabric_loader_latest.
+deps.forge_latest = "47.4.28"
 # Nested in the jar, since Forge 47 does not ship it and the core mixins use it. Maven Central.
 deps.mixinextras = "0.5.5"
 # 2.5.1+mc1.20.1, the Forge upload.
@@ -206,6 +212,8 @@ mod.mc_compat = "[1.21.1,1.21.2)"
 mod.mc_releases = ["1.21.1"]
 
 deps.neoforge = "21.1.262"
+# The newest build, for the deps pull request only; see deps.fabric_loader_latest.
+deps.neoforge_latest = "21.1.262"
 # 3.0.9+mc1.21, the NeoForge upload.
 deps.appleskin = "uAKA6Laj"
 deps.cloth_config = "15.0.140+neoforge"
@@ -402,6 +410,8 @@ deps.epherolib = "7937978"
 mod.mc_compat = "[26.1,26.2)"
 
 deps.neoforge = "26.1.2.121"
+# The newest build, for the deps pull request only; see deps.fabric_loader_latest.
+deps.neoforge_latest = "26.1.2.121"
 # 3.0.9+mc26.1, the NeoForge upload.
 deps.appleskin = "i8MiVItH"
 deps.cloth_config = "26.1.154+neoforge"
@@ -473,6 +483,8 @@ deps.epherolib = "8544496"
 mod.mc_compat = "[26.2,26.3)"
 
 deps.neoforge = "26.2.0.93"
+# The newest build, for the deps pull request only; see deps.fabric_loader_latest.
+deps.neoforge_latest = "26.2.0.93"
 # 3.0.10+mc26.2, the NeoForge upload. Pinned by Modrinth version id for the reason the Fabric table gives.
 deps.appleskin = "slnk1Qah"
 deps.cloth_config = "26.2.155+neoforge"
@@ -528,8 +540,10 @@ deps.glitchcore = "kfFeDnrp"
 # Range written into neoforge.mods.toml, in NeoForge's syntax.
 mod.mc_compat = "[26.3,26.4)"
 
-# NeoForge has published only betas for 26.3. This is the newest, and the lower bound players need.
+# NeoForge has published only betas for 26.3. The lower bound players need, like every deps.neoforge.
 deps.neoforge = "26.3.0.83"
+# The newest build, for the deps pull request only; see deps.fabric_loader_latest.
+deps.neoforge_latest = "26.3.0.83"
 # 3.0.10+mc26.3, the NeoForge upload. Pinned by Modrinth version id for the reason the 26.2 table gives.
 deps.appleskin = "6vok7cLb"
 deps.jade = "26.3.5+neoforge"

@@ -154,6 +154,12 @@ Dependabot covers Gradle plugins, the wrapper, Actions and `docs/`, but not
 `.github/workflows/update-mc-deps.yml`, into the `automation/minecraft-deps` PR. Test with `--dry-run`.
 A new dependency must be added to `MODRINTH_DEPS` in the script.
 
+The loaders (`deps.fabric_loader`, `deps.neoforge`, `deps.forge`) are the minimum the manifests ask
+players for, and the build uses that same version. The script never moves them: it moves
+`deps.*_latest` beside each and prints the loader's changelog from the minimum up to it in the PR.
+Raise a minimum by hand, copying its `_latest` over it, only when an integration needs a newer
+loader or a fix does; players asked not to update their loader with every release.
+
 ## Architecture
 
 `ThirstWasTaken2.initialize` is the one loader-independent entry point, called by
