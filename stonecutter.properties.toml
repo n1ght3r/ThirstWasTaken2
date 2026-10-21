@@ -169,6 +169,11 @@ deps.candlelight = "nEEi346M"
 deps.herbalbrews = "43g8sVYA"
 # 2.1.5, the Fabric upload.
 deps.beachparty = "jeZE0Qav"
+# Let's Do: Meadow, whose wooden bucket, wooden cauldron and Cooking Pot hold water. Same versions
+# story as Farm & Charm: both 1.21.1 nodes, and only they. Its Foundation is nested in its jar. See
+# src/main/meadow/AGENTS.md.
+# 1.4.10, the Fabric upload.
+deps.meadow = "CgcJkvI8"
 # Let's Do: Vinery, whose juices and wines restore thirst. It holds no water, so there is no code for
 # it, only ThirstConfig values; this puts it on runClient to check them. Same versions story as Farm &
 # Charm: both 1.21.1 nodes, and only they.
@@ -273,6 +278,9 @@ deps.candlelight = "4QhmIK8c"
 deps.herbalbrews = "kGYbyn9P"
 # 2.1.5, the NeoForge upload.
 deps.beachparty = "HN4rzKRl"
+# Meadow, the same integration the Fabric table builds; see there.
+# 1.4.10, the NeoForge upload.
+deps.meadow = "7lmxOKYR"
 # Vinery, runClient only, as in the Fabric table; see there.
 # 1.5.6, the NeoForge upload.
 deps.vinery = "NmoLFrhq"

@@ -67,6 +67,7 @@ public final class DefaultItemValues {
         KaleidoscopeItemValues.kaleidoscopeChineseFoodDrinks(values);
         KaleidoscopeItemValues.kaleidoscopeTavernDrinks(values);
         OtherModItemValues.bountifulFaresDrinks(values);
+        LetsDoItemValues.meadowDrinks(values);
         return values;
     }
 
@@ -189,6 +190,8 @@ public final class DefaultItemValues {
         // And for Bountiful Fares, added after that.
         OtherModItemValues.bountifulFaresDrinks(drinks);
         OtherModItemValues.bountifulFaresFoods(foods);
+        // And for Meadow, added after that.
+        LetsDoItemValues.meadowDrinks(drinks);
     }
 
     static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

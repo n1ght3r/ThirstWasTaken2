@@ -233,6 +233,7 @@ MODRINTH_DEPS = [
     ModrinthDep("candlelight", "lets-do-candlelight-farmcharm-compat", by_id=True),
     ModrinthDep("herbalbrews", "lets-do-herbalbrews", by_id=True),
     ModrinthDep("beachparty", "lets-do-beachparty", by_id=True),
+    ModrinthDep("meadow", "lets-do-meadow", by_id=True),
     ModrinthDep("vinery", "lets-do-vinery", by_id=True),
     # Trinkets and Curios, which Beachparty needs on Fabric and NeoForge, runClient only.
     ModrinthDep("trinkets", "trinkets", by_id=True, **NO_PAGE),

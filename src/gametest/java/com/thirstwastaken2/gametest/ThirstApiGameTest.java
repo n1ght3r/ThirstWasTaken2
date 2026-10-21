@@ -724,6 +724,40 @@ public final class ThirstApiGameTest {
     }
 
     /**
+     * Meadow, another Let's Do mod, is never installed here either. Its wooden milk buckets are worth the
+     * milk bucket, and its wooden water bucket, which holds water but cannot be drunk, is not listed.
+     */
+    @GameTest
+    public void meadowDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"wooden_milk_bucket", "wooden_buffalo_milk_bucket", "wooden_amethyst_milk_bucket"};
+        for (String drink : drinks) {
+            TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("meadow:" + drink), defaults.drinks.get("minecraft:milk_bucket")),
+                    "meadow:" + drink + " should be worth the milk bucket, got " + Arrays.toString(defaults.drinks.get("meadow:" + drink)));
+        }
+        TestFixtures.check(helper, !defaults.drinks.containsKey("meadow:wooden_water_bucket"),
+                "meadow:wooden_water_bucket cannot be drunk and should not be listed");
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("meadow:" + drink);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("meadow:wooden_goat_milk_bucket", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                String id = "meadow:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("meadow:wooden_goat_milk_bucket"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("meadow:wooden_goat_milk_bucket")));
+        });
+        helper.succeed();
+    }
+
+    /**
      * Croptopia is never installed here either. Alcohol restores less than juice, and its water bottle and
      * milk bottle, which cannot be drunk, are not listed.
      */

@@ -146,7 +146,8 @@ public final class WaterPurity {
 
     /**
      * {@code item} as another mod's container of plain water, or null: Miner's Delight's water cup and
-     * copper cup, a bucket each, Bountiful Fares' water cup and cup, a bottle each, and Cold Sweat's filled
+     * copper cup, a bucket each, Meadow's wooden water bucket and wooden bucket, a bucket each, Bountiful
+     * Fares' water cup and cup, a bottle each, and Cold Sweat's filled
      * and empty waterskin, a bottle each, at Cold Sweat's default of one use. Whether it is the full one is
      * {@link #isWaterContainer}. Not drinks made with water, such as tea, nor Croptopia's water bottle, an
      * ingredient with no grade that a bucket makes sixteen of. Vanilla's containers are not here; callers
@@ -546,6 +547,17 @@ public final class WaterPurity {
             }
             return path.equals("jar")
                     ? new ItemInfo(false, false, PURITY_FROM_CONFIG, true, vessel(namespace, "water_cup", 1))
+                    : NOT_A_CONTAINER;
+        }
+        // Meadow's wooden bucket is a bucket: the wooden water bucket holds a bucket of water, not drinkable,
+        // and the empty one draws one from a full cauldron. Graded like the bucket, so it cannot turn sea
+        // water fresh. Its scoop is stamped in src/main/meadow.
+        if (namespace.equals("meadow")) {
+            if (path.equals("wooden_water_bucket")) {
+                return new ItemInfo(true, false, PURITY_FROM_CONFIG, false, vessel(namespace, "wooden_bucket", 3));
+            }
+            return path.equals("wooden_bucket")
+                    ? new ItemInfo(false, false, PURITY_FROM_CONFIG, true, vessel(namespace, "wooden_water_bucket", 3))
                     : NOT_A_CONTAINER;
         }
         return NOT_A_CONTAINER;

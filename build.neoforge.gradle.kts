@@ -191,6 +191,7 @@ val farmAndCharmVersion = findProperty("deps.farm_and_charm") as String?
 val herbalBrewsVersion = findProperty("deps.herbalbrews") as String?
 val beachpartyVersion = findProperty("deps.beachparty") as String?
 val vineryVersion = findProperty("deps.vinery") as String?
+val meadowVersion = findProperty("deps.meadow") as String?
 
 /**
  * Croptopia's CurseForge file id, and the EpheroLib it requires, on every NeoForge node it has a build
@@ -471,6 +472,17 @@ dependencies {
         optionalRunMods.include(names)
     }
 
+    if (meadowVersion != null) {
+        compileOnly("maven.modrinth:lets-do-meadow:$meadowVersion") { isTransitive = false }
+        // The wooden bucket, the wooden cauldron and the Cooking Pot in runClient only. Its Foundation is
+        // nested in its jar. Off by default: its biomes and world generation slow every client start.
+        // Uncomment the line below only to work on it.
+        val names = listOf("meadow", "lets-do-meadow") + architecturyNames
+        // runClientMod(names, "maven.modrinth:lets-do-meadow:$meadowVersion") { isTransitive = false }
+        // Keeps its `-PwithoutOptional` names known while the line above is off.
+        optionalRunMods.include(names)
+    }
+
     if (vineryVersion != null) {
         // Nothing of Vinery's is compiled against: its juices and wines are ThirstConfig ids. On
         // runClient only, to drink them. Off by default: its trees, grapevines and wandering winemaker
@@ -494,7 +506,7 @@ dependencies {
     // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
     // names, so leaving it out leaves them out; leaving one of them out keeps it for the others.
     if (farmAndCharmVersion != null || herbalBrewsVersion != null || beachpartyVersion != null
-        || vineryVersion != null) {
+        || vineryVersion != null || meadowVersion != null) {
         runClientMod(architecturyNames,
             "maven.modrinth:architectury-api:${property("deps.architectury")}") { isTransitive = false }
     }

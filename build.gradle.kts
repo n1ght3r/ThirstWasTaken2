@@ -296,6 +296,7 @@ val farmAndCharm = findProperty("deps.farm_and_charm") as String?
 val herbalBrews = findProperty("deps.herbalbrews") as String?
 val beachparty = findProperty("deps.beachparty") as String?
 val vinery = findProperty("deps.vinery") as String?
+val meadow = findProperty("deps.meadow") as String?
 
 /**
  * Croptopia's CurseForge file id, and the EpheroLib it requires, on every Fabric node it has a build for.
@@ -673,6 +674,21 @@ dependencies {
         optionalRunMods.include(names)
     }
 
+    if (meadow != null) {
+        // Mixed into, like Farm & Charm. Nothing here names a Foundation class, so Foundation is not on the
+        // compile classpath. The wooden bucket, the wooden cauldron and the Cooking Pot in runClient only;
+        // its manifest also asks for Cloth Config, which is there already, and for Foundation, nested in
+        // its jar, which Loom leaves packed, so it is unpacked onto runClient as Brewin' and Chewin's
+        // libraries are. Off by default: its biomes and world generation slow every client start.
+        // Uncomment the two lines below only to work on it.
+        val names = listOf("meadow", "lets-do-meadow") + architecturyNames
+        "modCompileOnly"("maven.modrinth:lets-do-meadow:$meadow") { isTransitive = false }
+        // runClientMod(names, "maven.modrinth:lets-do-meadow:$meadow")
+        // runClientMod(names, files(nestedMods("lets-do-meadow", meadow)))
+        // Keeps its `-PwithoutOptional` names known while the line above is off.
+        optionalRunMods.include(names)
+    }
+
     if (vinery != null) {
         // Nothing of Vinery's is compiled against: its juices and wines are ThirstConfig ids. On
         // runClient only, to drink them. Off by default: its trees, grapevines and wandering winemaker
@@ -696,7 +712,7 @@ dependencies {
 
     // Architectury API, which every Let's Do mod requires, once for all of them. Each of them lists its
     // names, so leaving it out leaves them out; leaving one of them out keeps it for the others.
-    if (farmAndCharm != null || herbalBrews != null || beachparty != null || vinery != null) {
+    if (farmAndCharm != null || herbalBrews != null || beachparty != null || vinery != null || meadow != null) {
         runClientMod(architecturyNames, "maven.modrinth:architectury-api:${property("deps.architectury")}")
     }
 

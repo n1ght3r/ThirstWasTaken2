@@ -5,7 +5,7 @@ import java.util.Map;
 import static com.thirstwastaken2.config.itemvalues.DefaultItemValues.putMissing;
 
 /**
- * What the drinks and foods of the Let's Do mods: Farm & Charm, Candlelight, HerbalBrews, Beachparty and Vinery. restore by default. Every entry goes in with
+ * What the drinks and foods of the Let's Do mods: Farm & Charm, Candlelight, HerbalBrews, Beachparty, Vinery and Meadow, restore by default. Every entry goes in with
  * {@code putIfAbsent}, so one call fills a fresh config and brings an older file up to date without
  * overwriting a player's edit. {@link DefaultItemValues} calls them, in the order that keeps a new
  * file's entries where they always were.
@@ -100,5 +100,15 @@ final class LetsDoItemValues {
     static void vineryFoods(Map<String, int[]> foods) {
         putMissing(foods, 2, 0, "vinery:apple_mash");
         putMissing(foods, 1, 0, "vinery:red_grape", "vinery:white_grape", "vinery:savanna_grapes_red", "vinery:savanna_grapes_white", "vinery:taiga_grapes_red", "vinery:taiga_grapes_white", "vinery:jungle_grapes_red", "vinery:jungle_grapes_white", "vinery:cherry");
+    }
+
+    /**
+     * Let's Do: Meadow's seven wooden milk buckets, drunk like vanilla's milk bucket and worth what it is.
+     * Its cheeses, sandwiches and buffalo meat are solid food, and the soup and stew its Cooking Pot makes
+     * are vanilla's, valued already. Its water is in its wooden bucket, wooden cauldron and Cooking Pot,
+     * none of them a drink (see {@code src/main/meadow}).
+     */
+    static void meadowDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 4, 0, "meadow:wooden_milk_bucket", "meadow:wooden_sheep_milk_bucket", "meadow:wooden_buffalo_milk_bucket", "meadow:wooden_goat_milk_bucket", "meadow:wooden_warped_milk_bucket", "meadow:wooden_grain_milk_bucket", "meadow:wooden_amethyst_milk_bucket");
     }
 }

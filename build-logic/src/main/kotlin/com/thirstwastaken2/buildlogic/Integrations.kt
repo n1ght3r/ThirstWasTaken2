@@ -338,6 +338,16 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.beachparty.mixins.json",
         neoForgeDependencies = listOf("beachparty"),
     ),
+    // Let's Do: Meadow: its wooden bucket keeps the grade, its wooden cauldron is standing water that
+    // takes no sea water, and its Cooking Pot takes no sea water. Same nodes and shape as HerbalBrews.
+    // See src/main/meadow/AGENTS.md.
+    Integration(
+        dir = "meadow",
+        depsKey = "deps.meadow",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.meadow.mixins.json",
+        neoForgeDependencies = listOf("meadow"),
+    ),
     // Spelunkery: a cooking recipe that makes its salt bucket takes only sea water. Nothing of the mod is
     // compiled against; the mixin targets Minecraft's class. See src/main/spelunkery/AGENTS.md.
     Integration(

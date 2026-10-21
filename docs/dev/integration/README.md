@@ -18,6 +18,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Let's Do: Candlelight | [lets-do/CANDLELIGHT](lets-do/CANDLELIGHT-INTEGRATION.md) | `src/main/farmandcharm` | both 1.21.1 | done |
 | Let's Do: HerbalBrews | [lets-do/HERBALBREWS](lets-do/HERBALBREWS-INTEGRATION.md) | `src/main/herbalbrews` | both 1.21.1 | done |
 | Let's Do: Beachparty | [lets-do/BEACHPARTY](lets-do/BEACHPARTY-INTEGRATION.md) | `src/main/beachparty` | both 1.21.1 | done |
+| Let's Do: Meadow | [lets-do/MEADOW](lets-do/MEADOW-INTEGRATION.md) | `src/main/meadow` | both 1.21.1 | done |
 | Brewin' and Chewin' | [cooking/BREWIN-AND-CHEWIN](cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) | `src/main/brewinandchewin` | both 1.21.1 | see plan |
 | Cultural Delights | [cooking/CULTURAL-DELIGHTS](cooking/CULTURAL-DELIGHTS-INTEGRATION.md) | `src/main/culturaldelights` | `1.21.1-neoforge` | see plan |
 | Fruits Delight | [cooking/FRUITS-DELIGHT](cooking/FRUITS-DELIGHT-INTEGRATION.md) | `src/main/fruitsdelight` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |

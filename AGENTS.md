@@ -76,7 +76,7 @@ shipped jar is the SRG-remapped `reobfJar`); see [docs/dev/VERSION-DIFFERENCES.m
   enforces it; 1.0.9 crashed every NeoForge client without Sophisticated Core for want of it.
 - **Mixins**: in `com.thirstwastaken2.mixin`, package-private, `abstract`, every injected member
   prefixed `thirst$`, listed in `thirstwastaken2.mixins.json` or they silently do nothing. Client,
-  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Kaleidoscope Tavern, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Miner's Delight, Farm & Charm, HerbalBrews, Beachparty, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land, Mekanism, Immersive Engineering, Croptopia and Bountiful Fares mixins
+  Fabric-client, dev, Farmer's Delight (Fabric), Create (NeoForge and Forge), Create Fly, Sophisticated, Supplementaries, Kaleidoscope Cookery, Kaleidoscope Tavern, Brewin' and Chewin', Cold Sweat (NeoForge and Forge), Cultural Delights, Fruits Delight, Expanded Delight, Miner's Delight, Farm & Charm, HerbalBrews, Beachparty, Meadow, Spelunkery, Hearth and Harvest (NeoForge and Forge), No Man's Land, Mekanism, Immersive Engineering, Croptopia and Bountiful Fares mixins
   have their own configs next to their sources. A new core config goes in both loader manifests; an
   integration's goes in its row of the integration table.
 - **Player state** is the immutable record `ThirstData`. Derive a new one and write through
@@ -213,6 +213,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: Farm & Charm, and Candlelight, its addon, with no code of its own | `deps.farm_and_charm`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/farmandcharm/AGENTS.md](src/main/farmandcharm/AGENTS.md) |
 | Let's Do: HerbalBrews | `deps.herbalbrews`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/herbalbrews/AGENTS.md](src/main/herbalbrews/AGENTS.md) |
 | Let's Do: Beachparty | `deps.beachparty`: both 1.21.1 nodes (the 1.20.1 line is no longer updated) | [src/main/beachparty/AGENTS.md](src/main/beachparty/AGENTS.md) |
+| Let's Do: Meadow | `deps.meadow`: both 1.21.1 nodes (the 1.20.1 line is no longer updated). Its wooden water bucket and wooden bucket are graded by id in `WaterPurity` | [src/main/meadow/AGENTS.md](src/main/meadow/AGENTS.md) |
 | Spelunkery | `deps.spelunkery`: both 1.21.1 nodes (the 1.20.1 line is no longer updated). Its Spring Water is in the `pure_water` fluid tag, on every node | [src/main/spelunkery/AGENTS.md](src/main/spelunkery/AGENTS.md) |
 | Hearth and Harvest | `deps.hearth_and_harvest`: `1.21.1-neoforge`, and `1.20.1-forge` from its own directory | [src/main/hearthandharvest/AGENTS.md](src/main/hearthandharvest/AGENTS.md), [src/main/hearthandharvestforge/AGENTS.md](src/main/hearthandharvestforge/AGENTS.md) |
 | No Man's Land | `deps.nomansland`: `1.21.1-neoforge`. Its swamps are in `stagnant_water` and its Mud Beach in `sea_water`, biome tags on every node | [src/main/nomansland/AGENTS.md](src/main/nomansland/AGENTS.md) |
@@ -275,6 +276,7 @@ water is collected, drunk or looked at with Jade, never on a tick or tooltip pat
 | Let's Do: Candlelight, Farm & Charm's addon: the plan, its decisions and what was found in game | [docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md](docs/dev/integration/lets-do/CANDLELIGHT-INTEGRATION.md) |
 | Let's Do: HerbalBrews: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md](docs/dev/integration/lets-do/HERBALBREWS-INTEGRATION.md) |
 | Let's Do: Beachparty: the plan, its decision and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md](docs/dev/integration/lets-do/BEACHPARTY-INTEGRATION.md) |
+| Let's Do: Meadow: the plan and its decisions (both 1.21.1 nodes) | [docs/dev/integration/lets-do/MEADOW-INTEGRATION.md](docs/dev/integration/lets-do/MEADOW-INTEGRATION.md) |
 | Spelunkery: the plan, its decisions and what was found in game (both 1.21.1 nodes) | [docs/dev/integration/world/SPELUNKERY-INTEGRATION.md](docs/dev/integration/world/SPELUNKERY-INTEGRATION.md) |
 | No Man's Land: the plan, its decisions and what was found in game (1.21.1 NeoForge) | [docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md](docs/dev/integration/world/NO-MANS-LAND-INTEGRATION.md) |
 | Mekanism: the plan, its decisions and what was found in game (1.21.1 NeoForge, 1.20.1 Forge) | [docs/dev/integration/storage/MEKANISM-INTEGRATION.md](docs/dev/integration/storage/MEKANISM-INTEGRATION.md) |

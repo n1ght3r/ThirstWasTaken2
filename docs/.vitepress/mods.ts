@@ -145,6 +145,11 @@ export const LETS_DO: Mod[] = [
     name: "Let's Do: Vinery",
     icon: 'https://cdn.modrinth.com/data/1DWmBJVA/029aec55be4d860ba0aede4939dd93332b6dafad_96.webp',
     link: '/docs/integrations/vinery'
+  },
+  {
+    name: "Let's Do: Meadow",
+    icon: 'https://cdn.modrinth.com/data/ra7o6Sl7/d7e6f6bcaa82b9af4a670e6dd6cb980c970aa0f2_96.webp',
+    link: '/docs/integrations/meadow'
   }
 ]
 

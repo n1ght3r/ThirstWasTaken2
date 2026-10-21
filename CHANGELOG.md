@@ -17,6 +17,13 @@ All notable changes to ThirstWasTaken2 are documented in this file.
   - Teas, ciders, wines, mead, stews, compotes and the juicier fruit restore thirst.
   - Sea water won't go into the Fermentation Vessel, and won't brew tea or bake a Sponge Cake.
 
+- Let's Do: Meadow, on Fabric and NeoForge 1.21.1:
+  - The wooden bucket keeps the grade of the water it scoops, through cauldrons, the Hanging Pot and
+    the Copper Distiller too.
+  - The wooden cauldron gives Murky water, however it was filled, and won't take sea water.
+  - Sea water won't go into the Cooking Pot.
+  - Wooden milk buckets restore thirst like a milk bucket.
+
 - Hearth and Harvest 1.4.1, on Forge 1.20.1:
   - Jugs, Troughs, the Sprinkler, the Stomping Basin and the Keg keep the grade of the water poured in,
     and the Sink gives Murky water, the same as on NeoForge 1.21.1.
