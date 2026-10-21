@@ -6,6 +6,11 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 ### Added
 
+- Finite water. In a world where water doesn't refill itself, filling a bottle, bowl, waterskin, canteen
+  or flask from the world takes the water source block, as a bucket does, and a waterskin, canteen or
+  flask draws three drinks from it. It follows the `waterSourceConversion` game rule on its own, and
+  works alongside Thirsty Bottles.
+
 - Bountiful Fares, on Fabric and NeoForge 1.21.1:
   - Cups filled from water keep its grade, through cauldrons, the Hanging Pot and the Copper Distiller
     too, and a Water Cup is drunk like a water bottle.
@@ -21,6 +26,14 @@ All notable changes to ThirstWasTaken2 are documented in this file.
 
 - With Hearth and Harvest 1.4.0 or newer, sea water no longer ferments into mead, beer, moonshine or
   root beer in the Keg. It still makes brine.
+
+<details>
+<summary>Configuration file details</summary>
+
+- New `waterFillTakesSource`: `"AUTO"` (default) takes the water source only when the
+  `waterSourceConversion` game rule is off, `"ON"` always, `"OFF"` never.
+
+</details>
 
 ## [1.9.0] - 2026-10-15
 

@@ -5,6 +5,7 @@ import com.thirstwastaken2.client.platform.ClientVanilla;
 import com.thirstwastaken2.compat.AppleSkin;
 import com.thirstwastaken2.config.QuenchedOverlay;
 import com.thirstwastaken2.config.ThirstConfig;
+import com.thirstwastaken2.config.WaterSourceUse;
 import com.thirstwastaken2.data.ThirstData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -90,7 +91,10 @@ enum ConfigCategory {
                     ConfigEntry.grade("rainwater_quality",
                             config -> config.rainwaterQuality, (config, value) -> config.rainwaterQuality = value),
                     ConfigEntry.grade("dripstone_quality",
-                            config -> config.dripstoneQuality, (config, value) -> config.dripstoneQuality = value)))),
+                            config -> config.dripstoneQuality, (config, value) -> config.dripstoneQuality = value))),
+            ConfigSection.of("water.finite", List.of(
+                    ConfigEntry.choice("water_fill_takes_source", WaterSourceUse.values(),
+                            config -> config.waterFillTakesSource, (config, value) -> config.waterFillTakesSource = value)))),
 
     // What bad water does to the drinker is a subject of its own: how effects add up, then one tab per
     // difficulty since each has its own table. The tables are edited line by line (SicknessRows) and

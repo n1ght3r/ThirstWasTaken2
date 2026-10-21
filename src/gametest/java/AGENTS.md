@@ -174,6 +174,7 @@ cauldron bottle draw.
 | Class | Covers |
 |---|---|
 | `WaterFillingGameTest` | bottle and bucket filling, the bottle from flowing water too, that each fill resamples the water, that an abandoned fill leaves nothing behind |
+| `WaterSourceGameTest` | finite water: on, the waterskin, bowl and bottle take the source they fill from and refuse flowing water, a vessel draws three servings, a waterlogged slab is drained; off, the source stays; Auto following the waterSourceConversion game rule |
 | `WaterEffectsGameTest` | salt water, that bad water still quenches, quenched cut by grade and left whole by Upset Stomach, Clean and Pure water, milk and honey, boiling not desalinating |
 | `WaterSicknessGameTest` | the sickness tables, rolls forced: each line rolling on its own at its level and seconds, an unknown effect skipped, an empty grade giving nothing, each difficulty reading its own table, a drink reading the world's difficulty, grouped lines sharing one roll and ungrouped ones rolling apart, Upset Stomach extending by half up to 1.5 times and other effects up to twice (and not when switched off), the defaults (no Poison without Upset Stomach, Clean and Pure never anything, Hard's worst roll Upset Stomach II and Poison), and a hand-edited table clamped and filled in, a grouped Poison capped at its Upset Stomach |
 | `UpsetStomachGameTest` | Upset Stomach draining no thirst, Nausea still draining on top of it, saturation left whole, and that it never hurts on its own |

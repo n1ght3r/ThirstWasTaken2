@@ -436,6 +436,28 @@ public final class Vanilla {
         //return level(player).getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_NATURAL_REGENERATION);
     }
 
+    /** Whether the waterSourceConversion game rule is on, so water refills itself. 1.21.11 made game rules typed values. */
+    public static boolean waterSourceConversion(ServerLevel level) {
+        //? if >=1.21.11 {
+        return level.getGameRules().get(net.minecraft.world.level.gamerules.GameRules.WATER_SOURCE_CONVERSION);
+        //?} else
+        //return level.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_WATER_SOURCE_CONVERSION);
+    }
+
+    /**
+     * Takes the fluid at {@code pos} out of the world the way a bucket does, emptying a water block or
+     * draining a waterlogged one, and whether anything was taken. {@code pickupBlock} took no entity on
+     * 1.20.1.
+     */
+    public static boolean pickupFluid(net.minecraft.world.entity.player.Player player, Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (!(state.getBlock() instanceof net.minecraft.world.level.block.BucketPickup pickup)) return false;
+        //? if >=1.20.2 {
+        return !pickup.pickupBlock(player, level, pos, state).isEmpty();
+        //?} else
+        //return !pickup.pickupBlock(level, pos, state).isEmpty();
+    }
+
     /** Damages a player from the server. 1.21.2 split a server-only {@code hurtServer} out of {@code hurt}. */
     public static void hurt(ServerPlayer player, DamageSource source, float amount) {
         //? if >=1.21.2 {

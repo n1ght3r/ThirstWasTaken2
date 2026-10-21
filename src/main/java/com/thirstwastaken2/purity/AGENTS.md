@@ -15,6 +15,7 @@ and core stays on Java 17 for 1.20.1; see the root `AGENTS.md`.)
 | `WaterQuality` | the sealed pair, `Fresh` or `Salt` |
 | `WaterPurity` | environmental sampling, storage, sickness, sprites and container tests |
 | `WaterInteractions` | the interaction callbacks that move quality between world, blocks and items |
+| `SourceDrawing` | finite water: whether scooping from the world takes the source (`waterFillTakesSource`, the `waterSourceConversion` game rule), told to clients by its own payload so both sides cast the same ray; bottles left to Thirsty Bottles when it is installed. The client side is checked by `tools/agent/gameplay/finite-water.jsonl` |
 
 ## Where a quality can live
 

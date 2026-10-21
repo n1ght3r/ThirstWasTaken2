@@ -53,8 +53,15 @@ Drinking gives the empty bowl back. Filled water bowls stack to three, as long a
 same, and drinking from a stack gives back one empty bowl and keeps the rest. Water bottles don't
 stack, as in vanilla. A terracotta bowl and a water bucket also craft a water bowl, but that water is always Dirty.
 
-Glass bottles work as in vanilla: they fill only from a water source block, never from flowing
-water. The terracotta bowl, waterskin, Copper Canteen and Iron Flask fill from either.
+Glass bottles, the terracotta bowl, the waterskin, the canteen and the flasks fill from a water source
+block or from flowing water, and the water stays where it was.
+
+### Finite water
+
+In a world where water doesn't refill itself, filling from the world takes the water source block away,
+as a bucket does. Then only a source block will do, and a waterskin, canteen or flask draws three drinks
+from it. This happens on its own when the `waterSourceConversion` game rule is off, and can be switched
+on or off for every world with [`waterFillTakesSource`](/docs/configuration#waterfilltakessource).
 
 ## Waterskin
 

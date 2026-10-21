@@ -50,6 +50,10 @@ public final class WaterInteractions {
     /**
      * Lets the terracotta bowl, waterskin, canteen and flask scoop from any water, including flowing water. A carried
      * container is filled in one go rather than a serving per click: a lake has no levels to lower.
+     *
+     * <p>Where the source is taken ({@link SourceDrawing}), only a source a bucket could take will do, and
+     * it is gone afterwards. A carried container then draws a bucket's three servings from it, as much as
+     * it has room for, the rate it takes from a bucket poured in.
      */
     public static InteractionResult fillFromWater(Player player, Level level, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
@@ -57,21 +61,26 @@ public final class WaterInteractions {
         boolean waterskin = WaterskinItem.hasRoom(held);
         if (!bowl && !waterskin) return InteractionResult.PASS;
 
-        BlockHitResult hit = pick(player, level, ClipContext.Fluid.ANY);
+        boolean takesSource = SourceDrawing.takesSource(level);
+        BlockHitResult hit = pick(player, level, takesSource ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.ANY);
         if (hit.getType() != HitResult.Type.BLOCK || !level.getFluidState(hit.getBlockPos()).is(FluidTags.WATER)) {
             return InteractionResult.PASS;
         }
+        BlockPos pos = hit.getBlockPos();
+        if (takesSource && !SourceDrawing.canTake(player, level, pos)) return InteractionResult.PASS;
 
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-        BlockPos pos = hit.getBlockPos();
+        // Sampled before the source is taken: the water is graded where it was.
         WaterQuality quality = WaterPurity.sampleAt(level, pos);
+        if (takesSource && !SourceDrawing.take(player, level, pos)) return InteractionResult.PASS;
         if (bowl) {
             ItemStack filled = WaterPurity.setQuality(
                     new ItemStack(ThirstItems.TERRACOTTA_WATER_BOWL), quality);
             player.setItemInHand(hand, ItemUtils.createFilledResult(held, player, filled));
         } else {
-            WaterskinItem.addWater(held, quality, WaterskinItem.capacity(held));
+            WaterskinItem.addWater(held, quality,
+                    takesSource ? WaterskinItem.BUCKET_SERVINGS : WaterskinItem.capacity(held));
         }
         level.playSound(null, player.blockPosition(), bowl ? SoundEvents.BUCKET_FILL : SoundEvents.BOTTLE_FILL,
                 SoundSource.NEUTRAL, 1.0F, 1.0F);

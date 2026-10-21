@@ -174,7 +174,7 @@ already has by default. The stack the furnace hands out is the same; see
 | `ResourceLocation` became `Identifier`, `ResourceKey#location` became `#identifier`, `Util` moved package | replacement |
 | The advancement criterion package lost its `critereon` spelling | replacement, chosen inside the 26.2 rule because replacements do not chain |
 | Command permission levels became permission sets | `Vanilla.isGameMaster`, `Vanilla.isOwner` |
-| Game rules became typed values in their own package, `naturalRegeneration` renamed `NATURAL_HEALTH_REGENERATION` | `Vanilla.naturalRegeneration` |
+| Game rules became typed values in their own package, `naturalRegeneration` renamed `NATURAL_HEALTH_REGENERATION` | `Vanilla.naturalRegeneration`, and `Vanilla.waterSourceConversion` for `RULE_WATER_SOURCE_CONVERSION` |
 | The window handle accessor was renamed from `getWindow` to `handle` | `AgentClientVanilla.windowHandle` (written `>1.21.1`) |
 | A connection's send listener became Netty's own | NeoForge `CapturingConnection` (written `>1.21.1`) |
 | Villagers and their trades moved to `entity.npc.villager` | `TestFixtures.noviceOffers` (written `>=1.21.11`) |
@@ -273,6 +273,7 @@ between 1.20.1 and 1.21.1. Gametests, datagen and the dev tools fork in place.
 | No `AdvancementHolder`; no loot table registry, so a table is known by its id | `Vanilla.awardAdvancement`, `Vanilla.lootTableId`; `Loader.onLootTable` hands every loader an id |
 | Block methods such as `getShape` and `tick` are public, and `isPathfindable` takes a level and position; no block codec | `HangingPotBlock` overrides them as public on every version; `SupportedBlock` |
 | A container screen does not dim the world behind itself; `renderBackground` is asked to | `client/platform/MachineScreen` |
+| `BucketPickup#pickupBlock` takes no entity (1.20.2 added the player) | `Vanilla.pickupFluid`; the constant `PICKUP_BLOCK` in `BucketItemMixin` |
 | `playerWillDestroy` returns nothing (from 1.20.2 it returns the state) | `SupportedBlock.beforePlayerBreaks`, which `DistillerBlock` uses |
 | A block entity saves to a tag alone and loads through `load`, and its update tag takes no registries | `platform/SavedBlockEntity`; `MachineSeamsGameTest` saves and loads one the way the chunk does |
 | Saved data is made by a loader function handed to `computeIfAbsent` and saved to a tag alone; from 1.20.5 a `SavedData.Factory` and a save that takes registries | `platform/SavedPositions` |

@@ -8,6 +8,7 @@
   "entrypoints": {
     "fabric-gametest": [
       "com.thirstwastaken2.gametest.WaterFillingGameTest",
+      "com.thirstwastaken2.gametest.WaterSourceGameTest",
       "com.thirstwastaken2.gametest.WaterEffectsGameTest",
       "com.thirstwastaken2.gametest.UpsetStomachGameTest",
       "com.thirstwastaken2.gametest.WaterSicknessGameTest",

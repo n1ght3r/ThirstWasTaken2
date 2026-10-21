@@ -1,0 +1,99 @@
+// Finite water in a real client (issue #45): with waterFillTakesSource at its default, Auto, scooping
+// takes the source block only while the waterSourceConversion game rule is off. What only a client
+// shows is that it agrees with the server: a bottle aimed at flowing water must stay a Glass Bottle in
+// the client's own hand ("*Client" answers) when the server refuses it, which needs the server's
+// answer synced down, within a second of the rule changing. Nodes 1.21.1 and later; 1.20.1 has
+// finite-water-1.20.1.jsonl. Run it unattended in a singleplayer world:
+//     ./gradlew ":<node>:runClient" -Pagent=tools/agent/gameplay/finite-water.jsonl -Pquickplay=FiniteWaterAgent
+// FiniteWaterAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> FiniteWaterAgent
+// Then check it with
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/gameplay/finite-water.jsonl --verify
+// Pool A at 0 200 0 is one source; trench B at x 4 runs from a source at z 2 to flowing water at z 0.
+// The player stands on stone south of each and looks 41 degrees down at its z 0 block. An item check
+// asks for "Test passed" alone: 1.21.1 words the count differently.
+
+{"id": "load", "command": "wait", "args": {"ticks": 300}}
+{"id": "joined", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "platform", "command": "server.command", "args": {"command": "fill -6 200 -6 6 200 6 minecraft:stone"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -6 201 -6 6 205 6 minecraft:air"}}
+{"id": "standA", "command": "server.command", "args": {"command": "tp @p 0.5 201 -1.5 0 41"}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "poolA", "command": "server.command", "args": {"command": "setblock 0 200 0 minecraft:water"}}
+{"id": "trenchB", "command": "server.command", "args": {"command": "fill 4 200 0 4 200 1 minecraft:air"}}
+{"id": "sourceB", "command": "server.command", "args": {"command": "setblock 4 200 2 minecraft:water"}}
+// Both spellings: 1.21.11 renamed game rules to snake case. The one this node does not know fails.
+{"id": "ruleOnNew", "command": "server.command", "args": {"command": "gamerule water_source_conversion true"}}
+{"id": "ruleOnOld", "command": "server.command", "args": {"command": "gamerule waterSourceConversion true"}}
+{"id": "flow", "command": "wait", "args": {"ticks": 40}}
+{"id": "flowingB", "command": "server.command", "args": {"command": "execute if block 4 200 0 minecraft:water[level=2]"}, "expect": {"result.messages.0": "Test passed"}}
+
+// The rule on: a bottle fills from flowing water and the source stays, as before.
+{"id": "standB1", "command": "server.command", "args": {"command": "tp @p 4.5 201 -1.5 0 41"}}
+{"id": "settleB1", "command": "wait", "args": {"ticks": 10}}
+{"id": "bottle1", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "use1", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after1", "command": "wait", "args": {"ticks": 10}}
+{"id": "filled1", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "filled1Client", "command": "client.tooltip", "args": {"slot": "mainhand"}, "expect": {"result.lines.0": "Water Bottle"}}
+
+// The rule off: the server says so to the client within a second.
+{"id": "ruleOffNew", "command": "server.command", "args": {"command": "gamerule water_source_conversion false"}}
+{"id": "ruleOffOld", "command": "server.command", "args": {"command": "gamerule waterSourceConversion false"}}
+{"id": "sync1", "command": "wait", "args": {"ticks": 40}}
+
+// A bottle on flowing water stays empty, on the server and in the client's hand.
+{"id": "bottle2", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "use2", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after2", "command": "wait", "args": {"ticks": 10}}
+{"id": "empty2", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:glass_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "empty2Client", "command": "client.tooltip", "args": {"slot": "mainhand"}, "expect": {"result.lines.0": "Glass Bottle"}}
+{"id": "flowLeft2", "command": "server.command", "args": {"command": "execute if block 4 200 0 minecraft:water"}, "expect": {"result.messages.0": "Test passed"}}
+
+// The terracotta bowl the same.
+{"id": "bowl3", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:terracotta_bowl"}}
+{"id": "use3", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after3", "command": "wait", "args": {"ticks": 10}}
+{"id": "empty3", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:terracotta_bowl"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "empty3Client", "command": "client.tooltip", "args": {"slot": "mainhand"}, "expect": {"result.lines.0": "Terracotta Bowl"}}
+
+// A bottle on the source fills and takes it.
+{"id": "standA4", "command": "server.command", "args": {"command": "tp @p 0.5 201 -1.5 0 41"}}
+{"id": "settleA4", "command": "wait", "args": {"ticks": 10}}
+{"id": "bottle4", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "use4", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after4", "command": "wait", "args": {"ticks": 10}}
+{"id": "filled4", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "filled4Client", "command": "client.tooltip", "args": {"slot": "mainhand"}, "expect": {"result.lines.0": "Water Bottle"}}
+{"id": "taken4", "command": "server.command", "args": {"command": "execute if block 0 200 0 minecraft:air"}, "expect": {"result.messages.0": "Test passed"}}
+
+// An empty copper canteen draws a bucket's three servings and takes the source.
+{"id": "poolA5", "command": "server.command", "args": {"command": "setblock 0 200 0 minecraft:water"}}
+{"id": "canteen5", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_canteen"}}
+{"id": "use5", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after5", "command": "wait", "args": {"ticks": 10}}
+{"id": "three5", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=3]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "taken5", "command": "server.command", "args": {"command": "execute if block 0 200 0 minecraft:air"}, "expect": {"result.messages.0": "Test passed"}}
+{"id": "canteen5Client", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "capture5", "command": "client.capture", "args": {"name": "finite-water-taken"}}
+
+// The rule back on: the client is told again, and the old behaviour returns.
+{"id": "ruleBackNew", "command": "server.command", "args": {"command": "gamerule water_source_conversion true"}}
+{"id": "ruleBackOld", "command": "server.command", "args": {"command": "gamerule waterSourceConversion true"}}
+{"id": "sync2", "command": "wait", "args": {"ticks": 40}}
+{"id": "standB6", "command": "server.command", "args": {"command": "tp @p 4.5 201 -1.5 0 41"}}
+{"id": "settleB6", "command": "wait", "args": {"ticks": 10}}
+{"id": "bottle6", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:glass_bottle"}}
+{"id": "use6", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after6", "command": "wait", "args": {"ticks": 10}}
+{"id": "filled6", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "filled6Client", "command": "client.tooltip", "args": {"slot": "mainhand"}, "expect": {"result.lines.0": "Water Bottle"}}
+{"id": "standA7", "command": "server.command", "args": {"command": "tp @p 0.5 201 -1.5 0 41"}}
+{"id": "poolA7", "command": "server.command", "args": {"command": "setblock 0 200 0 minecraft:water"}}
+{"id": "settleA7", "command": "wait", "args": {"ticks": 10}}
+{"id": "canteen7", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with thirstwastaken2:copper_canteen"}}
+{"id": "use7", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "after7", "command": "wait", "args": {"ticks": 10}}
+{"id": "full7", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand thirstwastaken2:copper_canteen[thirstwastaken2:water_servings=4]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kept7", "command": "server.command", "args": {"command": "execute if block 0 200 0 minecraft:water"}, "expect": {"result.messages.0": "Test passed"}}

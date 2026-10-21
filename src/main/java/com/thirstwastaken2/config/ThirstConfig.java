@@ -113,6 +113,11 @@ public final class ThirstConfig {
     public boolean enableRainCollection = true;
     public int rainwaterQuality = 2;
     public int dripstoneQuality = 3;
+    /**
+     * Whether scooping water from the world takes the source block, as a bucket does. Auto does only
+     * where the waterSourceConversion game rule is off. See {@code purity/SourceDrawing}.
+     */
+    public WaterSourceUse waterFillTakesSource = WaterSourceUse.AUTO;
 
     // ---- containers -------------------------------------------------------
     // Every count here is 1 to MAX_CONTAINER. Lowering one never takes water away: a vessel or pot that
@@ -472,6 +477,7 @@ public final class ThirstConfig {
         distillerSaltItem = distillerSaltItem == null ? "" : distillerSaltItem.trim();
         // Gson reads a name it does not know, including a hand typo, as null.
         if (appleskinQuenchedOverlay == null) appleskinQuenchedOverlay = QuenchedOverlay.DIAMOND;
+        if (waterFillTakesSource == null) waterFillTakesSource = WaterSourceUse.AUTO;
         thirstDepletionModifier = clamp(thirstDepletionModifier, 0.0, 10.0);
         foodHealMinThirstPercent = clamp(foodHealMinThirstPercent, 0, 100);
         quenchedHealMinFoodPercent = clamp(quenchedHealMinFoodPercent, 0, 100);

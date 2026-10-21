@@ -18,6 +18,7 @@ import com.thirstwastaken2.effect.ThirstEffects;
 import com.thirstwastaken2.item.ThirstItems;
 import com.thirstwastaken2.platform.ItemWaterData;
 import com.thirstwastaken2.platform.Loader;
+import com.thirstwastaken2.purity.SourceDrawing;
 import com.thirstwastaken2.purity.WaterInteractions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -63,6 +64,7 @@ public final class ThirstWasTaken2 {
 
         Loader.onServerTickEnd(ThirstManager::tick);
         Loader.onServerTickEnd(WaterInteractions::tick);
+        Loader.onServerTickEnd(SourceDrawing::tick);
         Loader.onUseBlock(ThirstManager::drinkByHand);
         Loader.onUseBlock(ThirstManager::drinkFromCauldron);
         Loader.onUseBlock(HangingPotInteractions::use);
@@ -79,6 +81,9 @@ public final class ThirstWasTaken2 {
         Loader.onServerDataReload(DataPackDrinks.RELOAD_ID, DataPackDrinks::reload);
         DataPackDrinks.registerPayload();
         Loader.onDataPackSync(DataPackDrinks::sync);
+        // Whether scooping water takes the source, which the client cannot work out for itself.
+        SourceDrawing.registerPayload();
+        Loader.onDataPackSync(SourceDrawing::sync);
 
         LOGGER.info("ThirstWasTaken2 initialized for Minecraft {}{}", MINECRAFT, DEV ? " (dev)" : "");
     }

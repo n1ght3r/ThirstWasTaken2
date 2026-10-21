@@ -45,6 +45,7 @@ Every setting at its default. The long lists are cut short here; see
   "enableRainCollection": true,
   "rainwaterQuality": 2,
   "dripstoneQuality": 3,
+  "waterFillTakesSource": "AUTO",
   "enableBoilingInHand": true,
   "enableFurnaceBoiling": true,
   "waterskinCapacity": 4,
@@ -192,6 +193,12 @@ Default `true`. Rain fills hanging pots and cauldrons with `rainwaterQuality` wa
 ### rainwaterQuality and dripstoneQuality
 
 Default `2`, Clean, and `3`, Pure. The grade of rain and of dripstone water.
+
+### waterFillTakesSource
+
+Default `"AUTO"`. Whether filling a bottle, bowl, waterskin, canteen or flask from the world takes the
+water source block, as a bucket does. `"AUTO"` does so only when the `waterSourceConversion` game rule
+is off, `"ON"` always, `"OFF"` never. See [Finite water](/docs/features/drinking#finite-water).
 
 ## Sickness
 
