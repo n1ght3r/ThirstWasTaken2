@@ -310,6 +310,12 @@ val croptopia = findProperty("deps.croptopia") as String?
 val spelunkery = findProperty("deps.spelunkery") as String?
 
 /**
+ * Bountiful Fares' Modrinth version id, and the NexusLib it requires, on `1.21.1` and `1.21.1-neoforge`
+ * only. See docs/dev/integration/cooking/BOUNTIFUL-FARES-INTEGRATION.md.
+ */
+val bountifulFares = findProperty("deps.bountiful_fares") as String?
+
+/**
  * Serene Seasons' Modrinth version id, on every node. See docs/dev/integration/climate/SERENE-SEASONS-INTEGRATION.md.
  */
 val sereneSeasons = findProperty("deps.serene_seasons") as String?
@@ -549,6 +555,19 @@ dependencies {
         // nothing of the mod, so nothing is compiled against it. Off by default, see Supplementaries.
         // runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkery")
         optionalRunMods.include(listOf("spelunkery", "moonlight"))
+    }
+
+    if (bountifulFares != null) {
+        // Mixed into, so it has to be a remapped mod rather than a plain library, as Brewin' and Chewin' is.
+        "modCompileOnly"("maven.modrinth:bountiful-fares:$bountifulFares") { isTransitive = false }
+        // The cup, the vessel and the teas in runClient only, with the NexusLib it requires; Cloth Config
+        // is above, for AppleSkin. The gametests and runServer run without them, which is what proves the
+        // mod is unchanged when they are absent. Off by default: its trees and crops add world generation.
+        // Uncomment the two lines below only to work on it.
+        val names = listOf("bountiful-fares", "bountifulfares", "nexuslib")
+        // runClientMod(names, "maven.modrinth:bountiful-fares:$bountifulFares")
+        // runClientMod(names, "maven.modrinth:nexuslib:${property("deps.nexuslib")}")
+        optionalRunMods.include(names)
     }
 
     // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out

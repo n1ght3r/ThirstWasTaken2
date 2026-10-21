@@ -1,0 +1,202 @@
+// Bountiful Fares in a real client, step 6 of its integration plan
+// (docs/dev/integration/cooking/BOUNTIFUL-FARES-INTEGRATION.md). What it proves: every id ThirstConfig
+// lists for the mod exists; a cup scooping a swamp or ocean source is stamped with that water's grade
+// (CupItemMixin); a salty water cup poured into an empty cauldron leaves sea water, and a cup drawn from
+// a Dirty cauldron comes out Dirty; a water cup pours into and draws from a hanging pot one serving at a
+// time; the Fermentation Vessel refuses sea water and takes fresh; a tea crafts from a fresh water cup
+// and not from a salty one, through a Crafter; and a Pure water cup and a tea restore what they should.
+// Runs on 1.21.1 and 1.21.1-neoforge, with Bountiful Fares' two runClientMod lines uncommented in that
+// node's script. Run it unattended:
+//     ./gradlew ":1.21.1:runClient" -Pagent=tools/agent/integrations/bountiful-fares.jsonl -Pquickplay=FaresAgent
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/bountiful-fares.jsonl -Pquickplay=FaresAgent
+// FaresAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py <node> FaresAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/<node>/agent/client tools/agent/integrations/bountiful-fares.jsonl --verify --max-age 15
+
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -24 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 900 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 60"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -24 200 -8 8 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -24 199 -8 8 199 8 minecraft:stone"}}
+{"id": "plains", "command": "server.command", "args": {"command": "fillbiome -24 192 -8 8 207 7 minecraft:plains"}}
+
+// Every id ThirstConfig lists for the mod exists, and the cup: /give refuses an unknown item.
+{"id": "id_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_water_cup", "command": "server.command", "args": {"command": "give @p bountifulfares:water_cup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_green_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:green_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_black_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:black_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_chamomile_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:chamomile_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_honeysuckle_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:honeysuckle_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bellflower_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:bellflower_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_torchflower_tea_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:torchflower_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_cider_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:apple_cider_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hoary_cider_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:hoary_cider_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_plum_cider_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:plum_cider_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mead_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:mead_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_elderberry_wine_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:elderberry_wine_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lapisberry_wine_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:lapisberry_wine_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_coconut_milk_bottle", "command": "server.command", "args": {"command": "give @p bountifulfares:coconut_milk_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:apple_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_bountiful_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:bountiful_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_coconut_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:coconut_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_fish_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:fish_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_leek_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:leek_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_stone_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:stone_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_dirt_stew", "command": "server.command", "args": {"command": "give @p bountifulfares:dirt_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_arid_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:arid_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_coastal_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:coastal_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_forest_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:forest_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_meadow_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:meadow_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mire_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:mire_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tropical_medley", "command": "server.command", "args": {"command": "give @p bountifulfares:tropical_medley"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sea_salad", "command": "server.command", "args": {"command": "give @p bountifulfares:sea_salad"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_apple_compote_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:apple_compote_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hoary_compote_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:hoary_compote_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon_compote_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:lemon_compote_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange_compote_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:orange_compote_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_plum_compote_jar", "command": "server.command", "args": {"command": "give @p bountifulfares:plum_compote_jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_orange", "command": "server.command", "args": {"command": "give @p bountifulfares:orange"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lemon", "command": "server.command", "args": {"command": "give @p bountifulfares:lemon"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_plum", "command": "server.command", "args": {"command": "give @p bountifulfares:plum"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hoary_apple", "command": "server.command", "args": {"command": "give @p bountifulfares:hoary_apple"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_passion_fruit", "command": "server.command", "args": {"command": "give @p bountifulfares:passion_fruit"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_spongekin_slice", "command": "server.command", "args": {"command": "give @p bountifulfares:spongekin_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_elderberries", "command": "server.command", "args": {"command": "give @p bountifulfares:elderberries"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_lapisberries", "command": "server.command", "args": {"command": "give @p bountifulfares:lapisberries"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// A cup scoops a swamp and an ocean source as a bottle does. Each pool's biome covers every cell around
+// its own and a cell of neither lies between the two, as in miners-delight.jsonl.
+{"id": "swampBiome", "command": "server.command", "args": {"command": "fillbiome -8 192 -8 3 207 7 minecraft:swamp"}}
+{"id": "swampPool", "command": "server.command", "args": {"command": "fill -3 199 -1 -3 199 1 minecraft:water"}}
+{"id": "oceanBiome", "command": "server.command", "args": {"command": "fillbiome -24 192 -8 -13 207 7 minecraft:ocean"}}
+{"id": "oceanPool", "command": "server.command", "args": {"command": "fill -19 199 -1 -19 199 1 minecraft:water"}}
+{"id": "clearS", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "cupS", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:jar"}}
+{"id": "standS", "command": "server.command", "args": {"command": "tp @p -2.5 200 -2.5 0 45"}}
+{"id": "settleS", "command": "wait", "args": {"ticks": 20}}
+{"id": "scoopS", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "scoopedS", "command": "wait", "args": {"ticks": 10}}
+{"id": "itemS", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "swampDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:water_cup[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "clearO", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "cupO", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:jar"}}
+{"id": "standO", "command": "server.command", "args": {"command": "tp @p -18.5 200 -2.5 0 45"}}
+{"id": "settleO", "command": "wait", "args": {"ticks": 20}}
+{"id": "scoopO", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "scoopedO", "command": "wait", "args": {"ticks": 10}}
+{"id": "itemO", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "oceanSalty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:water_cup[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "poolsGone", "command": "server.command", "args": {"command": "fill -24 199 -8 8 199 8 minecraft:stone"}}
+{"id": "plainsBack", "command": "server.command", "args": {"command": "fillbiome -24 192 -8 8 207 7 minecraft:plains"}}
+
+// A salty water cup poured into an empty cauldron leaves sea water (purity=5), not the Clean water an
+// unset cauldron reads as, and hands back the cup. The player looks at the cauldron's body at pitch 30.
+{"id": "emptyCauldron", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:cauldron"}}
+{"id": "pourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:water_cup[thirstwastaken2:water_salty=true]"}}
+{"id": "pourStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "pourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "pourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "pourBlock", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "pourSalty", "command": "server.command", "args": {"command": "execute if block 0 200 2 minecraft:water_cauldron[purity=5]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "pourCupBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+
+// A cup drawn from a full Dirty cauldron comes out Dirty, and the cauldron loses one level.
+{"id": "dirtyCauldron", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:water_cauldron[level=3,purity=1]"}}
+{"id": "drawClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drawGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:jar"}}
+{"id": "drawStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "drawSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "drawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "drawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "drawDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:water_cup[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "drawLowered", "command": "server.command", "args": {"command": "execute if block 0 200 2 minecraft:water_cauldron[level=2]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "cauldronGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// A cup holds a bottle: a Dirty water cup fills an empty hanging pot by one serving and hands back the
+// cup, and that cup draws the serving back out as a Dirty water cup.
+{"id": "potPlace", "command": "server.command", "args": {"command": "setblock 0 200 2 thirstwastaken2:copper_hanging_pot"}}
+{"id": "potPourClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "potPourGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:water_cup[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "potPourStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "potPourSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potPourUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potPourBlock", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "potPoured", "command": "server.command", "args": {"command": "execute if block 0 200 2 thirstwastaken2:copper_hanging_pot[level=1,purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potPourCupBack", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:jar"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "potDrawUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "potDrawItem", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "potDrawDirty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:water_cup[thirstwastaken2:water_purity=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potDrawEmptied", "command": "server.command", "args": {"command": "execute if block 0 200 2 thirstwastaken2:copper_hanging_pot[level=0]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "potGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// The Fermentation Vessel refuses a salty water cup: it stays empty and the cup stays in the hand. A
+// fresh one fills it.
+{"id": "vesselPlace", "command": "server.command", "args": {"command": "setblock 0 200 2 bountifulfares:fermentation_vessel"}}
+{"id": "vesselClear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "vesselSaltGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:water_cup[thirstwastaken2:water_salty=true]"}}
+{"id": "vesselStand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 30"}}
+{"id": "vesselSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "vesselSaltUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "vesselSaltUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "vesselSaltBlock", "command": "server.command", "args": {"command": "data get block 0 200 2"}}
+{"id": "vesselStillEmpty", "command": "server.command", "args": {"command": "execute if block 0 200 2 bountifulfares:fermentation_vessel[fermentation_stage=empty]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "vesselSaltKept", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand bountifulfares:water_cup[thirstwastaken2:water_salty=true]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "vesselFreshGive", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:water_cup[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "vesselFreshSettle", "command": "wait", "args": {"ticks": 10}}
+{"id": "vesselFreshUse", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "vesselFreshUsed", "command": "wait", "args": {"ticks": 10}}
+{"id": "vesselFilled", "command": "server.command", "args": {"command": "execute if block 0 200 2 bountifulfares:fermentation_vessel[fermentation_stage=water]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "vesselGone", "command": "server.command", "args": {"command": "setblock 0 200 2 minecraft:air"}}
+
+// Crafting through a Crafter, which asks the same recipe matcher a crafting table does: a Dirty water cup
+// and tea leaves make green tea, a salty one makes nothing.
+{"id": "fresh_tea_crafter", "command": "server.command", "args": {"command": "setblock 0 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "fresh_tea_chest", "command": "server.command", "args": {"command": "setblock 0 200 3 minecraft:chest[facing=south]"}}
+{"id": "fresh_tea_slot4", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.4 with bountifulfares:tea_leaves 1"}}
+{"id": "fresh_tea_slot7", "command": "server.command", "args": {"command": "item replace block 0 200 4 container.7 with bountifulfares:water_cup[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false] 1"}}
+{"id": "fresh_tea_fire", "command": "server.command", "args": {"command": "setblock 0 201 4 minecraft:redstone_block"}}
+{"id": "fresh_tea_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "fresh_tea_result", "command": "server.command", "args": {"command": "execute if items block 0 200 3 container.* bountifulfares:green_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "sea_tea_crafter", "command": "server.command", "args": {"command": "setblock 2 200 4 minecraft:crafter[orientation=north_up]"}}
+{"id": "sea_tea_chest", "command": "server.command", "args": {"command": "setblock 2 200 3 minecraft:chest[facing=south]"}}
+{"id": "sea_tea_slot4", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.4 with bountifulfares:tea_leaves 1"}}
+{"id": "sea_tea_slot7", "command": "server.command", "args": {"command": "item replace block 2 200 4 container.7 with bountifulfares:water_cup[thirstwastaken2:water_salty=true] 1"}}
+{"id": "sea_tea_fire", "command": "server.command", "args": {"command": "setblock 2 201 4 minecraft:redstone_block"}}
+{"id": "sea_tea_wait", "command": "wait", "args": {"ticks": 20}}
+{"id": "sea_tea_result", "command": "server.command", "args": {"command": "execute if items block 2 200 3 container.* bountifulfares:green_tea_bottle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "craftGone", "command": "server.command", "args": {"command": "fill -1 200 3 3 201 4 minecraft:air"}}
+
+// Drinking, from thirst 4 and quenched 0: a Pure water cup is plain water, 6 and 4 with no cut, and green
+// tea 6 and 4. Read the tooltips by hand: the water cup's says Pure.
+{"id": "drink_water_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_water_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_water_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:water_cup[thirstwastaken2:water_purity=3,thirstwastaken2:water_salty=false]"}}
+{"id": "drink_water_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_water_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_water_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_water_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_water_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 4}}
+{"id": "drink_tea_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_tea_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_tea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with bountifulfares:green_tea_bottle"}}
+{"id": "drink_tea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_tea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_tea_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_state", "command": "client.state", "expect": {"result.thirst": 10, "result.quenched": 4}}
+
+{"id": "done", "command": "client.state"}

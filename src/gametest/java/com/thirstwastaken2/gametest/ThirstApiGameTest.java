@@ -456,6 +456,40 @@ public final class ThirstApiGameTest {
         helper.succeed();
     }
 
+    /** Bountiful Fares is never installed here either; see the Kaleidoscope Cookery test above. */
+    @GameTest
+    public void bountifulFaresValuesAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String mod = "bountifulfares:";
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get(mod + "green_tea_bottle"), new int[]{6, 4}),
+                "a tea should restore what every other mod's tea does");
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get(mod + "elderberry_wine_bottle"), new int[]{3, 1}),
+                "a wine should restore what Brewin' and Chewin's do");
+        TestFixtures.check(helper, Arrays.equals(defaults.foods.get(mod + "plum_compote_jar"), new int[]{3, 2}),
+                "a compote should be half a bowl, 3, 2");
+        for (String none : new String[]{"jar", "candy", "maize_bread", "pickled_beetroot", "citrus_essence"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey(mod + none) && !defaults.drinks.containsKey(mod + none),
+                    mod + none + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            config.drinks.remove(mod + "mead_bottle");
+            config.foods.remove(mod + "leek_stew");
+            // A player's own value, which merging must leave alone.
+            config.drinks.put(mod + "black_tea_bottle", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get(mod + "mead_bottle"), new int[]{5, 2}),
+                    "mead_bottle should be merged back, got " + Arrays.toString(config.drinks.get(mod + "mead_bottle")));
+            TestFixtures.check(helper, Arrays.equals(config.foods.get(mod + "leek_stew"), new int[]{6, 4}),
+                    "leek_stew should be merged back, got " + Arrays.toString(config.foods.get(mod + "leek_stew")));
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get(mod + "black_tea_bottle"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get(mod + "black_tea_bottle")));
+        });
+        helper.succeed();
+    }
+
     /** Hearth and Harvest is never installed here either; see the Kaleidoscope Cookery test above. */
     @GameTest
     public void hearthAndHarvestDrinksAreMergedIntoAnOlderConfig(GameTestHelper helper) {

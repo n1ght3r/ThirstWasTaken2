@@ -428,6 +428,9 @@ public final class ThirstConfig {
         // And for Kaleidoscope Tavern, added after that.
         kaleidoscopeTavernDrinks(drinks);
         kaleidoscopeTavernFoods(foods);
+        // And for Bountiful Fares, added after that.
+        bountifulFaresDrinks(drinks);
+        bountifulFaresFoods(foods);
         clampValues(drinks);
         clampValues(foods);
         if (itemBlacklist == null) itemBlacklist = new LinkedHashSet<>();
@@ -610,6 +613,7 @@ public final class ThirstConfig {
         extraDelightDrinks(values);
         kaleidoscopeChineseFoodDrinks(values);
         kaleidoscopeTavernDrinks(values);
+        bountifulFaresDrinks(values);
         return values;
     }
 
@@ -650,6 +654,7 @@ public final class ThirstConfig {
         extraDelightFoods(values);
         kaleidoscopeChineseFoodFoods(values);
         kaleidoscopeTavernFoods(values);
+        bountifulFaresFoods(values);
         return values;
     }
 
@@ -1124,6 +1129,50 @@ public final class ThirstConfig {
     private static void kaleidoscopeTavernFoods(Map<String, int[]> foods) {
         putMissing(foods, 2, 0, "kaleidoscope_tavern:grape", "kaleidoscope_tavern:ice_grape",
                 "kaleidoscope_tavern:gold_grape", "kaleidoscope_tavern:green_grape");
+    }
+
+    /**
+     * Bountiful Fares' drinks, by id alone like the other mods'. One mod id on both loaders, and only its
+     * 1.21.1 builds are still updated; an id another build lacks is never matched. Its cups and bottles
+     * are each one drink, a bottle of water's size: the teas every other mod's tea, the ciders Farmer's
+     * Delight's apple cider, mead, wine and coconut milk Brewin' and Chewin's mead and wine and a bottle of
+     * milk. Fermented drinks are safe whatever water went into the vessel, as tea is; sea water ferments
+     * nothing (see {@code src/main/bountifulfares}). The maple mead is registered under No Man's Land's
+     * namespace, and only with it. The water cup is plain water and restores {@link #plainWaterValue}; its
+     * entry only lets the item be found, as {@code minecraft:potion}'s does.
+     */
+    private static void bountifulFaresDrinks(Map<String, int[]> drinks) {
+        String mod = "bountifulfares:";
+        putMissing(drinks, 6, 4, mod + "water_cup");
+        for (String tea : new String[]{"green", "black", "chamomile", "honeysuckle", "bellflower", "torchflower"}) {
+            putMissing(drinks, 6, 4, mod + tea + "_tea_bottle");
+        }
+        putMissing(drinks, 6, 4, mod + "apple_cider_jar", mod + "hoary_cider_jar", mod + "plum_cider_jar");
+        putMissing(drinks, 5, 2, mod + "mead_bottle", "nomansland:maple_mead_bottle");
+        putMissing(drinks, 3, 1, mod + "elderberry_wine_bottle", mod + "lapisberry_wine_bottle");
+        putMissing(drinks, 4, 0, mod + "coconut_milk_bottle");
+    }
+
+    /**
+     * Bountiful Fares' stews, salads, compotes and fruit; see {@link #bountifulFaresDrinks}. A stew is every
+     * other mod's, a medley Farmer's Delight's mixed salad, a compote half a bowl, as Miner's Delight's
+     * cups are. Its tree fruit is an apple, the spongekin slice a melon slice, the berries a sweet berry.
+     * Candies, breads, cookies, stuffed potatoes, the chows and pickles are solid food and left out.
+     */
+    private static void bountifulFaresFoods(Map<String, int[]> foods) {
+        String mod = "bountifulfares:";
+        for (String stew : new String[]{"apple", "bountiful", "coconut", "fish", "leek", "stone", "dirt"}) {
+            putMissing(foods, 6, 4, mod + stew + "_stew");
+        }
+        for (String medley : new String[]{"arid", "coastal", "forest", "meadow", "mire", "tropical"}) {
+            putMissing(foods, 2, 0, mod + medley + "_medley");
+        }
+        putMissing(foods, 2, 0, mod + "sea_salad");
+        for (String fruit : new String[]{"apple", "hoary", "lemon", "orange", "plum"}) {
+            putMissing(foods, 3, 2, mod + fruit + "_compote_jar");
+        }
+        putMissing(foods, 2, 0, mod + "orange", mod + "lemon", mod + "plum", mod + "hoary_apple", mod + "passion_fruit", mod + "spongekin_slice");
+        putMissing(foods, 1, 0, mod + "elderberries", mod + "lapisberries");
     }
 
     /**

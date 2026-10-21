@@ -72,6 +72,11 @@ export const INTEGRATIONS: Mod[] = [
     link: '/docs/integrations/no-mans-land'
   },
   {
+    name: 'Bountiful Fares',
+    icon: 'https://cdn.modrinth.com/data/YgrSDjlb/f4e10611dcc1791138225224fa444f5a8ef4348f_96.webp',
+    link: '/docs/integrations/bountiful-fares'
+  },
+  {
     name: 'Croptopia',
     icon: 'https://media.forgecdn.net/avatars/thumbnails/308/636/64/64/637392485303151332.png',
     link: '/docs/integrations/croptopia'

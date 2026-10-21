@@ -435,6 +435,17 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.immersiveengineeringforge.mixins.json",
         neoForgeDependencies = listOf("immersiveengineering"),
     ),
+    // Both loaders: everything it touches is in the mod's common module, which names neither. Only the two
+    // 1.21.1 nodes set the key, since its 1.20.x lines stopped in 2024 and it has no newer build. Its mixins
+    // name the cup, the Fermentation Vessel and Minecraft's two crafting recipes.
+    // See src/main/bountifulfares/AGENTS.md.
+    Integration(
+        dir = "bountifulfares",
+        depsKey = "deps.bountiful_fares",
+        loaders = setOf(Loader.FABRIC, Loader.NEOFORGE),
+        mixinConfig = "thirstwastaken2.bountifulfares.mixins.json",
+        neoForgeDependencies = listOf("bountifulfares"),
+    ),
 )
 
 /**

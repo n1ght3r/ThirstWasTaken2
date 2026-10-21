@@ -192,6 +192,14 @@ deps.trinkets = "JagCscwi"
 # Moonlight Lib, pinned above for Supplementaries. See src/main/spelunkery/AGENTS.md.
 # 1.21.1-0.4.4, the Fabric upload.
 deps.spelunkery = "V5n3AoVN"
+# Bountiful Fares, whose cup scoops water like a bottle and whose Fermentation Vessel takes no sea
+# water. Both 1.21.1 nodes build it, and only they: no newer build, and the 1.20.x lines stopped in
+# 2024. Pinned by Modrinth version id, since the Fabric and NeoForge uploads share a version number, as
+# do NexusLib's, which it requires, only on the runClient classpath. See src/main/bountifulfares/AGENTS.md.
+# 3.0.13, the Fabric upload.
+deps.bountiful_fares = "7SStqCZU"
+# 1.2.0, the Fabric upload.
+deps.nexuslib = "15AB8yjE"
 # Architectury API, which every Let's Do mod requires, only on the runClient classpath.
 # 13.0.11+fabric, the Fabric upload.
 deps.architectury = "Pzc2FP5K"
@@ -280,6 +288,11 @@ deps.curios = "yohfFbgD"
 # Spelunkery, the same integration the Fabric table builds; see there.
 # 1.21.1-0.4.4, the NeoForge upload.
 deps.spelunkery = "rFDQXIT4"
+# Bountiful Fares and NexusLib, the same integration the Fabric table builds; see there.
+# 3.0.13, the NeoForge upload.
+deps.bountiful_fares = "w8uM2PS4"
+# 1.2.0, the NeoForge upload.
+deps.nexuslib = "KZh9Z9Sd"
 # 13.0.11+neoforge, the NeoForge upload.
 deps.architectury = "1IiqEQGl"
 # Cold Sweat, whose temperature drives the thirst drain and whose waterskin carries a grade. NeoForge

@@ -155,6 +155,12 @@ val supplementariesVersion = findProperty("deps.supplementaries") as String?
 val spelunkeryVersion = findProperty("deps.spelunkery") as String?
 
 /**
+ * Bountiful Fares' Modrinth version id, and the NexusLib it requires, on `1.21.1-neoforge` only.
+ * See docs/dev/integration/cooking/BOUNTIFUL-FARES-INTEGRATION.md.
+ */
+val bountifulFaresVersion = findProperty("deps.bountiful_fares") as String?
+
+/**
  * Kaleidoscope Cookery's Modrinth version id, set on `1.21.1-neoforge` and nowhere else: the official
  * mod has no NeoForge build past 1.21.1. See docs/dev/integration/cooking/KALEIDOSCOPE-COOKERY-INTEGRATION.md.
  */
@@ -371,6 +377,15 @@ dependencies {
         // nothing of the mod, so nothing is compiled against it. Off by default, see Supplementaries.
         // runClientMod(listOf("spelunkery", "moonlight"), "maven.modrinth:spelunkery:$spelunkeryVersion") { isTransitive = false }
         optionalRunMods.include(listOf("spelunkery", "moonlight"))
+    }
+
+    if (bountifulFaresVersion != null) {
+        compileOnly("maven.modrinth:bountiful-fares:$bountifulFaresVersion") { isTransitive = false }
+        // In runClient only, with NexusLib; off by default, for the reason build.gradle.kts gives.
+        val names = listOf("bountiful-fares", "bountifulfares", "nexuslib")
+        // runClientMod(names, "maven.modrinth:bountiful-fares:$bountifulFaresVersion") { isTransitive = false }
+        // runClientMod(names, "maven.modrinth:nexuslib:${property("deps.nexuslib")}") { isTransitive = false }
+        optionalRunMods.include(names)
     }
 
     // Moonlight Lib, which Supplementaries and Spelunkery both require, once for both. Leaving it out

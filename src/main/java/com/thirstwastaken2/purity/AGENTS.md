@@ -120,7 +120,8 @@ checks all three implementations against one set of assertions, in millibuckets.
 - **`INFO` caches forever.** Only put facts in it that cannot change at runtime. Config-dependent
   purity is stored as the sentinel `PURITY_FROM_CONFIG` (`-1`) and resolved on each call.
 - **Optional mod support is by registry id only.** `resolve` matches namespaces (currently
-  `farmersdelight`, `cold_sweat` and Miner's Delight's two, `minersdelight` and `miners_delight`) as strings - no class is ever referenced, so no such mod is a dependency. Add support by
+  `farmersdelight`, `cold_sweat`, Miner's Delight's two, `minersdelight` and `miners_delight`, and
+  `bountifulfares`) as strings - no class is ever referenced, so no such mod is a dependency. Add support by
   extending `resolve`, not by importing anything.
 - **The sickness tables, by difficulty.** `applyEffects` hands fresh water to `effect/WaterSickness`
   and always returns true: every fresh drink quenches, the illness is the price. `WaterSickness` gives
