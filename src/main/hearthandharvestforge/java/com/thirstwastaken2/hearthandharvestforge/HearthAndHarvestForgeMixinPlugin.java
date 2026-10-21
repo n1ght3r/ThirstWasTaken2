@@ -26,10 +26,26 @@ public final class HearthAndHarvestForgeMixinPlugin implements IMixinConfigPlugi
     private static final Logger LOGGER = LoggerFactory.getLogger("thirstwastaken2");
     /** A class every 1.20.1 build of Hearth and Harvest has. */
     private static final String MARKER = "alabaster/hearthandharvest/HearthAndHarvest.class";
-    /** The method each target must still declare, by its name in the jar. */
-    private static final Map<String, String> NEEDS = Map.of(
-            "vectorwing.farmersdelight.common.crafting.CookingPotRecipe", "matches",
-            "alabaster.hearthandharvest.common.block.JugBlock", "lambda$use$0");
+    private static final String PACKAGE = "alabaster.hearthandharvest.common.";
+    /**
+     * The method each target must still declare, by its name in the jar. Each is the mod's own, which keeps
+     * its name under SRG, or a lambda's; a Minecraft method a mixin also injects into (the Sink's
+     * {@code tick}, the jug item's {@code use}) is an SRG name in the jar and comes with the class. 1.0.12c
+     * has only the Jug's lambda; 1.4.1, the 1.21.1 mod ported back, has the rest.
+     */
+    private static final Map<String, String> NEEDS = Map.ofEntries(
+            Map.entry("vectorwing.farmersdelight.common.crafting.CookingPotRecipe", "matches"),
+            Map.entry(PACKAGE + "block.JugBlock", "lambda$use$0"),
+            Map.entry(PACKAGE + "fluid.HHFluidHandling", "testFilling"),
+            Map.entry(PACKAGE + "block.BasinBlock", "hhUseItemOn"),
+            Map.entry(PACKAGE + "block.SprinklerBlock", "hhUseItemOn"),
+            Map.entry(PACKAGE + "item.JugBlockItem", "pickUpSource"),
+            Map.entry(PACKAGE + "block.entity.TroughBlockEntity", "serverTick"),
+            Map.entry(PACKAGE + "block.entity.SprinklerBlockEntity", "refill"),
+            Map.entry(PACKAGE + "block.entity.KegBlockEntity", "transfer"),
+            Map.entry(PACKAGE + "crafting.StompingBasinRecipe", "getResultFluid"));
+    /** 1.0.12c's alone: missing on 1.4.1 on, where the placed Jug goes through {@code HHFluidHandling}, so not logged. */
+    private static final String OLD_JUG = PACKAGE + "block.JugBlock";
 
     @Override
     public void onLoad(String mixinPackage) { }
@@ -58,7 +74,7 @@ public final class HearthAndHarvestForgeMixinPlugin implements IMixinConfigPlugi
                     return null;
                 }
             }, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-            if (!found[0]) {
+            if (!found[0] && !targetClassName.equals(OLD_JUG)) {
                 LOGGER.warn("{} has no {}, so it is not a version ThirstWasTaken2 supports; "
                         + "its water may lose its grade there", targetClassName, method);
             }

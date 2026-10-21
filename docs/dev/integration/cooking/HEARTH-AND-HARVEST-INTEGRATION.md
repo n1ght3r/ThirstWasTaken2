@@ -20,8 +20,8 @@ Written on 2026-10-03 from:
 
 | Node | Build | Modrinth id | Requires on `runClient` |
 |---|---|---|---|
-| `1.21.1-neoforge` | `1.4.0` (2026-10-13; written against 1.3.4, `7nTyt27O`) | `QhKYKLA5` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
-| `1.20.1-forge` | `1.0.12c` (2026-09-14) | `Lc4WN5U1` | Farmer's Delight `[1.3.0,)`, as above |
+| `1.21.1-neoforge` | `1.4.1` (written against 1.3.4, `7nTyt27O`; checked against 1.4.0 and 1.4.1) | `UBbTTDy4` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
+| `1.20.1-forge` | `1.4.1` (the 1.21.1 mod ported back; 1.0.12c, `Lc4WN5U1`, still covered; see [What 1.4.1 changes](#what-141-changes-done-2026-10-21)) | `gXBx9V0K` | Farmer's Delight `[1.3.0,)`, as above |
 | every other node | none | — | — |
 
 There is **no Fabric build and nothing newer than 1.21.1**. Both lines are still updated, so both get
@@ -363,6 +363,32 @@ Checked against the released jar. Every target the existing mixins inject into i
   ids, so either build of the mod gets it.
 - **Drinks**: `goat_milk_bucket` (drinkable, a milk bucket's 4, 0) and `beer` (5, 2, as mead). Brine is
   an ingredient, not a drink.
+
+## What 1.4.1 changes (done, 2026-10-21)
+
+Read from the released jars when the dependency PR moved both nodes to 1.4.1.
+
+**Both nodes: the Keg ferments drinks from water.** Mead, beer, moonshine and root beer have fermented in
+the Keg from `minecraft:water` since 1.4.0, matched by fluid alone, so sea water fermented into a drink;
+the Cask now only ages finished drinks. `KegBlockEntityMixin` wraps `KegRecipe.matchesFluid` in
+`findRecipe`: sea water matches only a recipe whose result is brine, which is salt water anyway. The
+Cask mixin stays on 1.21.1 for 1.3.4, where the cask still took water.
+
+**1.21.1-neoforge: otherwise unchanged.** Every other method the plugin asks for is there. A wine bottle
+now holds 4 glasses (`WineBottleItem`, the `SERVINGS` component), drunk one at a time; the drink hook runs
+on each `finishUsingItem`, so 3, 1 is per glass, as for Brewin' and Chewin's glasses. Left as is.
+
+**1.20.1-forge: ported.** 1.4.1 is the 1.21.1 mod ported back to 1.20.1 (its 1.4.0 changelog says so),
+a different mod from 1.0.12c. `JugBlock` lost `lambda$use$0`, the salt recipe moved to
+`hearthandharvest:cooking/salt_from_bottle` with an exact-NBT ingredient, and the Sink, Trough,
+Sprinkler, Keg, Stomping Basin and jug item arrived with the holes the 1.21.1 mixins close. So
+`hearthandharvestforge` now carries those mixins on Forge's fluid API; its AGENTS.md lists where they
+differ (`hhUseItemOn`, SRG names, the salt recipe). 1.0.12c keeps its Jug and salt mixins. `onion_soup`
+is 1.0.12c's alone.
+
+Checked in game on 2026-10-21: `tools/agent/integrations/hearth-and-harvest-1.20.1.jsonl` passed whole on
+`1.20.1-forge` with 1.4.1 (213 requests), and `tools/agent/integrations/hearth-and-harvest.jsonl` on
+`1.21.1-neoforge`, both with a Keg check in place of the Cask one.
 
 ## Not planned
 

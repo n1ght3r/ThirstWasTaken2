@@ -248,9 +248,12 @@ dependencies {
         // Keeps `-PwithoutOptional=fruits-delight` in the agent scripts a known name while the lines above are off.
         optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
-    // Hearth and Harvest: nothing of its 1.20.1 build needs code, only its drinks by id and the salt
-    // recipe ours overrides, so nothing compiles against it. Only here to test them.
+    // Hearth and Harvest: from 1.4.1 its 1.20.1 build is the 1.21.1 mod ported back, whose tanks are
+    // mixed into, in SRG names, so remapped. Its Keg extends a Farmer's Delight class, so that is
+    // compiled against too. See src/main/hearthandharvestforge/AGENTS.md.
     findProperty("deps.hearth_and_harvest")?.let {
+        modCompileOnly("maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
+        modCompileOnly("maven.modrinth:farmers-delight:${property("deps.farmersdelight")}") { isTransitive = false }
         runClientMod(listOf("hearth-and-harvest", "hearthandharvest", "farmers-delight", "farmersdelight"),
             "maven.modrinth:hearth-and-harvest:$it") { isTransitive = false }
     }

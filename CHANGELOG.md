@@ -2,6 +2,20 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Hearth and Harvest 1.4.1, on Forge 1.20.1:
+  - Jugs, Troughs, the Sprinkler, the Stomping Basin and the Keg keep the grade of the water poured in,
+    and the Sink gives Murky water, the same as on NeoForge 1.21.1.
+  - Only a bottle of sea water boils down to salt in a Cooking Pot.
+
+### Fixed
+
+- With Hearth and Harvest 1.4.0 or newer, sea water no longer ferments into mead, beer, moonshine or
+  root beer in the Keg. It still makes brine.
+
 ## [1.9.0] - 2026-10-15
 
 This release adds two late-game flasks and brings water grades to Mekanism, Immersive Engineering and

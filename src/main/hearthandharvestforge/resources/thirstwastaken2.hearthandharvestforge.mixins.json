@@ -4,8 +4,16 @@
   "plugin": "com.thirstwastaken2.hearthandharvestforge.HearthAndHarvestForgeMixinPlugin",
   "compatibilityLevel": "${java}",
   "mixins": [
+    "FluidHandlingMixin",
+    "JugBlockItemMixin",
     "JugBlockMixin",
-    "SaltFromSeaWaterMixin"
+    "KegBlockEntityMixin",
+    "SaltFromSeaWaterMixin",
+    "SinkBlockMixin",
+    "SprinklerBlockEntityMixin",
+    "SprinklerBlockMixin",
+    "StompingBasinRecipeMixin",
+    "TroughBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

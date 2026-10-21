@@ -24,7 +24,7 @@ public final class HearthAndHarvestMixinPlugin implements IMixinConfigPlugin {
             PACKAGE + "block.entity.TroughBlockEntity", List.of("serverTick"),
             // 1.4.0 on: the Sprinkler fills itself, and the Keg.
             PACKAGE + "block.entity.SprinklerBlockEntity", List.of("refill"),
-            PACKAGE + "block.entity.KegBlockEntity", List.of("transfer"),
+            PACKAGE + "block.entity.KegBlockEntity", List.of("transfer", "findRecipe"),
             PACKAGE + "block.entity.CaskBlockEntity", List.of("getMatchingRecipe"),
             PACKAGE + "crafting.StompingBasinRecipe", List.of("getResultFluid"));
 

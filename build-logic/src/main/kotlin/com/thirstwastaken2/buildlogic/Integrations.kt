@@ -376,8 +376,9 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.nomansland.mixins.json",
         neoForgeDependencies = listOf("nomansland"),
     ),
-    // Its 1.20.1 build on Forge 47, the early mod, has no tank that needs code; its one mixin makes the
-    // same salt recipe take only sea water, since on Forge the mod's own file wins over a replacement.
+    // Its 1.20.1 build on Forge 47: from 1.4.1 the 1.21.1 mod ported back, whose tanks get the same mixins
+    // as on NeoForge; the salt recipe is a mixin too, since on Forge the mod's own file wins over a
+    // replacement. 1.0.12c, the early mod, still gets its Jug and salt mixins.
     // See src/main/hearthandharvestforge/AGENTS.md.
     Integration(
         dir = "hearthandharvestforge",

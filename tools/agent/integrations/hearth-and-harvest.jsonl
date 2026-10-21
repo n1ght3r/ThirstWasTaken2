@@ -2,8 +2,8 @@
 // (docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md). What it proves: every id ThirstConfig
 // lists for the mod exists; the Sink gives Murky water, filled by itself or poured into, and refuses sea
 // water; a Trough keeps the grade poured in and refuses a second grade; a Sprinkler keeps a bucket's
-// grade; a Jug scooping the sea holds sea water; a wet sponge stomped gives Murky water; a Cask ages
-// mead from a plain bottle and not from a salty one; the Cooking Pot boils a Murky bottle Pure and a sea
+// grade; a Jug scooping the sea holds sea water; a wet sponge stomped gives Murky water; a Keg ferments
+// mead from Murky water and not from sea water; the Cooking Pot boils a Murky bottle Clean and a sea
 // water one into salt; and a juice and a wine restore what ThirstConfig says. Runs on 1.21.1-neoforge.
 // Run it unattended:
 //     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/hearth-and-harvest.jsonl -Pquickplay=HearthAgent -PwithoutOptional=cold-sweat
@@ -163,18 +163,22 @@
 {"id": "stomp_draw_murky", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:potion[thirstwastaken2:water_purity=1]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 {"id": "basinGone", "command": "server.command", "args": {"command": "setblock 3 199 3 minecraft:stone"}}
 
-// Two Casks on -3 200 4 and -5 200 4, each with mead's ingredients, one with a plain bottle and one with
-// a salty one. The plain cask starts ageing; the salty one never does.
-{"id": "caskPlain", "command": "server.command", "args": {"command": "setblock -3 200 4 hearthandharvest:cask"}}
-{"id": "caskSalty", "command": "server.command", "args": {"command": "setblock -5 200 4 hearthandharvest:cask"}}
-{"id": "caskPlainFill", "command": "server.command", "args": {"command": "data merge block -3 200 4 {Inventory:{Size:5,Items:[{Slot:0,id:\"minecraft:potion\",count:1,components:{\"minecraft:potion_contents\":{potion:\"minecraft:water\"},\"thirstwastaken2:water_purity\":1,\"thirstwastaken2:water_salty\":false}},{Slot:1,id:\"minecraft:honey_block\",count:1},{Slot:2,id:\"minecraft:sugar\",count:1}]}}"}}
-{"id": "caskSaltyFill", "command": "server.command", "args": {"command": "data merge block -5 200 4 {Inventory:{Size:5,Items:[{Slot:0,id:\"minecraft:potion\",count:1,components:{\"minecraft:potion_contents\":{potion:\"minecraft:water\"},\"thirstwastaken2:water_salty\":true}},{Slot:1,id:\"minecraft:honey_block\",count:1},{Slot:2,id:\"minecraft:sugar\",count:1}]}}"}}
-{"id": "caskAge", "command": "wait", "args": {"ticks": 60}}
-{"id": "caskPlainAgeing", "command": "server.command", "args": {"command": "execute if data block -3 200 4 {AgeTime:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
-{"id": "caskSaltyIdle", "command": "server.command", "args": {"command": "execute if data block -5 200 4 {AgeTime:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
-{"id": "casksGone", "command": "server.command", "args": {"command": "fill -5 200 4 -3 200 4 minecraft:air"}}
+// Two Kegs on -3 200 4 and -5 200 4, each with mead's honey bottle and sugar over a bottle's worth of
+// water, Murky in one and sea water in the other. The Murky keg starts fermenting; the salty one never
+// does. (From 1.4.0 mead ferments in the Keg; the Cask only ages finished drinks.)
+{"id": "kegPlain", "command": "server.command", "args": {"command": "setblock -3 200 4 hearthandharvest:keg"}}
+{"id": "kegSalty", "command": "server.command", "args": {"command": "setblock -5 200 4 hearthandharvest:keg"}}
+{"id": "kegsFormed", "command": "wait", "args": {"ticks": 10}}
+{"id": "kegPlainFill", "command": "server.command", "args": {"command": "data merge block -3 200 4 {InputTank:{Fluid:{id:\"minecraft:water\",amount:250,components:{\"thirstwastaken2:water_purity\":1,\"thirstwastaken2:water_salty\":false}}},Inventory:{Size:6,Items:[{Slot:0,id:\"minecraft:honey_bottle\",count:1},{Slot:1,id:\"minecraft:sugar\",count:1}]}}"}}
+{"id": "kegSaltyFill", "command": "server.command", "args": {"command": "data merge block -5 200 4 {InputTank:{Fluid:{id:\"minecraft:water\",amount:250,components:{\"thirstwastaken2:water_salty\":true}}},Inventory:{Size:6,Items:[{Slot:0,id:\"minecraft:honey_bottle\",count:1},{Slot:1,id:\"minecraft:sugar\",count:1}]}}"}}
+{"id": "kegFerment", "command": "wait", "args": {"ticks": 60}}
+{"id": "kegPlainAfter", "command": "server.command", "args": {"command": "data get block -3 200 4"}}
+{"id": "kegPlainFermenting", "command": "server.command", "args": {"command": "execute if data block -3 200 4 {FermentTime:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "kegSaltyAfter", "command": "server.command", "args": {"command": "data get block -5 200 4"}}
+{"id": "kegSaltyIdle", "command": "server.command", "args": {"command": "execute if data block -5 200 4 {FermentTime:0}"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kegsGone", "command": "server.command", "args": {"command": "fill -5 200 4 -3 200 4 minecraft:air"}}
 
-// Three Cooking Pots on lit campfires: a Murky bottle boils Pure, by our recipe and not into salt; a sea
+// Three Cooking Pots on lit campfires: a Murky bottle boils Clean, by our recipe and not into salt; a sea
 // water bottle boils into two salt, by the recipe that replaces Hearth and Harvest's; and a Pure bottle,
 // which Hearth and Harvest's own recipe would boil into salt, stays put, which shows ours replaced it.
 // Expanded Delight, on this client too, refuses sea water in the pot except for a recipe asking for it.
@@ -189,13 +193,13 @@
 {"id": "pure", "command": "server.command", "args": {"command": "data merge block 4 201 -3 {Inventory:{Size:9,Items:[{Slot:0b,id:\"minecraft:potion\",count:1,components:{\"minecraft:potion_contents\":{potion:\"minecraft:water\"},\"thirstwastaken2:water_purity\":3,\"thirstwastaken2:water_salty\":false}}]}}"}}
 {"id": "boil", "command": "wait", "args": {"ticks": 360}}
 {"id": "potAfter", "command": "server.command", "args": {"command": "data get block 0 201 -3 Inventory"}}
-{"id": "bottlePure", "command": "server.command", "args": {"command": "execute if data block 0 201 -3 Inventory.Items[{Slot:8,id:\"minecraft:potion\",components:{\"thirstwastaken2:water_purity\":3}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "bottleClean", "command": "server.command", "args": {"command": "execute if data block 0 201 -3 Inventory.Items[{Slot:8,id:\"minecraft:potion\",components:{\"thirstwastaken2:water_purity\":2}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 {"id": "saltAfter", "command": "server.command", "args": {"command": "data get block 2 201 -3 Inventory"}}
 {"id": "saltMade", "command": "server.command", "args": {"command": "execute if data block 2 201 -3 Inventory.Items[{Slot:8,id:\"hearthandharvest:salt\",count:2}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 {"id": "pureStays", "command": "server.command", "args": {"command": "execute if data block 4 201 -3 Inventory.Items[{Slot:0,components:{\"thirstwastaken2:water_purity\":3}}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
 {"id": "potsGone", "command": "server.command", "args": {"command": "fill 0 200 -3 4 201 -3 minecraft:air"}}
 
-// Drinking from thirst 4, quenched 0, looking up so nothing is placed: a juice restores 8, a wine 3.
+// Drinking from thirst 4, quenched 0, looking up so nothing is placed: a juice restores 6, a glass of wine 3.
 {"id": "drink_cherry_juice_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_cherry_juice_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -30"}}
 {"id": "drink_cherry_juice_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
@@ -204,7 +208,7 @@
 {"id": "drink_cherry_juice_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
 {"id": "drink_cherry_juice_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
 {"id": "drink_cherry_juice_done", "command": "wait", "args": {"ticks": 10}}
-{"id": "drink_cherry_juice_state", "command": "client.state", "expect": {"result.thirst": 12}}
+{"id": "drink_cherry_juice_state", "command": "client.state", "expect": {"result.thirst": 10}}
 {"id": "drink_red_grape_wine_clear", "command": "server.command", "args": {"command": "clear @p"}}
 {"id": "drink_red_grape_wine_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
 {"id": "drink_red_grape_wine_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with hearthandharvest:red_grape_wine"}}

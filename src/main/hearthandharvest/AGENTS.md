@@ -8,8 +8,9 @@ sea as fresh water; and the Cask aged sea water into mead. This directory fixes 
 and its decisions are in
 [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](../../../docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md).
 
-**Built on `1.21.1-neoforge` only**, against the mod's build 1.4.0 (written for 1.3.4, which still works). Its 1.20.1 build is the early mod and has
-its own directory, [`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md). What it does:
+**Built on `1.21.1-neoforge` only**, against the mod's build 1.4.1 (written for 1.3.4, which still works). Its 1.20.1 build, the
+same mod ported back from 1.4.1, has its own directory with the same mixins on Forge's fluid API,
+[`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md). What it does:
 
 - **a tank keeps the grade** poured into it: Dirty in, Dirty out; sea water in, sea water out. Two
   grades never share a tank, as in Create's and Sophisticated's tanks: a bottle of another grade is
@@ -20,7 +21,8 @@ its own directory, [`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md)
 - **a wet sponge stomped gives Murky water**, and **rain in a Trough is rainwater** (Clean by default);
 - **the Cask ages nothing from sea water**; fresh water of any grade still ages;
 - from 1.4.0, **the Sprinkler's own refill** is rainwater from rain and sampled from a source beside or
-  below it, and **the Keg's container slot** pours and draws with the grade, as the other tanks do.
+  below it, and **the Keg's container slot** pours and draws with the grade, as the other tanks do;
+- from 1.4.0, **the Keg ferments nothing but brine from sea water**, as the Cask aged nothing from it.
 
 The salt recipe is not here: `minecraft:salt_from_bottle`, Hearth and Harvest's Cooking Pot recipe, is
 replaced by a data file core's datagen writes for 1.21.1 (`FarmersDelightRecipeProvider`), which boils
@@ -43,7 +45,7 @@ hearthandharvest/java/com/thirstwastaken2/hearthandharvest/
   mixin/StompingBasinRecipeMixin  StompingBasinRecipe.getResultFluid: water (the sponge) is Murky
   mixin/CaskBlockEntityMixin      CaskBlockEntity.getMatchingRecipe: no recipe while a salty container is in
   mixin/SprinklerBlockEntityMixin SprinklerBlockEntity.refill (1.4.0): rain stamped as rainwater, a source sampled
-  mixin/KegBlockEntityMixin       KegBlockEntity.transfer (1.4.0): FluidUtil pour and draw with the grade
+  mixin/KegBlockEntityMixin       KegBlockEntity.transfer (1.4.0): FluidUtil pour and draw with the grade; findRecipe: sea water ferments only brine
 hearthandharvest/resources/
   thirstwastaken2.hearthandharvest.mixins.json
 ```
