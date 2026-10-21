@@ -127,9 +127,10 @@ DEPENDENCIES = {
     # Farm & Charm and Candlelight: their CurseForge slugs are unverified, so they are listed there by hand.
     "farm_and_charm": Dependency("lets-do-farm-charm", "HJetCzWo", None),
     "candlelight": Dependency("lets-do-candlelight-farmcharm-compat", "qwbArkQk", None),
-    # HerbalBrews and Beachparty, likewise listed by hand on CurseForge.
+    # HerbalBrews, Beachparty and Meadow, likewise listed by hand on CurseForge.
     "herbalbrews": Dependency("lets-do-herbalbrews", "Eh11TaTm", None),
     "beachparty": Dependency("lets-do-beachparty", "GyKzAh3l", None),
+    "meadow": Dependency("lets-do-meadow", "ra7o6Sl7", None),
 }
 # The same keys where a NeoForge or Forge node's dependency is a different project: Farmer's Delight
 # Refabricated and Kaleidoscope Cookery Refabricated are Fabric ports, and the other loaders use the originals.
