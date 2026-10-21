@@ -19,7 +19,7 @@ nodes. What it does there:
   salty; the teapot **brews nothing from it**, since tea brewed from it would come out safe;
 - and **Jade** names the grade under the crosshair.
 
-The drink and soup values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and soup values are not here. They are ids in `config/itemvalues/KaleidoscopeItemValues`, common code that names no class
 of the mod, so they reach every node, including those that do not compile this directory and a player
 on the unsupported official Fabric build.
 

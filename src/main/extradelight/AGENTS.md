@@ -20,7 +20,7 @@ fresh water did. This directory fixes that. The plan and its decisions are in
 - **sea water makes nothing** in the Vat or the Mixing Bowl, and crafts no Vinegar Pot or Yeast Pot;
 - **the Evaporator dries only sea water**, into salt, over about eight minutes; fresh water stands in it untouched.
 
-The drink and food values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and food values are not here. They are ids in `config/itemvalues/FarmersDelightAddonItemValues`, common code that names no class
 of the mod.
 
 ```

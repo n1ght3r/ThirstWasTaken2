@@ -25,7 +25,7 @@ against. What it does:
   stack matches no ingredient, so sea water cooks nothing. Fresh water of any grade still cooks; what
   comes out is its own item, as tea is.
 
-The drink and food values are not here. They are ids in `ThirstConfig` (`farmAndCharmDrinks`,
+The drink and food values are not here. They are ids in `config/itemvalues/LetsDoItemValues` (`farmAndCharmDrinks`,
 `farmAndCharmFoods`, `candlelightFoods`), common code that names no class of either mod.
 
 ```

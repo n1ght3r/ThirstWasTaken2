@@ -13,7 +13,7 @@ its decisions are
 
 The rest is not here, because it names no class of the mod and ships on every node:
 
-- **Drinks and foods**: ids in `ThirstConfig` (`noMansLandDrinks`, `noMansLandFoods`). The mod tags
+- **Drinks and foods**: ids in `config/itemvalues/OtherModItemValues` (`noMansLandDrinks`, `noMansLandFoods`). The mod tags
   three of them `c:drinks`; the explicit entries win over the tag.
 - **Swamps**: Bog, Bayou, Dark Swamp and Blackwater River are optional entries in
   `thirstwastaken2:stagnant_water`, from `ThirstBiomeTagProvider` in `src/datagen`, as Terralith's are.

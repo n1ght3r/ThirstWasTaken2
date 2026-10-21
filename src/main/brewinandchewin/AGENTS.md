@@ -21,7 +21,7 @@ loaders, for 1.21.1 only. What it does there:
 - **a broken keg** keeps its water's grade in the item;
 - **with Jade**, looking at a keg of water shows its grade.
 
-The drink and soup values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and soup values are not here. They are ids in `config/itemvalues/FarmersDelightAddonItemValues`, common code that names no class
 of the mod, so they reach every node.
 
 ## Which build

@@ -82,7 +82,7 @@ it), and every drink of the mod restores nothing.
    tea is not refused for Dirty water either.
 6. **The dispenser stays as vanilla's is.** Core does not stamp a bottle a dispenser fills; a cup filled
    there is unstamped the same way. Closing that is a core change for both, not this integration.
-7. **Values**, by id in `ThirstConfig`, on the scales already used:
+7. **Values**, by id in `config/itemvalues/OtherModItemValues`, on the scales already used:
    - teas 6, 4 (every other mod's tea); ciders 6, 4 (Farmer's Delight's apple cider);
    - mead and maple mead 5, 2, wines 3, 1 (Brewin' and Chewin's); coconut milk 4, 0 (milk);
    - compotes 3, 2 (half a bowl, Miner's Delight's cups);

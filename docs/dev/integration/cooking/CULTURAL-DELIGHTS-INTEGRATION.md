@@ -79,7 +79,7 @@ brewed in the vat, hence the lower value.
 ## Status
 
 **Scope, decided 2026-09-26: NeoForge only.** The Fabric port has not been updated since 0.17.7 and has
-no vat and no drinks, so no Fabric node builds or runs it. The ids in `ThirstConfig` are common code
+no vat and no drinks, so no Fabric node builds or runs it. The ids in `config/itemvalues/FarmersDelightAddonItemValues` are common code
 and still match the port's foods where a player installs it; nothing else reaches Fabric.
 
 | # | Item | Kind | Nodes | Status |
@@ -105,7 +105,7 @@ and still match the port's foods where a player installs it; nothing else reache
 
 ## 2. Thirst values (done)
 
-`culturalDelightsDrinks` and `culturalDelightsFoods` in `ThirstConfig`, the table above as proposed,
+`culturalDelightsDrinks` and `culturalDelightsFoods` in `config/itemvalues/FarmersDelightAddonItemValues`, the table above as proposed,
 merged into an older config with `putMissing`. The spirits, acid and vinegar are listed as zero, which
 the lookup treats as "restores nothing" ahead of any tag. `culturalDelightsDrinksAreMergedIntoAnOlderConfig`
 checks the defaults, the zeros, that pickles are left out, and that a merge keeps a player's value.

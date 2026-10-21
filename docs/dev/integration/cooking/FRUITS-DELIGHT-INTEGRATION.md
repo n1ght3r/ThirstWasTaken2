@@ -109,7 +109,7 @@ the integration table; still no `compileOnly`, since its mixins name their targe
 
 ## 2. Thirst values (done)
 
-`fruitsDelightDrinks` and `fruitsDelightFoods` in `ThirstConfig`, the table above, merged with
+`fruitsDelightDrinks` and `fruitsDelightFoods` in `config/itemvalues/FarmersDelightAddonItemValues`, the table above, merged with
 `putMissing`. `fruitsDelightDrinksAreMergedIntoAnOlderConfig` checks the defaults, that jam and the dry
 foods are left out, and that a merge keeps a player's value. `runGametest` passes (183) on `1.21.1` and
 `1.21.1-neoforge`.

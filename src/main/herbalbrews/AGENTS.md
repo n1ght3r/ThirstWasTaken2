@@ -13,7 +13,7 @@ placed Jug. The plan and its decisions are
 - **Jug**: drinking a placed jug drinks each tea or coffee in it as the item it was, so three cups from
   a jug restore what three cups from the hand do.
 
-The drink values are not here. They are ids in `ThirstConfig` (`herbalBrewsDrinks`), common code that
+The drink values are not here. They are ids in `config/itemvalues/LetsDoItemValues` (`herbalBrewsDrinks`), common code that
 names no class of the mod.
 
 ```

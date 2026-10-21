@@ -106,7 +106,7 @@ crashed NeoForge on Farm & Charm's missing dependency; the boot smoke found it.
 
 ## 2. Thirst values (done)
 
-`farmAndCharmDrinks` and `farmAndCharmFoods` in `ThirstConfig`, the table above, merged with
+`farmAndCharmDrinks` and `farmAndCharmFoods` in `config/itemvalues/LetsDoItemValues`, the table above, merged with
 `putMissing`. `farmAndCharmDrinksAreMergedIntoAnOlderConfig` checks them and Candlelight's together.
 `runGametest` passes (196) on `1.21.1` and `1.21.1-neoforge`.
 

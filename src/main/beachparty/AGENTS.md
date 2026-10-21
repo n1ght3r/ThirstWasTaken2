@@ -11,7 +11,7 @@ any other; placed, one glass is sipped three times. The plan and its decision ar
 - **Placed cocktail**: each of the three sips restores a third of what the glass restores drunk from
   the hand, rounded, at least one point of thirst.
 
-The cocktail and coconut values are not here. They are ids in `ThirstConfig` (`beachpartyDrinks`,
+The cocktail and coconut values are not here. They are ids in `config/itemvalues/LetsDoItemValues` (`beachpartyDrinks`,
 `beachpartyFoods`), common code that names no class of the mod. Beachparty has no water container to
 grade: its Mini Fridge freezes water into ice, which keeps no grade and melts into water sampled where
 it lies.

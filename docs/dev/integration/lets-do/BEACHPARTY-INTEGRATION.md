@@ -74,7 +74,7 @@ Charm is left out. `-PwithoutOptional=beachparty` leaves it out.
 
 ## 2. Thirst values
 
-`beachpartyDrinks` and `beachpartyFoods` in `ThirstConfig`, merged with `putMissing`, and checked by a
+`beachpartyDrinks` and `beachpartyFoods` in `config/itemvalues/LetsDoItemValues`, merged with `putMissing`, and checked by a
 gametest beside Farm & Charm's.
 
 ## 3. Decision: sipping a placed cocktail

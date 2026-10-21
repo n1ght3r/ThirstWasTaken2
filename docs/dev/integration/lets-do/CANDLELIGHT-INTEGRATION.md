@@ -103,7 +103,7 @@ though it was built against `1.1.20`.
 
 ## 2. Thirst values (done)
 
-`candlelightFoods` in `ThirstConfig`, checked by `farmAndCharmDrinksAreMergedIntoAnOlderConfig` beside
+`candlelightFoods` in `config/itemvalues/LetsDoItemValues`, checked by `farmAndCharmDrinksAreMergedIntoAnOlderConfig` beside
 Farm & Charm's. `fresh_garden_salad` is eaten from the hand like the others: from thirst 4 it lands on 8.
 
 ## 3. Investigation (done)

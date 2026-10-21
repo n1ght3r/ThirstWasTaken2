@@ -147,6 +147,58 @@ public final class SicknessEffect {
         return new SicknessEffect(UPSET_STOMACH, chance, seconds, level, ILLNESS);
     }
 
+    /**
+     * Rebuilds the sickness tables in their fixed order: a difficulty or grade missing from the
+     * file gets its default lines, while one present and empty stays empty, since that is how a player
+     * takes every effect off it. A line with no effect id is dropped and the numbers are clamped. An id
+     * nothing registers is kept, for a mod that may be installed later, and skipped when drinking.
+     */
+    static Map<String, Map<String, List<SicknessEffect>>> sanitize(
+            Map<String, Map<String, List<SicknessEffect>>> tables) {
+        Map<String, Map<String, List<SicknessEffect>>> clean = new LinkedHashMap<>();
+        for (String difficulty : DIFFICULTIES) {
+            Map<String, List<SicknessEffect>> grades = tables == null ? null : tables.get(difficulty);
+            Map<String, List<SicknessEffect>> cleanGrades = new LinkedHashMap<>();
+            for (String grade : GRADES) {
+                List<SicknessEffect> lines = grades == null ? null : grades.get(grade);
+                if (lines == null) {
+                    cleanGrades.put(grade, defaults(difficulty, grade));
+                    continue;
+                }
+                List<SicknessEffect> cleanLines = new ArrayList<>();
+                for (SicknessEffect line : lines) {
+                    if (line == null || line.effect == null || line.effect.isBlank()) continue;
+                    String group = line.group == null || line.group.isBlank() ? null : line.group.trim();
+                    cleanLines.add(new SicknessEffect(line.effect.trim().toLowerCase(Locale.ROOT),
+                            clamp(line.chance, 0, 100), clamp(line.seconds, 1, MAX_SECONDS),
+                            clamp(line.level, 1, MAX_LEVEL), group));
+                }
+                nestPoisonInUpsetStomach(cleanLines);
+                cleanGrades.put(grade, cleanLines);
+            }
+            clean.put(difficulty, cleanGrades);
+        }
+        return clean;
+    }
+
+    /**
+     * Holds a Poison line to no more than the chance of the Upset Stomach line it shares a roll with, so
+     * a shared roll can never give Poison without Upset Stomach. Lines that roll on their own are left
+     * as they are: a pack that splits them apart has asked for independent chances.
+     */
+    private static void nestPoisonInUpsetStomach(List<SicknessEffect> lines) {
+        for (SicknessEffect poison : lines) {
+            if (poison.group == null || !POISON.equals(poison.effect)) continue;
+            for (SicknessEffect upset : lines) {
+                if (poison.group.equals(upset.group) && UPSET_STOMACH.equals(upset.effect)) {
+                    poison.chance = Math.min(poison.chance, upset.chance);
+                }
+            }
+        }
+    }
+
+    private static int clamp(int value, int min, int max) { return Math.max(min, Math.min(max, value)); }
+
     private static SicknessEffect poison(int chance, int seconds) {
         return new SicknessEffect(POISON, chance, seconds, 1, ILLNESS);
     }

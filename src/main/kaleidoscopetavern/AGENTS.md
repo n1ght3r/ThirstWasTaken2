@@ -23,7 +23,7 @@ What it does there:
 - **the shaker refuses a sea-water bottle**; fresh water of any grade goes in;
 - and **Jade** names the barrel's grade from any of its blocks.
 
-The drink values are not here. They are ids in `ThirstConfig`, common code that names no class of the
+The drink values are not here. They are ids in `config/itemvalues/KaleidoscopeItemValues`, common code that names no class of the
 mod, so they reach every node. Fermented drinks and cocktails carry no grade and are safe whatever fresh
 water went in, as Brewin' and Chewin's are.
 

@@ -15,7 +15,7 @@ still to do are in
 - **fresh water of any grade brews** into ordinary drinks with no grade, as Brewin' and Chewin's keg
   does: the drink is its own item.
 
-The drink and food values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and food values are not here. They are ids in `config/itemvalues/FarmersDelightAddonItemValues`, common code that names no class
 of the mod, so they reach every node, the Fabric port's foods included.
 
 ## Which build

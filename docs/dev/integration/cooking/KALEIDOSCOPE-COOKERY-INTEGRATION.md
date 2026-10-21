@@ -213,7 +213,7 @@ dishes, `dough_drop_soup`, `four_joy_meatball_soup`, `spicy_blood_stew` and
 `kaleidoscopeCookeryTeasAndSoupsAreMergedIntoAnOlderConfig` checks the defaults and the merge; drinking
 one tea in a dev client is still to do.
 
-Like Farmer's Delight: entries in `ThirstConfig.defaultDrinks()` / `defaultFoods()`, plus
+Like Farmer's Delight: entries in `config/itemvalues/KaleidoscopeItemValues`, plus
 `putIfAbsent` in `sanitize()` so existing config files pick them up. It is common code and the item ids
 are the same on both builds (same mod id), so this reaches **every** node, including a node with no
 integration and a player on the official Fabric 1.0.1. An id that does not exist is never matched.

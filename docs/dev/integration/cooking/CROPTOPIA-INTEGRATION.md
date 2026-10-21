@@ -105,7 +105,7 @@ worldgen slow every client start. `-PwithoutOptional=croptopia` leaves it and Ep
 
 ## 2. Thirst values
 
-`croptopiaDrinks` and `croptopiaFoods` in `ThirstConfig`, merged with `putMissing` like every other
+`croptopiaDrinks` and `croptopiaFoods` in `config/itemvalues/OtherModItemValues`, merged with `putMissing` like every other
 mod's, with the values in the table above. Ids alone, so they reach every node, even 26.3 and 1.21.11
 should Croptopia ever build there, and match nothing where the mod is absent. Gametest
 `croptopiaDrinksAreMergedIntoAnOlderConfig`.

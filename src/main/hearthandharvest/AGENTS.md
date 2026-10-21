@@ -29,7 +29,7 @@ replaced by a data file core's datagen writes for 1.21.1 (`FarmersDelightRecipeP
 only sea water into salt. The row in the integration table orders this mod after Hearth and Harvest
 (`loadAfter`) so that the file wins; the agent check proves it does. Expanded Delight's sea water guard
 lets that one recipe through (see [its AGENTS.md](../expandeddelight/AGENTS.md)). The drink and food
-values are ids in `ThirstConfig`.
+values are ids in `config/itemvalues/OtherModItemValues`.
 
 ```
 hearthandharvest/java/com/thirstwastaken2/hearthandharvest/

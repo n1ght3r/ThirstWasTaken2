@@ -8,13 +8,13 @@ thirst, and the client only receives it through the `PlayerData` sync.
 
 | Want to change | Go to |
 |---|---|
-| What an item restores | `config/ThirstConfig.defaultDrinks()` / `defaultFoods()`, read through `api/ThirstApi` |
+| What an item restores | `config/itemvalues/DefaultItemValues` (vanilla, Farmer's Delight, and the order) and one class per mod family beside it, read through `api/ThirstApi` |
 | What data packs say an item restores, and syncing it to clients | `data/DataPackDrinks`, `data/DrinkValuesPayload` |
 | Anything another mod calls | `api/` only: `ThirstApi`, `ThirstEvents`. Public API; see `docs/docs/developers/`, the site's developer pages |
 | Drain rate, climate, damage, full-bar drinking rules, hand drinking | `data/ThirstManager` |
 | Natural healing: food's thirst and illness gate, and quenched's own heal once saturation is spent | `data/HealthRegen`, from `mixin/FoodDataMixin` and `ThirstManager.tickPlayer` |
 | The state record itself (thirst, quenched, exhaustion) | `data/ThirstData` |
-| A new config key | `config/ThirstConfig` (field + `sanitize()`), then the client config screen |
+| A new config key | `config/ThirstConfig` (field + `sanitize()`), then the client config screen. The file and the active instance are `config/ConfigStore`; the sickness tables' clamping is `SicknessEffect.sanitize` |
 | Switching off the mod's own items (Mod Items page) | `config/ThirstConfig.isItemEnabled`, read by the `item_enabled` recipe condition (`platform/Loader.registerResourceConditions`, the generators in `src/datagen`) and by the creative tab |
 | Bowls, waterskin, copper canteen, iron flask, creative tab | `item/` (the three carried containers are one class, `WaterskinItem`) |
 | The mod's own mob effects (Parched, Upset Stomach) | `effect/ThirstEffects`; what they do lives where they matter: Parched's drain in `ThirstManager.tickPlayer`, Upset Stomach's cramps in `effect/UpsetStomach` (stepped from the same tick, their countdown on `ExhaustionTracker`), its stop on healing in `data/HealthRegen` |

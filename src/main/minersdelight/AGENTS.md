@@ -19,7 +19,7 @@ cauldron as Clean water. The plan and its decisions are in
 | A Spout filling a copper cup by Miner's Delight's `create:filling` recipe stamps the tank's grade | `FillingBySpoutMixin` in `src/main/create` and `src/main/createforge` |
 | An Item Drain emptying a water cup by its `create:emptying` recipe keeps its grade | unchanged `GenericItemEmptyingMixin`: it asks `isWaterContainer` |
 | A water cup on a full cauldron, which Miner's Delight does not pour, leaves the cauldron's grade alone | `WaterInteractions.transferCauldronPurity`, which asks for a cauldron interaction first |
-| The milk cup and the soups | ids in `ThirstConfig`, `minersDelightDrinks` and `minersDelightFoods` |
+| The milk cup and the soups | ids in `config/itemvalues/FarmersDelightAddonItemValues`, `minersDelightDrinks` and `minersDelightFoods` |
 
 ```
 minersdelight/java/com/thirstwastaken2/minersdelight/

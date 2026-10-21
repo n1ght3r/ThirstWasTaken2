@@ -129,7 +129,7 @@ each), and `boot.jsonl` with `-PwithoutOptional=brewinandchewin` on both.
 
 ## 2. Thirst values (done)
 
-`brewinAndChewinDrinks` and `brewinAndChewinFoods` in `ThirstConfig`, the table above as proposed,
+`brewinAndChewinDrinks` and `brewinAndChewinFoods` in `config/itemvalues/FarmersDelightAddonItemValues`, the table above as proposed,
 merged into an older config with `putMissing`. `brewinAndChewinDrinksAreMergedIntoAnOlderConfig`
 checks that the defaults list them, leave the spirits out, and merge back without overwriting a
 player's value. The docs page listing supported mods is step 9.

@@ -213,7 +213,7 @@ prints the init line.
 
 ## 2. Thirst values (data only, no class referenced)
 
-`kaleidoscopeTavernDrinks(drinks)` in `ThirstConfig`, called from both `defaultDrinks` paths, with
+`kaleidoscopeTavernDrinks(drinks)` in `config/itemvalues/KaleidoscopeItemValues`, called from both `DefaultItemValues.drinks()` and `bringUpToDate`, with
 `putMissing` like every other mod's. Common code, so it reaches every node, including those that do not
 compile the integration directory. Proposed values, following the precedents already in the file:
 

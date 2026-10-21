@@ -85,7 +85,7 @@ is already on `runClient` for Farm & Charm; it must stay there when Farm & Charm
 
 ## 2. Thirst values
 
-`herbalBrewsDrinks` in `ThirstConfig`, the table above, merged with `putMissing` into older configs. A
+`herbalBrewsDrinks` in `config/itemvalues/LetsDoItemValues`, the table above, merged with `putMissing` into older configs. A
 gametest checks they are merged into an older config, as `farmAndCharmDrinksAreMergedIntoAnOlderConfig`
 does.
 

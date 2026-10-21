@@ -19,7 +19,7 @@ Not covered: Create's mixer on the same node mixes juice from 250 mB of water in
 fluid alone with NeoForge's `SizedFluidIngredient`. Refusing sea water there would be a change to every
 Create recipe that takes water, so it is left.
 
-The drink and food values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and food values are not here. They are ids in `config/itemvalues/FarmersDelightAddonItemValues`, common code that names no class
 of the mod.
 
 ```

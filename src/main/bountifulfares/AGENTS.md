@@ -19,7 +19,7 @@ builds stopped in 2024 and it has none newer. Most of it is not here:
 | A cup scooping a source is sampled there | **this directory**, `CupItemMixin` |
 | The Fermentation Vessel refuses sea water | **this directory**, `FermentationVesselBlockMixin` |
 | Sea water crafts no tea, nor the Sponge Cake | **this directory**, `ShapedRecipeMixin`, `ShapelessRecipeMixin` |
-| The water cup's value, the teas, ciders, wines, stews, compotes and fruit | ids in `ThirstConfig`, `bountifulFaresDrinks` and `bountifulFaresFoods` |
+| The water cup's value, the teas, ciders, wines, stews, compotes and fruit | ids in `config/itemvalues/OtherModItemValues`, `bountifulFaresDrinks` and `bountifulFaresFoods` |
 
 ```
 bountifulfares/java/com/thirstwastaken2/bountifulfares/

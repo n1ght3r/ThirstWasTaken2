@@ -95,7 +95,7 @@ Check here that every id in step 2 and every biome in steps 3 and 4 exists in `1
 
 ## 2. Thirst values
 
-`noMansLandDrinks` and `noMansLandFoods` in `ThirstConfig`, merged with `putMissing`, and checked by a
+`noMansLandDrinks` and `noMansLandFoods` in `config/itemvalues/OtherModItemValues`, merged with `putMissing`, and checked by a
 gametest beside Beachparty's. The explicit entries win over the `c:drinks` tag, which is what takes the
 syrup and pesto off 6, 8. The ids reach every node and match nothing where the mod is absent.
 

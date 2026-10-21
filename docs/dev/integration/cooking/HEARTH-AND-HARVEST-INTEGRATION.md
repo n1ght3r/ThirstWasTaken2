@@ -151,7 +151,7 @@ Forge.
 
 ## 2. Thirst values
 
-`hearthAndHarvestDrinks` and `hearthAndHarvestFoods` in `ThirstConfig`, the table above, merged with
+`hearthAndHarvestDrinks` and `hearthAndHarvestFoods` in `config/itemvalues/OtherModItemValues`, the table above, merged with
 `putMissing`. A gametest in the shape of `fruitsDelightDrinksAreMergedIntoAnOlderConfig`: the defaults,
 that jam and the dry foods are left out, and that a merge keeps a player's value.
 

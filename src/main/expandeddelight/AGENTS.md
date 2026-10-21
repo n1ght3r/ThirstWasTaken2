@@ -16,7 +16,7 @@ Cooking Pot still cooks those two from sea water; a port needs a Fabric side of 
   `src/main/hearthandharvest`);
 - **fresh water of any grade** cooks as before, and the grade goes: the soup is its own item.
 
-The drink and food values are not here. They are ids in `ThirstConfig`, common code that names no class
+The drink and food values are not here. They are ids in `config/itemvalues/FarmersDelightAddonItemValues`, common code that names no class
 of the mod.
 
 ```
