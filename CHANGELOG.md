@@ -2,7 +2,11 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.10.0] - 2026-10-21
+
+Water is now finite when the world says it should be: filling a bottle or a waterskin takes the source
+block, as a bucket does. Bountiful Fares and Let's Do: Meadow join on 1.21.1, and Hearth and Harvest's
+water blocks keep their grade on Forge 1.20.1 too.
 
 ### Added
 
