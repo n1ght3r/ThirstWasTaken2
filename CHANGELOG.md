@@ -2,7 +2,17 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
-## [Unreleased]
+## [1.10.1] - 2026-10-27
+
+Gensokyo Delight ~ Youkais' Feasts joins on NeoForge 1.21.1 and Forge 1.20.1, and Immersive Engineering's
+barrels and tanks stop turning any water into Clean water.
+
+### Added
+
+- Gensokyo Delight ~ Youkais' Feasts, on NeoForge 1.21.1 and Forge 1.20.1:
+  - Teas, juices, sakes, wines, soups and popsicles restore thirst.
+  - Sea water won't go into the Kettle or the Fermentation Tank, won't start a soup in an iron pot, and
+    won't cook Bamboo Mizuyokan.
 
 ### Fixed
 

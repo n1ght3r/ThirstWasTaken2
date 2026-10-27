@@ -264,6 +264,16 @@ val integrations: List<Integration> = listOf(
         mixinConfig = "thirstwastaken2.fruitsdelight.mixins.json",
         neoForgeDependencies = listOf("fruitsdelight"),
     ),
+    // NeoForge 1.21.1 and Forge 1.20.1, the mod's only builds: no Fabric build and nothing past 1.21.1.
+    // Its mixins name their targets by string, one of them in the L2 Core nested in its jar, so nothing
+    // compiles against it. See src/main/youkaisfeasts/AGENTS.md.
+    Integration(
+        dir = "youkaisfeasts",
+        depsKey = "deps.youkais_feasts",
+        loaders = setOf(Loader.NEOFORGE, Loader.FORGE),
+        mixinConfig = "thirstwastaken2.youkaisfeasts.mixins.json",
+        neoForgeDependencies = listOf("youkaisfeasts"),
+    ),
     // NeoForge only: the mod has no Fabric build and nothing past 1.21.1. Its one mixin is on Farmer's
     // Delight's Cooking Pot recipe, named by string, so nothing compiles against either.
     // See src/main/expandeddelight/AGENTS.md.

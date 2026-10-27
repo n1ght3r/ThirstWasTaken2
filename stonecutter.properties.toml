@@ -7,7 +7,7 @@
 mod.id = "thirstwastaken2"
 mod.name = "ThirstWasTaken2"
 mod.group = "com.thirstwastaken2"
-mod.version = "1.10.0"
+mod.version = "1.10.1"
 
 deps.fabric_loader = "0.19.5"
 # The newest stable Fabric Loader. Only .github/scripts/update_mc_deps.py reads it: the build and
@@ -83,6 +83,9 @@ deps.kaleidoscope_chinese_food = "NQtt6JoY"
 # Fruits Delight; see [neoforge."1.21.1"]. Its 1.20.1 build is Forge only, with L2 Library nested.
 # 1.1.3, the Forge upload.
 deps.fruits_delight = "E7H5IrKI"
+# Youkais' Feasts; see [neoforge."1.21.1"]. Its 1.20.1 build, with L2 Library nested.
+# 0.5.2, the Forge upload.
+deps.youkais_feasts = "omvhS3Wy"
 # Hearth and Harvest; see [neoforge."1.21.1"]. Its 1.20.1 build is the early mod, Forge only, with no
 # tank that needs code: only its drinks and its salt recipe, both data.
 # 1.4.3, the Forge upload.
@@ -320,6 +323,11 @@ deps.cooks_collection = "z1YUDQXH"
 # See src/main/fruitsdelight/AGENTS.md.
 # 1.2.14, the NeoForge upload.
 deps.fruits_delight = "TWbuEFZt"
+# Gensokyo Delight ~ Youkais' Feasts, whose kettle, fermentation tank and iron pots take no sea water.
+# Only on the runClient classpath: its mixins name their targets by string. NeoForge 1.21.1 is its
+# newest build. See src/main/youkaisfeasts/AGENTS.md.
+# 1.1.2, the NeoForge upload.
+deps.youkais_feasts = "nPxyA8G2"
 # Expanded Delight, whose Cooking Pot soups take no sea water. Only on the runClient classpath: its one
 # mixin names its target by string. NeoForge 1.21.1 is its only build.
 # See src/main/expandeddelight/AGENTS.md.

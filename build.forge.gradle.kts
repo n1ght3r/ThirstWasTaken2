@@ -248,6 +248,15 @@ dependencies {
         // Keeps `-PwithoutOptional=fruits-delight` in the agent scripts a known name while the lines above are off.
         optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
+    // Youkais' Feasts: nothing compiles against it, its mixins name their targets by string. Its L2
+    // libraries, Registrate, TerraBlender and MixinExtras are nested in its jar. Off in runClient by
+    // default, for the reason build.neoforge.gradle.kts gives; uncomment the lines below to work on it.
+    findProperty("deps.youkais_feasts")?.let {
+        // runClientMod(listOf("youkais-feasts", "youkaisfeasts", "farmers-delight", "farmersdelight"),
+        //     "maven.modrinth:gensokyo-delight-youkais-feasts:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=youkais-feasts` in the agent scripts a known name while the lines above are off.
+        optionalRunMods.include(listOf("youkais-feasts", "youkaisfeasts", "farmers-delight", "farmersdelight"))
+    }
     // Hearth and Harvest: from 1.4.1 its 1.20.1 build is the 1.21.1 mod ported back, whose tanks are
     // mixed into, in SRG names, so remapped. Its Keg extends a Farmer's Delight class, so that is
     // compiled against too. See src/main/hearthandharvestforge/AGENTS.md.

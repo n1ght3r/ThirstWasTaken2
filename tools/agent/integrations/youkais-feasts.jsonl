@@ -1,0 +1,233 @@
+// Youkais' Feasts in a real client, the in-game check of its integration plan's step 4, on 1.21.1-neoforge:
+// whether a plain, a Dirty and a sea water bucket go into a Kettle and an open Fermentation Tank, whether a
+// water bottle of each starts a soup in a Small Iron Pot, whether a sea water bottle cooks Bamboo
+// Mizuyokan in Farmer's Delight's Cooking Pot, that every id ThirstConfig lists for the mod exists, and
+// that its tea and soup restore their values. Needs the mod's runClientMod line on. Run it unattended in
+// a singleplayer world:
+//     ./gradlew ":1.21.1-neoforge:runClient" -Pagent=tools/agent/integrations/youkais-feasts.jsonl -Pquickplay=YoukaiAgent -PwithoutOptional=cold-sweat
+// YoukaiAgent is a throwaway world, made fresh for each run by
+//     python tools/agent/new_world.py 1.21.1-neoforge YoukaiAgent
+// Then check what it recorded:
+//     python tools/agent/drive.py run/1.21.1-neoforge/agent/client tools/agent/integrations/youkais-feasts.jsonl --verify --max-age 15
+//
+// A bucket poured in comes back empty in the hand; a refused one stays full. The kettle, tank and iron pot
+// stand at 0 200 1, looked at from 0.5 200 0.5 at pitch 50, onto the top of the kettle's short body; a
+// missed ray would pour the bucket onto the floor and pass for a fill, so each case starts in clean air.
+{"id": "load", "command": "wait", "args": {"ticks": 400}}
+{"id": "alive", "command": "client.state", "expect": {"result.alive": true}}
+{"id": "survival", "command": "server.command", "args": {"command": "gamemode survival @p"}}
+{"id": "difficulty", "command": "server.command", "args": {"command": "difficulty normal"}}
+{"id": "forceload", "command": "server.command", "args": {"command": "forceload add -8 -8 8 8"}}
+{"id": "safe", "command": "server.command", "args": {"command": "effect give @p minecraft:resistance 900 4 true"}}
+{"id": "tp0", "command": "server.command", "args": {"command": "tp @p 0.5 202 0.5 0 60"}}
+{"id": "chunks", "command": "wait", "args": {"ticks": 100}}
+{"id": "day", "command": "server.command", "args": {"command": "time set noon"}}
+{"id": "clearWeather", "command": "server.command", "args": {"command": "weather clear 100000"}}
+{"id": "air", "command": "server.command", "args": {"command": "fill -8 200 -8 8 208 8 minecraft:air"}}
+{"id": "floor", "command": "server.command", "args": {"command": "fill -8 199 -8 8 199 8 minecraft:stone"}}
+
+// Every id ThirstConfig lists for the mod exists: /give refuses an unknown item. Lemon Black Tea, Moon
+// Rocket and Peach Tapioca are left out: the mod registers them only with Fruits Delight installed.
+{"id": "id_green_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:green_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:white_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_black_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:black_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_oolong_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:oolong_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_dark_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:dark_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_yellow_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:yellow_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cornflower_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:cornflower_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tea_mocha", "command": "server.command", "args": {"command": "give @p youkaisfeasts:tea_mocha"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_saidi_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:saidi_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_sakura_honey_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:sakura_honey_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_genmai_tea", "command": "server.command", "args": {"command": "give @p youkaisfeasts:genmai_tea"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_green_water", "command": "server.command", "args": {"command": "give @p youkaisfeasts:green_water"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_black_grape_juice", "command": "server.command", "args": {"command": "give @p youkaisfeasts:black_grape_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grape_juice", "command": "server.command", "args": {"command": "give @p youkaisfeasts:red_grape_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_grape_juice", "command": "server.command", "args": {"command": "give @p youkaisfeasts:white_grape_juice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mead", "command": "server.command", "args": {"command": "give @p youkaisfeasts:mead"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mio", "command": "server.command", "args": {"command": "give @p youkaisfeasts:mio"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kiku", "command": "server.command", "args": {"command": "give @p youkaisfeasts:kiku"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hakutsuru", "command": "server.command", "args": {"command": "give @p youkaisfeasts:hakutsuru"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_kappa_village", "command": "server.command", "args": {"command": "give @p youkaisfeasts:kappa_village"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_suigei", "command": "server.command", "args": {"command": "give @p youkaisfeasts:suigei"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_dassai", "command": "server.command", "args": {"command": "give @p youkaisfeasts:dassai"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tengu_tango", "command": "server.command", "args": {"command": "give @p youkaisfeasts:tengu_tango"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_full_moons_eve", "command": "server.command", "args": {"command": "give @p youkaisfeasts:full_moons_eve"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_wine", "command": "server.command", "args": {"command": "give @p youkaisfeasts:red_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_wine", "command": "server.command", "args": {"command": "give @p youkaisfeasts:white_wine"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_burgundy", "command": "server.command", "args": {"command": "give @p youkaisfeasts:burgundy"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_champagne", "command": "server.command", "args": {"command": "give @p youkaisfeasts:champagne"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_van_allen", "command": "server.command", "args": {"command": "give @p youkaisfeasts:van_allen"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_miso_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:miso_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_seafood_miso_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:seafood_miso_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_poor_god_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:poor_god_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_higan_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:higan_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_mushroom_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:mushroom_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_power_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:power_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_potato_soup", "command": "server.command", "args": {"command": "give @p youkaisfeasts:potato_soup"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_borscht", "command": "server.command", "args": {"command": "give @p youkaisfeasts:borscht"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_avgolemono", "command": "server.command", "args": {"command": "give @p youkaisfeasts:avgolemono"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tofu_crab_stew", "command": "server.command", "args": {"command": "give @p youkaisfeasts:tofu_crab_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_signature_mushroom_stew", "command": "server.command", "args": {"command": "give @p youkaisfeasts:signature_mushroom_stew"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_hokkaido_salmon_hotpot", "command": "server.command", "args": {"command": "give @p youkaisfeasts:hokkaido_salmon_hotpot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_milk_popsicle", "command": "server.command", "args": {"command": "give @p youkaisfeasts:milk_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_big_popsicle", "command": "server.command", "args": {"command": "give @p youkaisfeasts:big_popsicle"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_shaved_ice_over_rice", "command": "server.command", "args": {"command": "give @p youkaisfeasts:shaved_ice_over_rice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_shirayuki", "command": "server.command", "args": {"command": "give @p youkaisfeasts:shirayuki"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_tutu_congee", "command": "server.command", "args": {"command": "give @p youkaisfeasts:tutu_congee"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cucumber", "command": "server.command", "args": {"command": "give @p youkaisfeasts:cucumber"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_cucumber_slice", "command": "server.command", "args": {"command": "give @p youkaisfeasts:cucumber_slice"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_black_grape", "command": "server.command", "args": {"command": "give @p youkaisfeasts:black_grape"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_red_grape", "command": "server.command", "args": {"command": "give @p youkaisfeasts:red_grape"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "id_white_grape", "command": "server.command", "args": {"command": "give @p youkaisfeasts:white_grape"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Gave 1"}]}
+{"id": "clearIds", "command": "server.command", "args": {"command": "clear @p"}}
+
+// A plain, a Dirty and a sea water bucket on an empty Kettle. The first two pour in and come back
+// empty; the sea water one is refused and stays full (FluidTileSeaWaterMixin).
+{"id": "kettle_plain_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "kettle_plain_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:kettle"}}
+{"id": "kettle_plain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "kettle_plain_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket"}}
+{"id": "kettle_plain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "kettle_plain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_plain_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "kettle_plain_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_plain_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "kettle_plain_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kettle_plain_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "kettle_dirty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "kettle_dirty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:kettle"}}
+{"id": "kettle_dirty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "kettle_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "kettle_dirty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "kettle_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "kettle_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_dirty_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "kettle_dirty_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "kettle_dirty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "kettle_salty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "kettle_salty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:kettle"}}
+{"id": "kettle_salty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "kettle_salty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "kettle_salty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "kettle_salty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_salty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "kettle_salty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "kettle_salty_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "kettle_salty_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "kettle_salty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+
+// A plain, a Dirty and a sea water bucket on an empty open Fermentation Tank. The first two pour in and come back
+// empty; the sea water one is refused and stays full (FluidTileSeaWaterMixin).
+{"id": "tank_plain_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "tank_plain_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:fermentation_tank[open=true]"}}
+{"id": "tank_plain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "tank_plain_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket"}}
+{"id": "tank_plain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "tank_plain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_plain_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "tank_plain_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_plain_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "tank_plain_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "tank_plain_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "tank_dirty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "tank_dirty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:fermentation_tank[open=true]"}}
+{"id": "tank_dirty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "tank_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "tank_dirty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "tank_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "tank_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_dirty_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "tank_dirty_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "tank_dirty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "tank_salty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "tank_salty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:fermentation_tank[open=true]"}}
+{"id": "tank_salty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "tank_salty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:water_bucket[thirstwastaken2:water_salty=true]"}}
+{"id": "tank_salty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "tank_salty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_salty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "tank_salty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "tank_salty_data", "command": "server.command", "args": {"command": "data get block 0 200 1"}}
+{"id": "tank_salty_empty", "command": "server.command", "args": {"command": "execute if items entity @p weapon.mainhand minecraft:bucket"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "tank_salty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+
+// A plain, a Dirty and a sea water bottle on a Small Iron Pot. The first two turn it into a Cooking Small
+// Iron Pot; the sea water one leaves it as it is (WaterConsumerMixin).
+{"id": "pot_plain_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "pot_plain_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:small_iron_pot"}}
+{"id": "pot_plain_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pot_plain_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"}]"}}
+{"id": "pot_plain_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "pot_plain_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_plain_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pot_plain_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_plain_cooking", "command": "server.command", "args": {"command": "execute if block 0 200 1 youkaisfeasts:cooking_small_iron_pot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "pot_plain_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "pot_dirty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "pot_dirty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:small_iron_pot"}}
+{"id": "pot_dirty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pot_dirty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_purity=0,thirstwastaken2:water_salty=false]"}}
+{"id": "pot_dirty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "pot_dirty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_dirty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pot_dirty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_dirty_cooking", "command": "server.command", "args": {"command": "execute if block 0 200 1 youkaisfeasts:cooking_small_iron_pot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "pot_dirty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+{"id": "pot_salty_reset", "command": "server.command", "args": {"command": "fill -8 200 -8 8 203 8 minecraft:air"}}
+{"id": "pot_salty_place", "command": "server.command", "args": {"command": "setblock 0 200 1 youkaisfeasts:small_iron_pot"}}
+{"id": "pot_salty_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "pot_salty_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with minecraft:potion[minecraft:potion_contents={potion:\"minecraft:water\"},thirstwastaken2:water_salty=true]"}}
+{"id": "pot_salty_stand", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 50"}}
+{"id": "pot_salty_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_salty_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 3}}
+{"id": "pot_salty_used", "command": "wait", "args": {"ticks": 10}}
+{"id": "pot_salty_cooking", "command": "server.command", "args": {"command": "execute if block 0 200 1 youkaisfeasts:cooking_small_iron_pot"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "pot_salty_gone", "command": "server.command", "args": {"command": "setblock 0 200 1 minecraft:air"}}
+
+// Bamboo Mizuyokan in Farmer's Delight's Cooking Pot, on a magma block, from a plain and a sea water
+// bottle loaded into its inventory. Its water is L2's potion ingredient: the plain one cooks, the sea
+// water one does not (WaterBottleIngredientMixin). The meal sits in slot 6 with no saucer to take it.
+{"id": "mizu_plain_heat", "command": "server.command", "args": {"command": "setblock 4 199 4 minecraft:magma_block"}}
+{"id": "mizu_plain_place", "command": "server.command", "args": {"command": "setblock 4 200 4 farmersdelight:cooking_pot"}}
+{"id": "mizu_plain_load", "command": "server.command", "args": {"command": "data merge block 4 200 4 {Inventory:{Size:9,Items:[{Slot:0,id:\"youkaisfeasts:redbean\",count:1},{Slot:1,id:\"minecraft:potion\",count:1,components:{\"minecraft:potion_contents\":{potion:\"minecraft:water\"}}},{Slot:2,id:\"minecraft:bamboo\",count:1},{Slot:3,id:\"minecraft:sugar\",count:1}]}}"}}
+{"id": "mizu_plain_cook", "command": "wait", "args": {"ticks": 300}}
+{"id": "mizu_plain_inventory", "command": "server.command", "args": {"command": "data get block 4 200 4 Inventory"}}
+{"id": "mizu_plain_meal", "command": "server.command", "args": {"command": "execute if data block 4 200 4 Inventory.Items[{Slot:6,id:\"youkaisfeasts:bamboo_mizuyokan\"}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test passed"}]}
+{"id": "mizu_plain_gone", "command": "server.command", "args": {"command": "setblock 4 200 4 minecraft:air"}}
+{"id": "mizu_salty_heat", "command": "server.command", "args": {"command": "setblock 4 199 4 minecraft:magma_block"}}
+{"id": "mizu_salty_place", "command": "server.command", "args": {"command": "setblock 4 200 4 farmersdelight:cooking_pot"}}
+{"id": "mizu_salty_load", "command": "server.command", "args": {"command": "data merge block 4 200 4 {Inventory:{Size:9,Items:[{Slot:0,id:\"youkaisfeasts:redbean\",count:1},{Slot:1,id:\"minecraft:potion\",count:1,components:{\"minecraft:potion_contents\":{potion:\"minecraft:water\"},\"thirstwastaken2:water_salty\":true}},{Slot:2,id:\"minecraft:bamboo\",count:1},{Slot:3,id:\"minecraft:sugar\",count:1}]}}"}}
+{"id": "mizu_salty_cook", "command": "wait", "args": {"ticks": 300}}
+{"id": "mizu_salty_inventory", "command": "server.command", "args": {"command": "data get block 4 200 4 Inventory"}}
+{"id": "mizu_salty_meal", "command": "server.command", "args": {"command": "execute if data block 4 200 4 Inventory.Items[{Slot:6,id:\"youkaisfeasts:bamboo_mizuyokan\"}]"}, "checks": [{"left": "result.messages.0", "op": "contains", "value": "Test failed"}]}
+{"id": "mizu_salty_gone", "command": "server.command", "args": {"command": "setblock 4 200 4 minecraft:air"}}
+{"id": "mizu_floor", "command": "server.command", "args": {"command": "setblock 4 199 4 minecraft:stone"}}
+
+// Drinking: Green Tea restores 6, Miso Soup 6, from thirst 4 and quenched 0. Looking up, so the soup is
+// eaten rather than placed.
+{"id": "drink_tea_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_tea_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_tea_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_tea_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_tea_look", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -90"}}
+{"id": "drink_tea_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with youkaisfeasts:green_tea"}}
+{"id": "drink_tea_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_tea_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_tea_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_tea_state", "command": "client.state", "expect": {"result.thirst": 10}}
+{"id": "drink_soup_clear", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "drink_soup_hunger", "command": "server.command", "args": {"command": "effect give @p minecraft:hunger 2 255 true"}}
+{"id": "drink_soup_hungry", "command": "wait", "args": {"ticks": 60}}
+{"id": "drink_soup_set", "command": "server.command", "args": {"command": "thirst set @p 4 0"}}
+{"id": "drink_soup_look", "command": "server.command", "args": {"command": "tp @p 0.5 200 0.5 0 -90"}}
+{"id": "drink_soup_give", "command": "server.command", "args": {"command": "item replace entity @p weapon.mainhand with youkaisfeasts:miso_soup"}}
+{"id": "drink_soup_settle", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_soup_tooltip", "command": "client.tooltip", "args": {"slot": "mainhand"}}
+{"id": "drink_soup_use", "command": "client.hold", "args": {"keys": ["use"], "ticks": 45}}
+{"id": "drink_soup_done", "command": "wait", "args": {"ticks": 10}}
+{"id": "drink_soup_state", "command": "client.state", "expect": {"result.thirst": 10}}
+
+{"id": "done", "command": "client.state"}

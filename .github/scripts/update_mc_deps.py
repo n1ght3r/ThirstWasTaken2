@@ -216,6 +216,8 @@ MODRINTH_DEPS = [
     ModrinthDep("glitchcore", "glitchcore", by_id=True, **NO_PAGE),
     # Fruits Delight, 1.21.1 NeoForge and 1.20.1 Forge, runClient only, pinned by id like the others.
     ModrinthDep("fruits_delight", "fruits-delight", by_id=True),
+    # Youkais' Feasts, 1.21.1 NeoForge and 1.20.1 Forge, runClient only, pinned by id like the others.
+    ModrinthDep("youkais_feasts", "gensokyo-delight-youkais-feasts", by_id=True),
     # Expanded Delight, NeoForge 1.21.1 only and runClient only, pinned by id like the others.
     ModrinthDep("expanded_delight", "expanded-delight", by_id=True),
     # Miner's Delight, 1.21.1 NeoForge and 1.20.1 Forge, pinned by id like the others, and the Lodestone

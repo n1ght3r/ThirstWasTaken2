@@ -5,7 +5,7 @@ import java.util.Map;
 import static com.thirstwastaken2.config.itemvalues.DefaultItemValues.putMissing;
 
 /**
- * What the drinks and foods of Farmer's Delight addons: Brewin' and Chewin', Cultural Delights, Fruits Delight, Ocean's
+ * What the drinks and foods of Farmer's Delight addons: Brewin' and Chewin', Cultural Delights, Fruits Delight, Youkais' Feasts, Ocean's
  * Delight, Expanded Delight, Rustic Delight, Miner's Delight and Extra Delight. restore by default. Every entry goes in with
  * {@code putIfAbsent}, so one call fills a fresh config and brings an older file up to date without
  * overwriting a player's edit. {@link DefaultItemValues} calls them, in the order that keeps a new
@@ -100,6 +100,36 @@ final class FarmersDelightAddonItemValues {
         putMissing(foods, 6, 4, "fruitsdelight:fig_chicken_stew");
         putMissing(foods, 2, 0, "fruitsdelight:mango_salad");
         putMissing(foods, 1, 0, "fruitsdelight:blueberry_custard");
+    }
+
+    /**
+     * Youkais' Feasts' teas, juices, sakes and wines, by id alone like Fruits Delight's, whose authors
+     * made it. It ships thirst values too, only for the original Thirst Was Taken, whose mod id is not
+     * ours. Here a tea or juice is Farmer's Delight's juice, mead and the bottled Mio a light brew, and
+     * the sakes and wines Brewin' and Chewin's wine. Every drink is safe whatever fresh water went into
+     * the kettle or the tank, as tea is; sea water makes none (see {@code src/main/youkaisfeasts}).
+     */
+    static void youkaisFeastsDrinks(Map<String, int[]> drinks) {
+        putMissing(drinks, 6, 4, "youkaisfeasts:green_tea", "youkaisfeasts:white_tea", "youkaisfeasts:black_tea", "youkaisfeasts:oolong_tea", "youkaisfeasts:dark_tea", "youkaisfeasts:yellow_tea", "youkaisfeasts:cornflower_tea", "youkaisfeasts:tea_mocha", "youkaisfeasts:saidi_tea", "youkaisfeasts:sakura_honey_tea", "youkaisfeasts:genmai_tea", "youkaisfeasts:green_water", "youkaisfeasts:lemon_black_tea", "youkaisfeasts:moon_rocket");
+        putMissing(drinks, 6, 4, "youkaisfeasts:black_grape_juice", "youkaisfeasts:red_grape_juice", "youkaisfeasts:white_grape_juice");
+        putMissing(drinks, 5, 2, "youkaisfeasts:mead", "youkaisfeasts:mio");
+        putMissing(drinks, 3, 1, "youkaisfeasts:kiku", "youkaisfeasts:hakutsuru", "youkaisfeasts:kappa_village", "youkaisfeasts:suigei", "youkaisfeasts:dassai", "youkaisfeasts:tengu_tango", "youkaisfeasts:full_moons_eve");
+        putMissing(drinks, 3, 1, "youkaisfeasts:red_wine", "youkaisfeasts:white_wine", "youkaisfeasts:burgundy", "youkaisfeasts:champagne", "youkaisfeasts:van_allen");
+    }
+
+    /**
+     * Youkais' Feasts' soups and watery foods; see {@link #youkaisFeastsDrinks}. A soup or stew is Farmer's
+     * Delight's, a popsicle or shaved ice its melon popsicle, the congee Brewin' and Chewin's grits, a
+     * cucumber Cultural Delights'. Soy sauce and mayonnaise, the ice cube, sushi, dango, mochi and the dry
+     * dishes are left out.
+     */
+    static void youkaisFeastsFoods(Map<String, int[]> foods) {
+        putMissing(foods, 6, 4, "youkaisfeasts:miso_soup", "youkaisfeasts:seafood_miso_soup", "youkaisfeasts:poor_god_soup", "youkaisfeasts:higan_soup", "youkaisfeasts:mushroom_soup", "youkaisfeasts:power_soup", "youkaisfeasts:potato_soup", "youkaisfeasts:borscht", "youkaisfeasts:avgolemono");
+        putMissing(foods, 6, 4, "youkaisfeasts:tofu_crab_stew", "youkaisfeasts:signature_mushroom_stew", "youkaisfeasts:hokkaido_salmon_hotpot");
+        putMissing(foods, 2, 0, "youkaisfeasts:milk_popsicle", "youkaisfeasts:big_popsicle", "youkaisfeasts:shaved_ice_over_rice", "youkaisfeasts:shirayuki", "youkaisfeasts:peach_tapioca");
+        putMissing(foods, 2, 0, "youkaisfeasts:tutu_congee");
+        putMissing(foods, 2, 0, "youkaisfeasts:cucumber");
+        putMissing(foods, 1, 0, "youkaisfeasts:cucumber_slice", "youkaisfeasts:black_grape", "youkaisfeasts:red_grape", "youkaisfeasts:white_grape");
     }
 
     /**

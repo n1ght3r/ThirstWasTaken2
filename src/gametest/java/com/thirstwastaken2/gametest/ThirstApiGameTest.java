@@ -411,6 +411,60 @@ public final class ThirstApiGameTest {
     }
 
     /**
+     * Youkais' Feasts is never installed here either; see the Kaleidoscope Cookery test above. A tea is a
+     * juice, a sake a wine, and the condiments are left out.
+     */
+    @GameTest
+    public void youkaisFeastsValuesAreMergedIntoAnOlderConfig(GameTestHelper helper) {
+        ThirstConfig defaults = new ThirstConfig();
+        String[] drinks = {"green_tea", "red_grape_juice", "mead", "dassai", "champagne"};
+        String[] foods = {"miso_soup", "hokkaido_salmon_hotpot", "milk_popsicle", "cucumber", "red_grape"};
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("youkaisfeasts:green_tea"), new int[]{6, 4}),
+                "youkaisfeasts:green_tea should be a juice's 6, 4");
+        TestFixtures.check(helper, Arrays.equals(defaults.drinks.get("youkaisfeasts:dassai"), new int[]{3, 1}),
+                "youkaisfeasts:dassai should be a wine's 3, 1");
+        for (String drink : drinks) {
+            TestFixtures.check(helper, defaults.drinks.containsKey("youkaisfeasts:" + drink),
+                    "the default drinks should list youkaisfeasts:" + drink);
+        }
+        for (String food : foods) {
+            TestFixtures.check(helper, defaults.foods.containsKey("youkaisfeasts:" + food),
+                    "the default foods should list youkaisfeasts:" + food);
+        }
+        for (String dry : new String[]{"soy_sauce_bottle", "mayonnaise_bottle", "ice_cube", "tuna_nigiri"}) {
+            TestFixtures.check(helper, !defaults.foods.containsKey("youkaisfeasts:" + dry)
+                            && !defaults.drinks.containsKey("youkaisfeasts:" + dry),
+                    "youkaisfeasts:" + dry + " restores no thirst and should not be listed");
+        }
+
+        TestFixtures.withConfig(config -> {
+            for (String drink : drinks) config.drinks.remove("youkaisfeasts:" + drink);
+            for (String food : foods) config.foods.remove("youkaisfeasts:" + food);
+            // A player's own value, which merging must leave alone.
+            config.drinks.put("youkaisfeasts:green_tea", new int[]{1, 1});
+        }, () -> {
+            ThirstConfig config = ThirstConfig.get();
+            for (String drink : drinks) {
+                if (drink.equals("green_tea")) continue;
+                String id = "youkaisfeasts:" + drink;
+                TestFixtures.check(helper, Arrays.equals(config.drinks.get(id), defaults.drinks.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.drinks.get(id))
+                                + ", got " + Arrays.toString(config.drinks.get(id)));
+            }
+            for (String food : foods) {
+                String id = "youkaisfeasts:" + food;
+                TestFixtures.check(helper, Arrays.equals(config.foods.get(id), defaults.foods.get(id)),
+                        id + " should be merged back as " + Arrays.toString(defaults.foods.get(id))
+                                + ", got " + Arrays.toString(config.foods.get(id)));
+            }
+            TestFixtures.check(helper, Arrays.equals(config.drinks.get("youkaisfeasts:green_tea"), new int[]{1, 1}),
+                    "a value the player set should survive the merge, got "
+                            + Arrays.toString(config.drinks.get("youkaisfeasts:green_tea")));
+        });
+        helper.succeed();
+    }
+
+    /**
      * Miner's Delight is never installed here either; see the Kaleidoscope Cookery test above. Its two
      * builds have two mod ids, and every value is listed under both.
      */

@@ -68,6 +68,7 @@ public final class DefaultItemValues {
         KaleidoscopeItemValues.kaleidoscopeTavernDrinks(values);
         OtherModItemValues.bountifulFaresDrinks(values);
         LetsDoItemValues.meadowDrinks(values);
+        FarmersDelightAddonItemValues.youkaisFeastsDrinks(values);
         return values;
     }
 
@@ -109,6 +110,7 @@ public final class DefaultItemValues {
         KaleidoscopeItemValues.kaleidoscopeChineseFoodFoods(values);
         KaleidoscopeItemValues.kaleidoscopeTavernFoods(values);
         OtherModItemValues.bountifulFaresFoods(values);
+        FarmersDelightAddonItemValues.youkaisFeastsFoods(values);
         return values;
     }
 
@@ -192,6 +194,9 @@ public final class DefaultItemValues {
         OtherModItemValues.bountifulFaresFoods(foods);
         // And for Meadow, added after that.
         LetsDoItemValues.meadowDrinks(drinks);
+        // And for Youkais' Feasts, added after that.
+        FarmersDelightAddonItemValues.youkaisFeastsDrinks(drinks);
+        FarmersDelightAddonItemValues.youkaisFeastsFoods(foods);
     }
 
     static void put(Map<String, int[]> values, int thirst, int quenched, String... ids) {

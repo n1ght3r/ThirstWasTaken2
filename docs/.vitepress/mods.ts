@@ -104,6 +104,7 @@ export const DELIGHT_ADDONS: Mod[] = [
   ["Brewin' and Chewin'", 'hIu9KJTT/f7c591a80046859d3d45c04ecbbc54d264483d5e.png', 'brewin-and-chewin'],
   ['Cultural Delights', 'YttyNOFA/d857243f0e7dedd3d7f552c4371326773629e42e.png', 'cultural-delights'],
   ['Fruits Delight', 'g6sbyCTu/4ecc5d554f260b876d21c427aa6c2bdf4457fd5c.png', 'fruits-delight'],
+  ["Youkais' Feasts", 'Ohy0TgO2/4e25b7b5de37ad03845970ec8ef72f5c0b8e4617_96.webp', 'youkais-feasts'],
   ["Miner's Delight", 'qMxbM4BQ/0d6f967d3ad184dd296c62a9891e2b2b7d45f61d.png', 'miners-delight'],
   ['Hearth and Harvest', '8EEEXOzj/e5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png', 'hearth-and-harvest'],
   ["Ocean's Delight", 'DGiq4ZSW/949ba66d6fffb5a984fbb70e3ef4a51f15be3191.png', 'oceans-delight'],

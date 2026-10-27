@@ -259,6 +259,16 @@ dependencies {
         optionalRunMods.include(listOf("fruits-delight", "fruitsdelight", "farmers-delight", "farmersdelight"))
     }
 
+    // Youkais' Feasts, on the node that sets it, the same way: its drinks are reached by registry id, and
+    // src/main/youkaisfeasts's mixins name their targets by string. Its L2 libraries, Registrate and
+    // TerraBlender are nested in its jar. Off by default, as Fruits Delight is, for its libraries and its
+    // biome; uncomment the line below only to work on it.
+    findProperty("deps.youkais_feasts")?.let {
+        // runClientMod(listOf("youkais-feasts", "youkaisfeasts", "farmers-delight", "farmersdelight"), "maven.modrinth:gensokyo-delight-youkais-feasts:$it") { isTransitive = false }
+        // Keeps `-PwithoutOptional=youkais-feasts` in the agent scripts a known name while the line above is off.
+        optionalRunMods.include(listOf("youkais-feasts", "youkaisfeasts", "farmers-delight", "farmersdelight"))
+    }
+
     // Expanded Delight, on the node that sets it. Nothing compiles against it: its foods are reached by
     // registry id, and src/main/expandeddelight's mixin names its target by string. Only here to test it.
     findProperty("deps.expanded_delight")?.let {

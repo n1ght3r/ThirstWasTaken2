@@ -22,6 +22,7 @@ record. Small integrations with only thirst values in `ThirstConfig` have no pla
 | Brewin' and Chewin' | [cooking/BREWIN-AND-CHEWIN](cooking/BREWIN-AND-CHEWIN-INTEGRATION.md) | `src/main/brewinandchewin` | both 1.21.1 | see plan |
 | Cultural Delights | [cooking/CULTURAL-DELIGHTS](cooking/CULTURAL-DELIGHTS-INTEGRATION.md) | `src/main/culturaldelights` | `1.21.1-neoforge` | see plan |
 | Fruits Delight | [cooking/FRUITS-DELIGHT](cooking/FRUITS-DELIGHT-INTEGRATION.md) | `src/main/fruitsdelight` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
+| Youkais' Feasts | [cooking/YOUKAIS-FEASTS](cooking/YOUKAIS-FEASTS-INTEGRATION.md) | `src/main/youkaisfeasts` | `1.21.1-neoforge`, `1.20.1-forge` | see plan |
 | Miner's Delight | [cooking/MINERS-DELIGHT](cooking/MINERS-DELIGHT-INTEGRATION.md) | `src/main/minersdelight` | `1.21.1-neoforge`, `1.20.1-forge` | built |
 | Hearth and Harvest | [cooking/HEARTH-AND-HARVEST](cooking/HEARTH-AND-HARVEST-INTEGRATION.md) | `src/main/hearthandharvest`, `hearthandharvestforge` | `1.21.1-neoforge`, `1.20.1-forge` | done |
 | Extra Delight | [cooking/EXTRA-DELIGHT](cooking/EXTRA-DELIGHT-INTEGRATION.md) | `src/main/extradelight` | `1.21.1-neoforge` | done |
