@@ -122,6 +122,9 @@ DEPENDENCIES = {
     "cold_sweat": Dependency("cold-sweat", "uXhSmPjd", "cold-sweat"),
     "cultural_delights": Dependency("cultural-delights", "YttyNOFA", "cultural-delights"),
     "fruits_delight": Dependency("fruits-delight", "g6sbyCTu", "fruits-delight"),
+    # Youkais' Feasts, NeoForge 1.21.1 and Forge 1.20.1. Its CurseForge slug is unverified, so it is
+    # listed there by hand.
+    "youkais_feasts": Dependency("gensokyo-delight-youkais-feasts", "Ohy0TgO2", None),
     "expanded_delight": Dependency("expanded-delight", "e9V6wFcR", None),
     "serene_seasons": Dependency("serene-seasons", "e0bNACJD", "serene-seasons"),
     # Farm & Charm and Candlelight: their CurseForge slugs are unverified, so they are listed there by hand.
