@@ -55,6 +55,19 @@ public final class WaterFluids {
         return quality == null ? stack : stamp(stack, quality);
     }
 
+    /**
+     * A copy of {@code stack} without its quality, the plain water other mods compare against. Only a
+     * stamped stack is copied.
+     */
+    public static FluidStack unstamped(FluidStack stack) {
+        if (!stamped(stack)) return stack;
+        FluidStack plain = stack.copy();
+        CompoundTag tag = plain.getTag();
+        tag.remove(TAG);
+        if (tag.isEmpty()) plain.setTag(null);
+        return plain;
+    }
+
     /** Stamps a container just filled with the quality of the water it was filled from. */
     public static ItemStack stampContainer(ItemStack filled, WaterQuality quality) {
         if (quality != null && WaterPurity.isWaterContainer(filled)) WaterPurity.setQuality(filled, quality);

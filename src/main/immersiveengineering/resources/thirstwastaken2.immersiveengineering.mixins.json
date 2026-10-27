@@ -6,7 +6,9 @@
   "mixins": [
     "BottlingProcessMixin",
     "FluidPumpMixin",
-    "ItemFluidHandlerMixin"
+    "FluidUtilsMixin",
+    "ItemFluidHandlerMixin",
+    "NeoForgeFluidUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

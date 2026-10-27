@@ -5,7 +5,9 @@
 // - with water source conversion off, a Fluid Pump takes a single sea-water source as salty water,
 //   "seaCheck", and one in plains as graded fresh water, "freshCheck" and "freshNotSalty";
 // - a Bottling Machine, formed with a hammer and given sea water by NBT, fills a glass bottle into a
-//   salty water bottle: "bottleCheck".
+//   salty water bottle: "bottleCheck";
+// - an empty bucket on a Metal Barrel of Murky water comes back a Murky water bucket, "bucketCheck", and
+//   poured into an empty Wooden Barrel leaves Murky water there, "pourCheck" (issue #50).
 //
 // IE's runClientMod line in build.forge.gradle.kts must be uncommented. Every "...Check" line and
 // "freshNotSalty" has to say "Test passed" in the "[CHAT]" lines of the client's log.
@@ -30,6 +32,29 @@
 {"id": "infinitePumpPower", "command": "server.command", "args": {"command": "setblock 1 202 0 minecraft:redstone_block"}}
 {"id": "bottling", "command": "server.command", "args": {"command": "place template immersiveengineering:multiblocks/bottling_machine 0 202 20"}}
 {"id": "placed", "command": "wait", "args": {"ticks": 200}}
+
+// Issue #50: an empty bucket on a Metal Barrel of Murky water comes back Murky, not plain, and that bucket
+// poured into an empty Wooden Barrel leaves Murky water in it. A barrel set by NBT needs its sideConfig.
+{"id": "barrel", "command": "server.command", "args": {"command": "setblock 8 202 13 immersiveengineering:metal_barrel{sideConfig:[I;0,0],tank:{FluidName:\"minecraft:water\",Amount:4000,Tag:{thirstwastaken2:{purity:1}}}}"}}
+{"id": "woodenBarrel", "command": "server.command", "args": {"command": "setblock 12 202 13 immersiveengineering:wooden_barrel{sideConfig:[I;0,0]}"}}
+{"id": "clearBucket", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "bucket", "command": "server.command", "args": {"command": "give @p minecraft:bucket"}}
+{"id": "atMurkyBarrel", "command": "server.command", "args": {"command": "tp @p 8.5 202 15.5 180 29"}}
+{"id": "settleBarrel", "command": "wait", "args": {"ticks": 20}}
+{"id": "drawDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "drawing", "command": "wait", "args": {"ticks": 3}}
+{"id": "drawUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "drawn", "command": "wait", "args": {"ticks": 10}}
+{"id": "bucketRead", "command": "server.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "bucketCheck", "command": "server.command", "args": {"command": "execute if data entity @p SelectedItem{id:\"minecraft:water_bucket\",tag:{thirstwastaken2:{purity:1}}}"}}
+{"id": "atWoodenBarrel", "command": "server.command", "args": {"command": "tp @p 12.5 202 15.5 180 29"}}
+{"id": "settleWooden", "command": "wait", "args": {"ticks": 20}}
+{"id": "pourDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pouring", "command": "wait", "args": {"ticks": 3}}
+{"id": "pourUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "poured", "command": "wait", "args": {"ticks": 10}}
+{"id": "woodenRead", "command": "server.command", "args": {"command": "data get block 12 202 13 tank"}}
+{"id": "pourCheck", "command": "server.command", "args": {"command": "execute if data block 12 202 13 tank{Amount:1000,Tag:{thirstwastaken2:{purity:1}}}"}}
 
 // The Bottling Machine is formed with a hammer on its trigger, the conveyor in the middle of its back row.
 {"id": "clear", "command": "server.command", "args": {"command": "clear @p"}}

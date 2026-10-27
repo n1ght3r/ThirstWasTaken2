@@ -6,7 +6,7 @@ package `blusunrize.immersiveengineering`) moves water in pumps, pipes, barrels 
 [docs/dev/integration/storage/IMMERSIVE-ENGINEERING-INTEGRATION.md](../../../docs/dev/integration/storage/IMMERSIVE-ENGINEERING-INTEGRATION.md).
 
 **Built on `1.21.1-neoforge` only**, IE's newest build (12.4.2). Its 1.20.1 build for Forge 47 has the
-pump and Bottling Machine mixins in [src/main/immersiveengineeringforge](../immersiveengineeringforge/AGENTS.md).
+pump, Bottling Machine and bucket mixins in [src/main/immersiveengineeringforge](../immersiveengineeringforge/AGENTS.md).
 What it does:
 
 - **Fluid Pump**: every bucket it takes from the world is stamped with the grade of the block it came
@@ -15,6 +15,9 @@ What it does:
 - **Bottling Machine**: a glass bottle filled by recipe comes out with the grade of the water spent.
 - **Jerrycan and IE's other fluid items** (`IEItemFluidHandler`): top up only with water of the same
   grade. IE compared fluids alone there, so Murky water poured into a can of Pure became Pure.
+- **A bucket on a barrel, the Fluid Tank or the Refinery**, or in a machine's container slots: keeps
+  the grade both ways. NeoForge's bucket wrapper gives and takes plain water, so a bucket drawn from
+  Murky water came out Clean (issue #50).
 
 Nothing else needs code. IE's barrels, Fluid Tank multiblock and the pump's own tank are NeoForge
 `FluidTank`s, which compare components; pipes pass stacks on with `copyWithAmount`, which keeps them;
@@ -24,9 +27,12 @@ recipes that use water (Cloche, Mixer, concrete) take it by tag, whatever its gr
 immersiveengineering/java/com/thirstwastaken2/immersiveengineering/
   ImmersiveEngineeringPresence     whether each target class and method is still there, read off the class file
   ImmersiveEngineeringMixinPlugin  applies each mixin only while its target declares what it injects into
+  ImmersiveEngineeringWater        the graded() transfer scope
   mixin/FluidPumpMixin             tickServer's drainFluidBlock, gatherInfiniteFluidFromWorld's new FluidStack
   mixin/BottlingProcessMixin       keeps the grade at the drain, stamps getRecipeItemOutputs
   mixin/ItemFluidHandlerMixin      IEItemFluidHandler.fill: same fluid and same grade
+  mixin/FluidUtilsMixin            api.fluid.FluidUtils: interactWithFluidHandler and fillFluidContainer inside graded(), tryEmptyContainer's handler wrapped
+  mixin/NeoForgeFluidUtilMixin     NeoForge's FluidUtil.getFluidHandler(ItemStack): graded handlers, inside graded() only
 immersiveengineering/resources/
   thirstwastaken2.immersiveengineering.mixins.json
 ```

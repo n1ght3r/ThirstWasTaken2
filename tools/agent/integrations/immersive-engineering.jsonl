@@ -6,6 +6,8 @@
 //   ("freshRead" showed water_purity 1, Murky, on 2026-10-15);
 // - a Jerrycan of Pure water used on a Metal Barrel of Murky water takes none of it, "canCheck" (still
 //   1000 mB), and one used on a barrel of Pure water does top up, "controlCheck";
+// - an empty bucket on that Murky barrel comes back a Murky water bucket, "bucketCheck", and poured into
+//   an empty Wooden Barrel leaves Murky water there, "pourCheck" (issue #50: both were plain, so Clean);
 // - a Bottling Machine, formed with a hammer and given sea water by NBT, fills a glass bottle into a
 //   water_salty water bottle: "bottleCheck".
 //
@@ -58,6 +60,28 @@
 {"id": "controlRead", "command": "client.command", "args": {"command": "data get entity @p SelectedItem"}}
 {"id": "controlCheck", "command": "client.command", "args": {"command": "execute unless data entity @p SelectedItem.components.\"immersiveengineering:fluid\"{amount:1000}"}}
 {"id": "barrelRead", "command": "client.command", "args": {"command": "data get block 8 202 13 tank"}}
+
+// Issue #50: an empty bucket on the Murky barrel comes back Murky, not plain, and that bucket poured into
+// an empty Wooden Barrel leaves Murky water in it.
+{"id": "clearBucket", "command": "server.command", "args": {"command": "clear @p"}}
+{"id": "bucket", "command": "server.command", "args": {"command": "give @p minecraft:bucket"}}
+{"id": "woodenBarrel", "command": "server.command", "args": {"command": "setblock 12 202 13 immersiveengineering:wooden_barrel{sideConfig:[I;0,0]}"}}
+{"id": "atMurkyBarrel", "command": "server.command", "args": {"command": "tp @p 8.5 202 15.5 180 29"}}
+{"id": "settle4", "command": "wait", "args": {"ticks": 20}}
+{"id": "drawDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "drawing", "command": "wait", "args": {"ticks": 3}}
+{"id": "drawUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "drawn", "command": "wait", "args": {"ticks": 10}}
+{"id": "bucketRead", "command": "client.command", "args": {"command": "data get entity @p SelectedItem"}}
+{"id": "bucketCheck", "command": "client.command", "args": {"command": "execute if data entity @p SelectedItem{id:\"minecraft:water_bucket\",components:{\"thirstwastaken2:water_purity\":1}}"}}
+{"id": "atWoodenBarrel", "command": "server.command", "args": {"command": "tp @p 12.5 202 15.5 180 29"}}
+{"id": "settle5", "command": "wait", "args": {"ticks": 20}}
+{"id": "pourDown", "command": "client.key", "args": {"key": "use", "down": true}}
+{"id": "pouring", "command": "wait", "args": {"ticks": 3}}
+{"id": "pourUp", "command": "client.key", "args": {"key": "use", "down": false}}
+{"id": "poured", "command": "wait", "args": {"ticks": 10}}
+{"id": "woodenRead", "command": "client.command", "args": {"command": "data get block 12 202 13 tank"}}
+{"id": "pourCheck", "command": "client.command", "args": {"command": "execute if data block 12 202 13 tank.Fluid{amount:1000,components:{\"thirstwastaken2:water_purity\":1}}"}}
 
 // The Bottling Machine is formed with a hammer on its trigger, the conveyor in the middle of its back
 // row. A conveyor is low, so the hammer is aimed down at its top.

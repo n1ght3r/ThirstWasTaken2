@@ -25,6 +25,8 @@ IE ships for NeoForge 1.21.1, NeoForge 1.20.4 (no node) and Forge 1.20.1, nothin
 | Jerrycan, Chemical Thrower, Drill, Buzzsaw (`IEItemFluidHandler.fill`), 1.21.1 | Tops up with `isSameFluid`, ignoring components: Murky into Pure stayed Pure | Tops up only with the same grade |
 | The same on 1.20.1 | `isFluidEqual`, which reads the tag | Nothing to do |
 | Fluid Pipe, Wooden and Metal Barrel, Fluid Tank, the pump's tank | NeoForge or Forge `FluidTank`, which compares components or the tag; pipes copy stacks with `copyWithAmount` | Nothing to do: grades travel and never merge |
+| A bucket clicked on a barrel, the Fluid Tank or the Refinery (`FluidUtils.interactWithFluidHandler`), or put in a machine's container slots (`fillFluidContainer`, `tryEmptyContainer`), 1.21.1 | NeoForge's bucket wrapper gives and takes plain water: a bucket drawn from Murky water came out Clean, and a Murky bucket went in plain ([#50](https://github.com/n1ght3r/ThirstWasTaken2/issues/50)) | Inside those three, and only there, the container's handler is core's `WaterQualityFluidHandler`, as in Extra Delight |
+| The same on 1.20.1 | Forge's bucket wrapper drops the tag the same way, and its `drain(FluidStack)` refuses tagged water | The same, through a Forge copy of `WaterQualityFluidHandler` in `src/main/forge-fluidhandler` |
 | Cloche, Mixer, concrete and mud by bottling | Take water by tag | Nothing to do: any grade works |
 
 **Which pump path runs.** NeoForge and Forge ask the gamerule in `canConvertToSource`, not the number
@@ -57,6 +59,13 @@ On 2026-10-15, `1.21.1-neoforge` with IE 12.4.2, through
   on a barrel of Pure water topped up to 5000 mB;
 - a Bottling Machine formed with a hammer, given 4000 mB of `water_salty` water by NBT, turned a glass
   bottle into a water bottle with `water_salty`.
+
+On 2026-10-27, the same node and script, for [#50](https://github.com/n1ght3r/ThirstWasTaken2/issues/50):
+an empty bucket on the Murky Metal Barrel came back a water bucket with `water_purity: 1`, and poured
+into an empty Wooden Barrel left 1000 mB of `water_purity: 1` there. The same day `1.20.1-forge`, through
+[immersive-engineering-1.20.1.jsonl](../../../../tools/agent/integrations/immersive-engineering-1.20.1.jsonl),
+gave a water bucket tagged `purity: 1` and a Wooden Barrel of 1000 mB tagged `purity: 1`, and every
+older check there still passed.
 
 The same day, `1.20.1-forge` with IE 10.2.0 through
 [immersive-engineering-1.20.1.jsonl](../../../../tools/agent/integrations/immersive-engineering-1.20.1.jsonl):

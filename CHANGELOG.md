@@ -2,6 +2,14 @@
 
 All notable changes to ThirstWasTaken2 are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Immersive Engineering, on NeoForge 1.21.1 and Forge 1.20.1: a bucket filled from a barrel or a Fluid
+  Tank keeps the grade of the water in it, and so does a bucket poured in. It used to come out Clean
+  whatever the tank held, which purified water for free.
+
 ## [1.10.0] - 2026-10-21
 
 Water is now finite when the world says it should be: filling a bottle or a waterskin takes the source

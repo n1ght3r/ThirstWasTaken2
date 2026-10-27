@@ -5,7 +5,9 @@
   "compatibilityLevel": "${java}",
   "mixins": [
     "BottlingProcessMixin",
-    "FluidPumpMixin"
+    "FluidPumpMixin",
+    "FluidUtilsMixin",
+    "ForgeFluidUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

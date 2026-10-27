@@ -15,8 +15,13 @@ import java.util.Set;
  */
 public final class ImmersiveEngineeringForgeMixinPlugin implements IMixinConfigPlugin {
     private static final String IE = "blusunrize.immersiveengineering.common.";
+    private static final String FLUID_UTILS = "blusunrize.immersiveengineering.api.fluid.FluidUtils";
 
     private static final Map<String, List<String>> NEEDS_ALL_OF = Map.of(
+            FLUID_UTILS, List.of("interactWithFluidHandler", "fillFluidContainer", "tryEmptyContainer"),
+            // Forge's own class: it changes nothing outside the transfers above, so it needs them there.
+            "net.minecraftforge.fluids.FluidUtil",
+            List.of("getFluidHandler", FLUID_UTILS + "#interactWithFluidHandler"),
             IE + "blocks.metal.FluidPumpBlockEntity",
             List.of("tickServer", "gatherInfiniteFluidFromWorld", IE + "util.Utils#drainFluidBlock"),
             IE + "blocks.multiblocks.logic.bottling_machine.BottlingProcess",
