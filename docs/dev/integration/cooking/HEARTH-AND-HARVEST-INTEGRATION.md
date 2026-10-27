@@ -20,8 +20,8 @@ Written on 2026-10-03 from:
 
 | Node | Build | Modrinth id | Requires on `runClient` |
 |---|---|---|---|
-| `1.21.1-neoforge` | `1.4.1` (written against 1.3.4, `7nTyt27O`; checked against 1.4.0 and 1.4.1) | `UBbTTDy4` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
-| `1.20.1-forge` | `1.4.1` (the 1.21.1 mod ported back; 1.0.12c, `Lc4WN5U1`, still covered; see [What 1.4.1 changes](#what-141-changes-done-2026-10-21)) | `gXBx9V0K` | Farmer's Delight `[1.3.0,)`, as above |
+| `1.21.1-neoforge` | `1.4.3` (written against 1.3.4, `7nTyt27O`; checked against 1.4.0, 1.4.1 and 1.4.3) | `hOEbGYD8` | Farmer's Delight `[1.3.0,)`, which the node already runs for Fruits Delight |
+| `1.20.1-forge` | `1.4.3` (the 1.21.1 mod ported back, checked against 1.4.1 and 1.4.3; 1.0.12c, `Lc4WN5U1`, still covered; see [What 1.4.1 changes](#what-141-changes-done-2026-10-21)) | `tYaJ4zXo` | Farmer's Delight `[1.3.0,)`, as above |
 | every other node | none | — | — |
 
 There is **no Fabric build and nothing newer than 1.21.1**. Both lines are still updated, so both get
