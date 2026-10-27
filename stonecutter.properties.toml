@@ -85,8 +85,8 @@ deps.kaleidoscope_chinese_food = "NQtt6JoY"
 deps.fruits_delight = "E7H5IrKI"
 # Hearth and Harvest; see [neoforge."1.21.1"]. Its 1.20.1 build is the early mod, Forge only, with no
 # tank that needs code: only its drinks and its salt recipe, both data.
-# 1.4.2, the Forge upload.
-deps.hearth_and_harvest = "lkP6dOqJ"
+# 1.4.3, the Forge upload.
+deps.hearth_and_harvest = "tYaJ4zXo"
 # Miner's Delight; see [neoforge."1.21.1"]. Its 1.20.1 build is Forge only, under the mod id
 # miners_delight rather than minersdelight.
 # 1.20.1-1.4.5-backport, the Forge upload.
@@ -335,8 +335,8 @@ deps.lodestone = "CohX6yP1"
 # Hearth and Harvest, whose tanks keep a water's grade, whose sink and jug stop making Clean water from
 # nothing or from the sea, and whose cask ages no sea water. NeoForge 1.21.1 is its newest build.
 # See src/main/hearthandharvest/AGENTS.md.
-# 1.4.1, the NeoForge upload.
-deps.hearth_and_harvest = "UBbTTDy4"
+# 1.4.3, the NeoForge upload.
+deps.hearth_and_harvest = "hOEbGYD8"
 # Extra Delight, whose jars, kegs, vat and mixing bowl keep a water's grade, whose tap and sink stop
 # making Clean water from nothing, and whose recipes take no sea water. NeoForge 1.21.1 is its only
 # official build. See src/main/extradelight/AGENTS.md.

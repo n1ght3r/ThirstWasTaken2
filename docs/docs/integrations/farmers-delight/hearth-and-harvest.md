@@ -4,7 +4,7 @@ With Hearth and Harvest installed, its juices, milks, wines and stews restore th
 jugs, troughs and kegs treat water the way the rest of this mod does.
 
 ::: warning Supported versions
-Everything on this page works with ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F8EEEXOzj%2Fe5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Hearth and Harvest](https://modrinth.com/mod/hearth-and-harvest) 1.4.1, on NeoForge, Minecraft 1.21.1,
+Everything on this page works with ![](https://wsrv.nl/?url=https%3A%2F%2Fcdn.modrinth.com%2Fdata%2F8EEEXOzj%2Fe5d9aa8bd6bf5dcbd674f08b92957d4b001229e3.png&trim=1&w=96&h=96&fit=contain&cbg=00000000&output=png){.mod-icon .mod-icon-lg} [Hearth and Harvest](https://modrinth.com/mod/hearth-and-harvest) 1.4.3, on NeoForge, Minecraft 1.21.1,
 and on Forge, Minecraft 1.20.1. With 1.0.12c on Forge, only the drinks, the salt recipe and the Jug
 apply. The mod has no Fabric build and no build for a newer Minecraft version.
 :::

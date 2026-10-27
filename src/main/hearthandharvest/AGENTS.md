@@ -8,7 +8,7 @@ sea as fresh water; and the Cask aged sea water into mead. This directory fixes 
 and its decisions are in
 [docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md](../../../docs/dev/integration/cooking/HEARTH-AND-HARVEST-INTEGRATION.md).
 
-**Built on `1.21.1-neoforge` only**, against the mod's build 1.4.1 (written for 1.3.4, which still works). Its 1.20.1 build, the
+**Built on `1.21.1-neoforge` only**, against the mod's build 1.4.3 (written for 1.3.4, which still works). Its 1.20.1 build, the
 same mod ported back from 1.4.1, has its own directory with the same mixins on Forge's fluid API,
 [`hearthandharvestforge`](../hearthandharvestforge/AGENTS.md). What it does:
 
