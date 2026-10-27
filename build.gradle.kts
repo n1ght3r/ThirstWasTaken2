@@ -725,7 +725,7 @@ dependencies {
         "modCompileOnly"("maven.modrinth:serene-seasons:$sereneSeasons") { isTransitive = false }
         "modCompileOnly"("maven.modrinth:glitchcore:$glitchCore") { isTransitive = false }
         // Unpacked when the classpath is resolved; see Farmer's Delight above.
-        compileOnly(files(provider { nestedMods("serene-seasons", sereneSeasons.toString()) }))
+        compileOnly(files(provider { nestedMods("serene-seasons", sereneSeasons) }))
         // Off in runClient: it recolours grass and leaves by the season and snows on plains in winter,
         // which gets into every other test and screenshot. Uncomment the three lines below only to work
         // on the Serene Seasons integration. The gametests and runServer run without it, which is what

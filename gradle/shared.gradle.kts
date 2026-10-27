@@ -728,6 +728,12 @@ tasks.matching { it.name == "runGametest" }.configureEach {
         gametestDir.resolve("config/thirstwastaken2.json").delete()
         gametestDir.resolve("world").deleteRecursively()
         gametestDir.resolve("gametestserver").deleteRecursively()
+        // A fresh run directory, as on CI, has none, and the server logs that as an error with a stack
+        // trace before writing its defaults. An empty file gives the same defaults without it.
+        gametestDir.resolve("server.properties").takeUnless { it.isFile }?.apply {
+            parentFile.mkdirs()
+            writeText("")
+        }
     }
 }
 

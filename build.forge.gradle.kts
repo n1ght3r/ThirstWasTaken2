@@ -163,9 +163,20 @@ val refmap = "$modId.refmap.json"
 
 // A mixin that names its target by string does so because the mod is optional and nothing compiles
 // against it (Fruits Delight and the L2 Library nested in it). Forge's annotation processor, unlike Loom's,
-// fails the build when such a target is not on the classpath; a warning is what Fabric gives.
+// fails the build when such a target is not on the classpath. A note rather than Fabric's warning: the
+// target is missing on purpose, and on CI every warning becomes an annotation that buries a real one.
+// A public target named by string is the same choice, made to keep the mod's class off the load path.
 tasks.named<JavaCompile>("compileJava") {
-    options.compilerArgs.add("-AMSG_MIXIN_SOFT_TARGET_NOT_FOUND=warning")
+    options.compilerArgs.add("-AMSG_MIXIN_SOFT_TARGET_NOT_FOUND=note")
+    options.compilerArgs.add("-AMSG_MIXIN_SOFT_TARGET_IS_PUBLIC=note")
+}
+
+// Forge 47 marks for removal what 1.21 replaced: ResourceLocation's constructors,
+// FMLJavaModLoadingContext.get(), ItemBlockRenderTypes.setRenderLayer. They are the 1.20.1 API the
+// Fabric 1.20.1 node shares and nothing removes them on this Minecraft version, so the forty warnings
+// they gave each build said nothing.
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-Xlint:-removal")
 }
 
 mixin {
