@@ -125,7 +125,7 @@ FORGE_CHANGELOG = "https://maven.minecraftforge.net/net/minecraftforge/forge/{v}
 FABRIC_LOADER_RELEASES = "https://api.github.com/repos/FabricMC/fabric-loader/releases?per_page=100"
 MIXINEXTRAS_METADATA = "https://repo1.maven.org/maven2/io/github/llamalad7/mixinextras-forge/maven-metadata.xml"
 # Modrinth asks every client for a User-Agent that identifies the project.
-USER_AGENT = "n1ght3r/ThirstWasTaken2 dependency updater (github.com/n1ght3r/ThirstWasTaken2)"
+USER_AGENT = "whoisnighter/ThirstWasTaken2 dependency updater (github.com/whoisnighter/ThirstWasTaken2)"
 
 
 @dataclass(frozen=True)

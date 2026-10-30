@@ -12,7 +12,7 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "n1ght3r"
+      - "whoisnighter"
     commit-message:
       prefix: "chore"
 
@@ -21,7 +21,7 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "n1ght3r"
+      - "whoisnighter"
     commit-message:
       prefix: "chore"
 
@@ -30,6 +30,6 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "n1ght3r"
+      - "whoisnighter"
     commit-message:
       prefix: "chore"

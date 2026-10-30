@@ -76,7 +76,7 @@ ENV_FILE = ROOT / ".env"
 MODRINTH = "https://api.modrinth.com/v2"
 MODRINTH_PROJECT = "thirst-was-taken-2"
 # Modrinth asks every client for a User-Agent that identifies the project.
-USER_AGENT = "n1ght3r/ThirstWasTaken2 release publisher (github.com/n1ght3r/ThirstWasTaken2)"
+USER_AGENT = "whoisnighter/ThirstWasTaken2 release publisher (github.com/whoisnighter/ThirstWasTaken2)"
 
 
 @dataclass(frozen=True)

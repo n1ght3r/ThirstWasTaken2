@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://n1ght3r.github.io/ThirstWasTaken2/
+    url: https://whoisnighter.github.io/ThirstWasTaken2/
     about: Installation, mechanics, water purity and the full configuration reference.
   - name: Modrinth page
     url: https://modrinth.com/mod/thirst-was-taken-2
     about: Downloads and the list of supported Minecraft versions.
   - name: Changelog
-    url: https://github.com/n1ght3r/ThirstWasTaken2/blob/main/CHANGELOG.md
+    url: https://github.com/whoisnighter/ThirstWasTaken2/blob/main/CHANGELOG.md
     about: Check whether the behaviour you are seeing was an intentional change.

@@ -45,7 +45,7 @@ To try it in a development client, add the same coordinate to the run classpath:
 Loom, `runtimeOnly` on ModDevGradle.
 
 Modrinth Maven serves the mod jar only, without sources. The documentation of every method is in the
-[source on GitHub](https://github.com/n1ght3r/ThirstWasTaken2/tree/main/src/main/java/com/thirstwastaken2/api).
+[source on GitHub](https://github.com/whoisnighter/ThirstWasTaken2/tree/main/src/main/java/com/thirstwastaken2/api).
 
 ## Keeping it optional
 
@@ -178,4 +178,4 @@ ThirstEvents.EXHAUSTION.register((player, amount) ->
 - The [data pack format](/docs/developers/data-packs) keeps its keys. A new key will be optional.
 
 Missing something, such as an event for when thirst changes? Ask in an
-[issue](https://github.com/n1ght3r/ThirstWasTaken2/issues).
+[issue](https://github.com/whoisnighter/ThirstWasTaken2/issues).

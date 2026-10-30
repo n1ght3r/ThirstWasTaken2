@@ -4,7 +4,7 @@ Thanks for helping out. Bug reports, translations, ideas and code are all welcom
 
 ## Reporting a bug
 
-Open an [issue](https://github.com/n1ght3r/ThirstWasTaken2/issues/new/choose) with the bug report
+Open an [issue](https://github.com/whoisnighter/ThirstWasTaken2/issues/new/choose) with the bug report
 form. The most useful details are:
 
 - the full jar name, for example `ThirstWasTaken2-1.0.9+26.3.jar`, which gives both the mod and the
